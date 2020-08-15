@@ -3,10 +3,10 @@
 // TODO: category description
 {{- range $typename, $desc := .Types}}
 // TODO: split by lines
-// {{$desc.Description.PlainText}}
+// {{format $desc.Description.PlainText 3}}
 type {{camel $typename}} struct {
 {{- range $field_name, $field_desc := $desc.Fields}}
-	// {{$field_desc.Description.PlainText}}
+	// {{format $field_desc.Description.PlainText 7 | tabindent 1}}
 	{{- if (or (not $field_desc.Required) (eq $field_name $typename)) }}
 	{{camel $field_name}} *{{(index $field_desc.Types 0).GoType}} `json:"{{$field_name}},omitempty"`
 	{{- else}}

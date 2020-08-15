@@ -2,6 +2,7 @@ package generator
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -9,12 +10,46 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/Masterminds/sprig/v3"
 	"github.com/iancoleman/strcase"
 	"go.uber.org/multierr"
 )
 
+const maxInLine = 100
+
 var funcs = template.FuncMap{
 	"camel": strcase.ToCamel,
+	"format": func(s string, padding int) (string, error) {
+		var (
+			text  = strings.Fields(s)
+			res   strings.Builder
+			count = padding
+		)
+		if padding == 0 {
+			padding = 3
+		}
+		if padding > 100*0.9 {
+			return "", errors.New("padding too small")
+		}
+		for _, field := range text {
+			// хз что тут будет с юникодом, но пофиг
+			if count+len(field) >= maxInLine {
+				res.WriteString("\n// ")
+				count = padding
+			} else {
+				if count != padding {
+					res.WriteByte(' ')
+				}
+				count += len(field) + 1
+			}
+			res.WriteString(field)
+		}
+		return res.String(), nil
+	},
+	"tabindent": func(tabs int, v string) string {
+		pad := strings.Repeat("\t", tabs)
+		return strings.Replace(v, "\n", "\n"+pad, -1)
+	},
 }
 
 type Generator struct {
@@ -35,7 +70,9 @@ func NewGenerator(schemaFile, tempaltesDir string) (*Generator, error) {
 		return nil, err
 	}
 
-	tmpl := template.New("").Funcs(funcs)
+	tmpl := template.New("").
+		Funcs(sprig.TxtFuncMap()).
+		Funcs(funcs)
 
 	tmpl, err = tmpl.ParseGlob(filepath.Join(tempaltesDir, "*.tmpl"))
 	if err != nil {
