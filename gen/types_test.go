@@ -44,51 +44,15 @@ func TestTypeMapping_GoType(t *testing.T) {
 	}
 }
 
-func TestTypes(t *testing.T) {
-	raw, err := ioutil.ReadFile("../schema/public/types.json")
+func TestUnmarshal(t *testing.T) {
+	raw, err := ioutil.ReadFile("../schema/public/all.json")
 	if err != nil {
 		println(err)
 		println("no file == no test")
 		return
 	}
 
-	var decoded map[string]Type
-	err = json.Unmarshal(raw, &decoded)
-	require.NoError(t, err)
-
-	reEncoded, err := json.Marshal(decoded)
-	require.NoError(t, err)
-
-	require.JSONEq(t, string(raw), string(reEncoded))
-}
-
-func TestMethods(t *testing.T) {
-	raw, err := ioutil.ReadFile("../schema/public/methods.json")
-	if err != nil {
-		println(err)
-		println("no file == no test")
-		return
-	}
-
-	var decoded map[string]Method
-	err = json.Unmarshal(raw, &decoded)
-	require.NoError(t, err)
-
-	reEncoded, err := json.Marshal(decoded)
-	require.NoError(t, err)
-
-	require.JSONEq(t, string(raw), string(reEncoded))
-}
-
-func TestArticles(t *testing.T) {
-	raw, err := ioutil.ReadFile("../schema/public/articles.json")
-	if err != nil {
-		println(err)
-		println("no file == no test")
-		return
-	}
-
-	var decoded map[string]Article
+	var decoded ApiSchema
 	err = json.Unmarshal(raw, &decoded)
 	require.NoError(t, err)
 

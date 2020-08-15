@@ -64,3 +64,15 @@ type Article struct {
 	Title    string `json:"title"`
 	Category string `json:"category"`
 }
+
+type ApiSchema struct {
+	Articles map[string]Article `json:"articles"`
+	Methods  map[string]Method  `json:"methods"`
+	Types    map[string]Type    `json:"types"`
+	Version  string             `json:"version"`
+
+	// ну на это мне как-то посрать
+
+	BuildInfo  map[string]interface{} `json:"build_info"`
+	Changelogs map[string]interface{} `json:"changelogs"`
+}
