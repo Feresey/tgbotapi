@@ -2,7 +2,6 @@ package generator
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -19,32 +18,28 @@ const maxInLine = 100
 
 var funcs = template.FuncMap{
 	"camel": strcase.ToCamel,
-	"format": func(s string, padding int) (string, error) {
+	"format": func(s string, tabs int) string {
 		var (
-			text  = strings.Fields(s)
-			res   strings.Builder
-			count = padding
+			text    = strings.Fields(s)
+			res     strings.Builder
+			prefix  = "\n" + strings.Repeat("\t", tabs) + "// "
+			padding = len(prefix) + 3*tabs
+			count   = padding
 		)
-		if padding == 0 {
-			padding = 3
-		}
-		if padding > 100*0.9 {
-			return "", errors.New("padding too small")
-		}
 		for _, field := range text {
 			// хз что тут будет с юникодом, но пофиг
 			if count+len(field) >= maxInLine {
-				res.WriteString("\n// ")
+				res.WriteString(prefix)
 				count = padding
-			} else {
-				if count != padding {
-					res.WriteByte(' ')
-				}
-				count += len(field) + 1
+			}
+			if count != padding {
+				res.WriteByte(' ')
+				count += 1
 			}
 			res.WriteString(field)
+			count += len(field)
 		}
-		return res.String(), nil
+		return res.String()
 	},
 	"tabindent": func(tabs int, v string) string {
 		pad := strings.Repeat("\t", tabs)
