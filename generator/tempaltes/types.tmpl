@@ -6,10 +6,11 @@
 // {{$desc.Description.PlainText}}
 type {{camel $typename}} struct {
 {{- range $field_name, $field_desc := $desc.Fields}}
-	// {{$field_name}}:{{$field_desc.Description.PlainText}}
-	{{- with $field_desc.Required}}
-	// {{camel $field_name}} {{(index $field_desc.Types 0).GoType}}
-	{{camel $field_name}} {{if not . }}*{{end}}{{(index $field_desc.Types 0).GoType}} `json:"{{$field_name}}"{{if not .}},omitempty{{end}}`
+	// {{$field_desc.Description.PlainText}}
+	{{- if (or (not $field_desc.Required) (eq $field_name $typename)) }}
+	{{camel $field_name}} *{{(index $field_desc.Types 0).GoType}} `json:"{{$field_name}},omitempty"`
+	{{- else}}
+	{{camel $field_name}} {{(index $field_desc.Types 0).GoType}} `json:"{{$field_name}}"`
 	{{- end}}
 {{- end}}
 }
