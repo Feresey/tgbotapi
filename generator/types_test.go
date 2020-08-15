@@ -22,6 +22,10 @@ func TestTypeMapping_GoType(t *testing.T) {
 			want: "string",
 		},
 		{
+			t:    "array(str)",
+			want: "[]string",
+		},
+		{
 			t:    "not-standart-type",
 			want: "not-standart-type",
 		},

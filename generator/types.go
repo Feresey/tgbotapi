@@ -16,6 +16,11 @@ func (t TypeMapping) GoType() string {
 	case "int":
 		// Ну на самом деле chat_id должен быть int64, а message_id и int хватит.
 		return "int64"
+	case "Float", "Float number":
+		return "float64"
+	case "True":
+		// это чё ваще такое
+		return "bool"
 	}
 	return string(t)
 }
@@ -32,7 +37,7 @@ func (t TypeMapping) SplitArray() string {
 		res.WriteString("[]")
 		t = t.ArrayType()
 	}
-	return res.String() + string(t)
+	return res.String() + t.GoType()
 }
 
 type Field struct {

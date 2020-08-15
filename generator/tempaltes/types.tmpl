@@ -1,0 +1,16 @@
+{{.Head}}
+
+// TODO: category description
+{{- range $typename, $desc := .Types}}
+// TODO: split by lines
+// {{$desc.Description.PlainText}}
+type {{camel $typename}} struct {
+	{{- range $field_name, $field_desc := $desc.Fields}}
+	// {{$field_desc.Description.PlainText}}
+	{{- with $field_desc.Required}}
+	{{camel $field_name}} {{if not . }}*{{end}}{{(index $field_desc.Types 0).GoType}} `json:"{{$field_name}}"{{if not .}},omitempty{{end}}`
+	{{- end}}
+	{{- end}}
+}
+
+{{- end}}
