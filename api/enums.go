@@ -16,24 +16,24 @@ type ChatType int
 
 const (
 	_ ChatType = iota
-	ChatTypePrivate
-	ChatTypeGroup
-	ChatTypeSupergroup
 	ChatTypeChannel
+	ChatTypeGroup
+	ChatTypePrivate
+	ChatTypeSupergroup
 )
 
 var valueChatType = map[ChatType]string{
-	1: "private",
+	1: "channel",
 	2: "group",
-	3: "supergroup",
-	4: "channel",
+	3: "private",
+	4: "supergroup",
 }
 
 var indexChatType = map[string]ChatType{
-	"private":    1,
+	"channel":    1,
 	"group":      2,
-	"supergroup": 3,
-	"channel":    4,
+	"private":    3,
+	"supergroup": 4,
 }
 
 func (enum ChatType) String() string {

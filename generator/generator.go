@@ -10,7 +10,6 @@ import (
 	"path/filepath"
 	"regexp"
 	"sort"
-	"strconv"
 	"strings"
 	"text/template"
 
@@ -161,7 +160,6 @@ func (g *Generator) getEnums() map[string][]string {
 	for idx, list := range res {
 		res[idx] = unique(list)
 	}
-	res["ChatType"] = []string{"private", "group", "supergroup", "channel"}
 	return res
 }
 
@@ -179,48 +177,25 @@ func unique(ss []string) []string {
 }
 
 func oneof(text string) []string {
-	parts := strings.Split(strings.ToLower(strings.TrimSuffix(text, ".")), "one of")
-	if len(parts) != 2 {
-		if len(parts) != 1 {
-			log.Print("Not valid `oneof` retarded syntax: ", parts)
-			return nil
-		}
-
-		one := "type of the result, must be "
-		if strings.HasPrefix(parts[0], one) {
-			parts[0] = strings.TrimPrefix(parts[0], one)
-			return parts
-		}
-
-		if strings.Contains(parts[0], "quiz") && strings.Contains(parts[0], "regular") {
-			return []string{"regular", "quiz"}
-		}
-
-		if strings.Contains(parts[0], "type of element of the user's telegram passport") {
-			return nil
-		}
-		if strings.Contains(parts[0], "type of chat") {
-			return []string{"private", "group", "supergroup", "channel"}
-		}
-		if strings.Contains(parts[0], "type of the entity") {
-			return parseEntity(parts[0])
-		}
-
+	parts := strings.Split(strings.ToLower(strings.TrimSuffix(text, ".")), "one of ")
+	if len(parts) == 2 {
+		return parseEntity(parts[1])
+	}
+	if len(parts) != 1 {
 		log.Print("Not valid `oneof` retarded syntax: ", parts)
 		return nil
 	}
 
-	values := strings.Split(strings.TrimSpace(parts[1]), ",")
-	// fmt.Println(values)
-	for idx, value := range values {
-		plain, err := strconv.Unquote(strings.TrimSpace(value))
-		if err != nil {
-			log.Printf("Try to unquote enum %q : %v", value, err)
-			continue
-		}
-		values[idx] = plain
+	one := "type of the result, must be "
+	if strings.HasPrefix(parts[0], one) {
+		return []string{strings.TrimPrefix(parts[0], one)}
 	}
-	return values
+
+	if strings.Contains(parts[0], "quiz") && strings.Contains(parts[0], "regular") {
+		return []string{"regular", "quiz"}
+	}
+
+	return parseEntity(parts[0])
 }
 
 func parseEntity(s string) []string {
