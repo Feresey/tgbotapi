@@ -1,0 +1,25 @@
+{{.Head}}
+
+{{range $typename, $desc := .Methods}}
+// {{camel $typename}}
+// {{format $desc.Description.PlainText 0}}
+type {{camel $typename}} struct {
+{{- range $idx, $put_required := $.RequiredOrder}}
+{{- range $field_name, $field_desc := $desc.Arguments}}
+	{{- $type := (index $field_desc.Types 0)}}
+	{{- $gotype := $type.GoType}}
+	{{- if eq $field_name "type"}}{{$gotype = (camel (print (first $typename) "_type"))}}{{end}}
+
+	{{- if eq $field_desc.Required $put_required}}
+	// {{camel $field_name}}
+	// {{format $field_desc.Description.PlainText 1}}
+		{{- if $field_desc.Required}}
+	{{camel $field_name}} {{$gotype}} `json:"{{$field_name}}"`
+		{{- else}}
+	{{camel $field_name}} {{if not $type.IsArray}}*{{end}}{{$gotype}} `json:"{{$field_name}},omitempty"`
+		{{- end}}
+	{{- end}}
+{{- end}}
+{{- end}}
+}
+{{end}}

@@ -438,3 +438,38 @@ func (enum *PollType) UnmarshalText(src []byte) error {
 	*enum = value
 	return nil
 }
+
+type SendType int
+
+const (
+	_ SendType = iota
+	SendTypeQuiz
+	SendTypeRegular
+)
+
+var valueSendType = map[SendType]string{
+	1: "quiz",
+	2: "regular",
+}
+
+var indexSendType = map[string]SendType{
+	"quiz":    1,
+	"regular": 2,
+}
+
+func (enum SendType) String() string {
+	return valueSendType[enum]
+}
+
+func (enum SendType) MarshalText() ([]byte, error) {
+	return []byte(enum.String()), nil
+}
+
+func (enum *SendType) UnmarshalText(src []byte) error {
+	value, ok := indexSendType[string(src)]
+	if !ok {
+		return ErrIncorrectEnum{string(src)}
+	}
+	*enum = value
+	return nil
+}

@@ -136,7 +136,8 @@ func (g *Generator) Generate(outDir string) error {
 
 		formatted, err := imports.Process("", buf.Bytes(), nil)
 		if err != nil {
-			return err
+			log.Print("Format generated code: ", err)
+			formatted = buf.Bytes()
 		}
 
 		if err := ioutil.WriteFile(outName, formatted, 0666); err != nil {
@@ -150,6 +151,14 @@ func (g *Generator) getEnums() map[string][]string {
 	res := make(map[string][]string)
 	for typename, typeDesc := range g.schema.Types {
 		field, ok := typeDesc.Fields["type"]
+		if !ok {
+			continue
+		}
+		enumName := strcase.ToCamel(getEnumName(typename) + "_type")
+		res[enumName] = append(res[enumName], oneof(field.Description.PlainText)...)
+	}
+	for typename, typeDesc := range g.schema.Methods {
+		field, ok := typeDesc.Arguments["type"]
 		if !ok {
 			continue
 		}

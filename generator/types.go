@@ -21,6 +21,8 @@ func (t TypeMapping) GoType() string {
 	case "True":
 		// метод не может ничего не возвращать. Поэтому он возаращает что-то.
 		return "truebool"
+	case "InputMediaPhoto and InputMediaVideo":
+		return "InputMediaGraphics"
 	}
 	return string(t)
 }
