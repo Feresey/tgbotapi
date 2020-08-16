@@ -6,6 +6,7 @@ const Version = "4.9"
 
 // TODO: category description
 
+// Animation
 // This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound).
 type Animation struct {
 	// Duration
@@ -38,6 +39,7 @@ type Animation struct {
 	Thumb *PhotoSize `json:"thumb,omitempty"`
 }
 
+// Audio
 // This object represents an audio file to be treated as music by the Telegram clients.
 type Audio struct {
 	// Duration
@@ -67,6 +69,7 @@ type Audio struct {
 	Title *string `json:"title,omitempty"`
 }
 
+// BotCommand
 // This object represents a bot command.
 type BotCommand struct {
 	// Command
@@ -78,6 +81,7 @@ type BotCommand struct {
 	Description string `json:"description"`
 }
 
+// CallbackGame
 // A placeholder, currently holds no information. Use BotFather to set up your game.
 type CallbackGame struct {
 	// Score
@@ -105,6 +109,7 @@ type CallbackGame struct {
 	MessageId *int64 `json:"message_id,omitempty"`
 }
 
+// CallbackQuery
 // This object represents an incoming callback query from a callback button in an inline keyboard.
 // If the button that originated the query was attached to a message sent by the bot, the field
 // message will be present. If the button was attached to a message sent via the bot (in inline
@@ -137,6 +142,7 @@ type CallbackQuery struct {
 	Message *Message `json:"message,omitempty"`
 }
 
+// Chat
 // This object represents a chat.
 type Chat struct {
 	// Id
@@ -189,6 +195,7 @@ type Chat struct {
 	Username *string `json:"username,omitempty"`
 }
 
+// ChatMember
 // This object contains information about one member of a chat.
 type ChatMember struct {
 	// Status
@@ -261,6 +268,7 @@ type ChatMember struct {
 	UntilDate *int64 `json:"until_date,omitempty"`
 }
 
+// ChatPermissions
 // Describes actions that a non-administrator user is allowed to take in a chat.
 type ChatPermissions struct {
 	// CanAddWebPagePreviews
@@ -293,6 +301,7 @@ type ChatPermissions struct {
 	CanSendPolls *bool `json:"can_send_polls,omitempty"`
 }
 
+// ChatPhoto
 // This object represents a chat photo.
 type ChatPhoto struct {
 	// BigFileId
@@ -313,6 +322,7 @@ type ChatPhoto struct {
 	SmallFileUniqueId string `json:"small_file_unique_id"`
 }
 
+// ChosenInlineResult
 // Represents a result of an inline query that was chosen by the user and sent to their chat
 // partner.
 type ChosenInlineResult struct {
@@ -335,6 +345,7 @@ type ChosenInlineResult struct {
 	Location *Location `json:"location,omitempty"`
 }
 
+// Contact
 // This object represents a phone contact.
 type Contact struct {
 	// FirstName
@@ -354,6 +365,7 @@ type Contact struct {
 	Vcard *string `json:"vcard,omitempty"`
 }
 
+// Dice
 // This object represents an animated emoji that displays a random value.
 type Dice struct {
 	// Emoji
@@ -364,6 +376,7 @@ type Dice struct {
 	Value int64 `json:"value"`
 }
 
+// Document
 // This object represents a general file (as opposed to photos, voice messages and audio files).
 type Document struct {
 	// FileId
@@ -387,6 +400,7 @@ type Document struct {
 	Thumb *PhotoSize `json:"thumb,omitempty"`
 }
 
+// EncryptedCredentials
 // Contains data required for decrypting and authenticating EncryptedPassportElement. See the
 // Telegram Passport Documentation for a complete description of the data decryption and
 // authentication processes.
@@ -403,6 +417,7 @@ type EncryptedCredentials struct {
 	Secret string `json:"secret"`
 }
 
+// EncryptedPassportElement
 // Contains information about documents or other Telegram Passport elements shared with the bot by
 // the user.
 type EncryptedPassportElement struct {
@@ -454,6 +469,7 @@ type EncryptedPassportElement struct {
 	Translation []PassportFile `json:"translation,omitempty"`
 }
 
+// File
 // This object represents a file ready to be downloaded. The file can be downloaded via the link
 // https://api.telegram.org/file/bot<token>/<file_path>. It is guaranteed that the link will be
 // valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile.
@@ -473,6 +489,7 @@ type File struct {
 	FileSize *int64 `json:"file_size,omitempty"`
 }
 
+// ForceReply
 // Upon receiving a message with this object, Telegram clients will display a reply interface to
 // the user (act as if the user has selected the bot's message and tapped 'Reply'). This can be
 // extremely useful if you want to create user-friendly step-by-step interfaces without having to
@@ -489,6 +506,7 @@ type ForceReply struct {
 	Selective *bool `json:"selective,omitempty"`
 }
 
+// Game
 // This object represents a game. Use BotFather to create and edit games, their short names will
 // act as unique identifiers.
 type Game struct {
@@ -514,6 +532,7 @@ type Game struct {
 	TextEntities []MessageEntity `json:"text_entities,omitempty"`
 }
 
+// GameHighScore
 // This object represents one row of the high scores table for a game.
 type GameHighScore struct {
 	// Position
@@ -527,6 +546,7 @@ type GameHighScore struct {
 	User User `json:"user"`
 }
 
+// Games
 // Your bot can offer users HTML5 games to play solo or to compete against each other in groups and
 // one-on-one chats. Create games via @BotFather using the /newgame command. Please note that this
 // kind of power requires responsibility: you will need to accept the terms for each game that your
@@ -551,6 +571,7 @@ type Games struct {
 	ReplyToMessageId *int64 `json:"reply_to_message_id,omitempty"`
 }
 
+// InlineKeyboardButton
 // This object represents one button of an inline keyboard. You must use exactly one of the
 // optional fields.
 type InlineKeyboardButton struct {
@@ -592,6 +613,7 @@ type InlineKeyboardButton struct {
 	Url *string `json:"url,omitempty"`
 }
 
+// InlineKeyboardMarkup
 // This object represents an inline keyboard that appears right next to the message it belongs to.
 type InlineKeyboardMarkup struct {
 	// InlineKeyboard
@@ -599,6 +621,7 @@ type InlineKeyboardMarkup struct {
 	InlineKeyboard [][]InlineKeyboardButton `json:"inline_keyboard"`
 }
 
+// InlineQuery
 // This object represents an incoming inline query. When the user sends an empty query, your bot
 // could return some default or trending results.
 type InlineQuery struct {
@@ -619,6 +642,7 @@ type InlineQuery struct {
 	Location *Location `json:"location,omitempty"`
 }
 
+// InlineQueryResult
 // This object represents one result of an inline query. Telegram clients currently support results
 // of the following 20 types:
 type InlineQueryResult struct {
@@ -657,6 +681,7 @@ type InlineQueryResult struct {
 	Url *string `json:"url,omitempty"`
 }
 
+// InlineQueryResultArticle
 // Represents a link to an article or web page.
 type InlineQueryResultArticle struct {
 	// Id
@@ -694,6 +719,7 @@ type InlineQueryResultArticle struct {
 	Url *string `json:"url,omitempty"`
 }
 
+// InlineQueryResultAudio
 // Represents a link to an MP3 audio file. By default, this audio file will be sent by the user.
 // Alternatively, you can use input_message_content to send a message with the specified content
 // instead of the audio.
@@ -730,6 +756,7 @@ type InlineQueryResultAudio struct {
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 }
 
+// InlineQueryResultCachedAudio
 // Represents a link to an MP3 audio file stored on the Telegram servers. By default, this audio
 // file will be sent by the user. Alternatively, you can use input_message_content to send a
 // message with the specified content instead of the audio.
@@ -757,6 +784,7 @@ type InlineQueryResultCachedAudio struct {
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 }
 
+// InlineQueryResultCachedDocument
 // Represents a link to a file stored on the Telegram servers. By default, this file will be sent
 // by the user with an optional caption. Alternatively, you can use input_message_content to send a
 // message with the specified content instead of the file.
@@ -790,6 +818,7 @@ type InlineQueryResultCachedDocument struct {
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 }
 
+// InlineQueryResultCachedGif
 // Represents a link to an animated GIF file stored on the Telegram servers. By default, this
 // animated GIF file will be sent by the user with an optional caption. Alternatively, you can use
 // input_message_content to send a message with specified content instead of the animation.
@@ -820,6 +849,7 @@ type InlineQueryResultCachedGif struct {
 	Title *string `json:"title,omitempty"`
 }
 
+// InlineQueryResultCachedMpeg4Gif
 // Represents a link to a video animation (H.264/MPEG-4 AVC video without sound) stored on the
 // Telegram servers. By default, this animated MPEG-4 file will be sent by the user with an
 // optional caption. Alternatively, you can use input_message_content to send a message with the
@@ -851,6 +881,7 @@ type InlineQueryResultCachedMpeg4Gif struct {
 	Title *string `json:"title,omitempty"`
 }
 
+// InlineQueryResultCachedPhoto
 // Represents a link to a photo stored on the Telegram servers. By default, this photo will be sent
 // by the user with an optional caption. Alternatively, you can use input_message_content to send a
 // message with the specified content instead of the photo.
@@ -884,6 +915,7 @@ type InlineQueryResultCachedPhoto struct {
 	Title *string `json:"title,omitempty"`
 }
 
+// InlineQueryResultCachedSticker
 // Represents a link to a sticker stored on the Telegram servers. By default, this sticker will be
 // sent by the user. Alternatively, you can use input_message_content to send a message with the
 // specified content instead of the sticker.
@@ -905,6 +937,7 @@ type InlineQueryResultCachedSticker struct {
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 }
 
+// InlineQueryResultCachedVideo
 // Represents a link to a video file stored on the Telegram servers. By default, this video file
 // will be sent by the user with an optional caption. Alternatively, you can use
 // input_message_content to send a message with the specified content instead of the video.
@@ -938,6 +971,7 @@ type InlineQueryResultCachedVideo struct {
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 }
 
+// InlineQueryResultCachedVoice
 // Represents a link to a voice message stored on the Telegram servers. By default, this voice
 // message will be sent by the user. Alternatively, you can use input_message_content to send a
 // message with the specified content instead of the voice message.
@@ -969,6 +1003,7 @@ type InlineQueryResultCachedVoice struct {
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 }
 
+// InlineQueryResultContact
 // Represents a contact with a phone number. By default, this contact will be sent by the user.
 // Alternatively, you can use input_message_content to send a message with the specified content
 // instead of the contact.
@@ -1008,6 +1043,7 @@ type InlineQueryResultContact struct {
 	Vcard *string `json:"vcard,omitempty"`
 }
 
+// InlineQueryResultDocument
 // Represents a link to a file. By default, this file will be sent by the user with an optional
 // caption. Alternatively, you can use input_message_content to send a message with the specified
 // content instead of the file. Currently, only .PDF and .ZIP files can be sent using this method.
@@ -1053,6 +1089,7 @@ type InlineQueryResultDocument struct {
 	ThumbWidth *int64 `json:"thumb_width,omitempty"`
 }
 
+// InlineQueryResultGame
 // Represents a Game.
 type InlineQueryResultGame struct {
 	// GameShortName
@@ -1069,6 +1106,7 @@ type InlineQueryResultGame struct {
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 }
 
+// InlineQueryResultGif
 // Represents a link to an animated GIF file. By default, this animated GIF file will be sent by
 // the user with optional caption. Alternatively, you can use input_message_content to send a
 // message with the specified content instead of the animation.
@@ -1115,6 +1153,7 @@ type InlineQueryResultGif struct {
 	Title *string `json:"title,omitempty"`
 }
 
+// InlineQueryResultLocation
 // Represents a location on a map. By default, the location will be sent by the user.
 // Alternatively, you can use input_message_content to send a message with the specified content
 // instead of the location.
@@ -1154,6 +1193,7 @@ type InlineQueryResultLocation struct {
 	ThumbWidth *int64 `json:"thumb_width,omitempty"`
 }
 
+// InlineQueryResultMpeg4Gif
 // Represents a link to a video animation (H.264/MPEG-4 AVC video without sound). By default, this
 // animated MPEG-4 file will be sent by the user with optional caption. Alternatively, you can use
 // input_message_content to send a message with the specified content instead of the animation.
@@ -1200,6 +1240,7 @@ type InlineQueryResultMpeg4Gif struct {
 	Title *string `json:"title,omitempty"`
 }
 
+// InlineQueryResultPhoto
 // Represents a link to a photo. By default, this photo will be sent by the user with optional
 // caption. Alternatively, you can use input_message_content to send a message with the specified
 // content instead of the photo.
@@ -1242,6 +1283,7 @@ type InlineQueryResultPhoto struct {
 	Title *string `json:"title,omitempty"`
 }
 
+// InlineQueryResultVenue
 // Represents a venue. By default, the venue will be sent by the user. Alternatively, you can use
 // input_message_content to send a message with the specified content instead of the venue.
 type InlineQueryResultVenue struct {
@@ -1287,6 +1329,7 @@ type InlineQueryResultVenue struct {
 	ThumbWidth *int64 `json:"thumb_width,omitempty"`
 }
 
+// InlineQueryResultVideo
 // Represents a link to a page containing an embedded video player or a video file. By default,
 // this video file will be sent by the user with an optional caption. Alternatively, you can use
 // input_message_content to send a message with the specified content instead of the video.
@@ -1336,6 +1379,7 @@ type InlineQueryResultVideo struct {
 	VideoWidth *int64 `json:"video_width,omitempty"`
 }
 
+// InlineQueryResultVoice
 // Represents a link to a voice recording in an .OGG container encoded with OPUS. By default, this
 // voice recording will be sent by the user. Alternatively, you can use input_message_content to
 // send a message with the specified content instead of the the voice message.
@@ -1370,6 +1414,7 @@ type InlineQueryResultVoice struct {
 	VoiceDuration *int64 `json:"voice_duration,omitempty"`
 }
 
+// InputContactMessageContent
 // Represents the content of a contact message to be sent as the result of an inline query.
 type InputContactMessageContent struct {
 	// FirstName
@@ -1386,6 +1431,7 @@ type InputContactMessageContent struct {
 	Vcard *string `json:"vcard,omitempty"`
 }
 
+// InputFile
 // This object represents the contents of a file to be uploaded. Must be posted using
 // multipart/form-data in the usual way that files are uploaded via the browser.
 type InputFile struct {
@@ -1414,6 +1460,7 @@ type InputFile struct {
 	ReplyToMessageId *int64 `json:"reply_to_message_id,omitempty"`
 }
 
+// InputLocationMessageContent
 // Represents the content of a location message to be sent as the result of an inline query.
 type InputLocationMessageContent struct {
 	// Latitude
@@ -1427,6 +1474,7 @@ type InputLocationMessageContent struct {
 	LivePeriod *int64 `json:"live_period,omitempty"`
 }
 
+// InputMedia
 // This object represents the content of a media message to be sent. It should be one of
 type InputMedia struct {
 	// Media
@@ -1446,6 +1494,7 @@ type InputMedia struct {
 	ParseMode *string `json:"parse_mode,omitempty"`
 }
 
+// InputMediaAnimation
 // Represents an animation file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.
 type InputMediaAnimation struct {
 	// Media
@@ -1482,6 +1531,7 @@ type InputMediaAnimation struct {
 	Width *int64 `json:"width,omitempty"`
 }
 
+// InputMediaAudio
 // Represents an audio file to be treated as music to be sent.
 type InputMediaAudio struct {
 	// Media
@@ -1518,6 +1568,7 @@ type InputMediaAudio struct {
 	Title *string `json:"title,omitempty"`
 }
 
+// InputMediaDocument
 // Represents a general file to be sent.
 type InputMediaDocument struct {
 	// Media
@@ -1545,6 +1596,7 @@ type InputMediaDocument struct {
 	Thumb *InputFile `json:"thumb,omitempty"`
 }
 
+// InputMediaPhoto
 // Represents a photo to be sent.
 type InputMediaPhoto struct {
 	// Media
@@ -1564,6 +1616,7 @@ type InputMediaPhoto struct {
 	ParseMode *string `json:"parse_mode,omitempty"`
 }
 
+// InputMediaVideo
 // Represents a video to be sent.
 type InputMediaVideo struct {
 	// Media
@@ -1603,6 +1656,7 @@ type InputMediaVideo struct {
 	Width *int64 `json:"width,omitempty"`
 }
 
+// InputMessageContent
 // This object represents the content of a message to be sent as a result of an inline query.
 // Telegram clients currently support the following 4 types:
 type InputMessageContent struct {
@@ -1617,6 +1671,7 @@ type InputMessageContent struct {
 	ParseMode *string `json:"parse_mode,omitempty"`
 }
 
+// InputTextMessageContent
 // Represents the content of a text message to be sent as the result of an inline query.
 type InputTextMessageContent struct {
 	// MessageText
@@ -1630,6 +1685,7 @@ type InputTextMessageContent struct {
 	ParseMode *string `json:"parse_mode,omitempty"`
 }
 
+// InputVenueMessageContent
 // Represents the content of a venue message to be sent as the result of an inline query.
 type InputVenueMessageContent struct {
 	// Address
@@ -1653,6 +1709,7 @@ type InputVenueMessageContent struct {
 	FoursquareType *string `json:"foursquare_type,omitempty"`
 }
 
+// Invoice
 // This object contains basic information about an invoice.
 type Invoice struct {
 	// Currency
@@ -1675,6 +1732,7 @@ type Invoice struct {
 	TotalAmount int64 `json:"total_amount"`
 }
 
+// KeyboardButton
 // This object represents one button of the reply keyboard. For simple text buttons String can be
 // used instead of this object to specify text of the button. Optional fields request_contact,
 // request_location, and request_poll are mutually exclusive.
@@ -1697,6 +1755,7 @@ type KeyboardButton struct {
 	RequestPoll *KeyboardButtonPollType `json:"request_poll,omitempty"`
 }
 
+// KeyboardButtonPollType
 // This object represents type of a poll, which is allowed to be created and sent when the
 // corresponding button is pressed.
 type KeyboardButtonPollType struct {
@@ -1707,6 +1766,7 @@ type KeyboardButtonPollType struct {
 	Type *KeyboardButtonType `json:"type,omitempty"`
 }
 
+// LabeledPrice
 // This object represents a portion of the price for goods or services.
 type LabeledPrice struct {
 	// Amount
@@ -1720,6 +1780,7 @@ type LabeledPrice struct {
 	Label string `json:"label"`
 }
 
+// Location
 // This object represents a point on the map.
 type Location struct {
 	// Latitude
@@ -1730,6 +1791,7 @@ type Location struct {
 	Longitude float64 `json:"longitude"`
 }
 
+// LoginUrl
 // This object represents a parameter of the inline keyboard button used to automatically authorize
 // a user. Serves as a great replacement for the Telegram Login Widget when the user is coming from
 // Telegram. All the user needs to do is tap/click a button and confirm that they want to log in:
@@ -1756,6 +1818,7 @@ type LoginUrl struct {
 	RequestWriteAccess *bool `json:"request_write_access,omitempty"`
 }
 
+// MaskPosition
 // This object describes the position on faces where a mask should be placed by default.
 type MaskPosition struct {
 	// Point
@@ -1775,6 +1838,7 @@ type MaskPosition struct {
 	YShift float64 `json:"y_shift"`
 }
 
+// Message
 // This object represents a message.
 type Message struct {
 	// Chat
@@ -1949,6 +2013,7 @@ type Message struct {
 	Voice *Voice `json:"voice,omitempty"`
 }
 
+// MessageEntity
 // This object represents one special entity in a text message. For example, hashtags, usernames,
 // URLs, etc.
 type MessageEntity struct {
@@ -1977,6 +2042,7 @@ type MessageEntity struct {
 	User *User `json:"user,omitempty"`
 }
 
+// OrderInfo
 // This object represents information about an order.
 type OrderInfo struct {
 	// Email
@@ -1993,6 +2059,7 @@ type OrderInfo struct {
 	ShippingAddress *ShippingAddress `json:"shipping_address,omitempty"`
 }
 
+// PassportData
 // Contains information about Telegram Passport data shared with the bot by the user.
 type PassportData struct {
 	// Credentials
@@ -2004,6 +2071,7 @@ type PassportData struct {
 	Data []EncryptedPassportElement `json:"data"`
 }
 
+// PassportElementError
 // This object represents an error in the Telegram Passport element which was submitted that should
 // be resolved by the user. It should be one of:
 type PassportElementError struct {
@@ -2025,6 +2093,7 @@ type PassportElementError struct {
 	Type PassportType `json:"type"`
 }
 
+// PassportElementErrorDataField
 // Represents an issue in one of the data fields that was provided by the user. The error is
 // considered resolved when the field's value changes.
 type PassportElementErrorDataField struct {
@@ -2046,6 +2115,7 @@ type PassportElementErrorDataField struct {
 	Type PassportType `json:"type"`
 }
 
+// PassportElementErrorFile
 // Represents an issue with a document scan. The error is considered resolved when the file with
 // the document scan changes.
 type PassportElementErrorFile struct {
@@ -2064,6 +2134,7 @@ type PassportElementErrorFile struct {
 	Type PassportType `json:"type"`
 }
 
+// PassportElementErrorFiles
 // Represents an issue with a list of scans. The error is considered resolved when the list of
 // files containing the scans changes.
 type PassportElementErrorFiles struct {
@@ -2082,6 +2153,7 @@ type PassportElementErrorFiles struct {
 	Type PassportType `json:"type"`
 }
 
+// PassportElementErrorFrontSide
 // Represents an issue with the front side of a document. The error is considered resolved when the
 // file with the front side of the document changes.
 type PassportElementErrorFrontSide struct {
@@ -2100,6 +2172,7 @@ type PassportElementErrorFrontSide struct {
 	Type PassportType `json:"type"`
 }
 
+// PassportElementErrorReverseSide
 // Represents an issue with the reverse side of a document. The error is considered resolved when
 // the file with reverse side of the document changes.
 type PassportElementErrorReverseSide struct {
@@ -2118,6 +2191,7 @@ type PassportElementErrorReverseSide struct {
 	Type PassportType `json:"type"`
 }
 
+// PassportElementErrorSelfie
 // Represents an issue with the selfie with a document. The error is considered resolved when the
 // file with the selfie changes.
 type PassportElementErrorSelfie struct {
@@ -2136,6 +2210,7 @@ type PassportElementErrorSelfie struct {
 	Type PassportType `json:"type"`
 }
 
+// PassportElementErrorTranslationFile
 // Represents an issue with one of the files that constitute the translation of a document. The
 // error is considered resolved when the file changes.
 type PassportElementErrorTranslationFile struct {
@@ -2155,6 +2230,7 @@ type PassportElementErrorTranslationFile struct {
 	Type PassportType `json:"type"`
 }
 
+// PassportElementErrorTranslationFiles
 // Represents an issue with the translated version of a document. The error is considered resolved
 // when a file with the document translation change.
 type PassportElementErrorTranslationFiles struct {
@@ -2174,6 +2250,7 @@ type PassportElementErrorTranslationFiles struct {
 	Type PassportType `json:"type"`
 }
 
+// PassportElementErrorUnspecified
 // Represents an issue in an unspecified place. The error is considered resolved when new data is
 // added.
 type PassportElementErrorUnspecified struct {
@@ -2191,6 +2268,7 @@ type PassportElementErrorUnspecified struct {
 	Type PassportType `json:"type"`
 }
 
+// PassportFile
 // This object represents a file uploaded to Telegram Passport. Currently all Telegram Passport
 // files are in JPEG format when decrypted and don't exceed 10MB.
 type PassportFile struct {
@@ -2209,6 +2287,7 @@ type PassportFile struct {
 	FileUniqueId string `json:"file_unique_id"`
 }
 
+// Payments
 // Your bot can accept payments from Telegram users. Please see the introduction to payments for
 // more details on the process and how to set up payments for your bot. Please note that users will
 // need Telegram v.4.0 or higher to use payments (released on May 18, 2017).
@@ -2290,6 +2369,7 @@ type Payments struct {
 	SendPhoneNumberToProvider *bool `json:"send_phone_number_to_provider,omitempty"`
 }
 
+// PhotoSize
 // This object represents one size of a photo or a file / sticker thumbnail.
 type PhotoSize struct {
 	// FileId
@@ -2310,6 +2390,7 @@ type PhotoSize struct {
 	FileSize *int64 `json:"file_size,omitempty"`
 }
 
+// Poll
 // This object contains information about a poll.
 type Poll struct {
 	// AllowsMultipleAnswers
@@ -2356,6 +2437,7 @@ type Poll struct {
 	OpenPeriod *int64 `json:"open_period,omitempty"`
 }
 
+// PollAnswer
 // This object represents an answer of a user in a non-anonymous poll.
 type PollAnswer struct {
 	// OptionIds
@@ -2370,6 +2452,7 @@ type PollAnswer struct {
 	User User `json:"user"`
 }
 
+// PollOption
 // This object contains information about one answer option in a poll.
 type PollOption struct {
 	// Text
@@ -2380,6 +2463,7 @@ type PollOption struct {
 	VoterCount int64 `json:"voter_count"`
 }
 
+// PreCheckoutQuery
 // This object contains information about an incoming pre-checkout query.
 type PreCheckoutQuery struct {
 	// Currency
@@ -2408,6 +2492,7 @@ type PreCheckoutQuery struct {
 	ShippingOptionId *string `json:"shipping_option_id,omitempty"`
 }
 
+// ReplyKeyboardMarkup
 // This object represents a custom keyboard with reply options (see Introduction to bots for
 // details and examples).
 type ReplyKeyboardMarkup struct {
@@ -2434,6 +2519,7 @@ type ReplyKeyboardMarkup struct {
 	Selective *bool `json:"selective,omitempty"`
 }
 
+// ReplyKeyboardRemove
 // Upon receiving a message with this object, Telegram clients will remove the current custom
 // keyboard and display the default letter-keyboard. By default, custom keyboards are displayed
 // until a new keyboard is sent by a bot. An exception is made for one-time keyboards that are
@@ -2454,6 +2540,7 @@ type ReplyKeyboardRemove struct {
 	Selective *bool `json:"selective,omitempty"`
 }
 
+// ResponseParameters
 // Contains information about why a request was unsuccessful.
 type ResponseParameters struct {
 	// MigrateToChatId
@@ -2468,6 +2555,7 @@ type ResponseParameters struct {
 	RetryAfter *int64 `json:"retry_after,omitempty"`
 }
 
+// ShippingAddress
 // This object represents a shipping address.
 type ShippingAddress struct {
 	// City
@@ -2490,6 +2578,7 @@ type ShippingAddress struct {
 	StreetLine2 string `json:"street_line2"`
 }
 
+// ShippingOption
 // This object represents one shipping option.
 type ShippingOption struct {
 	// Id
@@ -2503,6 +2592,7 @@ type ShippingOption struct {
 	Title string `json:"title"`
 }
 
+// ShippingQuery
 // This object contains information about an incoming shipping query.
 type ShippingQuery struct {
 	// From
@@ -2519,6 +2609,7 @@ type ShippingQuery struct {
 	ShippingAddress ShippingAddress `json:"shipping_address"`
 }
 
+// Sticker
 // This object represents a sticker.
 type Sticker struct {
 	// FileId
@@ -2554,6 +2645,7 @@ type Sticker struct {
 	Thumb *PhotoSize `json:"thumb,omitempty"`
 }
 
+// StickerSet
 // This object represents a sticker set.
 type StickerSet struct {
 	// ContainsMasks
@@ -2576,6 +2668,7 @@ type StickerSet struct {
 	Thumb *PhotoSize `json:"thumb,omitempty"`
 }
 
+// Stickers
 // The following methods and objects allow your bot to handle stickers and sticker sets.
 type Stickers struct {
 	// FileId
@@ -2611,6 +2704,7 @@ type Stickers struct {
 	Thumb *PhotoSize `json:"thumb,omitempty"`
 }
 
+// SuccessfulPayment
 // This object contains basic information about a successful payment.
 type SuccessfulPayment struct {
 	// Currency
@@ -2639,6 +2733,7 @@ type SuccessfulPayment struct {
 	ShippingOptionId *string `json:"shipping_option_id,omitempty"`
 }
 
+// Update
 // This object represents an incoming update.At most one of the optional parameters can be present
 // in any given update.
 type Update struct {
@@ -2688,6 +2783,7 @@ type Update struct {
 	ShippingQuery *ShippingQuery `json:"shipping_query,omitempty"`
 }
 
+// User
 // This object represents a Telegram user or bot.
 type User struct {
 	// FirstName
@@ -2719,6 +2815,7 @@ type User struct {
 	Username *string `json:"username,omitempty"`
 }
 
+// UserProfilePhotos
 // This object represent a user's profile pictures.
 type UserProfilePhotos struct {
 	// Photos
@@ -2729,6 +2826,7 @@ type UserProfilePhotos struct {
 	TotalCount int64 `json:"total_count"`
 }
 
+// Venue
 // This object represents a venue.
 type Venue struct {
 	// Address
@@ -2749,6 +2847,7 @@ type Venue struct {
 	FoursquareType *string `json:"foursquare_type,omitempty"`
 }
 
+// Video
 // This object represents a video file.
 type Video struct {
 	// Duration
@@ -2778,6 +2877,7 @@ type Video struct {
 	Thumb *PhotoSize `json:"thumb,omitempty"`
 }
 
+// VideoNote
 // This object represents a video message (available in Telegram apps as of v.4.0).
 type VideoNote struct {
 	// Duration
@@ -2801,6 +2901,7 @@ type VideoNote struct {
 	Thumb *PhotoSize `json:"thumb,omitempty"`
 }
 
+// Voice
 // This object represents a voice note.
 type Voice struct {
 	// Duration
@@ -2821,6 +2922,7 @@ type Voice struct {
 	MimeType *string `json:"mime_type,omitempty"`
 }
 
+// WebhookInfo
 // Contains information about the current status of a webhook.
 type WebhookInfo struct {
 	// HasCustomCertificate

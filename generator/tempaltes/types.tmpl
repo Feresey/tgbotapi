@@ -4,6 +4,7 @@ const Version = "{{.Version}}"
 
 // TODO: category description
 {{range $typename, $desc := .Types}}
+// {{camel $typename}}
 // {{format $desc.Description.PlainText 0}}
 type {{camel $typename}} struct {
 {{- range $idx, $put_required := $.RequiredOrder}}
