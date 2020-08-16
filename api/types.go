@@ -2,6 +2,8 @@
 
 package api
 
+const Version = "4.9"
+
 // TODO: category description
 
 // This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound).

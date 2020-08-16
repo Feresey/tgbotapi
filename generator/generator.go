@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"sort"
 	"strconv"
 	"strings"
 	"text/template"
@@ -173,6 +174,7 @@ func unique(ss []string) []string {
 	for s := range unique {
 		res = append(res, s)
 	}
+	sort.Strings(res)
 	return res
 }
 

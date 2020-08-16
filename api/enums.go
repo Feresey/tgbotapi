@@ -57,51 +57,51 @@ type EncryptedType int
 
 const (
 	_ EncryptedType = iota
-	EncryptedTypeInternalPassport
-	EncryptedTypeRentalAgreement
-	EncryptedTypePassportRegistration
-	EncryptedTypeTemporaryRegistration
-	EncryptedTypePhoneNumber
-	EncryptedTypeUtilityBill
-	EncryptedTypeBankStatement
-	EncryptedTypeEmail
-	EncryptedTypePersonalDetails
-	EncryptedTypePassport
-	EncryptedTypeDriverLicense
-	EncryptedTypeIdentityCard
 	EncryptedTypeAddress
+	EncryptedTypeBankStatement
+	EncryptedTypeDriverLicense
+	EncryptedTypeEmail
+	EncryptedTypeIdentityCard
+	EncryptedTypeInternalPassport
+	EncryptedTypePassport
+	EncryptedTypePassportRegistration
+	EncryptedTypePersonalDetails
+	EncryptedTypePhoneNumber
+	EncryptedTypeRentalAgreement
+	EncryptedTypeTemporaryRegistration
+	EncryptedTypeUtilityBill
 )
 
 var valueEncryptedType = map[EncryptedType]string{
-	1:  "internal_passport",
-	2:  "rental_agreement",
-	3:  "passport_registration",
-	4:  "temporary_registration",
-	5:  "phone_number",
-	6:  "utility_bill",
-	7:  "bank_statement",
-	8:  "email",
+	1:  "address",
+	2:  "bank_statement",
+	3:  "driver_license",
+	4:  "email",
+	5:  "identity_card",
+	6:  "internal_passport",
+	7:  "passport",
+	8:  "passport_registration",
 	9:  "personal_details",
-	10: "passport",
-	11: "driver_license",
-	12: "identity_card",
-	13: "address",
+	10: "phone_number",
+	11: "rental_agreement",
+	12: "temporary_registration",
+	13: "utility_bill",
 }
 
 var indexEncryptedType = map[string]EncryptedType{
-	"internal_passport":      1,
-	"rental_agreement":       2,
-	"passport_registration":  3,
-	"temporary_registration": 4,
-	"phone_number":           5,
-	"utility_bill":           6,
-	"bank_statement":         7,
-	"email":                  8,
+	"address":                1,
+	"bank_statement":         2,
+	"driver_license":         3,
+	"email":                  4,
+	"identity_card":          5,
+	"internal_passport":      6,
+	"passport":               7,
+	"passport_registration":  8,
 	"personal_details":       9,
-	"passport":               10,
-	"driver_license":         11,
-	"identity_card":          12,
-	"address":                13,
+	"phone_number":           10,
+	"rental_agreement":       11,
+	"temporary_registration": 12,
+	"utility_bill":           13,
 }
 
 func (enum EncryptedType) String() string {
@@ -125,57 +125,57 @@ type EntityType int
 
 const (
 	_ EntityType = iota
-	EntityTypeBotCommand
-	EntityTypeEmail
-	EntityTypeStrikethrough
-	EntityTypeCashtag
-	EntityTypeUrl
-	EntityTypeItalic
-	EntityTypeUnderline
-	EntityTypeCode
-	EntityTypePre
-	EntityTypeMention
-	EntityTypeHashtag
-	EntityTypeTextMention
-	EntityTypePhoneNumber
 	EntityTypeBold
+	EntityTypeBotCommand
+	EntityTypeCashtag
+	EntityTypeCode
+	EntityTypeEmail
+	EntityTypeHashtag
+	EntityTypeItalic
+	EntityTypeMention
+	EntityTypePhoneNumber
+	EntityTypePre
+	EntityTypeStrikethrough
 	EntityTypeTextLink
+	EntityTypeTextMention
+	EntityTypeUnderline
+	EntityTypeUrl
 )
 
 var valueEntityType = map[EntityType]string{
-	1:  "bot_command",
-	2:  "email",
-	3:  "strikethrough",
-	4:  "cashtag",
-	5:  "url",
-	6:  "italic",
-	7:  "underline",
-	8:  "code",
-	9:  "pre",
-	10: "mention",
-	11: "hashtag",
-	12: "text_mention",
-	13: "phone_number",
-	14: "bold",
-	15: "text_link",
+	1:  "bold",
+	2:  "bot_command",
+	3:  "cashtag",
+	4:  "code",
+	5:  "email",
+	6:  "hashtag",
+	7:  "italic",
+	8:  "mention",
+	9:  "phone_number",
+	10: "pre",
+	11: "strikethrough",
+	12: "text_link",
+	13: "text_mention",
+	14: "underline",
+	15: "url",
 }
 
 var indexEntityType = map[string]EntityType{
-	"bot_command":   1,
-	"email":         2,
-	"strikethrough": 3,
-	"cashtag":       4,
-	"url":           5,
-	"italic":        6,
-	"underline":     7,
-	"code":          8,
-	"pre":           9,
-	"mention":       10,
-	"hashtag":       11,
-	"text_mention":  12,
-	"phone_number":  13,
-	"bold":          14,
-	"text_link":     15,
+	"bold":          1,
+	"bot_command":   2,
+	"cashtag":       3,
+	"code":          4,
+	"email":         5,
+	"hashtag":       6,
+	"italic":        7,
+	"mention":       8,
+	"phone_number":  9,
+	"pre":           10,
+	"strikethrough": 11,
+	"text_link":     12,
+	"text_mention":  13,
+	"underline":     14,
+	"url":           15,
 }
 
 func (enum EntityType) String() string {
@@ -199,51 +199,51 @@ type InlineType int
 
 const (
 	_ InlineType = iota
-	InlineTypeVenue
-	InlineTypeContact
 	InlineTypeArticle
-	InlineTypeGame
-	InlineTypeDocument
-	InlineTypePhoto
-	InlineTypeGif
-	InlineTypeVoice
-	InlineTypeMpeg4Gif
-	InlineTypeVideo
-	InlineTypeLocation
-	InlineTypeSticker
 	InlineTypeAudio
+	InlineTypeContact
+	InlineTypeDocument
+	InlineTypeGame
+	InlineTypeGif
+	InlineTypeLocation
+	InlineTypeMpeg4Gif
+	InlineTypePhoto
+	InlineTypeSticker
+	InlineTypeVenue
+	InlineTypeVideo
+	InlineTypeVoice
 )
 
 var valueInlineType = map[InlineType]string{
-	1:  "venue",
-	2:  "contact",
-	3:  "article",
-	4:  "game",
-	5:  "document",
-	6:  "photo",
-	7:  "gif",
-	8:  "voice",
-	9:  "mpeg4_gif",
-	10: "video",
-	11: "location",
-	12: "sticker",
-	13: "audio",
+	1:  "article",
+	2:  "audio",
+	3:  "contact",
+	4:  "document",
+	5:  "game",
+	6:  "gif",
+	7:  "location",
+	8:  "mpeg4_gif",
+	9:  "photo",
+	10: "sticker",
+	11: "venue",
+	12: "video",
+	13: "voice",
 }
 
 var indexInlineType = map[string]InlineType{
-	"venue":     1,
-	"contact":   2,
-	"article":   3,
-	"game":      4,
-	"document":  5,
-	"photo":     6,
-	"gif":       7,
-	"voice":     8,
-	"mpeg4_gif": 9,
-	"video":     10,
-	"location":  11,
-	"sticker":   12,
-	"audio":     13,
+	"article":   1,
+	"audio":     2,
+	"contact":   3,
+	"document":  4,
+	"game":      5,
+	"gif":       6,
+	"location":  7,
+	"mpeg4_gif": 8,
+	"photo":     9,
+	"sticker":   10,
+	"venue":     11,
+	"video":     12,
+	"voice":     13,
 }
 
 func (enum InlineType) String() string {
@@ -267,27 +267,27 @@ type InputType int
 
 const (
 	_ InputType = iota
-	InputTypePhoto
 	InputTypeAnimation
-	InputTypeVideo
-	InputTypeDocument
 	InputTypeAudio
+	InputTypeDocument
+	InputTypePhoto
+	InputTypeVideo
 )
 
 var valueInputType = map[InputType]string{
-	1: "photo",
-	2: "animation",
-	3: "video",
-	4: "document",
-	5: "audio",
+	1: "animation",
+	2: "audio",
+	3: "document",
+	4: "photo",
+	5: "video",
 }
 
 var indexInputType = map[string]InputType{
-	"photo":     1,
-	"animation": 2,
-	"video":     3,
-	"document":  4,
-	"audio":     5,
+	"animation": 1,
+	"audio":     2,
+	"document":  3,
+	"photo":     4,
+	"video":     5,
 }
 
 func (enum InputType) String() string {
@@ -346,45 +346,45 @@ type PassportType int
 
 const (
 	_ PassportType = iota
-	PassportTypeInternalPassport
-	PassportTypePersonalDetails
-	PassportTypeBankStatement
-	PassportTypePassportRegistration
-	PassportTypeTemporaryRegistration
-	PassportTypeIdentityCard
-	PassportTypeDriverLicense
 	PassportTypeAddress
-	PassportTypeUtilityBill
-	PassportTypeRentalAgreement
+	PassportTypeBankStatement
+	PassportTypeDriverLicense
+	PassportTypeIdentityCard
+	PassportTypeInternalPassport
 	PassportTypePassport
+	PassportTypePassportRegistration
+	PassportTypePersonalDetails
+	PassportTypeRentalAgreement
+	PassportTypeTemporaryRegistration
+	PassportTypeUtilityBill
 )
 
 var valuePassportType = map[PassportType]string{
-	1:  "internal_passport",
-	2:  "personal_details",
-	3:  "bank_statement",
-	4:  "passport_registration",
-	5:  "temporary_registration",
-	6:  "identity_card",
-	7:  "driver_license",
-	8:  "address",
-	9:  "utility_bill",
-	10: "rental_agreement",
-	11: "passport",
+	1:  "address",
+	2:  "bank_statement",
+	3:  "driver_license",
+	4:  "identity_card",
+	5:  "internal_passport",
+	6:  "passport",
+	7:  "passport_registration",
+	8:  "personal_details",
+	9:  "rental_agreement",
+	10: "temporary_registration",
+	11: "utility_bill",
 }
 
 var indexPassportType = map[string]PassportType{
-	"internal_passport":      1,
-	"personal_details":       2,
-	"bank_statement":         3,
-	"passport_registration":  4,
-	"temporary_registration": 5,
-	"identity_card":          6,
-	"driver_license":         7,
-	"address":                8,
-	"utility_bill":           9,
-	"rental_agreement":       10,
-	"passport":               11,
+	"address":                1,
+	"bank_statement":         2,
+	"driver_license":         3,
+	"identity_card":          4,
+	"internal_passport":      5,
+	"passport":               6,
+	"passport_registration":  7,
+	"personal_details":       8,
+	"rental_agreement":       9,
+	"temporary_registration": 10,
+	"utility_bill":           11,
 }
 
 func (enum PassportType) String() string {
@@ -408,18 +408,18 @@ type PollType int
 
 const (
 	_ PollType = iota
-	PollTypeRegular
 	PollTypeQuiz
+	PollTypeRegular
 )
 
 var valuePollType = map[PollType]string{
-	1: "regular",
-	2: "quiz",
+	1: "quiz",
+	2: "regular",
 }
 
 var indexPollType = map[string]PollType{
-	"regular": 1,
-	"quiz":    2,
+	"quiz":    1,
+	"regular": 2,
 }
 
 func (enum PollType) String() string {

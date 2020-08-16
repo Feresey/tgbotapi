@@ -8,5 +8,3 @@ type APIResponse struct {
 	Description *string             `json:"description,omitempty"`
 	Parameters  *ResponseParameters `json:"parameters,omitempty"`
 }
-
-// func (m*MessageEntity) Type
