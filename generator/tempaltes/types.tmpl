@@ -4,19 +4,22 @@
 {{range $typename, $desc := .Types}}
 // {{format $desc.Description.PlainText 0}}
 type {{camel $typename}} struct {
+{{- range $idx, $put_required := $.RequiredOrder}}
 {{- range $field_name, $field_desc := $desc.Fields}}
-	{{- if $field_desc.Required}}
+	{{- $type := (index $field_desc.Types 0)}}
+	{{- $gotype := $type.GoType}}
+	{{- if eq $field_name "type"}}{{$gotype = (camel (print (first $typename) "_type"))}}{{end}}
+
+	{{- if eq $field_desc.Required $put_required}}
 	// {{camel $field_name}}
 	// {{format $field_desc.Description.PlainText 1}}
-	{{camel $field_name}} {{(index $field_desc.Types 0).GoType}} `json:"{{$field_name}}"`
+		{{- if $field_desc.Required}}
+	{{camel $field_name}} {{$gotype}} `json:"{{$field_name}}"`
+		{{- else}}
+	{{camel $field_name}} {{if not $type.IsArray}}*{{end}}{{$gotype}} `json:"{{$field_name}},omitempty"`
+		{{- end}}
 	{{- end}}
 {{- end}}
-{{- range $field_name, $field_desc := $desc.Fields}}
-	{{- if not $field_desc.Required}}
-	// {{camel $field_name}}
-	// {{format $field_desc.Description.PlainText 1}}
-	{{camel $field_name}} {{with (index $field_desc.Types 0)}}{{if not .IsArray}}*{{end}}{{.GoType}}{{end}} `json:"{{$field_name}},omitempty"`
-	{{- end}}
 {{- end}}
 }
 {{end}}

@@ -1,0 +1,53 @@
+{{.Head}}
+
+type ErrIncorrectEnum struct {
+	Value string
+}
+
+func (e ErrIncorrectEnum) Error() string {
+	return fmt.Sprintf("incorrect enum value: %s", e.Value)
+}
+
+{{range $typename, $values := .EnumTypes}}
+type {{$typename}} int
+
+const (
+	_ {{$typename}} = iota
+{{- range $values}}
+	{{$typename}}{{camel .}}
+{{- end}}
+)
+
+{{$valueMap := print "value" $typename}}
+{{$indexMap := print "index" $typename}}
+
+var {{$valueMap}} = map[{{$typename}}]string {
+{{- range $idx, $value := $values}}
+	{{inc $idx}} : "{{$value}}",
+{{- end}}
+}
+
+var {{$indexMap}} = map[string]{{$typename}} {
+{{- range $idx, $value := $values}}
+	"{{$value}}" : {{inc $idx}},
+{{- end}}
+}
+
+func (enum {{$typename}}) String() string {
+	return {{$valueMap}}[enum]
+}
+
+func (enum {{$typename}}) MarshalText() ([]byte, error) {
+	return []byte(enum.String()), nil
+}
+
+func (enum *{{$typename}}) UnmarshalText(src []byte) error {
+	value, ok := {{$indexMap}}[string(src)]
+	if !ok {
+		return ErrIncorrectEnum{string(src)}
+	}
+	*enum = value
+	return nil
+}
+
+{{- end}}
