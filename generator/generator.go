@@ -19,6 +19,7 @@ const maxInLine = 100
 var funcs = template.FuncMap{
 	"camel": strcase.ToCamel,
 	"format": func(s string, tabs int) string {
+		s = strings.TrimPrefix(s, "Optional. ")
 		var (
 			text    = strings.Fields(s)
 			res     strings.Builder
