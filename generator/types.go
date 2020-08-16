@@ -19,8 +19,8 @@ func (t TypeMapping) GoType() string {
 	case "Float", "Float number":
 		return "float64"
 	case "True":
-		// это чё ваще такое
-		return "bool"
+		// метод не может ничего не возвращать. Поэтому он возаращает что-то.
+		return "truebool"
 	}
 	return string(t)
 }
