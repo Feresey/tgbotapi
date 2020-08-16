@@ -7,7 +7,6 @@ type ErrIncorrectEnum struct {
 func (e ErrIncorrectEnum) Error() string {
 	return fmt.Sprintf("incorrect enum value: %s", e.Value)
 }
-
 {{range $typename, $values := .EnumTypes}}
 type {{$typename}} int
 
@@ -18,8 +17,9 @@ const (
 {{- end}}
 )
 
-{{$valueMap := print "value" $typename}}
-{{$indexMap := print "index" $typename}}
+{{- $valueMap := print "value" $typename}}
+
+{{$indexMap := print "index" $typename -}}
 
 var {{$valueMap}} = map[{{$typename}}]string {
 {{- range $idx, $value := $values}}

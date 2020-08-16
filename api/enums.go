@@ -2,6 +2,8 @@
 
 package api
 
+import "fmt"
+
 type ErrIncorrectEnum struct {
 	Value string
 }
@@ -9,7 +11,6 @@ type ErrIncorrectEnum struct {
 func (e ErrIncorrectEnum) Error() string {
 	return fmt.Sprintf("incorrect enum value: %s", e.Value)
 }
-
 
 type ChatType int
 
@@ -21,21 +22,18 @@ const (
 	ChatTypeChannel
 )
 
-
-
-
-var valueChatType = map[ChatType]string {
-	1 : "private",
-	2 : "group",
-	3 : "supergroup",
-	4 : "channel",
+var valueChatType = map[ChatType]string{
+	1: "private",
+	2: "group",
+	3: "supergroup",
+	4: "channel",
 }
 
-var indexChatType = map[string]ChatType {
-	"private" : 1,
-	"group" : 2,
-	"supergroup" : 3,
-	"channel" : 4,
+var indexChatType = map[string]ChatType{
+	"private":    1,
+	"group":      2,
+	"supergroup": 3,
+	"channel":    4,
 }
 
 func (enum ChatType) String() string {
@@ -54,58 +52,56 @@ func (enum *ChatType) UnmarshalText(src []byte) error {
 	*enum = value
 	return nil
 }
+
 type EncryptedType int
 
 const (
 	_ EncryptedType = iota
-	EncryptedTypeTemporaryRegistration
-	EncryptedTypePersonalDetails
-	EncryptedTypeIdentityCard
-	EncryptedTypeAddress
-	EncryptedTypeBankStatement
+	EncryptedTypeInternalPassport
 	EncryptedTypeRentalAgreement
 	EncryptedTypePassportRegistration
+	EncryptedTypeTemporaryRegistration
 	EncryptedTypePhoneNumber
+	EncryptedTypeUtilityBill
+	EncryptedTypeBankStatement
 	EncryptedTypeEmail
+	EncryptedTypePersonalDetails
 	EncryptedTypePassport
 	EncryptedTypeDriverLicense
-	EncryptedTypeInternalPassport
-	EncryptedTypeUtilityBill
+	EncryptedTypeIdentityCard
+	EncryptedTypeAddress
 )
 
-
-
-
-var valueEncryptedType = map[EncryptedType]string {
-	1 : "temporary_registration",
-	2 : "personal_details",
-	3 : "identity_card",
-	4 : "address",
-	5 : "bank_statement",
-	6 : "rental_agreement",
-	7 : "passport_registration",
-	8 : "phone_number",
-	9 : "email",
-	10 : "passport",
-	11 : "driver_license",
-	12 : "internal_passport",
-	13 : "utility_bill",
+var valueEncryptedType = map[EncryptedType]string{
+	1:  "internal_passport",
+	2:  "rental_agreement",
+	3:  "passport_registration",
+	4:  "temporary_registration",
+	5:  "phone_number",
+	6:  "utility_bill",
+	7:  "bank_statement",
+	8:  "email",
+	9:  "personal_details",
+	10: "passport",
+	11: "driver_license",
+	12: "identity_card",
+	13: "address",
 }
 
-var indexEncryptedType = map[string]EncryptedType {
-	"temporary_registration" : 1,
-	"personal_details" : 2,
-	"identity_card" : 3,
-	"address" : 4,
-	"bank_statement" : 5,
-	"rental_agreement" : 6,
-	"passport_registration" : 7,
-	"phone_number" : 8,
-	"email" : 9,
-	"passport" : 10,
-	"driver_license" : 11,
-	"internal_passport" : 12,
-	"utility_bill" : 13,
+var indexEncryptedType = map[string]EncryptedType{
+	"internal_passport":      1,
+	"rental_agreement":       2,
+	"passport_registration":  3,
+	"temporary_registration": 4,
+	"phone_number":           5,
+	"utility_bill":           6,
+	"bank_statement":         7,
+	"email":                  8,
+	"personal_details":       9,
+	"passport":               10,
+	"driver_license":         11,
+	"identity_card":          12,
+	"address":                13,
 }
 
 func (enum EncryptedType) String() string {
@@ -124,58 +120,130 @@ func (enum *EncryptedType) UnmarshalText(src []byte) error {
 	*enum = value
 	return nil
 }
+
+type EntityType int
+
+const (
+	_ EntityType = iota
+	EntityTypeBotCommand
+	EntityTypeEmail
+	EntityTypeStrikethrough
+	EntityTypeCashtag
+	EntityTypeUrl
+	EntityTypeItalic
+	EntityTypeUnderline
+	EntityTypeCode
+	EntityTypePre
+	EntityTypeMention
+	EntityTypeHashtag
+	EntityTypeTextMention
+	EntityTypePhoneNumber
+	EntityTypeBold
+	EntityTypeTextLink
+)
+
+var valueEntityType = map[EntityType]string{
+	1:  "bot_command",
+	2:  "email",
+	3:  "strikethrough",
+	4:  "cashtag",
+	5:  "url",
+	6:  "italic",
+	7:  "underline",
+	8:  "code",
+	9:  "pre",
+	10: "mention",
+	11: "hashtag",
+	12: "text_mention",
+	13: "phone_number",
+	14: "bold",
+	15: "text_link",
+}
+
+var indexEntityType = map[string]EntityType{
+	"bot_command":   1,
+	"email":         2,
+	"strikethrough": 3,
+	"cashtag":       4,
+	"url":           5,
+	"italic":        6,
+	"underline":     7,
+	"code":          8,
+	"pre":           9,
+	"mention":       10,
+	"hashtag":       11,
+	"text_mention":  12,
+	"phone_number":  13,
+	"bold":          14,
+	"text_link":     15,
+}
+
+func (enum EntityType) String() string {
+	return valueEntityType[enum]
+}
+
+func (enum EntityType) MarshalText() ([]byte, error) {
+	return []byte(enum.String()), nil
+}
+
+func (enum *EntityType) UnmarshalText(src []byte) error {
+	value, ok := indexEntityType[string(src)]
+	if !ok {
+		return ErrIncorrectEnum{string(src)}
+	}
+	*enum = value
+	return nil
+}
+
 type InlineType int
 
 const (
 	_ InlineType = iota
-	InlineTypeTypeOfTheResultMustBeMpeg4Gif
-	InlineTypeTypeOfTheResultMustBeAudio
-	InlineTypeTypeOfTheResultMustBeContact
-	InlineTypeTypeOfTheResultMustBeLocation
-	InlineTypeTypeOfTheResultMustBeVenue
-	InlineTypeTypeOfTheResultMustBeDocument
-	InlineTypeTypeOfTheResultMustBeVideo
-	InlineTypeTypeOfTheResultMustBePhoto
-	InlineTypeTypeOfTheResultMustBeSticker
-	InlineTypeTypeOfTheResultMustBeGif
-	InlineTypeTypeOfTheResultMustBeVoice
-	InlineTypeTypeOfTheResultMustBeGame
-	InlineTypeTypeOfTheResultMustBeArticle
+	InlineTypeVenue
+	InlineTypeContact
+	InlineTypeArticle
+	InlineTypeGame
+	InlineTypeDocument
+	InlineTypePhoto
+	InlineTypeGif
+	InlineTypeVoice
+	InlineTypeMpeg4Gif
+	InlineTypeVideo
+	InlineTypeLocation
+	InlineTypeSticker
+	InlineTypeAudio
 )
 
-
-
-
-var valueInlineType = map[InlineType]string {
-	1 : "type of the result, must be mpeg4_gif",
-	2 : "type of the result, must be audio",
-	3 : "type of the result, must be contact",
-	4 : "type of the result, must be location",
-	5 : "type of the result, must be venue",
-	6 : "type of the result, must be document",
-	7 : "type of the result, must be video",
-	8 : "type of the result, must be photo",
-	9 : "type of the result, must be sticker",
-	10 : "type of the result, must be gif",
-	11 : "type of the result, must be voice",
-	12 : "type of the result, must be game",
-	13 : "type of the result, must be article",
+var valueInlineType = map[InlineType]string{
+	1:  "venue",
+	2:  "contact",
+	3:  "article",
+	4:  "game",
+	5:  "document",
+	6:  "photo",
+	7:  "gif",
+	8:  "voice",
+	9:  "mpeg4_gif",
+	10: "video",
+	11: "location",
+	12: "sticker",
+	13: "audio",
 }
 
-var indexInlineType = map[string]InlineType {
-	"type of the result, must be mpeg4_gif" : 1,
-	"type of the result, must be audio" : 2,
-	"type of the result, must be contact" : 3,
-	"type of the result, must be location" : 4,
-	"type of the result, must be venue" : 5,
-	"type of the result, must be document" : 6,
-	"type of the result, must be video" : 7,
-	"type of the result, must be photo" : 8,
-	"type of the result, must be sticker" : 9,
-	"type of the result, must be gif" : 10,
-	"type of the result, must be voice" : 11,
-	"type of the result, must be game" : 12,
-	"type of the result, must be article" : 13,
+var indexInlineType = map[string]InlineType{
+	"venue":     1,
+	"contact":   2,
+	"article":   3,
+	"game":      4,
+	"document":  5,
+	"photo":     6,
+	"gif":       7,
+	"voice":     8,
+	"mpeg4_gif": 9,
+	"video":     10,
+	"location":  11,
+	"sticker":   12,
+	"audio":     13,
 }
 
 func (enum InlineType) String() string {
@@ -194,34 +262,32 @@ func (enum *InlineType) UnmarshalText(src []byte) error {
 	*enum = value
 	return nil
 }
+
 type InputType int
 
 const (
 	_ InputType = iota
-	InputTypeTypeOfTheResultMustBeVideo
-	InputTypeTypeOfTheResultMustBeAudio
-	InputTypeTypeOfTheResultMustBeDocument
-	InputTypeTypeOfTheResultMustBePhoto
-	InputTypeTypeOfTheResultMustBeAnimation
+	InputTypePhoto
+	InputTypeAnimation
+	InputTypeVideo
+	InputTypeDocument
+	InputTypeAudio
 )
 
-
-
-
-var valueInputType = map[InputType]string {
-	1 : "type of the result, must be video",
-	2 : "type of the result, must be audio",
-	3 : "type of the result, must be document",
-	4 : "type of the result, must be photo",
-	5 : "type of the result, must be animation",
+var valueInputType = map[InputType]string{
+	1: "photo",
+	2: "animation",
+	3: "video",
+	4: "document",
+	5: "audio",
 }
 
-var indexInputType = map[string]InputType {
-	"type of the result, must be video" : 1,
-	"type of the result, must be audio" : 2,
-	"type of the result, must be document" : 3,
-	"type of the result, must be photo" : 4,
-	"type of the result, must be animation" : 5,
+var indexInputType = map[string]InputType{
+	"photo":     1,
+	"animation": 2,
+	"video":     3,
+	"document":  4,
+	"audio":     5,
 }
 
 func (enum InputType) String() string {
@@ -240,123 +306,85 @@ func (enum *InputType) UnmarshalText(src []byte) error {
 	*enum = value
 	return nil
 }
-type KeyboardType int
+
+type KeyboardButtonType int
 
 const (
-	_ KeyboardType = iota
-	KeyboardTypeOptionalIfQuizIsPassedTheUserWillBeAllowedToCreateOnlyPollsInTheQuizModeIfRegularIsPassedOnlyRegularPollsWillBeAllowedOtherwiseTheUserWillBeAllowedToCreateAPollOfAnyType
+	_ KeyboardButtonType = iota
+	KeyboardButtonTypeQuiz
+	KeyboardButtonTypeRegular
 )
 
-
-
-
-var valueKeyboardType = map[KeyboardType]string {
-	1 : "optional. if quiz is passed, the user will be allowed to create only polls in the quiz mode. if regular is passed, only regular polls will be allowed. otherwise, the user will be allowed to create a poll of any type",
+var valueKeyboardButtonType = map[KeyboardButtonType]string{
+	1: "quiz",
+	2: "regular",
 }
 
-var indexKeyboardType = map[string]KeyboardType {
-	"optional. if quiz is passed, the user will be allowed to create only polls in the quiz mode. if regular is passed, only regular polls will be allowed. otherwise, the user will be allowed to create a poll of any type" : 1,
+var indexKeyboardButtonType = map[string]KeyboardButtonType{
+	"quiz":    1,
+	"regular": 2,
 }
 
-func (enum KeyboardType) String() string {
-	return valueKeyboardType[enum]
+func (enum KeyboardButtonType) String() string {
+	return valueKeyboardButtonType[enum]
 }
 
-func (enum KeyboardType) MarshalText() ([]byte, error) {
+func (enum KeyboardButtonType) MarshalText() ([]byte, error) {
 	return []byte(enum.String()), nil
 }
 
-func (enum *KeyboardType) UnmarshalText(src []byte) error {
-	value, ok := indexKeyboardType[string(src)]
+func (enum *KeyboardButtonType) UnmarshalText(src []byte) error {
+	value, ok := indexKeyboardButtonType[string(src)]
 	if !ok {
 		return ErrIncorrectEnum{string(src)}
 	}
 	*enum = value
 	return nil
 }
-type MessageType int
 
-const (
-	_ MessageType = iota
-	MessageTypeTypeOfTheEntityCanBementionusernamehashtaghashtagcashtagusdbotCommandstartjobsBoturlhttpstelegramOrgemaildoNotReplytelegramOrgphoneNumber12125550123boldboldTextitalicitalicTextunderlineunderlinedTextstrikethroughstrikethroughTextcodemonowidthStringpremonowidthBlocktextLinkforClickableTextUrlstextMentionforUsersWithoutUsernames
-)
-
-
-
-
-var valueMessageType = map[MessageType]string {
-	1 : "type of the entity. can be "mention" (@username), "hashtag" (#hashtag), "cashtag" ($usd), "bot_command" (/start@jobs_bot), "url" (https://telegram.org), "email" (do-not-reply@telegram.org), "phone_number" (+1-212-555-0123), "bold" (bold text), "italic" (italic text), "underline" (underlined text), "strikethrough" (strikethrough text), "code" (monowidth string), "pre" (monowidth block), "text_link" (for clickable text urls), "text_mention" (for users without usernames)",
-}
-
-var indexMessageType = map[string]MessageType {
-	"type of the entity. can be "mention" (@username), "hashtag" (#hashtag), "cashtag" ($usd), "bot_command" (/start@jobs_bot), "url" (https://telegram.org), "email" (do-not-reply@telegram.org), "phone_number" (+1-212-555-0123), "bold" (bold text), "italic" (italic text), "underline" (underlined text), "strikethrough" (strikethrough text), "code" (monowidth string), "pre" (monowidth block), "text_link" (for clickable text urls), "text_mention" (for users without usernames)" : 1,
-}
-
-func (enum MessageType) String() string {
-	return valueMessageType[enum]
-}
-
-func (enum MessageType) MarshalText() ([]byte, error) {
-	return []byte(enum.String()), nil
-}
-
-func (enum *MessageType) UnmarshalText(src []byte) error {
-	value, ok := indexMessageType[string(src)]
-	if !ok {
-		return ErrIncorrectEnum{string(src)}
-	}
-	*enum = value
-	return nil
-}
 type PassportType int
 
 const (
 	_ PassportType = iota
-	PassportTypeIdentityCard
 	PassportTypeInternalPassport
-	PassportTypeBankStatement
-	PassportTypeRentalAgreement
-	PassportTypePassportRegistration
-	PassportTypePassport
-	PassportTypeDriverLicense
-	PassportTypeUtilityBill
-	PassportTypeTemporaryRegistration
 	PassportTypePersonalDetails
+	PassportTypeBankStatement
+	PassportTypePassportRegistration
+	PassportTypeTemporaryRegistration
+	PassportTypeIdentityCard
+	PassportTypeDriverLicense
 	PassportTypeAddress
-	PassportTypeTypeOfElementOfTheUsersTelegramPassportWhichHasTheIssue
+	PassportTypeUtilityBill
+	PassportTypeRentalAgreement
+	PassportTypePassport
 )
 
-
-
-
-var valuePassportType = map[PassportType]string {
-	1 : "identity_card",
-	2 : "internal_passport",
-	3 : "bank_statement",
-	4 : "rental_agreement",
-	5 : "passport_registration",
-	6 : "passport",
-	7 : "driver_license",
-	8 : "utility_bill",
-	9 : "temporary_registration",
-	10 : "personal_details",
-	11 : "address",
-	12 : "type of element of the user's telegram passport which has the issue",
+var valuePassportType = map[PassportType]string{
+	1:  "internal_passport",
+	2:  "personal_details",
+	3:  "bank_statement",
+	4:  "passport_registration",
+	5:  "temporary_registration",
+	6:  "identity_card",
+	7:  "driver_license",
+	8:  "address",
+	9:  "utility_bill",
+	10: "rental_agreement",
+	11: "passport",
 }
 
-var indexPassportType = map[string]PassportType {
-	"identity_card" : 1,
-	"internal_passport" : 2,
-	"bank_statement" : 3,
-	"rental_agreement" : 4,
-	"passport_registration" : 5,
-	"passport" : 6,
-	"driver_license" : 7,
-	"utility_bill" : 8,
-	"temporary_registration" : 9,
-	"personal_details" : 10,
-	"address" : 11,
-	"type of element of the user's telegram passport which has the issue" : 12,
+var indexPassportType = map[string]PassportType{
+	"internal_passport":      1,
+	"personal_details":       2,
+	"bank_statement":         3,
+	"passport_registration":  4,
+	"temporary_registration": 5,
+	"identity_card":          6,
+	"driver_license":         7,
+	"address":                8,
+	"utility_bill":           9,
+	"rental_agreement":       10,
+	"passport":               11,
 }
 
 func (enum PassportType) String() string {
@@ -375,22 +403,23 @@ func (enum *PassportType) UnmarshalText(src []byte) error {
 	*enum = value
 	return nil
 }
+
 type PollType int
 
 const (
 	_ PollType = iota
-	PollTypePollTypeCurrentlyCanBeregularOrquiz
+	PollTypeRegular
+	PollTypeQuiz
 )
 
-
-
-
-var valuePollType = map[PollType]string {
-	1 : "poll type, currently can be "regular" or "quiz"",
+var valuePollType = map[PollType]string{
+	1: "regular",
+	2: "quiz",
 }
 
-var indexPollType = map[string]PollType {
-	"poll type, currently can be "regular" or "quiz"" : 1,
+var indexPollType = map[string]PollType{
+	"regular": 1,
+	"quiz":    2,
 }
 
 func (enum PollType) String() string {

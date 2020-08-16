@@ -1702,7 +1702,7 @@ type KeyboardButtonPollType struct {
 	// If quiz is passed, the user will be allowed to create only polls in the quiz mode. If
 	// regular is passed, only regular polls will be allowed. Otherwise, the user will be allowed
 	// to create a poll of any type.
-	Type *KeyboardType `json:"type,omitempty"`
+	Type *KeyboardButtonType `json:"type,omitempty"`
 }
 
 // This object represents a portion of the price for goods or services.
@@ -1963,7 +1963,7 @@ type MessageEntity struct {
 	// (italic text), "underline" (underlined text), "strikethrough" (strikethrough text), "code"
 	// (monowidth string), "pre" (monowidth block), "text_link" (for clickable text URLs),
 	// "text_mention" (for users without usernames)
-	Type MessageType `json:"type"`
+	Type EntityType `json:"type"`
 	// Language
 	// For "pre" only, the programming language of the entity text
 	Language *string `json:"language,omitempty"`

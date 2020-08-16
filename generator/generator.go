@@ -1,27 +1,39 @@
 package generator
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strconv"
 	"strings"
 	"text/template"
 
 	"github.com/Masterminds/sprig/v3"
 	"github.com/iancoleman/strcase"
-	"go.uber.org/multierr"
+
+	"golang.org/x/tools/imports"
 )
 
 const maxInLine = 100
 
-func first(s string) string { return strings.Split(strcase.ToDelimited(s, ' '), " ")[0] }
+func getEnumName(s string) string {
+	switch s {
+	case "MessageEntity":
+		return "Entity"
+	case "KeyboardButtonPollType":
+		return "KeyboardButton"
+	}
+	return strings.Split(strcase.ToDelimited(s, ' '), " ")[0]
+}
 
 var funcs = template.FuncMap{
 	"camel": strcase.ToCamel,
-	"first": first,
+	"first": getEnumName,
 	"inc":   func(i int) int { return i + 1 },
 	"format": func(s string, tabs int) string {
 		s = strings.TrimPrefix(s, "Optional. ")
@@ -116,15 +128,19 @@ func (g *Generator) Generate(outDir string) error {
 		}
 		outName := filepath.Join(outDir, name+".go")
 		log.Printf("Generating template %s", outName)
-		out, err := os.Create(outName)
+
+		buf := new(bytes.Buffer)
+		if err := tmpl.Execute(buf, templateData); err != nil {
+			return err
+		}
+
+		formatted, err := imports.Process("", buf.Bytes(), nil)
 		if err != nil {
 			return err
 		}
 
-		errExecute := tmpl.Execute(out, templateData)
-		errClose := out.Close()
-		if errExecute != nil || errClose != nil {
-			return multierr.Append(errExecute, errClose)
+		if err := ioutil.WriteFile(outName, formatted, 0666); err != nil {
+			return err
 		}
 	}
 	return nil
@@ -137,7 +153,7 @@ func (g *Generator) getEnums() map[string][]string {
 		if !ok {
 			continue
 		}
-		enumName := strcase.ToCamel(first(typename) + "_type")
+		enumName := strcase.ToCamel(getEnumName(typename) + "_type")
 		res[enumName] = append(res[enumName], oneof(field.Description.PlainText)...)
 	}
 
@@ -163,17 +179,37 @@ func unique(ss []string) []string {
 func oneof(text string) []string {
 	parts := strings.Split(strings.ToLower(strings.TrimSuffix(text, ".")), "one of")
 	if len(parts) != 2 {
-		// if len(parts) == 1 {
-		// parts[0] = strings.TrimPrefix(parts[0], "type of the result, must be contact ")
-		// return parts
-		// } else {
+		if len(parts) != 1 {
+			log.Print("Not valid `oneof` retarded syntax: ", parts)
+			return nil
+		}
+
+		one := "type of the result, must be "
+		if strings.HasPrefix(parts[0], one) {
+			parts[0] = strings.TrimPrefix(parts[0], one)
+			return parts
+		}
+
+		if strings.Contains(parts[0], "quiz") && strings.Contains(parts[0], "regular") {
+			return []string{"regular", "quiz"}
+		}
+
+		if strings.Contains(parts[0], "type of element of the user's telegram passport") {
+			return nil
+		}
+		if strings.Contains(parts[0], "type of chat") {
+			return []string{"private", "group", "supergroup", "channel"}
+		}
+		if strings.Contains(parts[0], "type of the entity") {
+			return parseEntity(parts[0])
+		}
+
 		log.Print("Not valid `oneof` retarded syntax: ", parts)
 		return nil
-		// }
 	}
 
 	values := strings.Split(strings.TrimSpace(parts[1]), ",")
-	fmt.Println(values)
+	// fmt.Println(values)
 	for idx, value := range values {
 		plain, err := strconv.Unquote(strings.TrimSpace(value))
 		if err != nil {
@@ -183,4 +219,14 @@ func oneof(text string) []string {
 		values[idx] = plain
 	}
 	return values
+}
+
+func parseEntity(s string) []string {
+	re := regexp.MustCompile(`"([[:word:]]+)"`)
+	matches := re.FindAllStringSubmatch(s, -1)
+	res := make([]string, 0, len(matches))
+	for _, match := range matches {
+		res = append(res, match[1])
+	}
+	return res
 }
