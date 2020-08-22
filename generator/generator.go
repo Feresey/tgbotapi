@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"reflect"
 	"regexp"
 	"sort"
 	"strings"
@@ -31,10 +32,55 @@ func getEnumName(s string) string {
 	return strings.Split(strcase.ToDelimited(s, ' '), " ")[0]
 }
 
+var (
+	markupType = []TypeMapping{
+		"InlineKeyboardMarkup",
+		"ReplyKeyboardMarkup",
+		"ReplyKeyboardRemove",
+		"ForceReply",
+	}
+	inputType = []TypeMapping{
+		"InputFile",
+		"str",
+	}
+	intStr = []TypeMapping{
+		"int",
+		"str",
+	}
+)
+
+func multitype(ss []TypeMapping) TypeMapping {
+	if reflect.DeepEqual(ss, markupType) {
+		return "ReplyMarkup"
+	}
+	if reflect.DeepEqual(ss, inputType) {
+		return "InputDataType"
+	}
+	if reflect.DeepEqual(ss, intStr) {
+		return "IntStr"
+	}
+	return ""
+}
+
+func getType(fieldName string, typeName string, types []TypeMapping) TypeMapping {
+	if len(types) > 1 {
+		return multitype(types)
+	}
+	if len(types) != 1 {
+		return ""
+	}
+	if fieldName == "type" {
+		return TypeMapping(strcase.ToCamel(fmt.Sprintf("%s_type", getEnumName(typeName))))
+	}
+	return types[0]
+}
+
 var funcs = template.FuncMap{
-	"camel": strcase.ToCamel,
-	"first": getEnumName,
-	"inc":   func(i int) int { return i + 1 },
+	"get_type":   getType,
+	"camel":      strcase.ToCamel,
+	"lowercamel": strcase.ToLowerCamel,
+	"first":      getEnumName,
+	"inc":        func(i int) int { return i + 1 },
 	"format": func(s string, tabs int) string {
 		s = strings.TrimPrefix(s, "Optional. ")
 		s = strings.ReplaceAll(s, ".Example", ".\nExample")

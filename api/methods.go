@@ -2,11 +2,8 @@
 
 package api
 
-// AddStickerToSet
-// Use this method to add a new sticker to a set created by the bot. You must use exactly one of
-// the fields png_sticker or tgs_sticker. Animated stickers can be added to animated sticker sets
-// and only to them. Animated sticker sets can have up to 50 stickers. Static sticker sets can have
-// up to 120 stickers. Returns True on success.
+import "errors"
+
 type AddStickerToSet struct {
 	// Emojis
 	// One or more emoji corresponding to the sticker
@@ -25,7 +22,7 @@ type AddStickerToSet struct {
 	// 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send
 	// a file that already exists on the Telegram servers, pass an HTTP URL as a String for
 	// Telegram to get a file from the Internet, or upload a new one using multipart/form-data.
-	PngSticker *InputFile `json:"png_sticker,omitempty"`
+	PngSticker *InputDataType `json:"png_sticker,omitempty"`
 	// TgsSticker
 	// TGS animation with the sticker, uploaded using multipart/form-data. See
 	// https://core.telegram.org/animated_stickers#technical-requirements for technical
@@ -33,10 +30,6 @@ type AddStickerToSet struct {
 	TgsSticker *InputFile `json:"tgs_sticker,omitempty"`
 }
 
-// AnswerCallbackQuery
-// Use this method to send answers to callback queries sent from inline keyboards. The answer will
-// be displayed to the user as a notification at the top of the chat screen or as an alert. On
-// success, True is returned.
 type AnswerCallbackQuery struct {
 	// CallbackQueryId
 	// Unique identifier for the query to be answered
@@ -61,9 +54,6 @@ type AnswerCallbackQuery struct {
 	Url *string `json:"url,omitempty"`
 }
 
-// AnswerInlineQuery
-// Use this method to send answers to an inline query. On success, True is returned.No more than 50
-// results per query are allowed.
 type AnswerInlineQuery struct {
 	// InlineQueryId
 	// Unique identifier for the answered query
@@ -101,11 +91,6 @@ type AnswerInlineQuery struct {
 	SwitchPmText *string `json:"switch_pm_text,omitempty"`
 }
 
-// AnswerPreCheckoutQuery
-// Once the user has confirmed their payment and shipping details, the Bot API sends the final
-// confirmation in the form of an Update with the field pre_checkout_query. Use this method to
-// respond to such pre-checkout queries. On success, True is returned. Note: The Bot API must
-// receive an answer within 10 seconds after the pre-checkout query was sent.
 type AnswerPreCheckoutQuery struct {
 	// Ok
 	// Specify True if everything is alright (goods are available, etc.) and the bot is ready to
@@ -122,10 +107,6 @@ type AnswerPreCheckoutQuery struct {
 	ErrorMessage *string `json:"error_message,omitempty"`
 }
 
-// AnswerShippingQuery
-// If you sent an invoice requesting a shipping address and the parameter is_flexible was
-// specified, the Bot API will send an Update with a shipping_query field to the bot. Use this
-// method to reply to shipping queries. On success, True is returned.
 type AnswerShippingQuery struct {
 	// Ok
 	// Specify True if delivery to the specified address is possible and False if there are any
@@ -144,10 +125,6 @@ type AnswerShippingQuery struct {
 	ShippingOptions []ShippingOption `json:"shipping_options,omitempty"`
 }
 
-// CreateNewStickerSet
-// Use this method to create a new sticker set owned by a user. The bot will be able to edit the
-// sticker set thus created. You must use exactly one of the fields png_sticker or tgs_sticker.
-// Returns True on success.
 type CreateNewStickerSet struct {
 	// Emojis
 	// One or more emoji corresponding to the sticker
@@ -175,7 +152,7 @@ type CreateNewStickerSet struct {
 	// 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send
 	// a file that already exists on the Telegram servers, pass an HTTP URL as a String for
 	// Telegram to get a file from the Internet, or upload a new one using multipart/form-data.
-	PngSticker *InputFile `json:"png_sticker,omitempty"`
+	PngSticker *InputDataType `json:"png_sticker,omitempty"`
 	// TgsSticker
 	// TGS animation with the sticker, uploaded using multipart/form-data. See
 	// https://core.telegram.org/animated_stickers#technical-requirements for technical
@@ -183,65 +160,6 @@ type CreateNewStickerSet struct {
 	TgsSticker *InputFile `json:"tgs_sticker,omitempty"`
 }
 
-// DeleteChatPhoto
-// Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must
-// be an administrator in the chat for this to work and must have the appropriate admin rights.
-// Returns True on success.
-type DeleteChatPhoto struct {
-	// ChatId
-	// Unique identifier for the target chat or username of the target channel (in the format
-	// @channelusername)
-	ChatId int64 `json:"chat_id"`
-}
-
-// DeleteChatStickerSet
-// Use this method to delete a group sticker set from a supergroup. The bot must be an
-// administrator in the chat for this to work and must have the appropriate admin rights. Use the
-// field can_set_sticker_set optionally returned in getChat requests to check if the bot can use
-// this method. Returns True on success.
-type DeleteChatStickerSet struct {
-	// ChatId
-	// Unique identifier for the target chat or username of the target supergroup (in the format
-	// @supergroupusername)
-	ChatId int64 `json:"chat_id"`
-}
-
-// DeleteMessage
-// Use this method to delete a message, including service messages, with the following
-// limitations:- A message can only be deleted if it was sent less than 48 hours ago.- A dice
-// message in a private chat can only be deleted if it was sent more than 24 hours ago.- Bots can
-// delete outgoing messages in private chats, groups, and supergroups.- Bots can delete incoming
-// messages in private chats.- Bots granted can_post_messages permissions can delete outgoing
-// messages in channels.- If the bot is an administrator of a group, it can delete any message
-// there.- If the bot has can_delete_messages permission in a supergroup or a channel, it can
-// delete any message there.Returns True on success.
-type DeleteMessage struct {
-	// ChatId
-	// Unique identifier for the target chat or username of the target channel (in the format
-	// @channelusername)
-	ChatId int64 `json:"chat_id"`
-	// MessageId
-	// Identifier of the message to delete
-	MessageId int64 `json:"message_id"`
-}
-
-// DeleteStickerFromSet
-// Use this method to delete a sticker from a set created by the bot. Returns True on success.
-type DeleteStickerFromSet struct {
-	// Sticker
-	// File identifier of the sticker
-	Sticker string `json:"sticker"`
-}
-
-// DeleteWebhook
-// Use this method to remove webhook integration if you decide to switch back to getUpdates.
-// Returns True on success. Requires no parameters.
-type DeleteWebhook struct {
-}
-
-// EditMessageCaption
-// Use this method to edit captions of messages. On success, if edited message is sent by the bot,
-// the edited Message is returned, otherwise True is returned.
 type EditMessageCaption struct {
 	// Caption
 	// New caption of the message, 0-1024 characters after entities parsing
@@ -249,7 +167,7 @@ type EditMessageCaption struct {
 	// ChatId
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
-	ChatId *int64 `json:"chat_id,omitempty"`
+	ChatId *IntStr `json:"chat_id,omitempty"`
 	// InlineMessageId
 	// Required if chat_id and message_id are not specified. Identifier of the inline message
 	InlineMessageId *string `json:"inline_message_id,omitempty"`
@@ -264,11 +182,6 @@ type EditMessageCaption struct {
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 }
 
-// EditMessageLiveLocation
-// Use this method to edit live location messages. A location can be edited until its live_period
-// expires or editing is explicitly disabled by a call to stopMessageLiveLocation. On success, if
-// the edited message was sent by the bot, the edited Message is returned, otherwise True is
-// returned.
 type EditMessageLiveLocation struct {
 	// Latitude
 	// Latitude of new location
@@ -279,7 +192,7 @@ type EditMessageLiveLocation struct {
 	// ChatId
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
-	ChatId *int64 `json:"chat_id,omitempty"`
+	ChatId *IntStr `json:"chat_id,omitempty"`
 	// InlineMessageId
 	// Required if chat_id and message_id are not specified. Identifier of the inline message
 	InlineMessageId *string `json:"inline_message_id,omitempty"`
@@ -291,12 +204,6 @@ type EditMessageLiveLocation struct {
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 }
 
-// EditMessageMedia
-// Use this method to edit animation, audio, document, photo, or video messages. If a message is a
-// part of a message album, then it can be edited only to a photo or a video. Otherwise, message
-// type can be changed arbitrarily. When inline message is edited, new file can't be uploaded. Use
-// previously uploaded file via its file_id or specify a URL. On success, if the edited message was
-// sent by the bot, the edited Message is returned, otherwise True is returned.
 type EditMessageMedia struct {
 	// Media
 	// A JSON-serialized object for a new media content of the message
@@ -304,7 +211,7 @@ type EditMessageMedia struct {
 	// ChatId
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
-	ChatId *int64 `json:"chat_id,omitempty"`
+	ChatId *IntStr `json:"chat_id,omitempty"`
 	// InlineMessageId
 	// Required if chat_id and message_id are not specified. Identifier of the inline message
 	InlineMessageId *string `json:"inline_message_id,omitempty"`
@@ -316,14 +223,11 @@ type EditMessageMedia struct {
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 }
 
-// EditMessageReplyMarkup
-// Use this method to edit only the reply markup of messages. On success, if edited message is sent
-// by the bot, the edited Message is returned, otherwise True is returned.
 type EditMessageReplyMarkup struct {
 	// ChatId
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
-	ChatId *int64 `json:"chat_id,omitempty"`
+	ChatId *IntStr `json:"chat_id,omitempty"`
 	// InlineMessageId
 	// Required if chat_id and message_id are not specified. Identifier of the inline message
 	InlineMessageId *string `json:"inline_message_id,omitempty"`
@@ -335,9 +239,6 @@ type EditMessageReplyMarkup struct {
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 }
 
-// EditMessageText
-// Use this method to edit text and game messages. On success, if edited message is sent by the
-// bot, the edited Message is returned, otherwise True is returned.
 type EditMessageText struct {
 	// Text
 	// New text of the message, 1-4096 characters after entities parsing
@@ -345,7 +246,7 @@ type EditMessageText struct {
 	// ChatId
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
-	ChatId *int64 `json:"chat_id,omitempty"`
+	ChatId *IntStr `json:"chat_id,omitempty"`
 	// DisableWebPagePreview
 	// Disables link previews for links in this message
 	DisableWebPagePreview *bool `json:"disable_web_page_preview,omitempty"`
@@ -363,28 +264,15 @@ type EditMessageText struct {
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 }
 
-// ExportChatInviteLink
-// Use this method to generate a new invite link for a chat; any previously generated link is
-// revoked. The bot must be an administrator in the chat for this to work and must have the
-// appropriate admin rights. Returns the new invite link as String on success.
-type ExportChatInviteLink struct {
-	// ChatId
-	// Unique identifier for the target chat or username of the target channel (in the format
-	// @channelusername)
-	ChatId int64 `json:"chat_id"`
-}
-
-// ForwardMessage
-// Use this method to forward messages of any kind. On success, the sent Message is returned.
 type ForwardMessage struct {
 	// ChatId
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
-	ChatId int64 `json:"chat_id"`
+	ChatId IntStr `json:"chat_id"`
 	// FromChatId
 	// Unique identifier for the chat where the original message was sent (or channel username in
 	// the format @channelusername)
-	FromChatId int64 `json:"from_chat_id"`
+	FromChatId IntStr `json:"from_chat_id"`
 	// MessageId
 	// Message identifier in the chat specified in from_chat_id
 	MessageId int64 `json:"message_id"`
@@ -393,66 +281,6 @@ type ForwardMessage struct {
 	DisableNotification *bool `json:"disable_notification,omitempty"`
 }
 
-// GetChat
-// Use this method to get up to date information about the chat (current name of the user for
-// one-on-one conversations, current username of a user, group or channel, etc.). Returns a Chat
-// object on success.
-type GetChat struct {
-	// ChatId
-	// Unique identifier for the target chat or username of the target supergroup or channel (in
-	// the format @channelusername)
-	ChatId int64 `json:"chat_id"`
-}
-
-// GetChatAdministrators
-// Use this method to get a list of administrators in a chat. On success, returns an Array of
-// ChatMember objects that contains information about all chat administrators except other bots. If
-// the chat is a group or a supergroup and no administrators were appointed, only the creator will
-// be returned.
-type GetChatAdministrators struct {
-	// ChatId
-	// Unique identifier for the target chat or username of the target supergroup or channel (in
-	// the format @channelusername)
-	ChatId int64 `json:"chat_id"`
-}
-
-// GetChatMember
-// Use this method to get information about a member of a chat. Returns a ChatMember object on
-// success.
-type GetChatMember struct {
-	// ChatId
-	// Unique identifier for the target chat or username of the target supergroup or channel (in
-	// the format @channelusername)
-	ChatId int64 `json:"chat_id"`
-	// UserId
-	// Unique identifier of the target user
-	UserId int64 `json:"user_id"`
-}
-
-// GetChatMembersCount
-// Use this method to get the number of members in a chat. Returns Int on success.
-type GetChatMembersCount struct {
-	// ChatId
-	// Unique identifier for the target chat or username of the target supergroup or channel (in
-	// the format @channelusername)
-	ChatId int64 `json:"chat_id"`
-}
-
-// GetFile
-// Use this method to get basic info about a file and prepare it for downloading. For the moment,
-// bots can download files of up to 20MB in size. On success, a File object is returned. The file
-// can then be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>, where
-// <file_path> is taken from the response. It is guaranteed that the link will be valid for at
-// least 1 hour. When the link expires, a new one can be requested by calling getFile again.
-type GetFile struct {
-	// FileId
-	// File identifier to get info about
-	FileId string `json:"file_id"`
-}
-
-// GetGameHighScores
-// Use this method to get data for high score tables. Will return the score of the specified user
-// and several of their neighbors in a game. On success, returns an Array of GameHighScore objects.
 type GetGameHighScores struct {
 	// UserId
 	// Target user id
@@ -468,29 +296,6 @@ type GetGameHighScores struct {
 	MessageId *int64 `json:"message_id,omitempty"`
 }
 
-// GetMe
-// A simple method for testing your bot's auth token. Requires no parameters. Returns basic
-// information about the bot in form of a User object.
-type GetMe struct {
-}
-
-// GetMyCommands
-// Use this method to get the current list of the bot's commands. Requires no parameters. Returns
-// Array of BotCommand on success.
-type GetMyCommands struct {
-}
-
-// GetStickerSet
-// Use this method to get a sticker set. On success, a StickerSet object is returned.
-type GetStickerSet struct {
-	// Name
-	// Name of the sticker set
-	Name string `json:"name"`
-}
-
-// GetUpdates
-// Use this method to receive incoming updates using long polling (wiki). An Array of Update
-// objects is returned.
 type GetUpdates struct {
 	// AllowedUpdates
 	// A JSON-serialized list of the update types you want your bot to receive. For example,
@@ -518,9 +323,6 @@ type GetUpdates struct {
 	Timeout *int64 `json:"timeout,omitempty"`
 }
 
-// GetUserProfilePhotos
-// Use this method to get a list of profile pictures for a user. Returns a UserProfilePhotos
-// object.
 type GetUserProfilePhotos struct {
 	// UserId
 	// Unique identifier of the target user
@@ -534,23 +336,11 @@ type GetUserProfilePhotos struct {
 	Offset *int64 `json:"offset,omitempty"`
 }
 
-// GetWebhookInfo
-// Use this method to get current webhook status. Requires no parameters. On success, returns a
-// WebhookInfo object. If the bot is using getUpdates, will return an object with the url field
-// empty.
-type GetWebhookInfo struct {
-}
-
-// KickChatMember
-// Use this method to kick a user from a group, a supergroup or a channel. In the case of
-// supergroups and channels, the user will not be able to return to the group on their own using
-// invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this
-// to work and must have the appropriate admin rights. Returns True on success.
 type KickChatMember struct {
 	// ChatId
 	// Unique identifier for the target group or username of the target supergroup or channel (in
 	// the format @channelusername)
-	ChatId int64 `json:"chat_id"`
+	ChatId IntStr `json:"chat_id"`
 	// UserId
 	// Unique identifier of the target user
 	UserId int64 `json:"user_id"`
@@ -560,24 +350,11 @@ type KickChatMember struct {
 	UntilDate *int64 `json:"until_date,omitempty"`
 }
 
-// LeaveChat
-// Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
-type LeaveChat struct {
-	// ChatId
-	// Unique identifier for the target chat or username of the target supergroup or channel (in
-	// the format @channelusername)
-	ChatId int64 `json:"chat_id"`
-}
-
-// PinChatMessage
-// Use this method to pin a message in a group, a supergroup, or a channel. The bot must be an
-// administrator in the chat for this to work and must have the 'can_pin_messages' admin right in
-// the supergroup or 'can_edit_messages' admin right in the channel. Returns True on success.
 type PinChatMessage struct {
 	// ChatId
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
-	ChatId int64 `json:"chat_id"`
+	ChatId IntStr `json:"chat_id"`
 	// MessageId
 	// Identifier of a message to pin
 	MessageId int64 `json:"message_id"`
@@ -587,15 +364,11 @@ type PinChatMessage struct {
 	DisableNotification *bool `json:"disable_notification,omitempty"`
 }
 
-// PromoteChatMember
-// Use this method to promote or demote a user in a supergroup or a channel. The bot must be an
-// administrator in the chat for this to work and must have the appropriate admin rights. Pass
-// False for all boolean parameters to demote a user. Returns True on success.
 type PromoteChatMember struct {
 	// ChatId
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
-	ChatId int64 `json:"chat_id"`
+	ChatId IntStr `json:"chat_id"`
 	// UserId
 	// Unique identifier of the target user
 	UserId int64 `json:"user_id"`
@@ -628,15 +401,11 @@ type PromoteChatMember struct {
 	CanRestrictMembers *bool `json:"can_restrict_members,omitempty"`
 }
 
-// RestrictChatMember
-// Use this method to restrict a user in a supergroup. The bot must be an administrator in the
-// supergroup for this to work and must have the appropriate admin rights. Pass True for all
-// permissions to lift restrictions from a user. Returns True on success.
 type RestrictChatMember struct {
 	// ChatId
 	// Unique identifier for the target chat or username of the target supergroup (in the format
 	// @supergroupusername)
-	ChatId int64 `json:"chat_id"`
+	ChatId IntStr `json:"chat_id"`
 	// Permissions
 	// A JSON-serialized object for new user permissions
 	Permissions ChatPermissions `json:"permissions"`
@@ -650,20 +419,16 @@ type RestrictChatMember struct {
 	UntilDate *int64 `json:"until_date,omitempty"`
 }
 
-// SendAnimation
-// Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On
-// success, the sent Message is returned. Bots can currently send animation files of up to 50 MB in
-// size, this limit may be changed in the future.
 type SendAnimation struct {
 	// Animation
 	// Animation to send. Pass a file_id as String to send an animation that exists on the Telegram
 	// servers (recommended), pass an HTTP URL as a String for Telegram to get an animation from
 	// the Internet, or upload a new animation using multipart/form-data.
-	Animation InputFile `json:"animation"`
+	Animation InputDataType `json:"animation"`
 	// ChatId
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
-	ChatId int64 `json:"chat_id"`
+	ChatId IntStr `json:"chat_id"`
 	// Caption
 	// Animation caption (may also be used when resending animation by file_id), 0-1024 characters
 	// after entities parsing
@@ -683,7 +448,7 @@ type SendAnimation struct {
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageId
 	// If the message is a reply, ID of the original message
 	ReplyToMessageId *int64 `json:"reply_to_message_id,omitempty"`
@@ -694,27 +459,22 @@ type SendAnimation struct {
 	// using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new
 	// file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using
 	// multipart/form-data under <file_attach_name>.
-	Thumb *InputFile `json:"thumb,omitempty"`
+	Thumb *InputDataType `json:"thumb,omitempty"`
 	// Width
 	// Animation width
 	Width *int64 `json:"width,omitempty"`
 }
 
-// SendAudio
-// Use this method to send audio files, if you want Telegram clients to display them in the music
-// player. Your audio must be in the .MP3 or .M4A format. On success, the sent Message is returned.
-// Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the
-// future.
 type SendAudio struct {
 	// Audio
 	// Audio file to send. Pass a file_id as String to send an audio file that exists on the
 	// Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an audio
 	// file from the Internet, or upload a new one using multipart/form-data.
-	Audio InputFile `json:"audio"`
+	Audio InputDataType `json:"audio"`
 	// ChatId
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
-	ChatId int64 `json:"chat_id"`
+	ChatId IntStr `json:"chat_id"`
 	// Caption
 	// Audio caption, 0-1024 characters after entities parsing
 	Caption *string `json:"caption,omitempty"`
@@ -733,7 +493,7 @@ type SendAudio struct {
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageId
 	// If the message is a reply, ID of the original message
 	ReplyToMessageId *int64 `json:"reply_to_message_id,omitempty"`
@@ -744,36 +504,17 @@ type SendAudio struct {
 	// using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new
 	// file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using
 	// multipart/form-data under <file_attach_name>.
-	Thumb *InputFile `json:"thumb,omitempty"`
+	Thumb *InputDataType `json:"thumb,omitempty"`
 	// Title
 	// Track name
 	Title *string `json:"title,omitempty"`
 }
 
-// SendChatAction
-// Use this method when you need to tell the user that something is happening on the bot's side.
-// The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients
-// clear its typing status). Returns True on success.
-type SendChatAction struct {
-	// Action
-	// Type of action to broadcast. Choose one, depending on what the user is about to receive:
-	// typing for text messages, upload_photo for photos, record_video or upload_video for videos,
-	// record_audio or upload_audio for audio files, upload_document for general files,
-	// find_location for location data, record_video_note or upload_video_note for video notes.
-	Action string `json:"action"`
-	// ChatId
-	// Unique identifier for the target chat or username of the target channel (in the format
-	// @channelusername)
-	ChatId int64 `json:"chat_id"`
-}
-
-// SendContact
-// Use this method to send phone contacts. On success, the sent Message is returned.
 type SendContact struct {
 	// ChatId
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
-	ChatId int64 `json:"chat_id"`
+	ChatId IntStr `json:"chat_id"`
 	// FirstName
 	// Contact's first name
 	FirstName string `json:"first_name"`
@@ -789,7 +530,7 @@ type SendContact struct {
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove keyboard or to force a reply from the user.
-	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageId
 	// If the message is a reply, ID of the original message
 	ReplyToMessageId *int64 `json:"reply_to_message_id,omitempty"`
@@ -798,14 +539,11 @@ type SendContact struct {
 	Vcard *string `json:"vcard,omitempty"`
 }
 
-// SendDice
-// Use this method to send an animated emoji that will display a random value. On success, the sent
-// Message is returned.
 type SendDice struct {
 	// ChatId
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
-	ChatId int64 `json:"chat_id"`
+	ChatId IntStr `json:"chat_id"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
 	DisableNotification *bool `json:"disable_notification,omitempty"`
@@ -816,26 +554,22 @@ type SendDice struct {
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageId
 	// If the message is a reply, ID of the original message
 	ReplyToMessageId *int64 `json:"reply_to_message_id,omitempty"`
 }
 
-// SendDocument
-// Use this method to send general files. On success, the sent Message is returned. Bots can
-// currently send files of any type of up to 50 MB in size, this limit may be changed in the
-// future.
 type SendDocument struct {
 	// ChatId
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
-	ChatId int64 `json:"chat_id"`
+	ChatId IntStr `json:"chat_id"`
 	// Document
 	// File to send. Pass a file_id as String to send a file that exists on the Telegram servers
 	// (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or
 	// upload a new one using multipart/form-data.
-	Document InputFile `json:"document"`
+	Document InputDataType `json:"document"`
 	// Caption
 	// Document caption (may also be used when resending documents by file_id), 0-1024 characters
 	// after entities parsing
@@ -849,7 +583,7 @@ type SendDocument struct {
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageId
 	// If the message is a reply, ID of the original message
 	ReplyToMessageId *int64 `json:"reply_to_message_id,omitempty"`
@@ -860,11 +594,9 @@ type SendDocument struct {
 	// using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new
 	// file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using
 	// multipart/form-data under <file_attach_name>.
-	Thumb *InputFile `json:"thumb,omitempty"`
+	Thumb *InputDataType `json:"thumb,omitempty"`
 }
 
-// SendGame
-// Use this method to send a game. On success, the sent Message is returned.
 type SendGame struct {
 	// ChatId
 	// Unique identifier for the target chat
@@ -885,8 +617,6 @@ type SendGame struct {
 	ReplyToMessageId *int64 `json:"reply_to_message_id,omitempty"`
 }
 
-// SendInvoice
-// Use this method to send invoices. On success, the sent Message is returned.
 type SendInvoice struct {
 	// ChatId
 	// Unique identifier for the target private chat
@@ -965,13 +695,11 @@ type SendInvoice struct {
 	SendPhoneNumberToProvider *bool `json:"send_phone_number_to_provider,omitempty"`
 }
 
-// SendLocation
-// Use this method to send point on the map. On success, the sent Message is returned.
 type SendLocation struct {
 	// ChatId
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
-	ChatId int64 `json:"chat_id"`
+	ChatId IntStr `json:"chat_id"`
 	// Latitude
 	// Latitude of the location
 	Latitude float64 `json:"latitude"`
@@ -988,20 +716,17 @@ type SendLocation struct {
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageId
 	// If the message is a reply, ID of the original message
 	ReplyToMessageId *int64 `json:"reply_to_message_id,omitempty"`
 }
 
-// SendMediaGroup
-// Use this method to send a group of photos or videos as an album. On success, an array of the
-// sent Messages is returned.
 type SendMediaGroup struct {
 	// ChatId
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
-	ChatId int64 `json:"chat_id"`
+	ChatId IntStr `json:"chat_id"`
 	// Media
 	// A JSON-serialized array describing photos and videos to be sent, must include 2-10 items
 	Media []InputMediaGraphics `json:"media"`
@@ -1013,13 +738,11 @@ type SendMediaGroup struct {
 	ReplyToMessageId *int64 `json:"reply_to_message_id,omitempty"`
 }
 
-// SendMessage
-// Use this method to send text messages. On success, the sent Message is returned.
 type SendMessage struct {
 	// ChatId
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
-	ChatId int64 `json:"chat_id"`
+	ChatId IntStr `json:"chat_id"`
 	// Text
 	// Text of the message to be sent, 1-4096 characters after entities parsing
 	Text string `json:"text"`
@@ -1035,24 +758,22 @@ type SendMessage struct {
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageId
 	// If the message is a reply, ID of the original message
 	ReplyToMessageId *int64 `json:"reply_to_message_id,omitempty"`
 }
 
-// SendPhoto
-// Use this method to send photos. On success, the sent Message is returned.
 type SendPhoto struct {
 	// ChatId
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
-	ChatId int64 `json:"chat_id"`
+	ChatId IntStr `json:"chat_id"`
 	// Photo
 	// Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers
 	// (recommended), pass an HTTP URL as a String for Telegram to get a photo from the Internet,
 	// or upload a new photo using multipart/form-data.
-	Photo InputFile `json:"photo"`
+	Photo InputDataType `json:"photo"`
 	// Caption
 	// Photo caption (may also be used when resending photos by file_id), 0-1024 characters after
 	// entities parsing
@@ -1066,19 +787,17 @@ type SendPhoto struct {
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageId
 	// If the message is a reply, ID of the original message
 	ReplyToMessageId *int64 `json:"reply_to_message_id,omitempty"`
 }
 
-// SendPoll
-// Use this method to send a native poll. On success, the sent Message is returned.
 type SendPoll struct {
 	// ChatId
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
-	ChatId int64 `json:"chat_id"`
+	ChatId IntStr `json:"chat_id"`
 	// Options
 	// A JSON-serialized list of answer options, 2-10 strings 1-100 characters each
 	Options []string `json:"options"`
@@ -1118,7 +837,7 @@ type SendPoll struct {
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageId
 	// If the message is a reply, ID of the original message
 	ReplyToMessageId *int64 `json:"reply_to_message_id,omitempty"`
@@ -1127,33 +846,28 @@ type SendPoll struct {
 	Type *SendType `json:"type,omitempty"`
 }
 
-// SendSticker
-// Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is
-// returned.
 type SendSticker struct {
 	// ChatId
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
-	ChatId int64 `json:"chat_id"`
+	ChatId IntStr `json:"chat_id"`
 	// Sticker
 	// Sticker to send. Pass a file_id as String to send a file that exists on the Telegram servers
 	// (recommended), pass an HTTP URL as a String for Telegram to get a .WEBP file from the
 	// Internet, or upload a new one using multipart/form-data.
-	Sticker InputFile `json:"sticker"`
+	Sticker InputDataType `json:"sticker"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
 	DisableNotification *bool `json:"disable_notification,omitempty"`
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageId
 	// If the message is a reply, ID of the original message
 	ReplyToMessageId *int64 `json:"reply_to_message_id,omitempty"`
 }
 
-// SendVenue
-// Use this method to send information about a venue. On success, the sent Message is returned.
 type SendVenue struct {
 	// Address
 	// Address of the venue
@@ -1161,7 +875,7 @@ type SendVenue struct {
 	// ChatId
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
-	ChatId int64 `json:"chat_id"`
+	ChatId IntStr `json:"chat_id"`
 	// Latitude
 	// Latitude of the venue
 	Latitude float64 `json:"latitude"`
@@ -1184,26 +898,22 @@ type SendVenue struct {
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageId
 	// If the message is a reply, ID of the original message
 	ReplyToMessageId *int64 `json:"reply_to_message_id,omitempty"`
 }
 
-// SendVideo
-// Use this method to send video files, Telegram clients support mp4 videos (other formats may be
-// sent as Document). On success, the sent Message is returned. Bots can currently send video files
-// of up to 50 MB in size, this limit may be changed in the future.
 type SendVideo struct {
 	// ChatId
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
-	ChatId int64 `json:"chat_id"`
+	ChatId IntStr `json:"chat_id"`
 	// Video
 	// Video to send. Pass a file_id as String to send a video that exists on the Telegram servers
 	// (recommended), pass an HTTP URL as a String for Telegram to get a video from the Internet,
 	// or upload a new video using multipart/form-data.
-	Video InputFile `json:"video"`
+	Video InputDataType `json:"video"`
 	// Caption
 	// Video caption (may also be used when resending videos by file_id), 0-1024 characters after
 	// entities parsing
@@ -1223,7 +933,7 @@ type SendVideo struct {
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageId
 	// If the message is a reply, ID of the original message
 	ReplyToMessageId *int64 `json:"reply_to_message_id,omitempty"`
@@ -1237,25 +947,22 @@ type SendVideo struct {
 	// using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new
 	// file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using
 	// multipart/form-data under <file_attach_name>.
-	Thumb *InputFile `json:"thumb,omitempty"`
+	Thumb *InputDataType `json:"thumb,omitempty"`
 	// Width
 	// Video width
 	Width *int64 `json:"width,omitempty"`
 }
 
-// SendVideoNote
-// As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this
-// method to send video messages. On success, the sent Message is returned.
 type SendVideoNote struct {
 	// ChatId
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
-	ChatId int64 `json:"chat_id"`
+	ChatId IntStr `json:"chat_id"`
 	// VideoNote
 	// Video note to send. Pass a file_id as String to send a video note that exists on the
 	// Telegram servers (recommended) or upload a new video using multipart/form-data. . Sending
 	// video notes by a URL is currently unsupported
-	VideoNote InputFile `json:"video_note"`
+	VideoNote InputDataType `json:"video_note"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
 	DisableNotification *bool `json:"disable_notification,omitempty"`
@@ -1268,7 +975,7 @@ type SendVideoNote struct {
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageId
 	// If the message is a reply, ID of the original message
 	ReplyToMessageId *int64 `json:"reply_to_message_id,omitempty"`
@@ -1279,25 +986,19 @@ type SendVideoNote struct {
 	// using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new
 	// file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using
 	// multipart/form-data under <file_attach_name>.
-	Thumb *InputFile `json:"thumb,omitempty"`
+	Thumb *InputDataType `json:"thumb,omitempty"`
 }
 
-// SendVoice
-// Use this method to send audio files, if you want Telegram clients to display the file as a
-// playable voice message. For this to work, your audio must be in an .OGG file encoded with OPUS
-// (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots
-// can currently send voice messages of up to 50 MB in size, this limit may be changed in the
-// future.
 type SendVoice struct {
 	// ChatId
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
-	ChatId int64 `json:"chat_id"`
+	ChatId IntStr `json:"chat_id"`
 	// Voice
 	// Audio file to send. Pass a file_id as String to send a file that exists on the Telegram
 	// servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the
 	// Internet, or upload a new one using multipart/form-data.
-	Voice InputFile `json:"voice"`
+	Voice InputDataType `json:"voice"`
 	// Caption
 	// Voice message caption, 0-1024 characters after entities parsing
 	Caption *string `json:"caption,omitempty"`
@@ -1314,20 +1015,17 @@ type SendVoice struct {
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageId
 	// If the message is a reply, ID of the original message
 	ReplyToMessageId *int64 `json:"reply_to_message_id,omitempty"`
 }
 
-// SetChatAdministratorCustomTitle
-// Use this method to set a custom title for an administrator in a supergroup promoted by the bot.
-// Returns True on success.
 type SetChatAdministratorCustomTitle struct {
 	// ChatId
 	// Unique identifier for the target chat or username of the target supergroup (in the format
 	// @supergroupusername)
-	ChatId int64 `json:"chat_id"`
+	ChatId IntStr `json:"chat_id"`
 	// CustomTitle
 	// New custom title for the administrator; 0-16 characters, emoji are not allowed
 	CustomTitle string `json:"custom_title"`
@@ -1336,81 +1034,6 @@ type SetChatAdministratorCustomTitle struct {
 	UserId int64 `json:"user_id"`
 }
 
-// SetChatDescription
-// Use this method to change the description of a group, a supergroup or a channel. The bot must be
-// an administrator in the chat for this to work and must have the appropriate admin rights.
-// Returns True on success.
-type SetChatDescription struct {
-	// ChatId
-	// Unique identifier for the target chat or username of the target channel (in the format
-	// @channelusername)
-	ChatId int64 `json:"chat_id"`
-	// Description
-	// New chat description, 0-255 characters
-	Description *string `json:"description,omitempty"`
-}
-
-// SetChatPermissions
-// Use this method to set default chat permissions for all members. The bot must be an
-// administrator in the group or a supergroup for this to work and must have the
-// can_restrict_members admin rights. Returns True on success.
-type SetChatPermissions struct {
-	// ChatId
-	// Unique identifier for the target chat or username of the target supergroup (in the format
-	// @supergroupusername)
-	ChatId int64 `json:"chat_id"`
-	// Permissions
-	// New default chat permissions
-	Permissions ChatPermissions `json:"permissions"`
-}
-
-// SetChatPhoto
-// Use this method to set a new profile photo for the chat. Photos can't be changed for private
-// chats. The bot must be an administrator in the chat for this to work and must have the
-// appropriate admin rights. Returns True on success.
-type SetChatPhoto struct {
-	// ChatId
-	// Unique identifier for the target chat or username of the target channel (in the format
-	// @channelusername)
-	ChatId int64 `json:"chat_id"`
-	// Photo
-	// New chat photo, uploaded using multipart/form-data
-	Photo InputFile `json:"photo"`
-}
-
-// SetChatStickerSet
-// Use this method to set a new group sticker set for a supergroup. The bot must be an
-// administrator in the chat for this to work and must have the appropriate admin rights. Use the
-// field can_set_sticker_set optionally returned in getChat requests to check if the bot can use
-// this method. Returns True on success.
-type SetChatStickerSet struct {
-	// ChatId
-	// Unique identifier for the target chat or username of the target supergroup (in the format
-	// @supergroupusername)
-	ChatId int64 `json:"chat_id"`
-	// StickerSetName
-	// Name of the sticker set to be set as the group sticker set
-	StickerSetName string `json:"sticker_set_name"`
-}
-
-// SetChatTitle
-// Use this method to change the title of a chat. Titles can't be changed for private chats. The
-// bot must be an administrator in the chat for this to work and must have the appropriate admin
-// rights. Returns True on success.
-type SetChatTitle struct {
-	// ChatId
-	// Unique identifier for the target chat or username of the target channel (in the format
-	// @channelusername)
-	ChatId int64 `json:"chat_id"`
-	// Title
-	// New chat title, 1-255 characters
-	Title string `json:"title"`
-}
-
-// SetGameScore
-// Use this method to set the score of the specified user in a game. On success, if the message was
-// sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the
-// new score is not greater than the user's current score in the chat and force is False.
 type SetGameScore struct {
 	// Score
 	// New score, must be non-negative
@@ -1437,43 +1060,6 @@ type SetGameScore struct {
 	MessageId *int64 `json:"message_id,omitempty"`
 }
 
-// SetMyCommands
-// Use this method to change the list of the bot's commands. Returns True on success.
-type SetMyCommands struct {
-	// Commands
-	// A JSON-serialized list of bot commands to be set as the list of the bot's commands. At most
-	// 100 commands can be specified.
-	Commands []BotCommand `json:"commands"`
-}
-
-// SetPassportDataErrors
-// Informs a user that some of the Telegram Passport elements they provided contains errors. The
-// user will not be able to re-submit their Passport to you until the errors are fixed (the
-// contents of the field for which you returned the error must change). Returns True on success.
-type SetPassportDataErrors struct {
-	// Errors
-	// A JSON-serialized array describing the errors
-	Errors []PassportElementError `json:"errors"`
-	// UserId
-	// User identifier
-	UserId int64 `json:"user_id"`
-}
-
-// SetStickerPositionInSet
-// Use this method to move a sticker in a set created by the bot to a specific position. Returns
-// True on success.
-type SetStickerPositionInSet struct {
-	// Position
-	// New sticker position in the set, zero-based
-	Position int64 `json:"position"`
-	// Sticker
-	// File identifier of the sticker
-	Sticker string `json:"sticker"`
-}
-
-// SetStickerSetThumb
-// Use this method to set the thumbnail of a sticker set. Animated thumbnails can be set for
-// animated sticker sets only. Returns True on success.
 type SetStickerSetThumb struct {
 	// Name
 	// Sticker set name
@@ -1489,14 +1075,9 @@ type SetStickerSetThumb struct {
 	// Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet,
 	// or upload a new one using multipart/form-data. . Animated sticker set thumbnail can't be
 	// uploaded via HTTP URL.
-	Thumb *InputFile `json:"thumb,omitempty"`
+	Thumb *InputDataType `json:"thumb,omitempty"`
 }
 
-// SetWebhook
-// Use this method to specify a url and receive incoming updates via an outgoing webhook. Whenever
-// there is an update for the bot, we will send an HTTPS POST request to the specified url,
-// containing a JSON-serialized Update. In case of an unsuccessful request, we will give up after a
-// reasonable amount of attempts. Returns True on success.
 type SetWebhook struct {
 	// Url
 	// HTTPS url to send updates to. Use an empty string to remove webhook integration
@@ -1520,14 +1101,11 @@ type SetWebhook struct {
 	MaxConnections *int64 `json:"max_connections,omitempty"`
 }
 
-// StopMessageLiveLocation
-// Use this method to stop updating a live location message before live_period expires. On success,
-// if the message was sent by the bot, the sent Message is returned, otherwise True is returned.
 type StopMessageLiveLocation struct {
 	// ChatId
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
-	ChatId *int64 `json:"chat_id,omitempty"`
+	ChatId *IntStr `json:"chat_id,omitempty"`
 	// InlineMessageId
 	// Required if chat_id and message_id are not specified. Identifier of the inline message
 	InlineMessageId *string `json:"inline_message_id,omitempty"`
@@ -1540,14 +1118,11 @@ type StopMessageLiveLocation struct {
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 }
 
-// StopPoll
-// Use this method to stop a poll which was sent by the bot. On success, the stopped Poll with the
-// final results is returned.
 type StopPoll struct {
 	// ChatId
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
-	ChatId int64 `json:"chat_id"`
+	ChatId IntStr `json:"chat_id"`
 	// MessageId
 	// Identifier of the original message with the poll
 	MessageId int64 `json:"message_id"`
@@ -1556,40 +1131,533 @@ type StopPoll struct {
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 }
 
+// AddStickerToSet
+// Use this method to add a new sticker to a set created by the bot. You must use exactly one of
+// the fields png_sticker or tgs_sticker. Animated stickers can be added to animated sticker sets
+// and only to them. Animated sticker sets can have up to 50 stickers. Static sticker sets can have
+// up to 120 stickers. Returns True on success.
+func (api *API) AddStickerToSet(args *AddStickerToSet) error {
+	return errors.New("not implemented")
+}
+
+// AnswerCallbackQuery
+// Use this method to send answers to callback queries sent from inline keyboards. The answer will
+// be displayed to the user as a notification at the top of the chat screen or as an alert. On
+// success, True is returned.
+func (api *API) AnswerCallbackQuery(args *AnswerCallbackQuery) error {
+	return errors.New("not implemented")
+}
+
+// AnswerInlineQuery
+// Use this method to send answers to an inline query. On success, True is returned.No more than 50
+// results per query are allowed.
+func (api *API) AnswerInlineQuery(args *AnswerInlineQuery) error {
+	return errors.New("not implemented")
+}
+
+// AnswerPreCheckoutQuery
+// Once the user has confirmed their payment and shipping details, the Bot API sends the final
+// confirmation in the form of an Update with the field pre_checkout_query. Use this method to
+// respond to such pre-checkout queries. On success, True is returned. Note: The Bot API must
+// receive an answer within 10 seconds after the pre-checkout query was sent.
+func (api *API) AnswerPreCheckoutQuery(args *AnswerPreCheckoutQuery) error {
+	return errors.New("not implemented")
+}
+
+// AnswerShippingQuery
+// If you sent an invoice requesting a shipping address and the parameter is_flexible was
+// specified, the Bot API will send an Update with a shipping_query field to the bot. Use this
+// method to reply to shipping queries. On success, True is returned.
+func (api *API) AnswerShippingQuery(args *AnswerShippingQuery) error {
+	return errors.New("not implemented")
+}
+
+// CreateNewStickerSet
+// Use this method to create a new sticker set owned by a user. The bot will be able to edit the
+// sticker set thus created. You must use exactly one of the fields png_sticker or tgs_sticker.
+// Returns True on success.
+func (api *API) CreateNewStickerSet(args *CreateNewStickerSet) error {
+	return errors.New("not implemented")
+}
+
+// DeleteChatPhoto
+// Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must
+// be an administrator in the chat for this to work and must have the appropriate admin rights.
+// Returns True on success.
+func (api *API) DeleteChatPhoto(chatId IntStr) error {
+	return errors.New("not implemented")
+}
+
+// DeleteChatStickerSet
+// Use this method to delete a group sticker set from a supergroup. The bot must be an
+// administrator in the chat for this to work and must have the appropriate admin rights. Use the
+// field can_set_sticker_set optionally returned in getChat requests to check if the bot can use
+// this method. Returns True on success.
+func (api *API) DeleteChatStickerSet(chatId IntStr) error {
+	return errors.New("not implemented")
+}
+
+// DeleteMessage
+// Use this method to delete a message, including service messages, with the following
+// limitations:- A message can only be deleted if it was sent less than 48 hours ago.- A dice
+// message in a private chat can only be deleted if it was sent more than 24 hours ago.- Bots can
+// delete outgoing messages in private chats, groups, and supergroups.- Bots can delete incoming
+// messages in private chats.- Bots granted can_post_messages permissions can delete outgoing
+// messages in channels.- If the bot is an administrator of a group, it can delete any message
+// there.- If the bot has can_delete_messages permission in a supergroup or a channel, it can
+// delete any message there.Returns True on success.
+func (api *API) DeleteMessage(chatId IntStr, messageId int64) error {
+	return errors.New("not implemented")
+}
+
+// DeleteStickerFromSet
+// Use this method to delete a sticker from a set created by the bot. Returns True on success.
+func (api *API) DeleteStickerFromSet(sticker string) error {
+	return errors.New("not implemented")
+}
+
+// DeleteWebhook
+// Use this method to remove webhook integration if you decide to switch back to getUpdates.
+// Returns True on success. Requires no parameters.
+func (api *API) DeleteWebhook() error {
+	return errors.New("not implemented")
+}
+
+// EditMessageCaption
+// Use this method to edit captions of messages. On success, if edited message is sent by the bot,
+// the edited Message is returned, otherwise True is returned.
+func (api *API) EditMessageCaption(args *EditMessageCaption) (*Message, error) {
+	return errors.New("not implemented")
+}
+
+// EditMessageLiveLocation
+// Use this method to edit live location messages. A location can be edited until its live_period
+// expires or editing is explicitly disabled by a call to stopMessageLiveLocation. On success, if
+// the edited message was sent by the bot, the edited Message is returned, otherwise True is
+// returned.
+func (api *API) EditMessageLiveLocation(args *EditMessageLiveLocation) (*Message, error) {
+	return errors.New("not implemented")
+}
+
+// EditMessageMedia
+// Use this method to edit animation, audio, document, photo, or video messages. If a message is a
+// part of a message album, then it can be edited only to a photo or a video. Otherwise, message
+// type can be changed arbitrarily. When inline message is edited, new file can't be uploaded. Use
+// previously uploaded file via its file_id or specify a URL. On success, if the edited message was
+// sent by the bot, the edited Message is returned, otherwise True is returned.
+func (api *API) EditMessageMedia(args *EditMessageMedia) (*Message, error) {
+	return errors.New("not implemented")
+}
+
+// EditMessageReplyMarkup
+// Use this method to edit only the reply markup of messages. On success, if edited message is sent
+// by the bot, the edited Message is returned, otherwise True is returned.
+func (api *API) EditMessageReplyMarkup(args *EditMessageReplyMarkup) (*Message, error) {
+	return errors.New("not implemented")
+}
+
+// EditMessageText
+// Use this method to edit text and game messages. On success, if edited message is sent by the
+// bot, the edited Message is returned, otherwise True is returned.
+func (api *API) EditMessageText(args *EditMessageText) (*Message, error) {
+	return errors.New("not implemented")
+}
+
+// ExportChatInviteLink
+// Use this method to generate a new invite link for a chat; any previously generated link is
+// revoked. The bot must be an administrator in the chat for this to work and must have the
+// appropriate admin rights. Returns the new invite link as String on success.
+func (api *API) ExportChatInviteLink(chatId IntStr) (string, error) {
+	return errors.New("not implemented")
+}
+
+// ForwardMessage
+// Use this method to forward messages of any kind. On success, the sent Message is returned.
+func (api *API) ForwardMessage(args *ForwardMessage) (*Message, error) {
+	return errors.New("not implemented")
+}
+
+// GetChat
+// Use this method to get up to date information about the chat (current name of the user for
+// one-on-one conversations, current username of a user, group or channel, etc.). Returns a Chat
+// object on success.
+func (api *API) GetChat(chatId IntStr) (*Chat, error) {
+	return errors.New("not implemented")
+}
+
+// GetChatAdministrators
+// Use this method to get a list of administrators in a chat. On success, returns an Array of
+// ChatMember objects that contains information about all chat administrators except other bots. If
+// the chat is a group or a supergroup and no administrators were appointed, only the creator will
+// be returned.
+func (api *API) GetChatAdministrators(chatId IntStr) ([]ChatMember, error) {
+	return errors.New("not implemented")
+}
+
+// GetChatMember
+// Use this method to get information about a member of a chat. Returns a ChatMember object on
+// success.
+func (api *API) GetChatMember(chatId IntStr, userId int64) (*ChatMember, error) {
+	return errors.New("not implemented")
+}
+
+// GetChatMembersCount
+// Use this method to get the number of members in a chat. Returns Int on success.
+func (api *API) GetChatMembersCount(chatId IntStr) (int64, error) {
+	return errors.New("not implemented")
+}
+
+// GetFile
+// Use this method to get basic info about a file and prepare it for downloading. For the moment,
+// bots can download files of up to 20MB in size. On success, a File object is returned. The file
+// can then be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>, where
+// <file_path> is taken from the response. It is guaranteed that the link will be valid for at
+// least 1 hour. When the link expires, a new one can be requested by calling getFile again.
+func (api *API) GetFile(fileId string) (*File, error) {
+	return errors.New("not implemented")
+}
+
+// GetGameHighScores
+// Use this method to get data for high score tables. Will return the score of the specified user
+// and several of their neighbors in a game. On success, returns an Array of GameHighScore objects.
+func (api *API) GetGameHighScores(args *GetGameHighScores) ([]GameHighScore, error) {
+	return errors.New("not implemented")
+}
+
+// GetMe
+// A simple method for testing your bot's auth token. Requires no parameters. Returns basic
+// information about the bot in form of a User object.
+func (api *API) GetMe() (*User, error) {
+	return errors.New("not implemented")
+}
+
+// GetMyCommands
+// Use this method to get the current list of the bot's commands. Requires no parameters. Returns
+// Array of BotCommand on success.
+func (api *API) GetMyCommands() ([]BotCommand, error) {
+	return errors.New("not implemented")
+}
+
+// GetStickerSet
+// Use this method to get a sticker set. On success, a StickerSet object is returned.
+func (api *API) GetStickerSet(name string) (*StickerSet, error) {
+	return errors.New("not implemented")
+}
+
+// GetUpdates
+// Use this method to receive incoming updates using long polling (wiki). An Array of Update
+// objects is returned.
+func (api *API) GetUpdates(args *GetUpdates) ([]Update, error) {
+	return errors.New("not implemented")
+}
+
+// GetUserProfilePhotos
+// Use this method to get a list of profile pictures for a user. Returns a UserProfilePhotos
+// object.
+func (api *API) GetUserProfilePhotos(args *GetUserProfilePhotos) (*UserProfilePhotos, error) {
+	return errors.New("not implemented")
+}
+
+// GetWebhookInfo
+// Use this method to get current webhook status. Requires no parameters. On success, returns a
+// WebhookInfo object. If the bot is using getUpdates, will return an object with the url field
+// empty.
+func (api *API) GetWebhookInfo() (*WebhookInfo, error) {
+	return errors.New("not implemented")
+}
+
+// KickChatMember
+// Use this method to kick a user from a group, a supergroup or a channel. In the case of
+// supergroups and channels, the user will not be able to return to the group on their own using
+// invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this
+// to work and must have the appropriate admin rights. Returns True on success.
+func (api *API) KickChatMember(args *KickChatMember) error {
+	return errors.New("not implemented")
+}
+
+// LeaveChat
+// Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
+func (api *API) LeaveChat(chatId IntStr) error {
+	return errors.New("not implemented")
+}
+
+// PinChatMessage
+// Use this method to pin a message in a group, a supergroup, or a channel. The bot must be an
+// administrator in the chat for this to work and must have the 'can_pin_messages' admin right in
+// the supergroup or 'can_edit_messages' admin right in the channel. Returns True on success.
+func (api *API) PinChatMessage(args *PinChatMessage) error {
+	return errors.New("not implemented")
+}
+
+// PromoteChatMember
+// Use this method to promote or demote a user in a supergroup or a channel. The bot must be an
+// administrator in the chat for this to work and must have the appropriate admin rights. Pass
+// False for all boolean parameters to demote a user. Returns True on success.
+func (api *API) PromoteChatMember(args *PromoteChatMember) error {
+	return errors.New("not implemented")
+}
+
+// RestrictChatMember
+// Use this method to restrict a user in a supergroup. The bot must be an administrator in the
+// supergroup for this to work and must have the appropriate admin rights. Pass True for all
+// permissions to lift restrictions from a user. Returns True on success.
+func (api *API) RestrictChatMember(args *RestrictChatMember) error {
+	return errors.New("not implemented")
+}
+
+// SendAnimation
+// Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On
+// success, the sent Message is returned. Bots can currently send animation files of up to 50 MB in
+// size, this limit may be changed in the future.
+func (api *API) SendAnimation(args *SendAnimation) (*Message, error) {
+	return errors.New("not implemented")
+}
+
+// SendAudio
+// Use this method to send audio files, if you want Telegram clients to display them in the music
+// player. Your audio must be in the .MP3 or .M4A format. On success, the sent Message is returned.
+// Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the
+// future.
+func (api *API) SendAudio(args *SendAudio) (*Message, error) {
+	return errors.New("not implemented")
+}
+
+// SendChatAction
+// Use this method when you need to tell the user that something is happening on the bot's side.
+// The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients
+// clear its typing status). Returns True on success.
+func (api *API) SendChatAction(action string, chatId IntStr) error {
+	return errors.New("not implemented")
+}
+
+// SendContact
+// Use this method to send phone contacts. On success, the sent Message is returned.
+func (api *API) SendContact(args *SendContact) (*Message, error) {
+	return errors.New("not implemented")
+}
+
+// SendDice
+// Use this method to send an animated emoji that will display a random value. On success, the sent
+// Message is returned.
+func (api *API) SendDice(args *SendDice) (*Message, error) {
+	return errors.New("not implemented")
+}
+
+// SendDocument
+// Use this method to send general files. On success, the sent Message is returned. Bots can
+// currently send files of any type of up to 50 MB in size, this limit may be changed in the
+// future.
+func (api *API) SendDocument(args *SendDocument) (*Message, error) {
+	return errors.New("not implemented")
+}
+
+// SendGame
+// Use this method to send a game. On success, the sent Message is returned.
+func (api *API) SendGame(args *SendGame) (*Message, error) {
+	return errors.New("not implemented")
+}
+
+// SendInvoice
+// Use this method to send invoices. On success, the sent Message is returned.
+func (api *API) SendInvoice(args *SendInvoice) (*Message, error) {
+	return errors.New("not implemented")
+}
+
+// SendLocation
+// Use this method to send point on the map. On success, the sent Message is returned.
+func (api *API) SendLocation(args *SendLocation) (*Message, error) {
+	return errors.New("not implemented")
+}
+
+// SendMediaGroup
+// Use this method to send a group of photos or videos as an album. On success, an array of the
+// sent Messages is returned.
+func (api *API) SendMediaGroup(args *SendMediaGroup) ([]Message, error) {
+	return errors.New("not implemented")
+}
+
+// SendMessage
+// Use this method to send text messages. On success, the sent Message is returned.
+func (api *API) SendMessage(args *SendMessage) (*Message, error) {
+	return errors.New("not implemented")
+}
+
+// SendPhoto
+// Use this method to send photos. On success, the sent Message is returned.
+func (api *API) SendPhoto(args *SendPhoto) (*Message, error) {
+	return errors.New("not implemented")
+}
+
+// SendPoll
+// Use this method to send a native poll. On success, the sent Message is returned.
+func (api *API) SendPoll(args *SendPoll) (*Message, error) {
+	return errors.New("not implemented")
+}
+
+// SendSticker
+// Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is
+// returned.
+func (api *API) SendSticker(args *SendSticker) (*Message, error) {
+	return errors.New("not implemented")
+}
+
+// SendVenue
+// Use this method to send information about a venue. On success, the sent Message is returned.
+func (api *API) SendVenue(args *SendVenue) (*Message, error) {
+	return errors.New("not implemented")
+}
+
+// SendVideo
+// Use this method to send video files, Telegram clients support mp4 videos (other formats may be
+// sent as Document). On success, the sent Message is returned. Bots can currently send video files
+// of up to 50 MB in size, this limit may be changed in the future.
+func (api *API) SendVideo(args *SendVideo) (*Message, error) {
+	return errors.New("not implemented")
+}
+
+// SendVideoNote
+// As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this
+// method to send video messages. On success, the sent Message is returned.
+func (api *API) SendVideoNote(args *SendVideoNote) (*Message, error) {
+	return errors.New("not implemented")
+}
+
+// SendVoice
+// Use this method to send audio files, if you want Telegram clients to display the file as a
+// playable voice message. For this to work, your audio must be in an .OGG file encoded with OPUS
+// (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots
+// can currently send voice messages of up to 50 MB in size, this limit may be changed in the
+// future.
+func (api *API) SendVoice(args *SendVoice) (*Message, error) {
+	return errors.New("not implemented")
+}
+
+// SetChatAdministratorCustomTitle
+// Use this method to set a custom title for an administrator in a supergroup promoted by the bot.
+// Returns True on success.
+func (api *API) SetChatAdministratorCustomTitle(args *SetChatAdministratorCustomTitle) error {
+	return errors.New("not implemented")
+}
+
+// SetChatDescription
+// Use this method to change the description of a group, a supergroup or a channel. The bot must be
+// an administrator in the chat for this to work and must have the appropriate admin rights.
+// Returns True on success.
+func (api *API) SetChatDescription(chatId IntStr, description string) error {
+	return errors.New("not implemented")
+}
+
+// SetChatPermissions
+// Use this method to set default chat permissions for all members. The bot must be an
+// administrator in the group or a supergroup for this to work and must have the
+// can_restrict_members admin rights. Returns True on success.
+func (api *API) SetChatPermissions(chatId IntStr, permissions ChatPermissions) error {
+	return errors.New("not implemented")
+}
+
+// SetChatPhoto
+// Use this method to set a new profile photo for the chat. Photos can't be changed for private
+// chats. The bot must be an administrator in the chat for this to work and must have the
+// appropriate admin rights. Returns True on success.
+func (api *API) SetChatPhoto(chatId IntStr, photo InputFile) error {
+	return errors.New("not implemented")
+}
+
+// SetChatStickerSet
+// Use this method to set a new group sticker set for a supergroup. The bot must be an
+// administrator in the chat for this to work and must have the appropriate admin rights. Use the
+// field can_set_sticker_set optionally returned in getChat requests to check if the bot can use
+// this method. Returns True on success.
+func (api *API) SetChatStickerSet(chatId IntStr, stickerSetName string) error {
+	return errors.New("not implemented")
+}
+
+// SetChatTitle
+// Use this method to change the title of a chat. Titles can't be changed for private chats. The
+// bot must be an administrator in the chat for this to work and must have the appropriate admin
+// rights. Returns True on success.
+func (api *API) SetChatTitle(chatId IntStr, title string) error {
+	return errors.New("not implemented")
+}
+
+// SetGameScore
+// Use this method to set the score of the specified user in a game. On success, if the message was
+// sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the
+// new score is not greater than the user's current score in the chat and force is False.
+func (api *API) SetGameScore(args *SetGameScore) (*Message, error) {
+	return errors.New("not implemented")
+}
+
+// SetMyCommands
+// Use this method to change the list of the bot's commands. Returns True on success.
+func (api *API) SetMyCommands(commands []BotCommand) error {
+	return errors.New("not implemented")
+}
+
+// SetPassportDataErrors
+// Informs a user that some of the Telegram Passport elements they provided contains errors. The
+// user will not be able to re-submit their Passport to you until the errors are fixed (the
+// contents of the field for which you returned the error must change). Returns True on success.
+func (api *API) SetPassportDataErrors(errors []PassportElementError, userId int64) error {
+	return errors.New("not implemented")
+}
+
+// SetStickerPositionInSet
+// Use this method to move a sticker in a set created by the bot to a specific position. Returns
+// True on success.
+func (api *API) SetStickerPositionInSet(position int64, sticker string) error {
+	return errors.New("not implemented")
+}
+
+// SetStickerSetThumb
+// Use this method to set the thumbnail of a sticker set. Animated thumbnails can be set for
+// animated sticker sets only. Returns True on success.
+func (api *API) SetStickerSetThumb(args *SetStickerSetThumb) error {
+	return errors.New("not implemented")
+}
+
+// SetWebhook
+// Use this method to specify a url and receive incoming updates via an outgoing webhook. Whenever
+// there is an update for the bot, we will send an HTTPS POST request to the specified url,
+// containing a JSON-serialized Update. In case of an unsuccessful request, we will give up after a
+// reasonable amount of attempts. Returns True on success.
+func (api *API) SetWebhook(args *SetWebhook) error {
+	return errors.New("not implemented")
+}
+
+// StopMessageLiveLocation
+// Use this method to stop updating a live location message before live_period expires. On success,
+// if the message was sent by the bot, the sent Message is returned, otherwise True is returned.
+func (api *API) StopMessageLiveLocation(args *StopMessageLiveLocation) (*Message, error) {
+	return errors.New("not implemented")
+}
+
+// StopPoll
+// Use this method to stop a poll which was sent by the bot. On success, the stopped Poll with the
+// final results is returned.
+func (api *API) StopPoll(args *StopPoll) (*Poll, error) {
+	return errors.New("not implemented")
+}
+
 // UnbanChatMember
 // Use this method to unban a previously kicked user in a supergroup or channel. The user will not
 // return to the group or channel automatically, but will be able to join via link, etc. The bot
 // must be an administrator for this to work. Returns True on success.
-type UnbanChatMember struct {
-	// ChatId
-	// Unique identifier for the target group or username of the target supergroup or channel (in
-	// the format @username)
-	ChatId int64 `json:"chat_id"`
-	// UserId
-	// Unique identifier of the target user
-	UserId int64 `json:"user_id"`
+func (api *API) UnbanChatMember(chatId IntStr, userId int64) error {
+	return errors.New("not implemented")
 }
 
 // UnpinChatMessage
 // Use this method to unpin a message in a group, a supergroup, or a channel. The bot must be an
 // administrator in the chat for this to work and must have the 'can_pin_messages' admin right in
 // the supergroup or 'can_edit_messages' admin right in the channel. Returns True on success.
-type UnpinChatMessage struct {
-	// ChatId
-	// Unique identifier for the target chat or username of the target channel (in the format
-	// @channelusername)
-	ChatId int64 `json:"chat_id"`
+func (api *API) UnpinChatMessage(chatId IntStr) error {
+	return errors.New("not implemented")
 }
 
 // UploadStickerFile
 // Use this method to upload a .PNG file with a sticker for later use in createNewStickerSet and
 // addStickerToSet methods (can be used multiple times). Returns the uploaded File on success.
-type UploadStickerFile struct {
-	// PngSticker
-	// PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed
-	// 512px, and either width or height must be exactly 512px.
-	PngSticker InputFile `json:"png_sticker"`
-	// UserId
-	// User identifier of sticker file owner
-	UserId int64 `json:"user_id"`
+func (api *API) UploadStickerFile(pngSticker InputFile, userId int64) (*File, error) {
+	return errors.New("not implemented")
 }

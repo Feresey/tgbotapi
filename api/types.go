@@ -498,7 +498,7 @@ type ForceReply struct {
 	// ForceReply
 	// Shows reply interface to the user, as if they manually selected the bot's message and tapped
 	// 'Reply'
-	ForceReply truebool `json:"force_reply"`
+	ForceReply True `json:"force_reply"`
 	// Selective
 	// Use this parameter if you want to force reply from specific users only. Targets: 1) users
 	// that are @mentioned in the text of the Message object; 2) if the bot's message is a reply
@@ -1438,7 +1438,7 @@ type InputFile struct {
 	// ChatId
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
-	ChatId int64 `json:"chat_id"`
+	ChatId IntStr `json:"chat_id"`
 	// Text
 	// Text of the message to be sent, 1-4096 characters after entities parsing
 	Text string `json:"text"`
@@ -1454,7 +1454,7 @@ type InputFile struct {
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageId
 	// If the message is a reply, ID of the original message
 	ReplyToMessageId *int64 `json:"reply_to_message_id,omitempty"`
@@ -1525,7 +1525,7 @@ type InputMediaAnimation struct {
 	// using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new
 	// file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using
 	// multipart/form-data under <file_attach_name>.
-	Thumb *InputFile `json:"thumb,omitempty"`
+	Thumb *InputDataType `json:"thumb,omitempty"`
 	// Width
 	// Animation width
 	Width *int64 `json:"width,omitempty"`
@@ -1562,7 +1562,7 @@ type InputMediaAudio struct {
 	// using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new
 	// file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using
 	// multipart/form-data under <file_attach_name>.
-	Thumb *InputFile `json:"thumb,omitempty"`
+	Thumb *InputDataType `json:"thumb,omitempty"`
 	// Title
 	// Title of the audio
 	Title *string `json:"title,omitempty"`
@@ -1593,7 +1593,7 @@ type InputMediaDocument struct {
 	// using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new
 	// file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using
 	// multipart/form-data under <file_attach_name>.
-	Thumb *InputFile `json:"thumb,omitempty"`
+	Thumb *InputDataType `json:"thumb,omitempty"`
 }
 
 // InputMediaPhoto
@@ -1650,7 +1650,7 @@ type InputMediaVideo struct {
 	// using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new
 	// file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using
 	// multipart/form-data under <file_attach_name>.
-	Thumb *InputFile `json:"thumb,omitempty"`
+	Thumb *InputDataType `json:"thumb,omitempty"`
 	// Width
 	// Video width
 	Width *int64 `json:"width,omitempty"`
@@ -1872,7 +1872,7 @@ type Message struct {
 	// coming through updates, because bot can't be a member of a channel when it is created. It
 	// can only be found in reply_to_message if someone replies to a very first message in a
 	// channel.
-	ChannelChatCreated *truebool `json:"channel_chat_created,omitempty"`
+	ChannelChatCreated *True `json:"channel_chat_created,omitempty"`
 	// ConnectedWebsite
 	// The domain name of the website on which the user has logged in. More about Telegram Login »
 	ConnectedWebsite *string `json:"connected_website,omitempty"`
@@ -1881,7 +1881,7 @@ type Message struct {
 	Contact *Contact `json:"contact,omitempty"`
 	// DeleteChatPhoto
 	// Service message: the chat photo was deleted
-	DeleteChatPhoto *truebool `json:"delete_chat_photo,omitempty"`
+	DeleteChatPhoto *True `json:"delete_chat_photo,omitempty"`
 	// Dice
 	// Message is a dice with random value from 1 to 6
 	Dice *Dice `json:"dice,omitempty"`
@@ -1922,7 +1922,7 @@ type Message struct {
 	Game *Game `json:"game,omitempty"`
 	// GroupChatCreated
 	// Service message: the group has been created
-	GroupChatCreated *truebool `json:"group_chat_created,omitempty"`
+	GroupChatCreated *True `json:"group_chat_created,omitempty"`
 	// Invoice
 	// Message is an invoice for a payment, information about the invoice. More about payments »
 	Invoice *Invoice `json:"invoice,omitempty"`
@@ -1991,7 +1991,7 @@ type Message struct {
 	// coming through updates, because bot can't be a member of a supergroup when it is created. It
 	// can only be found in reply_to_message if someone replies to a very first message in a
 	// directly created supergroup.
-	SupergroupChatCreated *truebool `json:"supergroup_chat_created,omitempty"`
+	SupergroupChatCreated *True `json:"supergroup_chat_created,omitempty"`
 	// Text
 	// For text messages, the actual UTF-8 text of the message, 0-4096 characters
 	Text *string `json:"text,omitempty"`
@@ -2529,7 +2529,7 @@ type ReplyKeyboardRemove struct {
 	// Requests clients to remove the custom keyboard (user will not be able to summon this
 	// keyboard; if you want to hide the keyboard from sight but keep it accessible, use
 	// one_time_keyboard in ReplyKeyboardMarkup)
-	RemoveKeyboard truebool `json:"remove_keyboard"`
+	RemoveKeyboard True `json:"remove_keyboard"`
 	// Selective
 	// Use this parameter if you want to remove the keyboard for specific users only. Targets: 1)
 	// users that are @mentioned in the text of the Message object; 2) if the bot's message is a

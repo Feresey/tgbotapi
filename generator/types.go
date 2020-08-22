@@ -11,20 +11,31 @@ func (t TypeMapping) GoType() string {
 		return t.SplitArray()
 	}
 	switch t {
-	case "str":
+	case "str", "String":
 		return "string"
-	case "int":
+	case "int", "Int":
 		// Ну на самом деле chat_id должен быть int64, а message_id и int хватит.
 		return "int64"
-	case "Float", "Float number":
+	case "Float", "float":
 		return "float64"
-	case "True":
-		// метод не может ничего не возвращать. Поэтому он возаращает что-то.
-		return "truebool"
 	case "InputMediaPhoto and InputMediaVideo":
 		return "InputMediaGraphics"
+		// retarded parsing
+	case "Messages":
+		return " Message"
 	}
 	return string(t)
+}
+
+func (t TypeMapping) IsSimpleType() bool {
+	switch t {
+	case "str", "String":
+		return true
+	case "int":
+		return true
+	default:
+		return false
+	}
 }
 
 func (t TypeMapping) IsArray() bool { return strings.HasPrefix(string(t), "array(") }
@@ -61,10 +72,11 @@ type Type struct {
 }
 
 type Method struct {
-	Arguments   map[string]Field `json:"arguments"`
-	Returns     *TypeMapping     `json:"returns"`
-	Description Description      `json:"description"`
-	Category    string           `json:"category"`
+	Arguments map[string]Field `json:"arguments"`
+	// null available
+	Returns     *TypeMapping `json:"returns"`
+	Description Description  `json:"description"`
+	Category    string       `json:"category"`
 }
 type Article struct {
 	Description

@@ -9,18 +9,14 @@ const Version = "{{.Version}}"
 type {{camel $typename}} struct {
 {{- range $idx, $put_required := $.RequiredOrder}}
 {{- range $field_name, $field_desc := $desc.Fields}}
-	{{- $type := (index $field_desc.Types 0)}}
-	{{- $gotype := $type.GoType}}
-	{{- if eq $field_name "type"}}{{$gotype = (camel (print (first $typename) "_type"))}}{{end}}
+	{{- $type := get_type $field_name $typename $field_desc.Types }}
 
 	{{- if eq $field_desc.Required $put_required}}
 	// {{camel $field_name}}
 	// {{format $field_desc.Description.PlainText 1}}
-		{{- if $field_desc.Required}}
-	{{camel $field_name}} {{$gotype}} `json:"{{$field_name}}"`
-		{{- else}}
-	{{camel $field_name}} {{if not $type.IsArray}}*{{end}}{{$gotype}} `json:"{{$field_name}},omitempty"`
-		{{- end}}
+	{{camel $field_name}} {{if and (not $type.IsArray) (not $field_desc.Required) -}}
+			*{{end -}}
+		{{- $type.GoType}} `json:"{{$field_name}}{{if not $field_desc.Required}},omitempty{{end}}"`
 	{{- end}}
 {{- end}}
 {{- end}}
