@@ -43,9 +43,7 @@ args *{{camel $method}}
 {{- end -}}
 *Response, error) {
 {{- if not (gt (len $desc.Arguments) 2)}}
-	{{- if eq (len $desc.Arguments) 0}}
-	var args interface{}
-	{{- else}}
+	{{- if gt (len $desc.Arguments) 0}}
 	args := struct {
 		{{- range $argname, $arg := $desc.Arguments}}
 		{{camel $argname}} {{(get_type $argname $method $arg.Types).GoType}} `json:"{{$argname}}{{if not $arg.Required}},omitempty{{end}}"`
@@ -60,7 +58,7 @@ args *{{camel $method}}
 	{{- if $returns}}
 	resp, err :=
 	{{- else}}
-	return {{end}} api.MakeRequest("{{$method}}", args)
+	return {{end}} api.MakeRequest("{{$method}}",{{- if eq (len $desc.Arguments) 0}}nil{{else}}args{{end}})
 	{{- if $returns}}
 	if err != nil {
 		return {{if $returns}}{{default_return $desc.Returns}}, {{end}}nil, err

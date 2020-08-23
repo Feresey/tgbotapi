@@ -1242,8 +1242,7 @@ func (api *API) DeleteStickerFromSet(sticker string) (*Response, error) {
 // Use this method to remove webhook integration if you decide to switch back to getUpdates.
 // Returns True on success. Requires no parameters.
 func (api *API) DeleteWebhook() (*Response, error) {
-	var args interface{}
-	return api.MakeRequest("deleteWebhook", args)
+	return api.MakeRequest("deleteWebhook", nil)
 }
 
 // EditMessageCaption
@@ -1461,8 +1460,7 @@ func (api *API) GetGameHighScores(args *GetGameHighScores) ([]GameHighScore, *Re
 // A simple method for testing your bot's auth token. Requires no parameters. Returns basic
 // information about the bot in form of a User object.
 func (api *API) GetMe() (*User, *Response, error) {
-	var args interface{}
-	resp, err := api.MakeRequest("getMe", args)
+	resp, err := api.MakeRequest("getMe", nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -1475,8 +1473,7 @@ func (api *API) GetMe() (*User, *Response, error) {
 // Use this method to get the current list of the bot's commands. Requires no parameters. Returns
 // Array of BotCommand on success.
 func (api *API) GetMyCommands() ([]BotCommand, *Response, error) {
-	var args interface{}
-	resp, err := api.MakeRequest("getMyCommands", args)
+	resp, err := api.MakeRequest("getMyCommands", nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -1533,8 +1530,7 @@ func (api *API) GetUserProfilePhotos(args *GetUserProfilePhotos) (*UserProfilePh
 // WebhookInfo object. If the bot is using getUpdates, will return an object with the url field
 // empty.
 func (api *API) GetWebhookInfo() (*WebhookInfo, *Response, error) {
-	var args interface{}
-	resp, err := api.MakeRequest("getWebhookInfo", args)
+	resp, err := api.MakeRequest("getWebhookInfo", nil)
 	if err != nil {
 		return nil, nil, err
 	}

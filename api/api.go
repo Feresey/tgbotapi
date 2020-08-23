@@ -36,11 +36,15 @@ type API struct {
 	endpoint string
 }
 
-func New(token string) *API {
+func NewWithEndpointAndClient(token, endpoint string, cli *http.Client) *API {
 	return &API{
-		cli:      http.DefaultClient,
-		endpoint: fmt.Sprintf("%s/bot%s", APIEndpoint, token),
+		cli:      cli,
+		endpoint: fmt.Sprintf("%s/bot%s", endpoint, token),
 	}
+}
+
+func New(token string) *API {
+	return NewWithEndpointAndClient(token, APIEndpoint, http.DefaultClient)
 }
 
 // MakeRequest makes a request to a specific endpoint with our token.
