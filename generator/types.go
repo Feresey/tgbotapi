@@ -24,7 +24,7 @@ func (t TypeMapping) GoType() string {
 	case "Messages":
 		return " Message"
 	}
-	return string(t)
+	return rename(string(t))
 }
 
 func (t TypeMapping) IsSimpleType() bool {
@@ -62,7 +62,7 @@ type Field struct {
 type Description struct {
 	PlainText string `json:"plaintext"`
 	Markdown  string `json:"markdown"`
-	Html      string `json:"html"`
+	HTML      string `json:"html"`
 }
 
 type Type struct {
@@ -84,7 +84,7 @@ type Article struct {
 	Category string `json:"category"`
 }
 
-type ApiSchema struct {
+type APISchema struct {
 	Articles map[string]Article `json:"articles"`
 	Methods  map[string]Method  `json:"methods"`
 	Types    map[string]Type    `json:"types"`

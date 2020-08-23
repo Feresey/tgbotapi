@@ -22,14 +22,14 @@ const (
 {{$indexMap := print "index" $typename -}}
 
 var {{$valueMap}} = map[{{$typename}}]string {
-{{- range $idx, $value := $values}}
-	{{inc $idx}} : "{{$value}}",
+{{- range $values}}
+	{{$typename}}{{camel .}} : "{{.}}",
 {{- end}}
 }
 
 var {{$indexMap}} = map[string]{{$typename}} {
-{{- range $idx, $value := $values}}
-	"{{$value}}" : {{inc $idx}},
+{{- range $values}}
+	"{{.}}" : {{$typename}}{{camel .}},
 {{- end}}
 }
 

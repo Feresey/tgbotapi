@@ -4,12 +4,14 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
+	"net/url"
 )
 
 const APIEndpoint = "https://api.telegram.org"
 
-type APIResponse struct {
+type Response struct {
 	Ok          bool               `json:"ok"`
 	Result      json.RawMessage    `json:"result"`
 	Description string             `json:"description,omitempty"`
@@ -42,23 +44,32 @@ func New(token string) *API {
 }
 
 // MakeRequest makes a request to a specific endpoint with our token.
-func (api *API) MakeRequest(method string, data interface{}) (*APIResponse, error) {
+func (api *API) MakeRequest(method string, data interface{}) (*Response, error) {
 	body, err := json.Marshal(data)
 	if err != nil {
 		return nil, err
 	}
+	u, err := url.Parse(fmt.Sprintf("%s/%s", api.endpoint, method))
+	if err != nil {
+		return nil, err
+	}
 
-	resp, err := api.cli.Post(
-		fmt.Sprintf("%s/%s", api.endpoint, method),
-		"application/json",
-		bytes.NewReader(body),
-	)
+	req := &http.Request{
+		Method: http.MethodPost,
+		Body:   ioutil.NopCloser(bytes.NewReader(body)),
+		Header: http.Header{
+			"Content-Type": []string{"application/json"},
+		},
+		URL: u,
+		// context?
+	}
+	resp, err := api.cli.Do(req)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
 
-	var apiResp APIResponse
+	var apiResp Response
 	if err := json.NewDecoder(resp.Body).Decode(&apiResp); err != nil {
 		return &apiResp, err
 	}

@@ -56,7 +56,7 @@ func TestUnmarshal(t *testing.T) {
 		return
 	}
 
-	var decoded ApiSchema
+	var decoded APISchema
 	err = json.Unmarshal(raw, &decoded)
 	require.NoError(t, err)
 

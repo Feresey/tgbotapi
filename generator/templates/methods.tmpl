@@ -41,7 +41,7 @@ args *{{camel $method}}
 		{{- $returns = true}}
 	{{- end}}
 {{- end -}}
-*APIResponse, error) {
+*Response, error) {
 {{- if not (gt (len $desc.Arguments) 2)}}
 	{{- if eq (len $desc.Arguments) 0}}
 	var args interface{}
