@@ -22,7 +22,7 @@ type AddStickerToSet struct {
 	// 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send
 	// a file that already exists on the Telegram servers, pass an HTTP URL as a String for
 	// Telegram to get a file from the Internet, or upload a new one using multipart/form-data.
-	PngSticker *InputDataType `json:"png_sticker,omitempty"`
+	PngSticker InputDataType `json:"png_sticker,omitempty"`
 	// TgsSticker
 	// TGS animation with the sticker, uploaded using multipart/form-data. See
 	// https://core.telegram.org/animated_stickers#technical-requirements for technical
@@ -37,21 +37,21 @@ type AnswerCallbackQuery struct {
 	// CacheTime
 	// The maximum amount of time in seconds that the result of the callback query may be cached
 	// client-side. Telegram apps will support caching starting in version 3.14. Defaults to 0.
-	CacheTime *int64 `json:"cache_time,omitempty"`
+	CacheTime int64 `json:"cache_time,omitempty"`
 	// ShowAlert
 	// If true, an alert will be shown by the client instead of a notification at the top of the
 	// chat screen. Defaults to false.
-	ShowAlert *bool `json:"show_alert,omitempty"`
+	ShowAlert bool `json:"show_alert,omitempty"`
 	// Text
 	// Text of the notification. If not specified, nothing will be shown to the user, 0-200
 	// characters
-	Text *string `json:"text,omitempty"`
+	Text string `json:"text,omitempty"`
 	// URL
 	// URL that will be opened by the user's client. If you have created a Game and accepted the
 	// conditions via @Botfather, specify the URL that opens your game - note that this will only
 	// work if the query comes from a callback_game button.Otherwise, you may use links like
 	// t.me/your_bot?start=XXXX that open your bot with a parameter.
-	URL *string `json:"url,omitempty"`
+	URL string `json:"url,omitempty"`
 }
 
 type AnswerInlineQuery struct {
@@ -64,16 +64,16 @@ type AnswerInlineQuery struct {
 	// CacheTime
 	// The maximum amount of time in seconds that the result of the inline query may be cached on
 	// the server. Defaults to 300.
-	CacheTime *int64 `json:"cache_time,omitempty"`
+	CacheTime int64 `json:"cache_time,omitempty"`
 	// IsPersonal
 	// Pass True, if results may be cached on the server side only for the user that sent the
 	// query. By default, results may be returned to any user who sends the same query
-	IsPersonal *bool `json:"is_personal,omitempty"`
+	IsPersonal bool `json:"is_personal,omitempty"`
 	// NextOffset
 	// Pass the offset that a client should send in the next query with the same text to receive
 	// more results. Pass an empty string if there are no more results or if you don't support
 	// pagination. Offset length can't exceed 64 bytes.
-	NextOffset *string `json:"next_offset,omitempty"`
+	NextOffset string `json:"next_offset,omitempty"`
 	// SwitchPmParameter
 	// Deep-linking parameter for the /start message sent to the bot when user presses the switch
 	// button. 1-64 characters, only A-Z, a-z, 0-9, _ and - are allowed. Example: An inline bot
@@ -83,12 +83,12 @@ type AnswerInlineQuery struct {
 	// to a private chat with the bot and, in doing so, passes a start parameter that instructs the
 	// bot to return an oauth link. Once done, the bot can offer a switch_inline button so that the
 	// user can easily return to the chat where they wanted to use the bot's inline capabilities.
-	SwitchPmParameter *string `json:"switch_pm_parameter,omitempty"`
+	SwitchPmParameter string `json:"switch_pm_parameter,omitempty"`
 	// SwitchPmText
 	// If passed, clients will display a button with specified text that switches the user to a
 	// private chat with the bot and sends the bot a start message with the parameter
 	// switch_pm_parameter
-	SwitchPmText *string `json:"switch_pm_text,omitempty"`
+	SwitchPmText string `json:"switch_pm_text,omitempty"`
 }
 
 type AnswerPreCheckoutQuery struct {
@@ -104,7 +104,7 @@ type AnswerPreCheckoutQuery struct {
 	// failure to proceed with the checkout (e.g. "Sorry, somebody just bought the last of our
 	// amazing black T-shirts while you were busy filling out your payment details. Please choose a
 	// different color or garment!"). Telegram will display this message to the user.
-	ErrorMessage *string `json:"error_message,omitempty"`
+	ErrorMessage string `json:"error_message,omitempty"`
 }
 
 type AnswerShippingQuery struct {
@@ -119,10 +119,10 @@ type AnswerShippingQuery struct {
 	// Required if ok is False. Error message in human readable form that explains why it is
 	// impossible to complete the order (e.g. "Sorry, delivery to your desired address is
 	// unavailable'). Telegram will display this message to the user.
-	ErrorMessage *string `json:"error_message,omitempty"`
+	ErrorMessage string `json:"error_message,omitempty"`
 	// ShippingOptions
 	// Required if ok is True. A JSON-serialized array of available shipping options.
-	ShippingOptions []ShippingOption `json:"shipping_options,omitempty"`
+	ShippingOptions *[]ShippingOption `json:"shipping_options,omitempty"`
 }
 
 type CreateNewStickerSet struct {
@@ -143,7 +143,7 @@ type CreateNewStickerSet struct {
 	UserID int64 `json:"user_id"`
 	// ContainsMasks
 	// Pass True, if a set of mask stickers should be created
-	ContainsMasks *bool `json:"contains_masks,omitempty"`
+	ContainsMasks bool `json:"contains_masks,omitempty"`
 	// MaskPosition
 	// A JSON-serialized object for position where the mask should be placed on faces
 	MaskPosition *MaskPosition `json:"mask_position,omitempty"`
@@ -152,7 +152,7 @@ type CreateNewStickerSet struct {
 	// 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send
 	// a file that already exists on the Telegram servers, pass an HTTP URL as a String for
 	// Telegram to get a file from the Internet, or upload a new one using multipart/form-data.
-	PngSticker *InputDataType `json:"png_sticker,omitempty"`
+	PngSticker InputDataType `json:"png_sticker,omitempty"`
 	// TgsSticker
 	// TGS animation with the sticker, uploaded using multipart/form-data. See
 	// https://core.telegram.org/animated_stickers#technical-requirements for technical
@@ -163,20 +163,20 @@ type CreateNewStickerSet struct {
 type EditMessageCaption struct {
 	// Caption
 	// New caption of the message, 0-1024 characters after entities parsing
-	Caption *string `json:"caption,omitempty"`
+	Caption string `json:"caption,omitempty"`
 	// ChatID
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
-	ChatID *IntStr `json:"chat_id,omitempty"`
+	ChatID IntStr `json:"chat_id,omitempty"`
 	// InlineMessageID
 	// Required if chat_id and message_id are not specified. Identifier of the inline message
-	InlineMessageID *string `json:"inline_message_id,omitempty"`
+	InlineMessageID string `json:"inline_message_id,omitempty"`
 	// MessageID
 	// Required if inline_message_id is not specified. Identifier of the message to edit
-	MessageID *int64 `json:"message_id,omitempty"`
+	MessageID int64 `json:"message_id,omitempty"`
 	// ParseMode
 	// Mode for parsing entities in the message caption. See formatting options for more details.
-	ParseMode *string `json:"parse_mode,omitempty"`
+	ParseMode string `json:"parse_mode,omitempty"`
 	// ReplyMarkup
 	// A JSON-serialized object for an inline keyboard.
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
@@ -192,13 +192,13 @@ type EditMessageLiveLocation struct {
 	// ChatID
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
-	ChatID *IntStr `json:"chat_id,omitempty"`
+	ChatID IntStr `json:"chat_id,omitempty"`
 	// InlineMessageID
 	// Required if chat_id and message_id are not specified. Identifier of the inline message
-	InlineMessageID *string `json:"inline_message_id,omitempty"`
+	InlineMessageID string `json:"inline_message_id,omitempty"`
 	// MessageID
 	// Required if inline_message_id is not specified. Identifier of the message to edit
-	MessageID *int64 `json:"message_id,omitempty"`
+	MessageID int64 `json:"message_id,omitempty"`
 	// ReplyMarkup
 	// A JSON-serialized object for a new inline keyboard.
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
@@ -211,13 +211,13 @@ type EditMessageMedia struct {
 	// ChatID
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
-	ChatID *IntStr `json:"chat_id,omitempty"`
+	ChatID IntStr `json:"chat_id,omitempty"`
 	// InlineMessageID
 	// Required if chat_id and message_id are not specified. Identifier of the inline message
-	InlineMessageID *string `json:"inline_message_id,omitempty"`
+	InlineMessageID string `json:"inline_message_id,omitempty"`
 	// MessageID
 	// Required if inline_message_id is not specified. Identifier of the message to edit
-	MessageID *int64 `json:"message_id,omitempty"`
+	MessageID int64 `json:"message_id,omitempty"`
 	// ReplyMarkup
 	// A JSON-serialized object for a new inline keyboard.
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
@@ -227,13 +227,13 @@ type EditMessageReplyMarkup struct {
 	// ChatID
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
-	ChatID *IntStr `json:"chat_id,omitempty"`
+	ChatID IntStr `json:"chat_id,omitempty"`
 	// InlineMessageID
 	// Required if chat_id and message_id are not specified. Identifier of the inline message
-	InlineMessageID *string `json:"inline_message_id,omitempty"`
+	InlineMessageID string `json:"inline_message_id,omitempty"`
 	// MessageID
 	// Required if inline_message_id is not specified. Identifier of the message to edit
-	MessageID *int64 `json:"message_id,omitempty"`
+	MessageID int64 `json:"message_id,omitempty"`
 	// ReplyMarkup
 	// A JSON-serialized object for an inline keyboard.
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
@@ -246,19 +246,19 @@ type EditMessageText struct {
 	// ChatID
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
-	ChatID *IntStr `json:"chat_id,omitempty"`
+	ChatID IntStr `json:"chat_id,omitempty"`
 	// DisableWebPagePreview
 	// Disables link previews for links in this message
-	DisableWebPagePreview *bool `json:"disable_web_page_preview,omitempty"`
+	DisableWebPagePreview bool `json:"disable_web_page_preview,omitempty"`
 	// InlineMessageID
 	// Required if chat_id and message_id are not specified. Identifier of the inline message
-	InlineMessageID *string `json:"inline_message_id,omitempty"`
+	InlineMessageID string `json:"inline_message_id,omitempty"`
 	// MessageID
 	// Required if inline_message_id is not specified. Identifier of the message to edit
-	MessageID *int64 `json:"message_id,omitempty"`
+	MessageID int64 `json:"message_id,omitempty"`
 	// ParseMode
 	// Mode for parsing entities in the message text. See formatting options for more details.
-	ParseMode *string `json:"parse_mode,omitempty"`
+	ParseMode string `json:"parse_mode,omitempty"`
 	// ReplyMarkup
 	// A JSON-serialized object for an inline keyboard.
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
@@ -278,7 +278,7 @@ type ForwardMessage struct {
 	MessageID int64 `json:"message_id"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
-	DisableNotification *bool `json:"disable_notification,omitempty"`
+	DisableNotification bool `json:"disable_notification,omitempty"`
 }
 
 type GetGameHighScores struct {
@@ -287,13 +287,13 @@ type GetGameHighScores struct {
 	UserID int64 `json:"user_id"`
 	// ChatID
 	// Required if inline_message_id is not specified. Unique identifier for the target chat
-	ChatID *int64 `json:"chat_id,omitempty"`
+	ChatID int64 `json:"chat_id,omitempty"`
 	// InlineMessageID
 	// Required if chat_id and message_id are not specified. Identifier of the inline message
-	InlineMessageID *string `json:"inline_message_id,omitempty"`
+	InlineMessageID string `json:"inline_message_id,omitempty"`
 	// MessageID
 	// Required if inline_message_id is not specified. Identifier of the sent message
-	MessageID *int64 `json:"message_id,omitempty"`
+	MessageID int64 `json:"message_id,omitempty"`
 }
 
 type GetUpdates struct {
@@ -304,11 +304,11 @@ type GetUpdates struct {
 	// to receive all updates regardless of type (default). If not specified, the previous setting
 	// will be used.Please note that this parameter doesn't affect updates created before the call
 	// to the getUpdates, so unwanted updates may be received for a short period of time.
-	AllowedUpdates []string `json:"allowed_updates,omitempty"`
+	AllowedUpdates *[]string `json:"allowed_updates,omitempty"`
 	// Limit
 	// Limits the number of updates to be retrieved. Values between 1-100 are accepted. Defaults to
 	// 100.
-	Limit *int64 `json:"limit,omitempty"`
+	Limit int64 `json:"limit,omitempty"`
 	// Offset
 	// Identifier of the first update to be returned. Must be greater by one than the highest among
 	// the identifiers of previously received updates. By default, updates starting with the
@@ -316,11 +316,11 @@ type GetUpdates struct {
 	// getUpdates is called with an offset higher than its update_id. The negative offset can be
 	// specified to retrieve updates starting from -offset update from the end of the updates
 	// queue. All previous updates will forgotten.
-	Offset *int64 `json:"offset,omitempty"`
+	Offset int64 `json:"offset,omitempty"`
 	// Timeout
 	// Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling. Should be
 	// positive, short polling should be used for testing purposes only.
-	Timeout *int64 `json:"timeout,omitempty"`
+	Timeout int64 `json:"timeout,omitempty"`
 }
 
 type GetUserProfilePhotos struct {
@@ -330,10 +330,10 @@ type GetUserProfilePhotos struct {
 	// Limit
 	// Limits the number of photos to be retrieved. Values between 1-100 are accepted. Defaults to
 	// 100.
-	Limit *int64 `json:"limit,omitempty"`
+	Limit int64 `json:"limit,omitempty"`
 	// Offset
 	// Sequential number of the first photo to be returned. By default, all photos are returned.
-	Offset *int64 `json:"offset,omitempty"`
+	Offset int64 `json:"offset,omitempty"`
 }
 
 type KickChatMember struct {
@@ -347,7 +347,7 @@ type KickChatMember struct {
 	// UntilDate
 	// Date when the user will be unbanned, unix time. If user is banned for more than 366 days or
 	// less than 30 seconds from the current time they are considered to be banned forever
-	UntilDate *int64 `json:"until_date,omitempty"`
+	UntilDate int64 `json:"until_date,omitempty"`
 }
 
 type PinChatMessage struct {
@@ -361,7 +361,7 @@ type PinChatMessage struct {
 	// DisableNotification
 	// Pass True, if it is not necessary to send a notification to all chat members about the new
 	// pinned message. Notifications are always disabled in channels.
-	DisableNotification *bool `json:"disable_notification,omitempty"`
+	DisableNotification bool `json:"disable_notification,omitempty"`
 }
 
 type PromoteChatMember struct {
@@ -374,31 +374,31 @@ type PromoteChatMember struct {
 	UserID int64 `json:"user_id"`
 	// CanChangeInfo
 	// Pass True, if the administrator can change chat title, photo and other settings
-	CanChangeInfo *bool `json:"can_change_info,omitempty"`
+	CanChangeInfo bool `json:"can_change_info,omitempty"`
 	// CanDeleteMessages
 	// Pass True, if the administrator can delete messages of other users
-	CanDeleteMessages *bool `json:"can_delete_messages,omitempty"`
+	CanDeleteMessages bool `json:"can_delete_messages,omitempty"`
 	// CanEditMessages
 	// Pass True, if the administrator can edit messages of other users and can pin messages,
 	// channels only
-	CanEditMessages *bool `json:"can_edit_messages,omitempty"`
+	CanEditMessages bool `json:"can_edit_messages,omitempty"`
 	// CanInviteUsers
 	// Pass True, if the administrator can invite new users to the chat
-	CanInviteUsers *bool `json:"can_invite_users,omitempty"`
+	CanInviteUsers bool `json:"can_invite_users,omitempty"`
 	// CanPinMessages
 	// Pass True, if the administrator can pin messages, supergroups only
-	CanPinMessages *bool `json:"can_pin_messages,omitempty"`
+	CanPinMessages bool `json:"can_pin_messages,omitempty"`
 	// CanPostMessages
 	// Pass True, if the administrator can create channel posts, channels only
-	CanPostMessages *bool `json:"can_post_messages,omitempty"`
+	CanPostMessages bool `json:"can_post_messages,omitempty"`
 	// CanPromoteMembers
 	// Pass True, if the administrator can add new administrators with a subset of their own
 	// privileges or demote administrators that he has promoted, directly or indirectly (promoted
 	// by administrators that were appointed by him)
-	CanPromoteMembers *bool `json:"can_promote_members,omitempty"`
+	CanPromoteMembers bool `json:"can_promote_members,omitempty"`
 	// CanRestrictMembers
 	// Pass True, if the administrator can restrict, ban or unban chat members
-	CanRestrictMembers *bool `json:"can_restrict_members,omitempty"`
+	CanRestrictMembers bool `json:"can_restrict_members,omitempty"`
 }
 
 type RestrictChatMember struct {
@@ -416,7 +416,7 @@ type RestrictChatMember struct {
 	// Date when restrictions will be lifted for the user, unix time. If user is restricted for
 	// more than 366 days or less than 30 seconds from the current time, they are considered to be
 	// restricted forever
-	UntilDate *int64 `json:"until_date,omitempty"`
+	UntilDate int64 `json:"until_date,omitempty"`
 }
 
 type SendAnimation struct {
@@ -432,26 +432,26 @@ type SendAnimation struct {
 	// Caption
 	// Animation caption (may also be used when resending animation by file_id), 0-1024 characters
 	// after entities parsing
-	Caption *string `json:"caption,omitempty"`
+	Caption string `json:"caption,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
-	DisableNotification *bool `json:"disable_notification,omitempty"`
+	DisableNotification bool `json:"disable_notification,omitempty"`
 	// Duration
 	// Duration of sent animation in seconds
-	Duration *int64 `json:"duration,omitempty"`
+	Duration int64 `json:"duration,omitempty"`
 	// Height
 	// Animation height
-	Height *int64 `json:"height,omitempty"`
+	Height int64 `json:"height,omitempty"`
 	// ParseMode
 	// Mode for parsing entities in the animation caption. See formatting options for more details.
-	ParseMode *string `json:"parse_mode,omitempty"`
+	ParseMode string `json:"parse_mode,omitempty"`
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageID
 	// If the message is a reply, ID of the original message
-	ReplyToMessageID *int64 `json:"reply_to_message_id,omitempty"`
+	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 	// Thumb
 	// Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported
 	// server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A
@@ -459,10 +459,10 @@ type SendAnimation struct {
 	// using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new
 	// file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using
 	// multipart/form-data under <file_attach_name>.
-	Thumb *InputDataType `json:"thumb,omitempty"`
+	Thumb InputDataType `json:"thumb,omitempty"`
 	// Width
 	// Animation width
-	Width *int64 `json:"width,omitempty"`
+	Width int64 `json:"width,omitempty"`
 }
 
 type SendAudio struct {
@@ -477,26 +477,26 @@ type SendAudio struct {
 	ChatID IntStr `json:"chat_id"`
 	// Caption
 	// Audio caption, 0-1024 characters after entities parsing
-	Caption *string `json:"caption,omitempty"`
+	Caption string `json:"caption,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
-	DisableNotification *bool `json:"disable_notification,omitempty"`
+	DisableNotification bool `json:"disable_notification,omitempty"`
 	// Duration
 	// Duration of the audio in seconds
-	Duration *int64 `json:"duration,omitempty"`
+	Duration int64 `json:"duration,omitempty"`
 	// ParseMode
 	// Mode for parsing entities in the audio caption. See formatting options for more details.
-	ParseMode *string `json:"parse_mode,omitempty"`
+	ParseMode string `json:"parse_mode,omitempty"`
 	// Performer
 	// Performer
-	Performer *string `json:"performer,omitempty"`
+	Performer string `json:"performer,omitempty"`
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageID
 	// If the message is a reply, ID of the original message
-	ReplyToMessageID *int64 `json:"reply_to_message_id,omitempty"`
+	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 	// Thumb
 	// Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported
 	// server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A
@@ -504,10 +504,10 @@ type SendAudio struct {
 	// using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new
 	// file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using
 	// multipart/form-data under <file_attach_name>.
-	Thumb *InputDataType `json:"thumb,omitempty"`
+	Thumb InputDataType `json:"thumb,omitempty"`
 	// Title
 	// Track name
-	Title *string `json:"title,omitempty"`
+	Title string `json:"title,omitempty"`
 }
 
 type SendContact struct {
@@ -523,20 +523,20 @@ type SendContact struct {
 	PhoneNumber string `json:"phone_number"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
-	DisableNotification *bool `json:"disable_notification,omitempty"`
+	DisableNotification bool `json:"disable_notification,omitempty"`
 	// LastName
 	// Contact's last name
-	LastName *string `json:"last_name,omitempty"`
+	LastName string `json:"last_name,omitempty"`
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove keyboard or to force a reply from the user.
-	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageID
 	// If the message is a reply, ID of the original message
-	ReplyToMessageID *int64 `json:"reply_to_message_id,omitempty"`
+	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 	// Vcard
 	// Additional data about the contact in the form of a vCard, 0-2048 bytes
-	Vcard *string `json:"vcard,omitempty"`
+	Vcard string `json:"vcard,omitempty"`
 }
 
 type SendDice struct {
@@ -546,18 +546,18 @@ type SendDice struct {
 	ChatID IntStr `json:"chat_id"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
-	DisableNotification *bool `json:"disable_notification,omitempty"`
+	DisableNotification bool `json:"disable_notification,omitempty"`
 	// Emoji
 	// Emoji on which the dice throw animation is based. Currently, must be one of "", "", or "".
 	// Dice can have values 1-6 for "" and "", and values 1-5 for "". Defaults to ""
-	Emoji *string `json:"emoji,omitempty"`
+	Emoji string `json:"emoji,omitempty"`
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageID
 	// If the message is a reply, ID of the original message
-	ReplyToMessageID *int64 `json:"reply_to_message_id,omitempty"`
+	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 }
 
 type SendDocument struct {
@@ -573,20 +573,20 @@ type SendDocument struct {
 	// Caption
 	// Document caption (may also be used when resending documents by file_id), 0-1024 characters
 	// after entities parsing
-	Caption *string `json:"caption,omitempty"`
+	Caption string `json:"caption,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
-	DisableNotification *bool `json:"disable_notification,omitempty"`
+	DisableNotification bool `json:"disable_notification,omitempty"`
 	// ParseMode
 	// Mode for parsing entities in the document caption. See formatting options for more details.
-	ParseMode *string `json:"parse_mode,omitempty"`
+	ParseMode string `json:"parse_mode,omitempty"`
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageID
 	// If the message is a reply, ID of the original message
-	ReplyToMessageID *int64 `json:"reply_to_message_id,omitempty"`
+	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 	// Thumb
 	// Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported
 	// server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A
@@ -594,7 +594,7 @@ type SendDocument struct {
 	// using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new
 	// file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using
 	// multipart/form-data under <file_attach_name>.
-	Thumb *InputDataType `json:"thumb,omitempty"`
+	Thumb InputDataType `json:"thumb,omitempty"`
 }
 
 type SendGame struct {
@@ -607,14 +607,14 @@ type SendGame struct {
 	GameShortName string `json:"game_short_name"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
-	DisableNotification *bool `json:"disable_notification,omitempty"`
+	DisableNotification bool `json:"disable_notification,omitempty"`
 	// ReplyMarkup
 	// A JSON-serialized object for an inline keyboard. If empty, one 'Play game_title' button will
 	// be shown. If not empty, the first button must launch the game.
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageID
 	// If the message is a reply, ID of the original message
-	ReplyToMessageID *int64 `json:"reply_to_message_id,omitempty"`
+	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 }
 
 type SendInvoice struct {
@@ -647,52 +647,52 @@ type SendInvoice struct {
 	Title string `json:"title"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
-	DisableNotification *bool `json:"disable_notification,omitempty"`
+	DisableNotification bool `json:"disable_notification,omitempty"`
 	// IsFlexible
 	// Pass True, if the final price depends on the shipping method
-	IsFlexible *bool `json:"is_flexible,omitempty"`
+	IsFlexible bool `json:"is_flexible,omitempty"`
 	// NeedEmail
 	// Pass True, if you require the user's email address to complete the order
-	NeedEmail *bool `json:"need_email,omitempty"`
+	NeedEmail bool `json:"need_email,omitempty"`
 	// NeedName
 	// Pass True, if you require the user's full name to complete the order
-	NeedName *bool `json:"need_name,omitempty"`
+	NeedName bool `json:"need_name,omitempty"`
 	// NeedPhoneNumber
 	// Pass True, if you require the user's phone number to complete the order
-	NeedPhoneNumber *bool `json:"need_phone_number,omitempty"`
+	NeedPhoneNumber bool `json:"need_phone_number,omitempty"`
 	// NeedShippingAddress
 	// Pass True, if you require the user's shipping address to complete the order
-	NeedShippingAddress *bool `json:"need_shipping_address,omitempty"`
+	NeedShippingAddress bool `json:"need_shipping_address,omitempty"`
 	// PhotoHeight
 	// Photo height
-	PhotoHeight *int64 `json:"photo_height,omitempty"`
+	PhotoHeight int64 `json:"photo_height,omitempty"`
 	// PhotoSize
 	// Photo size
-	PhotoSize *int64 `json:"photo_size,omitempty"`
+	PhotoSize int64 `json:"photo_size,omitempty"`
 	// PhotoURL
 	// URL of the product photo for the invoice. Can be a photo of the goods or a marketing image
 	// for a service. People like it better when they see what they are paying for.
-	PhotoURL *string `json:"photo_url,omitempty"`
+	PhotoURL string `json:"photo_url,omitempty"`
 	// PhotoWidth
 	// Photo width
-	PhotoWidth *int64 `json:"photo_width,omitempty"`
+	PhotoWidth int64 `json:"photo_width,omitempty"`
 	// ProviderData
 	// A JSON-serialized data about the invoice, which will be shared with the payment provider. A
 	// detailed description of required fields should be provided by the payment provider.
-	ProviderData *string `json:"provider_data,omitempty"`
+	ProviderData string `json:"provider_data,omitempty"`
 	// ReplyMarkup
 	// A JSON-serialized object for an inline keyboard. If empty, one 'Pay total price' button will
 	// be shown. If not empty, the first button must be a Pay button.
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageID
 	// If the message is a reply, ID of the original message
-	ReplyToMessageID *int64 `json:"reply_to_message_id,omitempty"`
+	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 	// SendEmailToProvider
 	// Pass True, if user's email address should be sent to provider
-	SendEmailToProvider *bool `json:"send_email_to_provider,omitempty"`
+	SendEmailToProvider bool `json:"send_email_to_provider,omitempty"`
 	// SendPhoneNumberToProvider
 	// Pass True, if user's phone number should be sent to provider
-	SendPhoneNumberToProvider *bool `json:"send_phone_number_to_provider,omitempty"`
+	SendPhoneNumberToProvider bool `json:"send_phone_number_to_provider,omitempty"`
 }
 
 type SendLocation struct {
@@ -708,18 +708,18 @@ type SendLocation struct {
 	Longitude float64 `json:"longitude"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
-	DisableNotification *bool `json:"disable_notification,omitempty"`
+	DisableNotification bool `json:"disable_notification,omitempty"`
 	// LivePeriod
 	// Period in seconds for which the location will be updated (see Live Locations, should be
 	// between 60 and 86400.
-	LivePeriod *int64 `json:"live_period,omitempty"`
+	LivePeriod int64 `json:"live_period,omitempty"`
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageID
 	// If the message is a reply, ID of the original message
-	ReplyToMessageID *int64 `json:"reply_to_message_id,omitempty"`
+	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 }
 
 type SendMediaGroup struct {
@@ -732,10 +732,10 @@ type SendMediaGroup struct {
 	Media []InputMediaGraphics `json:"media"`
 	// DisableNotification
 	// Sends the messages silently. Users will receive a notification with no sound.
-	DisableNotification *bool `json:"disable_notification,omitempty"`
+	DisableNotification bool `json:"disable_notification,omitempty"`
 	// ReplyToMessageID
 	// If the messages are a reply, ID of the original message
-	ReplyToMessageID *int64 `json:"reply_to_message_id,omitempty"`
+	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 }
 
 type SendMessage struct {
@@ -748,20 +748,20 @@ type SendMessage struct {
 	Text string `json:"text"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
-	DisableNotification *bool `json:"disable_notification,omitempty"`
+	DisableNotification bool `json:"disable_notification,omitempty"`
 	// DisableWebPagePreview
 	// Disables link previews for links in this message
-	DisableWebPagePreview *bool `json:"disable_web_page_preview,omitempty"`
+	DisableWebPagePreview bool `json:"disable_web_page_preview,omitempty"`
 	// ParseMode
 	// Mode for parsing entities in the message text. See formatting options for more details.
-	ParseMode *string `json:"parse_mode,omitempty"`
+	ParseMode string `json:"parse_mode,omitempty"`
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageID
 	// If the message is a reply, ID of the original message
-	ReplyToMessageID *int64 `json:"reply_to_message_id,omitempty"`
+	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 }
 
 type SendPhoto struct {
@@ -777,20 +777,20 @@ type SendPhoto struct {
 	// Caption
 	// Photo caption (may also be used when resending photos by file_id), 0-1024 characters after
 	// entities parsing
-	Caption *string `json:"caption,omitempty"`
+	Caption string `json:"caption,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
-	DisableNotification *bool `json:"disable_notification,omitempty"`
+	DisableNotification bool `json:"disable_notification,omitempty"`
 	// ParseMode
 	// Mode for parsing entities in the photo caption. See formatting options for more details.
-	ParseMode *string `json:"parse_mode,omitempty"`
+	ParseMode string `json:"parse_mode,omitempty"`
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageID
 	// If the message is a reply, ID of the original message
-	ReplyToMessageID *int64 `json:"reply_to_message_id,omitempty"`
+	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 }
 
 type SendPoll struct {
@@ -806,41 +806,41 @@ type SendPoll struct {
 	Question string `json:"question"`
 	// AllowsMultipleAnswers
 	// True, if the poll allows multiple answers, ignored for polls in quiz mode, defaults to False
-	AllowsMultipleAnswers *bool `json:"allows_multiple_answers,omitempty"`
+	AllowsMultipleAnswers bool `json:"allows_multiple_answers,omitempty"`
 	// CloseDate
 	// Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least
 	// 5 and no more than 600 seconds in the future. Can't be used together with open_period.
-	CloseDate *int64 `json:"close_date,omitempty"`
+	CloseDate int64 `json:"close_date,omitempty"`
 	// CorrectOptionID
 	// 0-based identifier of the correct answer option, required for polls in quiz mode
-	CorrectOptionID *int64 `json:"correct_option_id,omitempty"`
+	CorrectOptionID int64 `json:"correct_option_id,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
-	DisableNotification *bool `json:"disable_notification,omitempty"`
+	DisableNotification bool `json:"disable_notification,omitempty"`
 	// Explanation
 	// Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a
 	// quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing
-	Explanation *string `json:"explanation,omitempty"`
+	Explanation string `json:"explanation,omitempty"`
 	// ExplanationParseMode
 	// Mode for parsing entities in the explanation. See formatting options for more details.
-	ExplanationParseMode *string `json:"explanation_parse_mode,omitempty"`
+	ExplanationParseMode string `json:"explanation_parse_mode,omitempty"`
 	// IsAnonymous
 	// True, if the poll needs to be anonymous, defaults to True
-	IsAnonymous *bool `json:"is_anonymous,omitempty"`
+	IsAnonymous bool `json:"is_anonymous,omitempty"`
 	// IsClosed
 	// Pass True, if the poll needs to be immediately closed. This can be useful for poll preview.
-	IsClosed *bool `json:"is_closed,omitempty"`
+	IsClosed bool `json:"is_closed,omitempty"`
 	// OpenPeriod
 	// Amount of time in seconds the poll will be active after creation, 5-600. Can't be used
 	// together with close_date.
-	OpenPeriod *int64 `json:"open_period,omitempty"`
+	OpenPeriod int64 `json:"open_period,omitempty"`
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageID
 	// If the message is a reply, ID of the original message
-	ReplyToMessageID *int64 `json:"reply_to_message_id,omitempty"`
+	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 	// Type
 	// Poll type, "quiz" or "regular", defaults to "regular"
 	Type *SendType `json:"type,omitempty"`
@@ -858,14 +858,14 @@ type SendSticker struct {
 	Sticker InputDataType `json:"sticker"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
-	DisableNotification *bool `json:"disable_notification,omitempty"`
+	DisableNotification bool `json:"disable_notification,omitempty"`
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageID
 	// If the message is a reply, ID of the original message
-	ReplyToMessageID *int64 `json:"reply_to_message_id,omitempty"`
+	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 }
 
 type SendVenue struct {
@@ -887,21 +887,21 @@ type SendVenue struct {
 	Title string `json:"title"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
-	DisableNotification *bool `json:"disable_notification,omitempty"`
+	DisableNotification bool `json:"disable_notification,omitempty"`
 	// FoursquareID
 	// Foursquare identifier of the venue
-	FoursquareID *string `json:"foursquare_id,omitempty"`
+	FoursquareID string `json:"foursquare_id,omitempty"`
 	// FoursquareType
 	// Foursquare type of the venue, if known. (For example, "arts_entertainment/default",
 	// "arts_entertainment/aquarium" or "food/icecream".)
-	FoursquareType *string `json:"foursquare_type,omitempty"`
+	FoursquareType string `json:"foursquare_type,omitempty"`
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageID
 	// If the message is a reply, ID of the original message
-	ReplyToMessageID *int64 `json:"reply_to_message_id,omitempty"`
+	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 }
 
 type SendVideo struct {
@@ -917,29 +917,29 @@ type SendVideo struct {
 	// Caption
 	// Video caption (may also be used when resending videos by file_id), 0-1024 characters after
 	// entities parsing
-	Caption *string `json:"caption,omitempty"`
+	Caption string `json:"caption,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
-	DisableNotification *bool `json:"disable_notification,omitempty"`
+	DisableNotification bool `json:"disable_notification,omitempty"`
 	// Duration
 	// Duration of sent video in seconds
-	Duration *int64 `json:"duration,omitempty"`
+	Duration int64 `json:"duration,omitempty"`
 	// Height
 	// Video height
-	Height *int64 `json:"height,omitempty"`
+	Height int64 `json:"height,omitempty"`
 	// ParseMode
 	// Mode for parsing entities in the video caption. See formatting options for more details.
-	ParseMode *string `json:"parse_mode,omitempty"`
+	ParseMode string `json:"parse_mode,omitempty"`
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageID
 	// If the message is a reply, ID of the original message
-	ReplyToMessageID *int64 `json:"reply_to_message_id,omitempty"`
+	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 	// SupportsStreaming
 	// Pass True, if the uploaded video is suitable for streaming
-	SupportsStreaming *bool `json:"supports_streaming,omitempty"`
+	SupportsStreaming bool `json:"supports_streaming,omitempty"`
 	// Thumb
 	// Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported
 	// server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A
@@ -947,10 +947,10 @@ type SendVideo struct {
 	// using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new
 	// file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using
 	// multipart/form-data under <file_attach_name>.
-	Thumb *InputDataType `json:"thumb,omitempty"`
+	Thumb InputDataType `json:"thumb,omitempty"`
 	// Width
 	// Video width
-	Width *int64 `json:"width,omitempty"`
+	Width int64 `json:"width,omitempty"`
 }
 
 type SendVideoNote struct {
@@ -965,20 +965,20 @@ type SendVideoNote struct {
 	VideoNote InputDataType `json:"video_note"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
-	DisableNotification *bool `json:"disable_notification,omitempty"`
+	DisableNotification bool `json:"disable_notification,omitempty"`
 	// Duration
 	// Duration of sent video in seconds
-	Duration *int64 `json:"duration,omitempty"`
+	Duration int64 `json:"duration,omitempty"`
 	// Length
 	// Video width and height, i.e. diameter of the video message
-	Length *int64 `json:"length,omitempty"`
+	Length int64 `json:"length,omitempty"`
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageID
 	// If the message is a reply, ID of the original message
-	ReplyToMessageID *int64 `json:"reply_to_message_id,omitempty"`
+	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 	// Thumb
 	// Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported
 	// server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A
@@ -986,7 +986,7 @@ type SendVideoNote struct {
 	// using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new
 	// file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using
 	// multipart/form-data under <file_attach_name>.
-	Thumb *InputDataType `json:"thumb,omitempty"`
+	Thumb InputDataType `json:"thumb,omitempty"`
 }
 
 type SendVoice struct {
@@ -1001,24 +1001,24 @@ type SendVoice struct {
 	Voice InputDataType `json:"voice"`
 	// Caption
 	// Voice message caption, 0-1024 characters after entities parsing
-	Caption *string `json:"caption,omitempty"`
+	Caption string `json:"caption,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
-	DisableNotification *bool `json:"disable_notification,omitempty"`
+	DisableNotification bool `json:"disable_notification,omitempty"`
 	// Duration
 	// Duration of the voice message in seconds
-	Duration *int64 `json:"duration,omitempty"`
+	Duration int64 `json:"duration,omitempty"`
 	// ParseMode
 	// Mode for parsing entities in the voice message caption. See formatting options for more
 	// details.
-	ParseMode *string `json:"parse_mode,omitempty"`
+	ParseMode string `json:"parse_mode,omitempty"`
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
+	ReplyMarkup ReplyMarkup `json:"reply_markup,omitempty"`
 	// ReplyToMessageID
 	// If the message is a reply, ID of the original message
-	ReplyToMessageID *int64 `json:"reply_to_message_id,omitempty"`
+	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 }
 
 type SetChatAdministratorCustomTitle struct {
@@ -1043,21 +1043,21 @@ type SetGameScore struct {
 	UserID int64 `json:"user_id"`
 	// ChatID
 	// Required if inline_message_id is not specified. Unique identifier for the target chat
-	ChatID *int64 `json:"chat_id,omitempty"`
+	ChatID int64 `json:"chat_id,omitempty"`
 	// DisableEditMessage
 	// Pass True, if the game message should not be automatically edited to include the current
 	// scoreboard
-	DisableEditMessage *bool `json:"disable_edit_message,omitempty"`
+	DisableEditMessage bool `json:"disable_edit_message,omitempty"`
 	// Force
 	// Pass True, if the high score is allowed to decrease. This can be useful when fixing mistakes
 	// or banning cheaters
-	Force *bool `json:"force,omitempty"`
+	Force bool `json:"force,omitempty"`
 	// InlineMessageID
 	// Required if chat_id and message_id are not specified. Identifier of the inline message
-	InlineMessageID *string `json:"inline_message_id,omitempty"`
+	InlineMessageID string `json:"inline_message_id,omitempty"`
 	// MessageID
 	// Required if inline_message_id is not specified. Identifier of the sent message
-	MessageID *int64 `json:"message_id,omitempty"`
+	MessageID int64 `json:"message_id,omitempty"`
 }
 
 type SetStickerSetThumb struct {
@@ -1075,7 +1075,7 @@ type SetStickerSetThumb struct {
 	// Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet,
 	// or upload a new one using multipart/form-data. . Animated sticker set thumbnail can't be
 	// uploaded via HTTP URL.
-	Thumb *InputDataType `json:"thumb,omitempty"`
+	Thumb InputDataType `json:"thumb,omitempty"`
 }
 
 type SetWebhook struct {
@@ -1089,7 +1089,7 @@ type SetWebhook struct {
 	// to receive all updates regardless of type (default). If not specified, the previous setting
 	// will be used.Please note that this parameter doesn't affect updates created before the call
 	// to the setWebhook, so unwanted updates may be received for a short period of time.
-	AllowedUpdates []string `json:"allowed_updates,omitempty"`
+	AllowedUpdates *[]string `json:"allowed_updates,omitempty"`
 	// Certificate
 	// Upload your public key certificate so that the root certificate in use can be checked. See
 	// our self-signed guide for details.
@@ -1098,21 +1098,21 @@ type SetWebhook struct {
 	// Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery,
 	// 1-100. Defaults to 40. Use lower values to limit the load on your bot's server, and higher
 	// values to increase your bot's throughput.
-	MaxConnections *int64 `json:"max_connections,omitempty"`
+	MaxConnections int64 `json:"max_connections,omitempty"`
 }
 
 type StopMessageLiveLocation struct {
 	// ChatID
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
-	ChatID *IntStr `json:"chat_id,omitempty"`
+	ChatID IntStr `json:"chat_id,omitempty"`
 	// InlineMessageID
 	// Required if chat_id and message_id are not specified. Identifier of the inline message
-	InlineMessageID *string `json:"inline_message_id,omitempty"`
+	InlineMessageID string `json:"inline_message_id,omitempty"`
 	// MessageID
 	// Required if inline_message_id is not specified. Identifier of the message with live location
 	// to stop
-	MessageID *int64 `json:"message_id,omitempty"`
+	MessageID int64 `json:"message_id,omitempty"`
 	// ReplyMarkup
 	// A JSON-serialized object for a new inline keyboard.
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`

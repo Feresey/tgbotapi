@@ -29,12 +29,10 @@ func (t TypeMapping) GoType() string {
 
 func (t TypeMapping) IsSimpleType() bool {
 	switch t {
-	case "str", "String":
-		return true
-	case "int":
+	case "str", "String", "int", "bool":
 		return true
 	default:
-		return false
+		return isInterface(t)
 	}
 }
 

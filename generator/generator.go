@@ -62,6 +62,15 @@ func multitype(ss []TypeMapping) TypeMapping {
 	return ""
 }
 
+func isInterface(t TypeMapping) bool {
+	for _, name := range []TypeMapping{"ReplyMarkup", "InputDataType", "IntStr"} {
+		if t == name {
+			return true
+		}
+	}
+	return false
+}
+
 func getType(fieldName string, typeName string, types []TypeMapping) TypeMapping {
 	if len(types) > 1 {
 		return multitype(types)
@@ -101,6 +110,7 @@ func rename(s string) string {
 var funcs = template.FuncMap{
 	"default_return": defaultReturn,
 	"get_type":       getType,
+	"is_interface":   isInterface,
 	"camel":          func(s string) string { return rename(strcase.ToCamel(s)) },
 	"lowercamel":     func(s string) string { return rename(strcase.ToLowerCamel(s)) },
 	"first":          getEnumName,
