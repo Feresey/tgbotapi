@@ -20,13 +20,10 @@ jobs:
       - name: Build
         run: go build -v ./...
 
-  test:
-    runs-on: ubuntu-latest
     steps:
       - name: Test
         run: go test -v -race ./...
-  lint:
-    runs-on: ubuntu-latest
+
     steps:
       - name: Run golangci-lint
         run: go run github.com/golangci/golangci-lint/cmd/golangci-lint run
