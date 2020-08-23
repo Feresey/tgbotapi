@@ -20,10 +20,8 @@ jobs:
       - name: Build
         run: go build -v ./...
 
-    steps:
       - name: Test
         run: go test -v -race ./...
 
-    steps:
       - name: Run golangci-lint
         run: go run github.com/golangci/golangci-lint/cmd/golangci-lint run
