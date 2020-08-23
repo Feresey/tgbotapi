@@ -41,4 +41,4 @@ jobs:
       # uses: golangci/golangci-lint-action@04eca2038305127fb1e6683425b6864cd5612f2d
       uses: golangci/golangci-lint-action@v2.2.0
       with:
-        version: v2.2.0
+        version: v2.2
