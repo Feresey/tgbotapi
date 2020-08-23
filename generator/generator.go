@@ -75,12 +75,27 @@ func getType(fieldName string, typeName string, types []TypeMapping) TypeMapping
 	return types[0]
 }
 
+func defaultReturn(t TypeMapping) string {
+	if !t.IsSimpleType() {
+		return "nil"
+	}
+	switch t.GoType() {
+	case "string":
+		return `""`
+	case "int64":
+		return `0`
+	default:
+		return t.GoType()
+	}
+}
+
 var funcs = template.FuncMap{
-	"get_type":   getType,
-	"camel":      strcase.ToCamel,
-	"lowercamel": strcase.ToLowerCamel,
-	"first":      getEnumName,
-	"inc":        func(i int) int { return i + 1 },
+	"default_return": defaultReturn,
+	"get_type":       getType,
+	"camel":          strcase.ToCamel,
+	"lowercamel":     strcase.ToLowerCamel,
+	"first":          getEnumName,
+	"inc":            func(i int) int { return i + 1 },
 	"format": func(s string, tabs int) string {
 		s = strings.TrimPrefix(s, "Optional. ")
 		s = strings.ReplaceAll(s, ".Example", ".\nExample")

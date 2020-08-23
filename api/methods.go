@@ -2,7 +2,7 @@
 
 package api
 
-import "errors"
+import "encoding/json"
 
 type AddStickerToSet struct {
 	// Emojis
@@ -1136,23 +1136,23 @@ type StopPoll struct {
 // the fields png_sticker or tgs_sticker. Animated stickers can be added to animated sticker sets
 // and only to them. Animated sticker sets can have up to 50 stickers. Static sticker sets can have
 // up to 120 stickers. Returns True on success.
-func (api *API) AddStickerToSet(args *AddStickerToSet) error {
-	return errors.New("not implemented")
+func (api *API) AddStickerToSet(args *AddStickerToSet) (*APIResponse, error) {
+	return api.MakeRequest("addStickerToSet", args)
 }
 
 // AnswerCallbackQuery
 // Use this method to send answers to callback queries sent from inline keyboards. The answer will
 // be displayed to the user as a notification at the top of the chat screen or as an alert. On
 // success, True is returned.
-func (api *API) AnswerCallbackQuery(args *AnswerCallbackQuery) error {
-	return errors.New("not implemented")
+func (api *API) AnswerCallbackQuery(args *AnswerCallbackQuery) (*APIResponse, error) {
+	return api.MakeRequest("answerCallbackQuery", args)
 }
 
 // AnswerInlineQuery
 // Use this method to send answers to an inline query. On success, True is returned.No more than 50
 // results per query are allowed.
-func (api *API) AnswerInlineQuery(args *AnswerInlineQuery) error {
-	return errors.New("not implemented")
+func (api *API) AnswerInlineQuery(args *AnswerInlineQuery) (*APIResponse, error) {
+	return api.MakeRequest("answerInlineQuery", args)
 }
 
 // AnswerPreCheckoutQuery
@@ -1160,32 +1160,37 @@ func (api *API) AnswerInlineQuery(args *AnswerInlineQuery) error {
 // confirmation in the form of an Update with the field pre_checkout_query. Use this method to
 // respond to such pre-checkout queries. On success, True is returned. Note: The Bot API must
 // receive an answer within 10 seconds after the pre-checkout query was sent.
-func (api *API) AnswerPreCheckoutQuery(args *AnswerPreCheckoutQuery) error {
-	return errors.New("not implemented")
+func (api *API) AnswerPreCheckoutQuery(args *AnswerPreCheckoutQuery) (*APIResponse, error) {
+	return api.MakeRequest("answerPreCheckoutQuery", args)
 }
 
 // AnswerShippingQuery
 // If you sent an invoice requesting a shipping address and the parameter is_flexible was
 // specified, the Bot API will send an Update with a shipping_query field to the bot. Use this
 // method to reply to shipping queries. On success, True is returned.
-func (api *API) AnswerShippingQuery(args *AnswerShippingQuery) error {
-	return errors.New("not implemented")
+func (api *API) AnswerShippingQuery(args *AnswerShippingQuery) (*APIResponse, error) {
+	return api.MakeRequest("answerShippingQuery", args)
 }
 
 // CreateNewStickerSet
 // Use this method to create a new sticker set owned by a user. The bot will be able to edit the
 // sticker set thus created. You must use exactly one of the fields png_sticker or tgs_sticker.
 // Returns True on success.
-func (api *API) CreateNewStickerSet(args *CreateNewStickerSet) error {
-	return errors.New("not implemented")
+func (api *API) CreateNewStickerSet(args *CreateNewStickerSet) (*APIResponse, error) {
+	return api.MakeRequest("createNewStickerSet", args)
 }
 
 // DeleteChatPhoto
 // Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must
 // be an administrator in the chat for this to work and must have the appropriate admin rights.
 // Returns True on success.
-func (api *API) DeleteChatPhoto(chatId IntStr) error {
-	return errors.New("not implemented")
+func (api *API) DeleteChatPhoto(chatId IntStr) (*APIResponse, error) {
+	args := struct {
+		ChatId IntStr `json:"chat_id"`
+	}{
+		ChatId: chatId,
+	}
+	return api.MakeRequest("deleteChatPhoto", args)
 }
 
 // DeleteChatStickerSet
@@ -1193,8 +1198,13 @@ func (api *API) DeleteChatPhoto(chatId IntStr) error {
 // administrator in the chat for this to work and must have the appropriate admin rights. Use the
 // field can_set_sticker_set optionally returned in getChat requests to check if the bot can use
 // this method. Returns True on success.
-func (api *API) DeleteChatStickerSet(chatId IntStr) error {
-	return errors.New("not implemented")
+func (api *API) DeleteChatStickerSet(chatId IntStr) (*APIResponse, error) {
+	args := struct {
+		ChatId IntStr `json:"chat_id"`
+	}{
+		ChatId: chatId,
+	}
+	return api.MakeRequest("deleteChatStickerSet", args)
 }
 
 // DeleteMessage
@@ -1206,28 +1216,47 @@ func (api *API) DeleteChatStickerSet(chatId IntStr) error {
 // messages in channels.- If the bot is an administrator of a group, it can delete any message
 // there.- If the bot has can_delete_messages permission in a supergroup or a channel, it can
 // delete any message there.Returns True on success.
-func (api *API) DeleteMessage(chatId IntStr, messageId int64) error {
-	return errors.New("not implemented")
+func (api *API) DeleteMessage(chatId IntStr, messageId int64) (*APIResponse, error) {
+	args := struct {
+		ChatId    IntStr `json:"chat_id"`
+		MessageId int64  `json:"message_id"`
+	}{
+		ChatId:    chatId,
+		MessageId: messageId,
+	}
+	return api.MakeRequest("deleteMessage", args)
 }
 
 // DeleteStickerFromSet
 // Use this method to delete a sticker from a set created by the bot. Returns True on success.
-func (api *API) DeleteStickerFromSet(sticker string) error {
-	return errors.New("not implemented")
+func (api *API) DeleteStickerFromSet(sticker string) (*APIResponse, error) {
+	args := struct {
+		Sticker string `json:"sticker"`
+	}{
+		Sticker: sticker,
+	}
+	return api.MakeRequest("deleteStickerFromSet", args)
 }
 
 // DeleteWebhook
 // Use this method to remove webhook integration if you decide to switch back to getUpdates.
 // Returns True on success. Requires no parameters.
-func (api *API) DeleteWebhook() error {
-	return errors.New("not implemented")
+func (api *API) DeleteWebhook() (*APIResponse, error) {
+	var args interface{}
+	return api.MakeRequest("deleteWebhook", args)
 }
 
 // EditMessageCaption
 // Use this method to edit captions of messages. On success, if edited message is sent by the bot,
 // the edited Message is returned, otherwise True is returned.
-func (api *API) EditMessageCaption(args *EditMessageCaption) (*Message, error) {
-	return errors.New("not implemented")
+func (api *API) EditMessageCaption(args *EditMessageCaption) (*Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("editMessageCaption", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // EditMessageLiveLocation
@@ -1235,8 +1264,14 @@ func (api *API) EditMessageCaption(args *EditMessageCaption) (*Message, error) {
 // expires or editing is explicitly disabled by a call to stopMessageLiveLocation. On success, if
 // the edited message was sent by the bot, the edited Message is returned, otherwise True is
 // returned.
-func (api *API) EditMessageLiveLocation(args *EditMessageLiveLocation) (*Message, error) {
-	return errors.New("not implemented")
+func (api *API) EditMessageLiveLocation(args *EditMessageLiveLocation) (*Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("editMessageLiveLocation", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // EditMessageMedia
@@ -1245,44 +1280,90 @@ func (api *API) EditMessageLiveLocation(args *EditMessageLiveLocation) (*Message
 // type can be changed arbitrarily. When inline message is edited, new file can't be uploaded. Use
 // previously uploaded file via its file_id or specify a URL. On success, if the edited message was
 // sent by the bot, the edited Message is returned, otherwise True is returned.
-func (api *API) EditMessageMedia(args *EditMessageMedia) (*Message, error) {
-	return errors.New("not implemented")
+func (api *API) EditMessageMedia(args *EditMessageMedia) (*Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("editMessageMedia", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // EditMessageReplyMarkup
 // Use this method to edit only the reply markup of messages. On success, if edited message is sent
 // by the bot, the edited Message is returned, otherwise True is returned.
-func (api *API) EditMessageReplyMarkup(args *EditMessageReplyMarkup) (*Message, error) {
-	return errors.New("not implemented")
+func (api *API) EditMessageReplyMarkup(args *EditMessageReplyMarkup) (*Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("editMessageReplyMarkup", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // EditMessageText
 // Use this method to edit text and game messages. On success, if edited message is sent by the
 // bot, the edited Message is returned, otherwise True is returned.
-func (api *API) EditMessageText(args *EditMessageText) (*Message, error) {
-	return errors.New("not implemented")
+func (api *API) EditMessageText(args *EditMessageText) (*Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("editMessageText", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // ExportChatInviteLink
 // Use this method to generate a new invite link for a chat; any previously generated link is
 // revoked. The bot must be an administrator in the chat for this to work and must have the
 // appropriate admin rights. Returns the new invite link as String on success.
-func (api *API) ExportChatInviteLink(chatId IntStr) (string, error) {
-	return errors.New("not implemented")
+func (api *API) ExportChatInviteLink(chatId IntStr) (string, *APIResponse, error) {
+	args := struct {
+		ChatId IntStr `json:"chat_id"`
+	}{
+		ChatId: chatId,
+	}
+	resp, err := api.MakeRequest("exportChatInviteLink", args)
+	if err != nil {
+		return "", nil, err
+	}
+	var data string
+	err = json.Unmarshal(resp.Result, &data)
+	return data, resp, err
 }
 
 // ForwardMessage
 // Use this method to forward messages of any kind. On success, the sent Message is returned.
-func (api *API) ForwardMessage(args *ForwardMessage) (*Message, error) {
-	return errors.New("not implemented")
+func (api *API) ForwardMessage(args *ForwardMessage) (*Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("forwardMessage", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // GetChat
 // Use this method to get up to date information about the chat (current name of the user for
 // one-on-one conversations, current username of a user, group or channel, etc.). Returns a Chat
 // object on success.
-func (api *API) GetChat(chatId IntStr) (*Chat, error) {
-	return errors.New("not implemented")
+func (api *API) GetChat(chatId IntStr) (*Chat, *APIResponse, error) {
+	args := struct {
+		ChatId IntStr `json:"chat_id"`
+	}{
+		ChatId: chatId,
+	}
+	resp, err := api.MakeRequest("getChat", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Chat
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // GetChatAdministrators
@@ -1290,21 +1371,56 @@ func (api *API) GetChat(chatId IntStr) (*Chat, error) {
 // ChatMember objects that contains information about all chat administrators except other bots. If
 // the chat is a group or a supergroup and no administrators were appointed, only the creator will
 // be returned.
-func (api *API) GetChatAdministrators(chatId IntStr) ([]ChatMember, error) {
-	return errors.New("not implemented")
+func (api *API) GetChatAdministrators(chatId IntStr) ([]ChatMember, *APIResponse, error) {
+	args := struct {
+		ChatId IntStr `json:"chat_id"`
+	}{
+		ChatId: chatId,
+	}
+	resp, err := api.MakeRequest("getChatAdministrators", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data []ChatMember
+	err = json.Unmarshal(resp.Result, &data)
+	return data, resp, err
 }
 
 // GetChatMember
 // Use this method to get information about a member of a chat. Returns a ChatMember object on
 // success.
-func (api *API) GetChatMember(chatId IntStr, userId int64) (*ChatMember, error) {
-	return errors.New("not implemented")
+func (api *API) GetChatMember(chatId IntStr, userId int64) (*ChatMember, *APIResponse, error) {
+	args := struct {
+		ChatId IntStr `json:"chat_id"`
+		UserId int64  `json:"user_id"`
+	}{
+		ChatId: chatId,
+		UserId: userId,
+	}
+	resp, err := api.MakeRequest("getChatMember", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data ChatMember
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // GetChatMembersCount
 // Use this method to get the number of members in a chat. Returns Int on success.
-func (api *API) GetChatMembersCount(chatId IntStr) (int64, error) {
-	return errors.New("not implemented")
+func (api *API) GetChatMembersCount(chatId IntStr) (int64, *APIResponse, error) {
+	args := struct {
+		ChatId IntStr `json:"chat_id"`
+	}{
+		ChatId: chatId,
+	}
+	resp, err := api.MakeRequest("getChatMembersCount", args)
+	if err != nil {
+		return 0, nil, err
+	}
+	var data int64
+	err = json.Unmarshal(resp.Result, &data)
+	return data, resp, err
 }
 
 // GetFile
@@ -1313,57 +1429,118 @@ func (api *API) GetChatMembersCount(chatId IntStr) (int64, error) {
 // can then be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>, where
 // <file_path> is taken from the response. It is guaranteed that the link will be valid for at
 // least 1 hour. When the link expires, a new one can be requested by calling getFile again.
-func (api *API) GetFile(fileId string) (*File, error) {
-	return errors.New("not implemented")
+func (api *API) GetFile(fileId string) (*File, *APIResponse, error) {
+	args := struct {
+		FileId string `json:"file_id"`
+	}{
+		FileId: fileId,
+	}
+	resp, err := api.MakeRequest("getFile", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data File
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // GetGameHighScores
 // Use this method to get data for high score tables. Will return the score of the specified user
 // and several of their neighbors in a game. On success, returns an Array of GameHighScore objects.
-func (api *API) GetGameHighScores(args *GetGameHighScores) ([]GameHighScore, error) {
-	return errors.New("not implemented")
+func (api *API) GetGameHighScores(args *GetGameHighScores) ([]GameHighScore, *APIResponse, error) {
+	resp, err := api.MakeRequest("getGameHighScores", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data []GameHighScore
+	err = json.Unmarshal(resp.Result, &data)
+	return data, resp, err
 }
 
 // GetMe
 // A simple method for testing your bot's auth token. Requires no parameters. Returns basic
 // information about the bot in form of a User object.
-func (api *API) GetMe() (*User, error) {
-	return errors.New("not implemented")
+func (api *API) GetMe() (*User, *APIResponse, error) {
+	var args interface{}
+	resp, err := api.MakeRequest("getMe", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data User
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // GetMyCommands
 // Use this method to get the current list of the bot's commands. Requires no parameters. Returns
 // Array of BotCommand on success.
-func (api *API) GetMyCommands() ([]BotCommand, error) {
-	return errors.New("not implemented")
+func (api *API) GetMyCommands() ([]BotCommand, *APIResponse, error) {
+	var args interface{}
+	resp, err := api.MakeRequest("getMyCommands", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data []BotCommand
+	err = json.Unmarshal(resp.Result, &data)
+	return data, resp, err
 }
 
 // GetStickerSet
 // Use this method to get a sticker set. On success, a StickerSet object is returned.
-func (api *API) GetStickerSet(name string) (*StickerSet, error) {
-	return errors.New("not implemented")
+func (api *API) GetStickerSet(name string) (*StickerSet, *APIResponse, error) {
+	args := struct {
+		Name string `json:"name"`
+	}{
+		Name: name,
+	}
+	resp, err := api.MakeRequest("getStickerSet", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data StickerSet
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // GetUpdates
 // Use this method to receive incoming updates using long polling (wiki). An Array of Update
 // objects is returned.
-func (api *API) GetUpdates(args *GetUpdates) ([]Update, error) {
-	return errors.New("not implemented")
+func (api *API) GetUpdates(args *GetUpdates) ([]Update, *APIResponse, error) {
+	resp, err := api.MakeRequest("getUpdates", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data []Update
+	err = json.Unmarshal(resp.Result, &data)
+	return data, resp, err
 }
 
 // GetUserProfilePhotos
 // Use this method to get a list of profile pictures for a user. Returns a UserProfilePhotos
 // object.
-func (api *API) GetUserProfilePhotos(args *GetUserProfilePhotos) (*UserProfilePhotos, error) {
-	return errors.New("not implemented")
+func (api *API) GetUserProfilePhotos(args *GetUserProfilePhotos) (*UserProfilePhotos, *APIResponse, error) {
+	resp, err := api.MakeRequest("getUserProfilePhotos", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data UserProfilePhotos
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // GetWebhookInfo
 // Use this method to get current webhook status. Requires no parameters. On success, returns a
 // WebhookInfo object. If the bot is using getUpdates, will return an object with the url field
 // empty.
-func (api *API) GetWebhookInfo() (*WebhookInfo, error) {
-	return errors.New("not implemented")
+func (api *API) GetWebhookInfo() (*WebhookInfo, *APIResponse, error) {
+	var args interface{}
+	resp, err := api.MakeRequest("getWebhookInfo", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data WebhookInfo
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // KickChatMember
@@ -1371,46 +1548,57 @@ func (api *API) GetWebhookInfo() (*WebhookInfo, error) {
 // supergroups and channels, the user will not be able to return to the group on their own using
 // invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this
 // to work and must have the appropriate admin rights. Returns True on success.
-func (api *API) KickChatMember(args *KickChatMember) error {
-	return errors.New("not implemented")
+func (api *API) KickChatMember(args *KickChatMember) (*APIResponse, error) {
+	return api.MakeRequest("kickChatMember", args)
 }
 
 // LeaveChat
 // Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
-func (api *API) LeaveChat(chatId IntStr) error {
-	return errors.New("not implemented")
+func (api *API) LeaveChat(chatId IntStr) (*APIResponse, error) {
+	args := struct {
+		ChatId IntStr `json:"chat_id"`
+	}{
+		ChatId: chatId,
+	}
+	return api.MakeRequest("leaveChat", args)
 }
 
 // PinChatMessage
 // Use this method to pin a message in a group, a supergroup, or a channel. The bot must be an
 // administrator in the chat for this to work and must have the 'can_pin_messages' admin right in
 // the supergroup or 'can_edit_messages' admin right in the channel. Returns True on success.
-func (api *API) PinChatMessage(args *PinChatMessage) error {
-	return errors.New("not implemented")
+func (api *API) PinChatMessage(args *PinChatMessage) (*APIResponse, error) {
+	return api.MakeRequest("pinChatMessage", args)
 }
 
 // PromoteChatMember
 // Use this method to promote or demote a user in a supergroup or a channel. The bot must be an
 // administrator in the chat for this to work and must have the appropriate admin rights. Pass
 // False for all boolean parameters to demote a user. Returns True on success.
-func (api *API) PromoteChatMember(args *PromoteChatMember) error {
-	return errors.New("not implemented")
+func (api *API) PromoteChatMember(args *PromoteChatMember) (*APIResponse, error) {
+	return api.MakeRequest("promoteChatMember", args)
 }
 
 // RestrictChatMember
 // Use this method to restrict a user in a supergroup. The bot must be an administrator in the
 // supergroup for this to work and must have the appropriate admin rights. Pass True for all
 // permissions to lift restrictions from a user. Returns True on success.
-func (api *API) RestrictChatMember(args *RestrictChatMember) error {
-	return errors.New("not implemented")
+func (api *API) RestrictChatMember(args *RestrictChatMember) (*APIResponse, error) {
+	return api.MakeRequest("restrictChatMember", args)
 }
 
 // SendAnimation
 // Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On
 // success, the sent Message is returned. Bots can currently send animation files of up to 50 MB in
 // size, this limit may be changed in the future.
-func (api *API) SendAnimation(args *SendAnimation) (*Message, error) {
-	return errors.New("not implemented")
+func (api *API) SendAnimation(args *SendAnimation) (*Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("sendAnimation", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // SendAudio
@@ -1418,108 +1606,205 @@ func (api *API) SendAnimation(args *SendAnimation) (*Message, error) {
 // player. Your audio must be in the .MP3 or .M4A format. On success, the sent Message is returned.
 // Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the
 // future.
-func (api *API) SendAudio(args *SendAudio) (*Message, error) {
-	return errors.New("not implemented")
+func (api *API) SendAudio(args *SendAudio) (*Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("sendAudio", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // SendChatAction
 // Use this method when you need to tell the user that something is happening on the bot's side.
 // The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients
 // clear its typing status). Returns True on success.
-func (api *API) SendChatAction(action string, chatId IntStr) error {
-	return errors.New("not implemented")
+func (api *API) SendChatAction(action string, chatId IntStr) (*APIResponse, error) {
+	args := struct {
+		Action string `json:"action"`
+		ChatId IntStr `json:"chat_id"`
+	}{
+		Action: action,
+		ChatId: chatId,
+	}
+	return api.MakeRequest("sendChatAction", args)
 }
 
 // SendContact
 // Use this method to send phone contacts. On success, the sent Message is returned.
-func (api *API) SendContact(args *SendContact) (*Message, error) {
-	return errors.New("not implemented")
+func (api *API) SendContact(args *SendContact) (*Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("sendContact", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // SendDice
 // Use this method to send an animated emoji that will display a random value. On success, the sent
 // Message is returned.
-func (api *API) SendDice(args *SendDice) (*Message, error) {
-	return errors.New("not implemented")
+func (api *API) SendDice(args *SendDice) (*Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("sendDice", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // SendDocument
 // Use this method to send general files. On success, the sent Message is returned. Bots can
 // currently send files of any type of up to 50 MB in size, this limit may be changed in the
 // future.
-func (api *API) SendDocument(args *SendDocument) (*Message, error) {
-	return errors.New("not implemented")
+func (api *API) SendDocument(args *SendDocument) (*Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("sendDocument", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // SendGame
 // Use this method to send a game. On success, the sent Message is returned.
-func (api *API) SendGame(args *SendGame) (*Message, error) {
-	return errors.New("not implemented")
+func (api *API) SendGame(args *SendGame) (*Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("sendGame", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // SendInvoice
 // Use this method to send invoices. On success, the sent Message is returned.
-func (api *API) SendInvoice(args *SendInvoice) (*Message, error) {
-	return errors.New("not implemented")
+func (api *API) SendInvoice(args *SendInvoice) (*Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("sendInvoice", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // SendLocation
 // Use this method to send point on the map. On success, the sent Message is returned.
-func (api *API) SendLocation(args *SendLocation) (*Message, error) {
-	return errors.New("not implemented")
+func (api *API) SendLocation(args *SendLocation) (*Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("sendLocation", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // SendMediaGroup
 // Use this method to send a group of photos or videos as an album. On success, an array of the
 // sent Messages is returned.
-func (api *API) SendMediaGroup(args *SendMediaGroup) ([]Message, error) {
-	return errors.New("not implemented")
+func (api *API) SendMediaGroup(args *SendMediaGroup) ([]Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("sendMediaGroup", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data []Message
+	err = json.Unmarshal(resp.Result, &data)
+	return data, resp, err
 }
 
 // SendMessage
 // Use this method to send text messages. On success, the sent Message is returned.
-func (api *API) SendMessage(args *SendMessage) (*Message, error) {
-	return errors.New("not implemented")
+func (api *API) SendMessage(args *SendMessage) (*Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("sendMessage", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // SendPhoto
 // Use this method to send photos. On success, the sent Message is returned.
-func (api *API) SendPhoto(args *SendPhoto) (*Message, error) {
-	return errors.New("not implemented")
+func (api *API) SendPhoto(args *SendPhoto) (*Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("sendPhoto", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // SendPoll
 // Use this method to send a native poll. On success, the sent Message is returned.
-func (api *API) SendPoll(args *SendPoll) (*Message, error) {
-	return errors.New("not implemented")
+func (api *API) SendPoll(args *SendPoll) (*Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("sendPoll", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // SendSticker
 // Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is
 // returned.
-func (api *API) SendSticker(args *SendSticker) (*Message, error) {
-	return errors.New("not implemented")
+func (api *API) SendSticker(args *SendSticker) (*Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("sendSticker", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // SendVenue
 // Use this method to send information about a venue. On success, the sent Message is returned.
-func (api *API) SendVenue(args *SendVenue) (*Message, error) {
-	return errors.New("not implemented")
+func (api *API) SendVenue(args *SendVenue) (*Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("sendVenue", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // SendVideo
 // Use this method to send video files, Telegram clients support mp4 videos (other formats may be
 // sent as Document). On success, the sent Message is returned. Bots can currently send video files
 // of up to 50 MB in size, this limit may be changed in the future.
-func (api *API) SendVideo(args *SendVideo) (*Message, error) {
-	return errors.New("not implemented")
+func (api *API) SendVideo(args *SendVideo) (*Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("sendVideo", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // SendVideoNote
 // As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this
 // method to send video messages. On success, the sent Message is returned.
-func (api *API) SendVideoNote(args *SendVideoNote) (*Message, error) {
-	return errors.New("not implemented")
+func (api *API) SendVideoNote(args *SendVideoNote) (*Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("sendVideoNote", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // SendVoice
@@ -1528,39 +1813,66 @@ func (api *API) SendVideoNote(args *SendVideoNote) (*Message, error) {
 // (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots
 // can currently send voice messages of up to 50 MB in size, this limit may be changed in the
 // future.
-func (api *API) SendVoice(args *SendVoice) (*Message, error) {
-	return errors.New("not implemented")
+func (api *API) SendVoice(args *SendVoice) (*Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("sendVoice", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // SetChatAdministratorCustomTitle
 // Use this method to set a custom title for an administrator in a supergroup promoted by the bot.
 // Returns True on success.
-func (api *API) SetChatAdministratorCustomTitle(args *SetChatAdministratorCustomTitle) error {
-	return errors.New("not implemented")
+func (api *API) SetChatAdministratorCustomTitle(args *SetChatAdministratorCustomTitle) (*APIResponse, error) {
+	return api.MakeRequest("setChatAdministratorCustomTitle", args)
 }
 
 // SetChatDescription
 // Use this method to change the description of a group, a supergroup or a channel. The bot must be
 // an administrator in the chat for this to work and must have the appropriate admin rights.
 // Returns True on success.
-func (api *API) SetChatDescription(chatId IntStr, description string) error {
-	return errors.New("not implemented")
+func (api *API) SetChatDescription(chatId IntStr, description string) (*APIResponse, error) {
+	args := struct {
+		ChatId      IntStr `json:"chat_id"`
+		Description string `json:"description,omitempty"`
+	}{
+		ChatId:      chatId,
+		Description: description,
+	}
+	return api.MakeRequest("setChatDescription", args)
 }
 
 // SetChatPermissions
 // Use this method to set default chat permissions for all members. The bot must be an
 // administrator in the group or a supergroup for this to work and must have the
 // can_restrict_members admin rights. Returns True on success.
-func (api *API) SetChatPermissions(chatId IntStr, permissions ChatPermissions) error {
-	return errors.New("not implemented")
+func (api *API) SetChatPermissions(chatId IntStr, permissions ChatPermissions) (*APIResponse, error) {
+	args := struct {
+		ChatId      IntStr          `json:"chat_id"`
+		Permissions ChatPermissions `json:"permissions"`
+	}{
+		ChatId:      chatId,
+		Permissions: permissions,
+	}
+	return api.MakeRequest("setChatPermissions", args)
 }
 
 // SetChatPhoto
 // Use this method to set a new profile photo for the chat. Photos can't be changed for private
 // chats. The bot must be an administrator in the chat for this to work and must have the
 // appropriate admin rights. Returns True on success.
-func (api *API) SetChatPhoto(chatId IntStr, photo InputFile) error {
-	return errors.New("not implemented")
+func (api *API) SetChatPhoto(chatId IntStr, photo InputFile) (*APIResponse, error) {
+	args := struct {
+		ChatId IntStr    `json:"chat_id"`
+		Photo  InputFile `json:"photo"`
+	}{
+		ChatId: chatId,
+		Photo:  photo,
+	}
+	return api.MakeRequest("setChatPhoto", args)
 }
 
 // SetChatStickerSet
@@ -1568,52 +1880,91 @@ func (api *API) SetChatPhoto(chatId IntStr, photo InputFile) error {
 // administrator in the chat for this to work and must have the appropriate admin rights. Use the
 // field can_set_sticker_set optionally returned in getChat requests to check if the bot can use
 // this method. Returns True on success.
-func (api *API) SetChatStickerSet(chatId IntStr, stickerSetName string) error {
-	return errors.New("not implemented")
+func (api *API) SetChatStickerSet(chatId IntStr, stickerSetName string) (*APIResponse, error) {
+	args := struct {
+		ChatId         IntStr `json:"chat_id"`
+		StickerSetName string `json:"sticker_set_name"`
+	}{
+		ChatId:         chatId,
+		StickerSetName: stickerSetName,
+	}
+	return api.MakeRequest("setChatStickerSet", args)
 }
 
 // SetChatTitle
 // Use this method to change the title of a chat. Titles can't be changed for private chats. The
 // bot must be an administrator in the chat for this to work and must have the appropriate admin
 // rights. Returns True on success.
-func (api *API) SetChatTitle(chatId IntStr, title string) error {
-	return errors.New("not implemented")
+func (api *API) SetChatTitle(chatId IntStr, title string) (*APIResponse, error) {
+	args := struct {
+		ChatId IntStr `json:"chat_id"`
+		Title  string `json:"title"`
+	}{
+		ChatId: chatId,
+		Title:  title,
+	}
+	return api.MakeRequest("setChatTitle", args)
 }
 
 // SetGameScore
 // Use this method to set the score of the specified user in a game. On success, if the message was
 // sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the
 // new score is not greater than the user's current score in the chat and force is False.
-func (api *API) SetGameScore(args *SetGameScore) (*Message, error) {
-	return errors.New("not implemented")
+func (api *API) SetGameScore(args *SetGameScore) (*Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("setGameScore", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // SetMyCommands
 // Use this method to change the list of the bot's commands. Returns True on success.
-func (api *API) SetMyCommands(commands []BotCommand) error {
-	return errors.New("not implemented")
+func (api *API) SetMyCommands(commands []BotCommand) (*APIResponse, error) {
+	args := struct {
+		Commands []BotCommand `json:"commands"`
+	}{
+		Commands: commands,
+	}
+	return api.MakeRequest("setMyCommands", args)
 }
 
 // SetPassportDataErrors
 // Informs a user that some of the Telegram Passport elements they provided contains errors. The
 // user will not be able to re-submit their Passport to you until the errors are fixed (the
 // contents of the field for which you returned the error must change). Returns True on success.
-func (api *API) SetPassportDataErrors(errors []PassportElementError, userId int64) error {
-	return errors.New("not implemented")
+func (api *API) SetPassportDataErrors(errors []PassportElementError, userId int64) (*APIResponse, error) {
+	args := struct {
+		Errors []PassportElementError `json:"errors"`
+		UserId int64                  `json:"user_id"`
+	}{
+		Errors: errors,
+		UserId: userId,
+	}
+	return api.MakeRequest("setPassportDataErrors", args)
 }
 
 // SetStickerPositionInSet
 // Use this method to move a sticker in a set created by the bot to a specific position. Returns
 // True on success.
-func (api *API) SetStickerPositionInSet(position int64, sticker string) error {
-	return errors.New("not implemented")
+func (api *API) SetStickerPositionInSet(position int64, sticker string) (*APIResponse, error) {
+	args := struct {
+		Position int64  `json:"position"`
+		Sticker  string `json:"sticker"`
+	}{
+		Position: position,
+		Sticker:  sticker,
+	}
+	return api.MakeRequest("setStickerPositionInSet", args)
 }
 
 // SetStickerSetThumb
 // Use this method to set the thumbnail of a sticker set. Animated thumbnails can be set for
 // animated sticker sets only. Returns True on success.
-func (api *API) SetStickerSetThumb(args *SetStickerSetThumb) error {
-	return errors.New("not implemented")
+func (api *API) SetStickerSetThumb(args *SetStickerSetThumb) (*APIResponse, error) {
+	return api.MakeRequest("setStickerSetThumb", args)
 }
 
 // SetWebhook
@@ -1621,43 +1972,80 @@ func (api *API) SetStickerSetThumb(args *SetStickerSetThumb) error {
 // there is an update for the bot, we will send an HTTPS POST request to the specified url,
 // containing a JSON-serialized Update. In case of an unsuccessful request, we will give up after a
 // reasonable amount of attempts. Returns True on success.
-func (api *API) SetWebhook(args *SetWebhook) error {
-	return errors.New("not implemented")
+func (api *API) SetWebhook(args *SetWebhook) (*APIResponse, error) {
+	return api.MakeRequest("setWebhook", args)
 }
 
 // StopMessageLiveLocation
 // Use this method to stop updating a live location message before live_period expires. On success,
 // if the message was sent by the bot, the sent Message is returned, otherwise True is returned.
-func (api *API) StopMessageLiveLocation(args *StopMessageLiveLocation) (*Message, error) {
-	return errors.New("not implemented")
+func (api *API) StopMessageLiveLocation(args *StopMessageLiveLocation) (*Message, *APIResponse, error) {
+	resp, err := api.MakeRequest("stopMessageLiveLocation", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // StopPoll
 // Use this method to stop a poll which was sent by the bot. On success, the stopped Poll with the
 // final results is returned.
-func (api *API) StopPoll(args *StopPoll) (*Poll, error) {
-	return errors.New("not implemented")
+func (api *API) StopPoll(args *StopPoll) (*Poll, *APIResponse, error) {
+	resp, err := api.MakeRequest("stopPoll", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data Poll
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }
 
 // UnbanChatMember
 // Use this method to unban a previously kicked user in a supergroup or channel. The user will not
 // return to the group or channel automatically, but will be able to join via link, etc. The bot
 // must be an administrator for this to work. Returns True on success.
-func (api *API) UnbanChatMember(chatId IntStr, userId int64) error {
-	return errors.New("not implemented")
+func (api *API) UnbanChatMember(chatId IntStr, userId int64) (*APIResponse, error) {
+	args := struct {
+		ChatId IntStr `json:"chat_id"`
+		UserId int64  `json:"user_id"`
+	}{
+		ChatId: chatId,
+		UserId: userId,
+	}
+	return api.MakeRequest("unbanChatMember", args)
 }
 
 // UnpinChatMessage
 // Use this method to unpin a message in a group, a supergroup, or a channel. The bot must be an
 // administrator in the chat for this to work and must have the 'can_pin_messages' admin right in
 // the supergroup or 'can_edit_messages' admin right in the channel. Returns True on success.
-func (api *API) UnpinChatMessage(chatId IntStr) error {
-	return errors.New("not implemented")
+func (api *API) UnpinChatMessage(chatId IntStr) (*APIResponse, error) {
+	args := struct {
+		ChatId IntStr `json:"chat_id"`
+	}{
+		ChatId: chatId,
+	}
+	return api.MakeRequest("unpinChatMessage", args)
 }
 
 // UploadStickerFile
 // Use this method to upload a .PNG file with a sticker for later use in createNewStickerSet and
 // addStickerToSet methods (can be used multiple times). Returns the uploaded File on success.
-func (api *API) UploadStickerFile(pngSticker InputFile, userId int64) (*File, error) {
-	return errors.New("not implemented")
+func (api *API) UploadStickerFile(pngSticker InputFile, userId int64) (*File, *APIResponse, error) {
+	args := struct {
+		PngSticker InputFile `json:"png_sticker"`
+		UserId     int64     `json:"user_id"`
+	}{
+		PngSticker: pngSticker,
+		UserId:     userId,
+	}
+	resp, err := api.MakeRequest("uploadStickerFile", args)
+	if err != nil {
+		return nil, nil, err
+	}
+	var data File
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, resp, err
 }

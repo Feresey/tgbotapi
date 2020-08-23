@@ -4,15 +4,15 @@
 {{- if gt (len $desc.Arguments) 2 }}
 type {{camel $method}} struct {
 {{- range $idx, $put_required := $.RequiredOrder}}
-{{- range $field_name, $field_desc := $desc.Arguments}}
-	{{- $type := get_type $field_name $method $field_desc.Types }}
+{{- range $argname, $arg := $desc.Arguments}}
+	{{- $type := get_type $argname $method $arg.Types }}
 
-	{{- if eq $field_desc.Required $put_required}}
-	// {{camel $field_name}}
-	// {{format $field_desc.Description.PlainText 1}}
-	{{camel $field_name}} {{if and (not $type.IsArray) (not $field_desc.Required) -}}
+	{{- if eq $arg.Required $put_required}}
+	// {{camel $argname}}
+	// {{format $arg.Description.PlainText 1}}
+	{{camel $argname}} {{if and (not $type.IsArray) (not $arg.Required) -}}
 			*{{end -}}
-		{{- $type.GoType}} `json:"{{$field_name}}{{if not $field_desc.Required}},omitempty{{end}}"`
+		{{- $type.GoType}} `json:"{{$argname}}{{if not $arg.Required}},omitempty{{end}}"`
 	{{- end}}
 {{- end}}
 {{- end}}
@@ -33,14 +33,41 @@ args *{{camel $method}}
 {{- end -}}
 ) (
 {{- $returns := false}}
+{{- $return_stared := false}}
 {{- with $desc.Returns}}
 	{{- if (not (eq .GoType "True"))}}
-		{{- if and (not .IsSimpleType) (not .IsArray)}}*{{end}}
+		{{- if and (not .IsSimpleType) (not .IsArray)}}*{{$return_stared = true}}{{end}}
 		{{- .GoType}},
 		{{- $returns = true}}
 	{{- end}}
 {{- end -}}
-error) {
-	return errors.New("not implemented")
+*APIResponse, error) {
+{{- if not (gt (len $desc.Arguments) 2)}}
+	{{- if eq (len $desc.Arguments) 0}}
+	var args interface{}
+	{{- else}}
+	args := struct {
+		{{- range $argname, $arg := $desc.Arguments}}
+		{{camel $argname}} {{(get_type $argname $method $arg.Types).GoType}} `json:"{{$argname}}{{if not $arg.Required}},omitempty{{end}}"`
+		{{- end}}
+	} {
+		{{- range $argname, $arg := $desc.Arguments}}
+		{{camel $argname}} : {{lowercamel $argname}},
+		{{- end}}
+	}
+	{{- end}}
+{{- end}}
+	{{- if $returns}}
+	resp, err :=
+	{{- else}}
+	return {{end}} api.MakeRequest("{{$method}}", args)
+	{{- if $returns}}
+	if err != nil {
+		return {{if $returns}}{{default_return $desc.Returns}}, {{end}}nil, err
+	}
+	var data {{$desc.Returns.GoType}}
+	err = json.Unmarshal(resp.Result, &data)
+	return {{if $return_stared}}&{{end}}data, resp, err
+	{{- end}}
 }
 {{end}}
