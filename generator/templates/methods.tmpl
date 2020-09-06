@@ -2,6 +2,8 @@
 
 {{range $method, $desc := .Methods}}
 {{- if gt (len $desc.Arguments) 2 }}
+// {{camel $method}}
+// {{format $desc.Description.PlainText 0}}
 type {{camel $method}} struct {
 {{- range $idx, $put_required := $.RequiredOrder}}
 {{- range $argname, $arg := $desc.Arguments}}
@@ -43,13 +45,10 @@ args *{{camel $method}}
 *Response, error) {
 {{- if not (gt (len $desc.Arguments) 2)}}
 	{{- if gt (len $desc.Arguments) 0}}
-	args := struct {
+	args := map[string]interface{} {
 		{{- range $argname, $arg := $desc.Arguments}}
-		{{camel $argname}} {{(get_type $argname $method $arg.Types).GoType}} `json:"{{$argname}}{{if not $arg.Required}},omitempty{{end}}"`
-		{{- end}}
-	} {
-		{{- range $argname, $arg := $desc.Arguments}}
-		{{camel $argname}} : {{lowercamel $argname}},
+		// {{format $arg.Description.PlainText 1}}
+		"{{$argname}}" : {{lowercamel $argname}},
 		{{- end}}
 	}
 	{{- end}}

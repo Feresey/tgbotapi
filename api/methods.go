@@ -4,6 +4,11 @@ package api
 
 import "encoding/json"
 
+// AddStickerToSet
+// Use this method to add a new sticker to a set created by the bot. You must use exactly one of
+// the fields png_sticker or tgs_sticker. Animated stickers can be added to animated sticker sets
+// and only to them. Animated sticker sets can have up to 50 stickers. Static sticker sets can have
+// up to 120 stickers. Returns True on success.
 type AddStickerToSet struct {
 	// Emojis
 	// One or more emoji corresponding to the sticker
@@ -30,6 +35,10 @@ type AddStickerToSet struct {
 	TgsSticker *InputFile `json:"tgs_sticker,omitempty"`
 }
 
+// AnswerCallbackQuery
+// Use this method to send answers to callback queries sent from inline keyboards. The answer will
+// be displayed to the user as a notification at the top of the chat screen or as an alert. On
+// success, True is returned.
 type AnswerCallbackQuery struct {
 	// CallbackQueryID
 	// Unique identifier for the query to be answered
@@ -54,6 +63,9 @@ type AnswerCallbackQuery struct {
 	URL string `json:"url,omitempty"`
 }
 
+// AnswerInlineQuery
+// Use this method to send answers to an inline query. On success, True is returned.No more than 50
+// results per query are allowed.
 type AnswerInlineQuery struct {
 	// InlineQueryID
 	// Unique identifier for the answered query
@@ -91,6 +103,11 @@ type AnswerInlineQuery struct {
 	SwitchPmText string `json:"switch_pm_text,omitempty"`
 }
 
+// AnswerPreCheckoutQuery
+// Once the user has confirmed their payment and shipping details, the Bot API sends the final
+// confirmation in the form of an Update with the field pre_checkout_query. Use this method to
+// respond to such pre-checkout queries. On success, True is returned. Note: The Bot API must
+// receive an answer within 10 seconds after the pre-checkout query was sent.
 type AnswerPreCheckoutQuery struct {
 	// Ok
 	// Specify True if everything is alright (goods are available, etc.) and the bot is ready to
@@ -107,6 +124,10 @@ type AnswerPreCheckoutQuery struct {
 	ErrorMessage string `json:"error_message,omitempty"`
 }
 
+// AnswerShippingQuery
+// If you sent an invoice requesting a shipping address and the parameter is_flexible was
+// specified, the Bot API will send an Update with a shipping_query field to the bot. Use this
+// method to reply to shipping queries. On success, True is returned.
 type AnswerShippingQuery struct {
 	// Ok
 	// Specify True if delivery to the specified address is possible and False if there are any
@@ -125,6 +146,10 @@ type AnswerShippingQuery struct {
 	ShippingOptions *[]ShippingOption `json:"shipping_options,omitempty"`
 }
 
+// CreateNewStickerSet
+// Use this method to create a new sticker set owned by a user. The bot will be able to edit the
+// sticker set thus created. You must use exactly one of the fields png_sticker or tgs_sticker.
+// Returns True on success.
 type CreateNewStickerSet struct {
 	// Emojis
 	// One or more emoji corresponding to the sticker
@@ -160,6 +185,9 @@ type CreateNewStickerSet struct {
 	TgsSticker *InputFile `json:"tgs_sticker,omitempty"`
 }
 
+// EditMessageCaption
+// Use this method to edit captions of messages. On success, if edited message is sent by the bot,
+// the edited Message is returned, otherwise True is returned.
 type EditMessageCaption struct {
 	// Caption
 	// New caption of the message, 0-1024 characters after entities parsing
@@ -182,6 +210,11 @@ type EditMessageCaption struct {
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 }
 
+// EditMessageLiveLocation
+// Use this method to edit live location messages. A location can be edited until its live_period
+// expires or editing is explicitly disabled by a call to stopMessageLiveLocation. On success, if
+// the edited message was sent by the bot, the edited Message is returned, otherwise True is
+// returned.
 type EditMessageLiveLocation struct {
 	// Latitude
 	// Latitude of new location
@@ -204,6 +237,12 @@ type EditMessageLiveLocation struct {
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 }
 
+// EditMessageMedia
+// Use this method to edit animation, audio, document, photo, or video messages. If a message is a
+// part of a message album, then it can be edited only to a photo or a video. Otherwise, message
+// type can be changed arbitrarily. When inline message is edited, new file can't be uploaded. Use
+// previously uploaded file via its file_id or specify a URL. On success, if the edited message was
+// sent by the bot, the edited Message is returned, otherwise True is returned.
 type EditMessageMedia struct {
 	// Media
 	// A JSON-serialized object for a new media content of the message
@@ -223,6 +262,9 @@ type EditMessageMedia struct {
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 }
 
+// EditMessageReplyMarkup
+// Use this method to edit only the reply markup of messages. On success, if edited message is sent
+// by the bot, the edited Message is returned, otherwise True is returned.
 type EditMessageReplyMarkup struct {
 	// ChatID
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
@@ -239,6 +281,9 @@ type EditMessageReplyMarkup struct {
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 }
 
+// EditMessageText
+// Use this method to edit text and game messages. On success, if edited message is sent by the
+// bot, the edited Message is returned, otherwise True is returned.
 type EditMessageText struct {
 	// Text
 	// New text of the message, 1-4096 characters after entities parsing
@@ -264,6 +309,8 @@ type EditMessageText struct {
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 }
 
+// ForwardMessage
+// Use this method to forward messages of any kind. On success, the sent Message is returned.
 type ForwardMessage struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
@@ -281,6 +328,9 @@ type ForwardMessage struct {
 	DisableNotification bool `json:"disable_notification,omitempty"`
 }
 
+// GetGameHighScores
+// Use this method to get data for high score tables. Will return the score of the specified user
+// and several of their neighbors in a game. On success, returns an Array of GameHighScore objects.
 type GetGameHighScores struct {
 	// UserID
 	// Target user id
@@ -296,6 +346,9 @@ type GetGameHighScores struct {
 	MessageID int64 `json:"message_id,omitempty"`
 }
 
+// GetUpdates
+// Use this method to receive incoming updates using long polling (wiki). An Array of Update
+// objects is returned.
 type GetUpdates struct {
 	// AllowedUpdates
 	// A JSON-serialized list of the update types you want your bot to receive. For example,
@@ -323,6 +376,9 @@ type GetUpdates struct {
 	Timeout int64 `json:"timeout,omitempty"`
 }
 
+// GetUserProfilePhotos
+// Use this method to get a list of profile pictures for a user. Returns a UserProfilePhotos
+// object.
 type GetUserProfilePhotos struct {
 	// UserID
 	// Unique identifier of the target user
@@ -336,6 +392,11 @@ type GetUserProfilePhotos struct {
 	Offset int64 `json:"offset,omitempty"`
 }
 
+// KickChatMember
+// Use this method to kick a user from a group, a supergroup or a channel. In the case of
+// supergroups and channels, the user will not be able to return to the group on their own using
+// invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this
+// to work and must have the appropriate admin rights. Returns True on success.
 type KickChatMember struct {
 	// ChatID
 	// Unique identifier for the target group or username of the target supergroup or channel (in
@@ -350,6 +411,10 @@ type KickChatMember struct {
 	UntilDate int64 `json:"until_date,omitempty"`
 }
 
+// PinChatMessage
+// Use this method to pin a message in a group, a supergroup, or a channel. The bot must be an
+// administrator in the chat for this to work and must have the 'can_pin_messages' admin right in
+// the supergroup or 'can_edit_messages' admin right in the channel. Returns True on success.
 type PinChatMessage struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
@@ -364,6 +429,10 @@ type PinChatMessage struct {
 	DisableNotification bool `json:"disable_notification,omitempty"`
 }
 
+// PromoteChatMember
+// Use this method to promote or demote a user in a supergroup or a channel. The bot must be an
+// administrator in the chat for this to work and must have the appropriate admin rights. Pass
+// False for all boolean parameters to demote a user. Returns True on success.
 type PromoteChatMember struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
@@ -401,6 +470,10 @@ type PromoteChatMember struct {
 	CanRestrictMembers bool `json:"can_restrict_members,omitempty"`
 }
 
+// RestrictChatMember
+// Use this method to restrict a user in a supergroup. The bot must be an administrator in the
+// supergroup for this to work and must have the appropriate admin rights. Pass True for all
+// permissions to lift restrictions from a user. Returns True on success.
 type RestrictChatMember struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target supergroup (in the format
@@ -419,6 +492,10 @@ type RestrictChatMember struct {
 	UntilDate int64 `json:"until_date,omitempty"`
 }
 
+// SendAnimation
+// Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On
+// success, the sent Message is returned. Bots can currently send animation files of up to 50 MB in
+// size, this limit may be changed in the future.
 type SendAnimation struct {
 	// Animation
 	// Animation to send. Pass a file_id as String to send an animation that exists on the Telegram
@@ -465,6 +542,11 @@ type SendAnimation struct {
 	Width int64 `json:"width,omitempty"`
 }
 
+// SendAudio
+// Use this method to send audio files, if you want Telegram clients to display them in the music
+// player. Your audio must be in the .MP3 or .M4A format. On success, the sent Message is returned.
+// Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the
+// future.
 type SendAudio struct {
 	// Audio
 	// Audio file to send. Pass a file_id as String to send an audio file that exists on the
@@ -510,6 +592,8 @@ type SendAudio struct {
 	Title string `json:"title,omitempty"`
 }
 
+// SendContact
+// Use this method to send phone contacts. On success, the sent Message is returned.
 type SendContact struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
@@ -539,6 +623,9 @@ type SendContact struct {
 	Vcard string `json:"vcard,omitempty"`
 }
 
+// SendDice
+// Use this method to send an animated emoji that will display a random value. On success, the sent
+// Message is returned.
 type SendDice struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
@@ -560,6 +647,10 @@ type SendDice struct {
 	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 }
 
+// SendDocument
+// Use this method to send general files. On success, the sent Message is returned. Bots can
+// currently send files of any type of up to 50 MB in size, this limit may be changed in the
+// future.
 type SendDocument struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
@@ -597,6 +688,8 @@ type SendDocument struct {
 	Thumb InputDataType `json:"thumb,omitempty"`
 }
 
+// SendGame
+// Use this method to send a game. On success, the sent Message is returned.
 type SendGame struct {
 	// ChatID
 	// Unique identifier for the target chat
@@ -617,6 +710,8 @@ type SendGame struct {
 	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 }
 
+// SendInvoice
+// Use this method to send invoices. On success, the sent Message is returned.
 type SendInvoice struct {
 	// ChatID
 	// Unique identifier for the target private chat
@@ -695,6 +790,8 @@ type SendInvoice struct {
 	SendPhoneNumberToProvider bool `json:"send_phone_number_to_provider,omitempty"`
 }
 
+// SendLocation
+// Use this method to send point on the map. On success, the sent Message is returned.
 type SendLocation struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
@@ -722,6 +819,9 @@ type SendLocation struct {
 	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 }
 
+// SendMediaGroup
+// Use this method to send a group of photos or videos as an album. On success, an array of the
+// sent Messages is returned.
 type SendMediaGroup struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
@@ -738,6 +838,8 @@ type SendMediaGroup struct {
 	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 }
 
+// SendMessage
+// Use this method to send text messages. On success, the sent Message is returned.
 type SendMessage struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
@@ -764,6 +866,8 @@ type SendMessage struct {
 	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 }
 
+// SendPhoto
+// Use this method to send photos. On success, the sent Message is returned.
 type SendPhoto struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
@@ -793,6 +897,8 @@ type SendPhoto struct {
 	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 }
 
+// SendPoll
+// Use this method to send a native poll. On success, the sent Message is returned.
 type SendPoll struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
@@ -846,6 +952,9 @@ type SendPoll struct {
 	Type *SendType `json:"type,omitempty"`
 }
 
+// SendSticker
+// Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is
+// returned.
 type SendSticker struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
@@ -868,6 +977,8 @@ type SendSticker struct {
 	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 }
 
+// SendVenue
+// Use this method to send information about a venue. On success, the sent Message is returned.
 type SendVenue struct {
 	// Address
 	// Address of the venue
@@ -904,6 +1015,10 @@ type SendVenue struct {
 	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 }
 
+// SendVideo
+// Use this method to send video files, Telegram clients support mp4 videos (other formats may be
+// sent as Document). On success, the sent Message is returned. Bots can currently send video files
+// of up to 50 MB in size, this limit may be changed in the future.
 type SendVideo struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
@@ -953,6 +1068,9 @@ type SendVideo struct {
 	Width int64 `json:"width,omitempty"`
 }
 
+// SendVideoNote
+// As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this
+// method to send video messages. On success, the sent Message is returned.
 type SendVideoNote struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
@@ -989,6 +1107,12 @@ type SendVideoNote struct {
 	Thumb InputDataType `json:"thumb,omitempty"`
 }
 
+// SendVoice
+// Use this method to send audio files, if you want Telegram clients to display the file as a
+// playable voice message. For this to work, your audio must be in an .OGG file encoded with OPUS
+// (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots
+// can currently send voice messages of up to 50 MB in size, this limit may be changed in the
+// future.
 type SendVoice struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
@@ -1021,6 +1145,9 @@ type SendVoice struct {
 	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 }
 
+// SetChatAdministratorCustomTitle
+// Use this method to set a custom title for an administrator in a supergroup promoted by the bot.
+// Returns True on success.
 type SetChatAdministratorCustomTitle struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target supergroup (in the format
@@ -1034,6 +1161,10 @@ type SetChatAdministratorCustomTitle struct {
 	UserID int64 `json:"user_id"`
 }
 
+// SetGameScore
+// Use this method to set the score of the specified user in a game. On success, if the message was
+// sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the
+// new score is not greater than the user's current score in the chat and force is False.
 type SetGameScore struct {
 	// Score
 	// New score, must be non-negative
@@ -1060,6 +1191,9 @@ type SetGameScore struct {
 	MessageID int64 `json:"message_id,omitempty"`
 }
 
+// SetStickerSetThumb
+// Use this method to set the thumbnail of a sticker set. Animated thumbnails can be set for
+// animated sticker sets only. Returns True on success.
 type SetStickerSetThumb struct {
 	// Name
 	// Sticker set name
@@ -1078,6 +1212,11 @@ type SetStickerSetThumb struct {
 	Thumb InputDataType `json:"thumb,omitempty"`
 }
 
+// SetWebhook
+// Use this method to specify a url and receive incoming updates via an outgoing webhook. Whenever
+// there is an update for the bot, we will send an HTTPS POST request to the specified url,
+// containing a JSON-serialized Update. In case of an unsuccessful request, we will give up after a
+// reasonable amount of attempts. Returns True on success.
 type SetWebhook struct {
 	// URL
 	// HTTPS url to send updates to. Use an empty string to remove webhook integration
@@ -1101,6 +1240,9 @@ type SetWebhook struct {
 	MaxConnections int64 `json:"max_connections,omitempty"`
 }
 
+// StopMessageLiveLocation
+// Use this method to stop updating a live location message before live_period expires. On success,
+// if the message was sent by the bot, the sent Message is returned, otherwise True is returned.
 type StopMessageLiveLocation struct {
 	// ChatID
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
@@ -1118,6 +1260,9 @@ type StopMessageLiveLocation struct {
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 }
 
+// StopPoll
+// Use this method to stop a poll which was sent by the bot. On success, the stopped Poll with the
+// final results is returned.
 type StopPoll struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
@@ -1185,10 +1330,10 @@ func (api *API) CreateNewStickerSet(args *CreateNewStickerSet) (*Response, error
 // be an administrator in the chat for this to work and must have the appropriate admin rights.
 // Returns True on success.
 func (api *API) DeleteChatPhoto(chatID IntStr) (*Response, error) {
-	args := struct {
-		ChatID IntStr `json:"chat_id"`
-	}{
-		ChatID: chatID,
+	args := map[string]interface{}{
+		// Unique identifier for the target chat or username of the target channel (in the format
+		// @channelusername)
+		"chat_id": chatID,
 	}
 	return api.MakeRequest("deleteChatPhoto", args)
 }
@@ -1199,10 +1344,10 @@ func (api *API) DeleteChatPhoto(chatID IntStr) (*Response, error) {
 // field can_set_sticker_set optionally returned in getChat requests to check if the bot can use
 // this method. Returns True on success.
 func (api *API) DeleteChatStickerSet(chatID IntStr) (*Response, error) {
-	args := struct {
-		ChatID IntStr `json:"chat_id"`
-	}{
-		ChatID: chatID,
+	args := map[string]interface{}{
+		// Unique identifier for the target chat or username of the target supergroup (in the format
+		// @supergroupusername)
+		"chat_id": chatID,
 	}
 	return api.MakeRequest("deleteChatStickerSet", args)
 }
@@ -1217,12 +1362,12 @@ func (api *API) DeleteChatStickerSet(chatID IntStr) (*Response, error) {
 // there.- If the bot has can_delete_messages permission in a supergroup or a channel, it can
 // delete any message there.Returns True on success.
 func (api *API) DeleteMessage(chatID IntStr, messageID int64) (*Response, error) {
-	args := struct {
-		ChatID    IntStr `json:"chat_id"`
-		MessageID int64  `json:"message_id"`
-	}{
-		ChatID:    chatID,
-		MessageID: messageID,
+	args := map[string]interface{}{
+		// Unique identifier for the target chat or username of the target channel (in the format
+		// @channelusername)
+		"chat_id": chatID,
+		// Identifier of the message to delete
+		"message_id": messageID,
 	}
 	return api.MakeRequest("deleteMessage", args)
 }
@@ -1230,10 +1375,9 @@ func (api *API) DeleteMessage(chatID IntStr, messageID int64) (*Response, error)
 // DeleteStickerFromSet
 // Use this method to delete a sticker from a set created by the bot. Returns True on success.
 func (api *API) DeleteStickerFromSet(sticker string) (*Response, error) {
-	args := struct {
-		Sticker string `json:"sticker"`
-	}{
-		Sticker: sticker,
+	args := map[string]interface{}{
+		// File identifier of the sticker
+		"sticker": sticker,
 	}
 	return api.MakeRequest("deleteStickerFromSet", args)
 }
@@ -1320,10 +1464,10 @@ func (api *API) EditMessageText(args *EditMessageText) (*Message, *Response, err
 // revoked. The bot must be an administrator in the chat for this to work and must have the
 // appropriate admin rights. Returns the new invite link as String on success.
 func (api *API) ExportChatInviteLink(chatID IntStr) (string, *Response, error) {
-	args := struct {
-		ChatID IntStr `json:"chat_id"`
-	}{
-		ChatID: chatID,
+	args := map[string]interface{}{
+		// Unique identifier for the target chat or username of the target channel (in the format
+		// @channelusername)
+		"chat_id": chatID,
 	}
 	resp, err := api.MakeRequest("exportChatInviteLink", args)
 	if err != nil {
@@ -1351,10 +1495,10 @@ func (api *API) ForwardMessage(args *ForwardMessage) (*Message, *Response, error
 // one-on-one conversations, current username of a user, group or channel, etc.). Returns a Chat
 // object on success.
 func (api *API) GetChat(chatID IntStr) (*Chat, *Response, error) {
-	args := struct {
-		ChatID IntStr `json:"chat_id"`
-	}{
-		ChatID: chatID,
+	args := map[string]interface{}{
+		// Unique identifier for the target chat or username of the target supergroup or channel (in
+		// the format @channelusername)
+		"chat_id": chatID,
 	}
 	resp, err := api.MakeRequest("getChat", args)
 	if err != nil {
@@ -1371,10 +1515,10 @@ func (api *API) GetChat(chatID IntStr) (*Chat, *Response, error) {
 // the chat is a group or a supergroup and no administrators were appointed, only the creator will
 // be returned.
 func (api *API) GetChatAdministrators(chatID IntStr) ([]ChatMember, *Response, error) {
-	args := struct {
-		ChatID IntStr `json:"chat_id"`
-	}{
-		ChatID: chatID,
+	args := map[string]interface{}{
+		// Unique identifier for the target chat or username of the target supergroup or channel (in
+		// the format @channelusername)
+		"chat_id": chatID,
 	}
 	resp, err := api.MakeRequest("getChatAdministrators", args)
 	if err != nil {
@@ -1389,12 +1533,12 @@ func (api *API) GetChatAdministrators(chatID IntStr) ([]ChatMember, *Response, e
 // Use this method to get information about a member of a chat. Returns a ChatMember object on
 // success.
 func (api *API) GetChatMember(chatID IntStr, userID int64) (*ChatMember, *Response, error) {
-	args := struct {
-		ChatID IntStr `json:"chat_id"`
-		UserID int64  `json:"user_id"`
-	}{
-		ChatID: chatID,
-		UserID: userID,
+	args := map[string]interface{}{
+		// Unique identifier for the target chat or username of the target supergroup or channel (in
+		// the format @channelusername)
+		"chat_id": chatID,
+		// Unique identifier of the target user
+		"user_id": userID,
 	}
 	resp, err := api.MakeRequest("getChatMember", args)
 	if err != nil {
@@ -1408,10 +1552,10 @@ func (api *API) GetChatMember(chatID IntStr, userID int64) (*ChatMember, *Respon
 // GetChatMembersCount
 // Use this method to get the number of members in a chat. Returns Int on success.
 func (api *API) GetChatMembersCount(chatID IntStr) (int64, *Response, error) {
-	args := struct {
-		ChatID IntStr `json:"chat_id"`
-	}{
-		ChatID: chatID,
+	args := map[string]interface{}{
+		// Unique identifier for the target chat or username of the target supergroup or channel (in
+		// the format @channelusername)
+		"chat_id": chatID,
 	}
 	resp, err := api.MakeRequest("getChatMembersCount", args)
 	if err != nil {
@@ -1429,10 +1573,9 @@ func (api *API) GetChatMembersCount(chatID IntStr) (int64, *Response, error) {
 // <file_path> is taken from the response. It is guaranteed that the link will be valid for at
 // least 1 hour. When the link expires, a new one can be requested by calling getFile again.
 func (api *API) GetFile(fileID string) (*File, *Response, error) {
-	args := struct {
-		FileID string `json:"file_id"`
-	}{
-		FileID: fileID,
+	args := map[string]interface{}{
+		// File identifier to get info about
+		"file_id": fileID,
 	}
 	resp, err := api.MakeRequest("getFile", args)
 	if err != nil {
@@ -1485,10 +1628,9 @@ func (api *API) GetMyCommands() ([]BotCommand, *Response, error) {
 // GetStickerSet
 // Use this method to get a sticker set. On success, a StickerSet object is returned.
 func (api *API) GetStickerSet(name string) (*StickerSet, *Response, error) {
-	args := struct {
-		Name string `json:"name"`
-	}{
-		Name: name,
+	args := map[string]interface{}{
+		// Name of the sticker set
+		"name": name,
 	}
 	resp, err := api.MakeRequest("getStickerSet", args)
 	if err != nil {
@@ -1551,10 +1693,10 @@ func (api *API) KickChatMember(args *KickChatMember) (*Response, error) {
 // LeaveChat
 // Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
 func (api *API) LeaveChat(chatID IntStr) (*Response, error) {
-	args := struct {
-		ChatID IntStr `json:"chat_id"`
-	}{
-		ChatID: chatID,
+	args := map[string]interface{}{
+		// Unique identifier for the target chat or username of the target supergroup or channel (in
+		// the format @channelusername)
+		"chat_id": chatID,
 	}
 	return api.MakeRequest("leaveChat", args)
 }
@@ -1617,12 +1759,15 @@ func (api *API) SendAudio(args *SendAudio) (*Message, *Response, error) {
 // The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients
 // clear its typing status). Returns True on success.
 func (api *API) SendChatAction(action string, chatID IntStr) (*Response, error) {
-	args := struct {
-		Action string `json:"action"`
-		ChatID IntStr `json:"chat_id"`
-	}{
-		Action: action,
-		ChatID: chatID,
+	args := map[string]interface{}{
+		// Type of action to broadcast. Choose one, depending on what the user is about to receive:
+		// typing for text messages, upload_photo for photos, record_video or upload_video for videos,
+		// record_audio or upload_audio for audio files, upload_document for general files,
+		// find_location for location data, record_video_note or upload_video_note for video notes.
+		"action": action,
+		// Unique identifier for the target chat or username of the target channel (in the format
+		// @channelusername)
+		"chat_id": chatID,
 	}
 	return api.MakeRequest("sendChatAction", args)
 }
@@ -1831,12 +1976,12 @@ func (api *API) SetChatAdministratorCustomTitle(args *SetChatAdministratorCustom
 // an administrator in the chat for this to work and must have the appropriate admin rights.
 // Returns True on success.
 func (api *API) SetChatDescription(chatID IntStr, description string) (*Response, error) {
-	args := struct {
-		ChatID      IntStr `json:"chat_id"`
-		Description string `json:"description,omitempty"`
-	}{
-		ChatID:      chatID,
-		Description: description,
+	args := map[string]interface{}{
+		// Unique identifier for the target chat or username of the target channel (in the format
+		// @channelusername)
+		"chat_id": chatID,
+		// New chat description, 0-255 characters
+		"description": description,
 	}
 	return api.MakeRequest("setChatDescription", args)
 }
@@ -1846,12 +1991,12 @@ func (api *API) SetChatDescription(chatID IntStr, description string) (*Response
 // administrator in the group or a supergroup for this to work and must have the
 // can_restrict_members admin rights. Returns True on success.
 func (api *API) SetChatPermissions(chatID IntStr, permissions ChatPermissions) (*Response, error) {
-	args := struct {
-		ChatID      IntStr          `json:"chat_id"`
-		Permissions ChatPermissions `json:"permissions"`
-	}{
-		ChatID:      chatID,
-		Permissions: permissions,
+	args := map[string]interface{}{
+		// Unique identifier for the target chat or username of the target supergroup (in the format
+		// @supergroupusername)
+		"chat_id": chatID,
+		// New default chat permissions
+		"permissions": permissions,
 	}
 	return api.MakeRequest("setChatPermissions", args)
 }
@@ -1861,12 +2006,12 @@ func (api *API) SetChatPermissions(chatID IntStr, permissions ChatPermissions) (
 // chats. The bot must be an administrator in the chat for this to work and must have the
 // appropriate admin rights. Returns True on success.
 func (api *API) SetChatPhoto(chatID IntStr, photo InputFile) (*Response, error) {
-	args := struct {
-		ChatID IntStr    `json:"chat_id"`
-		Photo  InputFile `json:"photo"`
-	}{
-		ChatID: chatID,
-		Photo:  photo,
+	args := map[string]interface{}{
+		// Unique identifier for the target chat or username of the target channel (in the format
+		// @channelusername)
+		"chat_id": chatID,
+		// New chat photo, uploaded using multipart/form-data
+		"photo": photo,
 	}
 	return api.MakeRequest("setChatPhoto", args)
 }
@@ -1877,12 +2022,12 @@ func (api *API) SetChatPhoto(chatID IntStr, photo InputFile) (*Response, error) 
 // field can_set_sticker_set optionally returned in getChat requests to check if the bot can use
 // this method. Returns True on success.
 func (api *API) SetChatStickerSet(chatID IntStr, stickerSetName string) (*Response, error) {
-	args := struct {
-		ChatID         IntStr `json:"chat_id"`
-		StickerSetName string `json:"sticker_set_name"`
-	}{
-		ChatID:         chatID,
-		StickerSetName: stickerSetName,
+	args := map[string]interface{}{
+		// Unique identifier for the target chat or username of the target supergroup (in the format
+		// @supergroupusername)
+		"chat_id": chatID,
+		// Name of the sticker set to be set as the group sticker set
+		"sticker_set_name": stickerSetName,
 	}
 	return api.MakeRequest("setChatStickerSet", args)
 }
@@ -1892,12 +2037,12 @@ func (api *API) SetChatStickerSet(chatID IntStr, stickerSetName string) (*Respon
 // bot must be an administrator in the chat for this to work and must have the appropriate admin
 // rights. Returns True on success.
 func (api *API) SetChatTitle(chatID IntStr, title string) (*Response, error) {
-	args := struct {
-		ChatID IntStr `json:"chat_id"`
-		Title  string `json:"title"`
-	}{
-		ChatID: chatID,
-		Title:  title,
+	args := map[string]interface{}{
+		// Unique identifier for the target chat or username of the target channel (in the format
+		// @channelusername)
+		"chat_id": chatID,
+		// New chat title, 1-255 characters
+		"title": title,
 	}
 	return api.MakeRequest("setChatTitle", args)
 }
@@ -1919,10 +2064,10 @@ func (api *API) SetGameScore(args *SetGameScore) (*Message, *Response, error) {
 // SetMyCommands
 // Use this method to change the list of the bot's commands. Returns True on success.
 func (api *API) SetMyCommands(commands []BotCommand) (*Response, error) {
-	args := struct {
-		Commands []BotCommand `json:"commands"`
-	}{
-		Commands: commands,
+	args := map[string]interface{}{
+		// A JSON-serialized list of bot commands to be set as the list of the bot's commands. At most
+		// 100 commands can be specified.
+		"commands": commands,
 	}
 	return api.MakeRequest("setMyCommands", args)
 }
@@ -1932,12 +2077,11 @@ func (api *API) SetMyCommands(commands []BotCommand) (*Response, error) {
 // user will not be able to re-submit their Passport to you until the errors are fixed (the
 // contents of the field for which you returned the error must change). Returns True on success.
 func (api *API) SetPassportDataErrors(errors []PassportElementError, userID int64) (*Response, error) {
-	args := struct {
-		Errors []PassportElementError `json:"errors"`
-		UserID int64                  `json:"user_id"`
-	}{
-		Errors: errors,
-		UserID: userID,
+	args := map[string]interface{}{
+		// A JSON-serialized array describing the errors
+		"errors": errors,
+		// User identifier
+		"user_id": userID,
 	}
 	return api.MakeRequest("setPassportDataErrors", args)
 }
@@ -1946,12 +2090,11 @@ func (api *API) SetPassportDataErrors(errors []PassportElementError, userID int6
 // Use this method to move a sticker in a set created by the bot to a specific position. Returns
 // True on success.
 func (api *API) SetStickerPositionInSet(position int64, sticker string) (*Response, error) {
-	args := struct {
-		Position int64  `json:"position"`
-		Sticker  string `json:"sticker"`
-	}{
-		Position: position,
-		Sticker:  sticker,
+	args := map[string]interface{}{
+		// New sticker position in the set, zero-based
+		"position": position,
+		// File identifier of the sticker
+		"sticker": sticker,
 	}
 	return api.MakeRequest("setStickerPositionInSet", args)
 }
@@ -2003,12 +2146,12 @@ func (api *API) StopPoll(args *StopPoll) (*Poll, *Response, error) {
 // return to the group or channel automatically, but will be able to join via link, etc. The bot
 // must be an administrator for this to work. Returns True on success.
 func (api *API) UnbanChatMember(chatID IntStr, userID int64) (*Response, error) {
-	args := struct {
-		ChatID IntStr `json:"chat_id"`
-		UserID int64  `json:"user_id"`
-	}{
-		ChatID: chatID,
-		UserID: userID,
+	args := map[string]interface{}{
+		// Unique identifier for the target group or username of the target supergroup or channel (in
+		// the format @username)
+		"chat_id": chatID,
+		// Unique identifier of the target user
+		"user_id": userID,
 	}
 	return api.MakeRequest("unbanChatMember", args)
 }
@@ -2018,10 +2161,10 @@ func (api *API) UnbanChatMember(chatID IntStr, userID int64) (*Response, error) 
 // administrator in the chat for this to work and must have the 'can_pin_messages' admin right in
 // the supergroup or 'can_edit_messages' admin right in the channel. Returns True on success.
 func (api *API) UnpinChatMessage(chatID IntStr) (*Response, error) {
-	args := struct {
-		ChatID IntStr `json:"chat_id"`
-	}{
-		ChatID: chatID,
+	args := map[string]interface{}{
+		// Unique identifier for the target chat or username of the target channel (in the format
+		// @channelusername)
+		"chat_id": chatID,
 	}
 	return api.MakeRequest("unpinChatMessage", args)
 }
@@ -2030,12 +2173,12 @@ func (api *API) UnpinChatMessage(chatID IntStr) (*Response, error) {
 // Use this method to upload a .PNG file with a sticker for later use in createNewStickerSet and
 // addStickerToSet methods (can be used multiple times). Returns the uploaded File on success.
 func (api *API) UploadStickerFile(pngSticker InputFile, userID int64) (*File, *Response, error) {
-	args := struct {
-		PngSticker InputFile `json:"png_sticker"`
-		UserID     int64     `json:"user_id"`
-	}{
-		PngSticker: pngSticker,
-		UserID:     userID,
+	args := map[string]interface{}{
+		// PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed
+		// 512px, and either width or height must be exactly 512px.
+		"png_sticker": pngSticker,
+		// User identifier of sticker file owner
+		"user_id": userID,
 	}
 	resp, err := api.MakeRequest("uploadStickerFile", args)
 	if err != nil {
