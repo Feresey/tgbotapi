@@ -4,7 +4,7 @@ import (
 	"flag"
 	"log"
 
-	"github.com/Feresey/gen-tgpotapi/generator"
+	"github.com/Feresey/tgbotapi/generator"
 )
 
 func main() {

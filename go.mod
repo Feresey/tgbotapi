@@ -1,4 +1,4 @@
-module github.com/Feresey/gen-tgpotapi
+module github.com/Feresey/tgbotapi
 
 go 1.15
 
