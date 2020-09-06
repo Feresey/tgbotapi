@@ -39,6 +39,39 @@ type Animation struct {
 	Thumb *PhotoSize `json:"thumb,omitempty"`
 }
 
+func (t *Animation) GetFileName() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.FileName; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Animation) GetFileSize() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.FileSize; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Animation) GetMimeType() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.MimeType; field != nil {
+		return *field
+	}
+	return res
+}
+
 // Audio
 // This object represents an audio file to be treated as music by the Telegram clients.
 type Audio struct {
@@ -67,6 +100,50 @@ type Audio struct {
 	// Title
 	// Title of the audio as defined by sender or by audio tags
 	Title *string `json:"title,omitempty"`
+}
+
+func (t *Audio) GetFileSize() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.FileSize; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Audio) GetMimeType() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.MimeType; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Audio) GetPerformer() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Performer; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Audio) GetTitle() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Title; field != nil {
+		return *field
+	}
+	return res
 }
 
 // BotCommand
@@ -109,6 +186,61 @@ type CallbackGame struct {
 	MessageID *int64 `json:"message_id,omitempty"`
 }
 
+func (t *CallbackGame) GetChatID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.ChatID; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *CallbackGame) GetDisableEditMessage() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.DisableEditMessage; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *CallbackGame) GetForce() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.Force; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *CallbackGame) GetInlineMessageID() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.InlineMessageID; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *CallbackGame) GetMessageID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.MessageID; field != nil {
+		return *field
+	}
+	return res
+}
+
 // CallbackQuery
 // This object represents an incoming callback query from a callback button in an inline keyboard.
 // If the button that originated the query was attached to a message sent by the bot, the field
@@ -140,6 +272,39 @@ type CallbackQuery struct {
 	// Message with the callback button that originated the query. Note that message content and
 	// message date will not be available if the message is too old
 	Message *Message `json:"message,omitempty"`
+}
+
+func (t *CallbackQuery) GetData() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Data; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *CallbackQuery) GetGameShortName() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.GameShortName; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *CallbackQuery) GetInlineMessageID() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.InlineMessageID; field != nil {
+		return *field
+	}
+	return res
 }
 
 // Chat
@@ -193,6 +358,105 @@ type Chat struct {
 	// Username
 	// Username, for private chats, supergroups and channels if available
 	Username *string `json:"username,omitempty"`
+}
+
+func (t *Chat) GetCanSetStickerSet() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanSetStickerSet; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Chat) GetDescription() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Description; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Chat) GetFirstName() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.FirstName; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Chat) GetInviteLink() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.InviteLink; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Chat) GetLastName() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.LastName; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Chat) GetSlowModeDelay() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.SlowModeDelay; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Chat) GetStickerSetName() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.StickerSetName; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Chat) GetTitle() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Title; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Chat) GetUsername() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Username; field != nil {
+		return *field
+	}
+	return res
 }
 
 // ChatMember
@@ -268,6 +532,193 @@ type ChatMember struct {
 	UntilDate *int64 `json:"until_date,omitempty"`
 }
 
+func (t *ChatMember) GetCanAddWebPagePreviews() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanAddWebPagePreviews; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatMember) GetCanBeEdited() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanBeEdited; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatMember) GetCanChangeInfo() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanChangeInfo; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatMember) GetCanDeleteMessages() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanDeleteMessages; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatMember) GetCanEditMessages() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanEditMessages; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatMember) GetCanInviteUsers() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanInviteUsers; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatMember) GetCanPinMessages() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanPinMessages; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatMember) GetCanPostMessages() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanPostMessages; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatMember) GetCanPromoteMembers() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanPromoteMembers; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatMember) GetCanRestrictMembers() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanRestrictMembers; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatMember) GetCanSendMediaMessages() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanSendMediaMessages; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatMember) GetCanSendMessages() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanSendMessages; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatMember) GetCanSendOtherMessages() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanSendOtherMessages; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatMember) GetCanSendPolls() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanSendPolls; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatMember) GetCustomTitle() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.CustomTitle; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatMember) GetIsMember() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.IsMember; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatMember) GetUntilDate() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.UntilDate; field != nil {
+		return *field
+	}
+	return res
+}
+
 // ChatPermissions
 // Describes actions that a non-administrator user is allowed to take in a chat.
 type ChatPermissions struct {
@@ -299,6 +750,94 @@ type ChatPermissions struct {
 	// CanSendPolls
 	// True, if the user is allowed to send polls, implies can_send_messages
 	CanSendPolls *bool `json:"can_send_polls,omitempty"`
+}
+
+func (t *ChatPermissions) GetCanAddWebPagePreviews() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanAddWebPagePreviews; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatPermissions) GetCanChangeInfo() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanChangeInfo; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatPermissions) GetCanInviteUsers() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanInviteUsers; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatPermissions) GetCanPinMessages() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanPinMessages; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatPermissions) GetCanSendMediaMessages() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanSendMediaMessages; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatPermissions) GetCanSendMessages() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanSendMessages; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatPermissions) GetCanSendOtherMessages() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanSendOtherMessages; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatPermissions) GetCanSendPolls() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanSendPolls; field != nil {
+		return *field
+	}
+	return res
 }
 
 // ChatPhoto
@@ -345,6 +884,17 @@ type ChosenInlineResult struct {
 	Location *Location `json:"location,omitempty"`
 }
 
+func (t *ChosenInlineResult) GetInlineMessageID() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.InlineMessageID; field != nil {
+		return *field
+	}
+	return res
+}
+
 // Contact
 // This object represents a phone contact.
 type Contact struct {
@@ -363,6 +913,39 @@ type Contact struct {
 	// Vcard
 	// Additional data about the contact in the form of a vCard
 	Vcard *string `json:"vcard,omitempty"`
+}
+
+func (t *Contact) GetLastName() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.LastName; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Contact) GetUserID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.UserID; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Contact) GetVcard() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Vcard; field != nil {
+		return *field
+	}
+	return res
 }
 
 // Dice
@@ -398,6 +981,39 @@ type Document struct {
 	// Thumb
 	// Document thumbnail as defined by sender
 	Thumb *PhotoSize `json:"thumb,omitempty"`
+}
+
+func (t *Document) GetFileName() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.FileName; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Document) GetFileSize() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.FileSize; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Document) GetMimeType() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.MimeType; field != nil {
+		return *field
+	}
+	return res
 }
 
 // EncryptedCredentials
@@ -469,6 +1085,39 @@ type EncryptedPassportElement struct {
 	Translation []PassportFile `json:"translation,omitempty"`
 }
 
+func (t *EncryptedPassportElement) GetData() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Data; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *EncryptedPassportElement) GetEmail() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Email; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *EncryptedPassportElement) GetPhoneNumber() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.PhoneNumber; field != nil {
+		return *field
+	}
+	return res
+}
+
 // File
 // This object represents a file ready to be downloaded. The file can be downloaded via the link
 // https://api.telegram.org/file/bot<token>/<file_path>. It is guaranteed that the link will be
@@ -489,6 +1138,28 @@ type File struct {
 	FileSize *int64 `json:"file_size,omitempty"`
 }
 
+func (t *File) GetFilePath() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.FilePath; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *File) GetFileSize() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.FileSize; field != nil {
+		return *field
+	}
+	return res
+}
+
 // ForceReply
 // Upon receiving a message with this object, Telegram clients will display a reply interface to
 // the user (act as if the user has selected the bot's message and tapped 'Reply'). This can be
@@ -504,6 +1175,17 @@ type ForceReply struct {
 	// that are @mentioned in the text of the Message object; 2) if the bot's message is a reply
 	// (has reply_to_message_id), sender of the original message.
 	Selective *bool `json:"selective,omitempty"`
+}
+
+func (t *ForceReply) GetSelective() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.Selective; field != nil {
+		return *field
+	}
+	return res
 }
 
 // Game
@@ -530,6 +1212,17 @@ type Game struct {
 	// TextEntities
 	// Special entities that appear in text, such as usernames, URLs, bot commands, etc.
 	TextEntities []MessageEntity `json:"text_entities,omitempty"`
+}
+
+func (t *Game) GetText() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Text; field != nil {
+		return *field
+	}
+	return res
 }
 
 // GameHighScore
@@ -569,6 +1262,28 @@ type Games struct {
 	// ReplyToMessageID
 	// If the message is a reply, ID of the original message
 	ReplyToMessageID *int64 `json:"reply_to_message_id,omitempty"`
+}
+
+func (t *Games) GetDisableNotification() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.DisableNotification; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Games) GetReplyToMessageID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyToMessageID; field != nil {
+		return *field
+	}
+	return res
 }
 
 // InlineKeyboardButton
@@ -611,6 +1326,61 @@ type InlineKeyboardButton struct {
 	// URL
 	// HTTP or tg:// url to be opened when button is pressed
 	URL *string `json:"url,omitempty"`
+}
+
+func (t *InlineKeyboardButton) GetCallbackData() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.CallbackData; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineKeyboardButton) GetPay() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.Pay; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineKeyboardButton) GetSwitchInlineQuery() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.SwitchInlineQuery; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineKeyboardButton) GetSwitchInlineQueryCurrentChat() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.SwitchInlineQueryCurrentChat; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineKeyboardButton) GetURL() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.URL; field != nil {
+		return *field
+	}
+	return res
 }
 
 // InlineKeyboardMarkup
@@ -681,6 +1451,72 @@ type InlineQueryResult struct {
 	URL *string `json:"url,omitempty"`
 }
 
+func (t *InlineQueryResult) GetDescription() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Description; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResult) GetHideURL() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.HideURL; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResult) GetThumbHeight() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.ThumbHeight; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResult) GetThumbURL() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ThumbURL; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResult) GetThumbWidth() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.ThumbWidth; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResult) GetURL() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.URL; field != nil {
+		return *field
+	}
+	return res
+}
+
 // InlineQueryResultArticle
 // Represents a link to an article or web page.
 type InlineQueryResultArticle struct {
@@ -717,6 +1553,72 @@ type InlineQueryResultArticle struct {
 	// URL
 	// URL of the result
 	URL *string `json:"url,omitempty"`
+}
+
+func (t *InlineQueryResultArticle) GetDescription() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Description; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultArticle) GetHideURL() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.HideURL; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultArticle) GetThumbHeight() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.ThumbHeight; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultArticle) GetThumbURL() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ThumbURL; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultArticle) GetThumbWidth() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.ThumbWidth; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultArticle) GetURL() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.URL; field != nil {
+		return *field
+	}
+	return res
 }
 
 // InlineQueryResultAudio
@@ -756,6 +1658,50 @@ type InlineQueryResultAudio struct {
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 }
 
+func (t *InlineQueryResultAudio) GetAudioDuration() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.AudioDuration; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultAudio) GetCaption() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Caption; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultAudio) GetParseMode() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultAudio) GetPerformer() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Performer; field != nil {
+		return *field
+	}
+	return res
+}
+
 // InlineQueryResultCachedAudio
 // Represents a link to an MP3 audio file stored on the Telegram servers. By default, this audio
 // file will be sent by the user. Alternatively, you can use input_message_content to send a
@@ -782,6 +1728,28 @@ type InlineQueryResultCachedAudio struct {
 	// ReplyMarkup
 	// Inline keyboard attached to the message
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
+}
+
+func (t *InlineQueryResultCachedAudio) GetCaption() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Caption; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultCachedAudio) GetParseMode() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
 }
 
 // InlineQueryResultCachedDocument
@@ -818,6 +1786,39 @@ type InlineQueryResultCachedDocument struct {
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 }
 
+func (t *InlineQueryResultCachedDocument) GetCaption() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Caption; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultCachedDocument) GetDescription() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Description; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultCachedDocument) GetParseMode() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
 // InlineQueryResultCachedGif
 // Represents a link to an animated GIF file stored on the Telegram servers. By default, this
 // animated GIF file will be sent by the user with an optional caption. Alternatively, you can use
@@ -847,6 +1848,39 @@ type InlineQueryResultCachedGif struct {
 	// Title
 	// Title for the result
 	Title *string `json:"title,omitempty"`
+}
+
+func (t *InlineQueryResultCachedGif) GetCaption() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Caption; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultCachedGif) GetParseMode() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultCachedGif) GetTitle() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Title; field != nil {
+		return *field
+	}
+	return res
 }
 
 // InlineQueryResultCachedMpeg4Gif
@@ -881,6 +1915,39 @@ type InlineQueryResultCachedMpeg4Gif struct {
 	Title *string `json:"title,omitempty"`
 }
 
+func (t *InlineQueryResultCachedMpeg4Gif) GetCaption() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Caption; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultCachedMpeg4Gif) GetParseMode() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultCachedMpeg4Gif) GetTitle() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Title; field != nil {
+		return *field
+	}
+	return res
+}
+
 // InlineQueryResultCachedPhoto
 // Represents a link to a photo stored on the Telegram servers. By default, this photo will be sent
 // by the user with an optional caption. Alternatively, you can use input_message_content to send a
@@ -913,6 +1980,50 @@ type InlineQueryResultCachedPhoto struct {
 	// Title
 	// Title for the result
 	Title *string `json:"title,omitempty"`
+}
+
+func (t *InlineQueryResultCachedPhoto) GetCaption() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Caption; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultCachedPhoto) GetDescription() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Description; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultCachedPhoto) GetParseMode() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultCachedPhoto) GetTitle() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Title; field != nil {
+		return *field
+	}
+	return res
 }
 
 // InlineQueryResultCachedSticker
@@ -971,6 +2082,39 @@ type InlineQueryResultCachedVideo struct {
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
 }
 
+func (t *InlineQueryResultCachedVideo) GetCaption() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Caption; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultCachedVideo) GetDescription() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Description; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultCachedVideo) GetParseMode() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
 // InlineQueryResultCachedVoice
 // Represents a link to a voice message stored on the Telegram servers. By default, this voice
 // message will be sent by the user. Alternatively, you can use input_message_content to send a
@@ -1001,6 +2145,28 @@ type InlineQueryResultCachedVoice struct {
 	// ReplyMarkup
 	// Inline keyboard attached to the message
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
+}
+
+func (t *InlineQueryResultCachedVoice) GetCaption() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Caption; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultCachedVoice) GetParseMode() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
 }
 
 // InlineQueryResultContact
@@ -1041,6 +2207,61 @@ type InlineQueryResultContact struct {
 	// Vcard
 	// Additional data about the contact in the form of a vCard, 0-2048 bytes
 	Vcard *string `json:"vcard,omitempty"`
+}
+
+func (t *InlineQueryResultContact) GetLastName() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.LastName; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultContact) GetThumbHeight() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.ThumbHeight; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultContact) GetThumbURL() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ThumbURL; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultContact) GetThumbWidth() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.ThumbWidth; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultContact) GetVcard() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Vcard; field != nil {
+		return *field
+	}
+	return res
 }
 
 // InlineQueryResultDocument
@@ -1087,6 +2308,72 @@ type InlineQueryResultDocument struct {
 	// ThumbWidth
 	// Thumbnail width
 	ThumbWidth *int64 `json:"thumb_width,omitempty"`
+}
+
+func (t *InlineQueryResultDocument) GetCaption() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Caption; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultDocument) GetDescription() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Description; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultDocument) GetParseMode() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultDocument) GetThumbHeight() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.ThumbHeight; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultDocument) GetThumbURL() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ThumbURL; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultDocument) GetThumbWidth() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.ThumbWidth; field != nil {
+		return *field
+	}
+	return res
 }
 
 // InlineQueryResultGame
@@ -1153,6 +2440,83 @@ type InlineQueryResultGif struct {
 	Title *string `json:"title,omitempty"`
 }
 
+func (t *InlineQueryResultGif) GetCaption() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Caption; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultGif) GetGifDuration() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.GifDuration; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultGif) GetGifHeight() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.GifHeight; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultGif) GetGifWidth() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.GifWidth; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultGif) GetParseMode() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultGif) GetThumbMimeType() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ThumbMimeType; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultGif) GetTitle() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Title; field != nil {
+		return *field
+	}
+	return res
+}
+
 // InlineQueryResultLocation
 // Represents a location on a map. By default, the location will be sent by the user.
 // Alternatively, you can use input_message_content to send a message with the specified content
@@ -1191,6 +2555,50 @@ type InlineQueryResultLocation struct {
 	// ThumbWidth
 	// Thumbnail width
 	ThumbWidth *int64 `json:"thumb_width,omitempty"`
+}
+
+func (t *InlineQueryResultLocation) GetLivePeriod() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.LivePeriod; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultLocation) GetThumbHeight() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.ThumbHeight; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultLocation) GetThumbURL() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ThumbURL; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultLocation) GetThumbWidth() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.ThumbWidth; field != nil {
+		return *field
+	}
+	return res
 }
 
 // InlineQueryResultMpeg4Gif
@@ -1240,6 +2648,83 @@ type InlineQueryResultMpeg4Gif struct {
 	Title *string `json:"title,omitempty"`
 }
 
+func (t *InlineQueryResultMpeg4Gif) GetCaption() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Caption; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultMpeg4Gif) GetMpeg4Duration() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.Mpeg4Duration; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultMpeg4Gif) GetMpeg4Height() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.Mpeg4Height; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultMpeg4Gif) GetMpeg4Width() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.Mpeg4Width; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultMpeg4Gif) GetParseMode() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultMpeg4Gif) GetThumbMimeType() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ThumbMimeType; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultMpeg4Gif) GetTitle() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Title; field != nil {
+		return *field
+	}
+	return res
+}
+
 // InlineQueryResultPhoto
 // Represents a link to a photo. By default, this photo will be sent by the user with optional
 // caption. Alternatively, you can use input_message_content to send a message with the specified
@@ -1281,6 +2766,72 @@ type InlineQueryResultPhoto struct {
 	// Title
 	// Title for the result
 	Title *string `json:"title,omitempty"`
+}
+
+func (t *InlineQueryResultPhoto) GetCaption() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Caption; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultPhoto) GetDescription() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Description; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultPhoto) GetParseMode() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultPhoto) GetPhotoHeight() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.PhotoHeight; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultPhoto) GetPhotoWidth() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.PhotoWidth; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultPhoto) GetTitle() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Title; field != nil {
+		return *field
+	}
+	return res
 }
 
 // InlineQueryResultVenue
@@ -1327,6 +2878,61 @@ type InlineQueryResultVenue struct {
 	// ThumbWidth
 	// Thumbnail width
 	ThumbWidth *int64 `json:"thumb_width,omitempty"`
+}
+
+func (t *InlineQueryResultVenue) GetFoursquareID() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.FoursquareID; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultVenue) GetFoursquareType() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.FoursquareType; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultVenue) GetThumbHeight() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.ThumbHeight; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultVenue) GetThumbURL() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ThumbURL; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultVenue) GetThumbWidth() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.ThumbWidth; field != nil {
+		return *field
+	}
+	return res
 }
 
 // InlineQueryResultVideo
@@ -1379,6 +2985,72 @@ type InlineQueryResultVideo struct {
 	VideoWidth *int64 `json:"video_width,omitempty"`
 }
 
+func (t *InlineQueryResultVideo) GetCaption() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Caption; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultVideo) GetDescription() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Description; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultVideo) GetParseMode() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultVideo) GetVideoDuration() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.VideoDuration; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultVideo) GetVideoHeight() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.VideoHeight; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultVideo) GetVideoWidth() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.VideoWidth; field != nil {
+		return *field
+	}
+	return res
+}
+
 // InlineQueryResultVoice
 // Represents a link to a voice recording in an .OGG container encoded with OPUS. By default, this
 // voice recording will be sent by the user. Alternatively, you can use input_message_content to
@@ -1414,6 +3086,39 @@ type InlineQueryResultVoice struct {
 	VoiceDuration *int64 `json:"voice_duration,omitempty"`
 }
 
+func (t *InlineQueryResultVoice) GetCaption() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Caption; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultVoice) GetParseMode() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultVoice) GetVoiceDuration() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.VoiceDuration; field != nil {
+		return *field
+	}
+	return res
+}
+
 // InputContactMessageContent
 // Represents the content of a contact message to be sent as the result of an inline query.
 type InputContactMessageContent struct {
@@ -1429,6 +3134,28 @@ type InputContactMessageContent struct {
 	// Vcard
 	// Additional data about the contact in the form of a vCard, 0-2048 bytes
 	Vcard *string `json:"vcard,omitempty"`
+}
+
+func (t *InputContactMessageContent) GetLastName() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.LastName; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputContactMessageContent) GetVcard() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Vcard; field != nil {
+		return *field
+	}
+	return res
 }
 
 // InputFile
@@ -1460,6 +3187,61 @@ type InputFile struct {
 	ReplyToMessageID *int64 `json:"reply_to_message_id,omitempty"`
 }
 
+func (t *InputFile) GetDisableNotification() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.DisableNotification; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputFile) GetDisableWebPagePreview() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.DisableWebPagePreview; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputFile) GetParseMode() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputFile) GetReplyMarkup() ReplyMarkup {
+	var res ReplyMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputFile) GetReplyToMessageID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyToMessageID; field != nil {
+		return *field
+	}
+	return res
+}
+
 // InputLocationMessageContent
 // Represents the content of a location message to be sent as the result of an inline query.
 type InputLocationMessageContent struct {
@@ -1472,6 +3254,17 @@ type InputLocationMessageContent struct {
 	// LivePeriod
 	// Period in seconds for which the location can be updated, should be between 60 and 86400.
 	LivePeriod *int64 `json:"live_period,omitempty"`
+}
+
+func (t *InputLocationMessageContent) GetLivePeriod() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.LivePeriod; field != nil {
+		return *field
+	}
+	return res
 }
 
 // InputMedia
@@ -1492,6 +3285,28 @@ type InputMedia struct {
 	// ParseMode
 	// Mode for parsing entities in the photo caption. See formatting options for more details.
 	ParseMode *string `json:"parse_mode,omitempty"`
+}
+
+func (t *InputMedia) GetCaption() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Caption; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMedia) GetParseMode() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
 }
 
 // InputMediaAnimation
@@ -1531,6 +3346,72 @@ type InputMediaAnimation struct {
 	Width *int64 `json:"width,omitempty"`
 }
 
+func (t *InputMediaAnimation) GetCaption() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Caption; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMediaAnimation) GetDuration() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.Duration; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMediaAnimation) GetHeight() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.Height; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMediaAnimation) GetParseMode() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMediaAnimation) GetThumb() InputDataType {
+	var res InputDataType
+	if t == nil {
+		return res
+	}
+	if field := t.Thumb; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMediaAnimation) GetWidth() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.Width; field != nil {
+		return *field
+	}
+	return res
+}
+
 // InputMediaAudio
 // Represents an audio file to be treated as music to be sent.
 type InputMediaAudio struct {
@@ -1568,6 +3449,72 @@ type InputMediaAudio struct {
 	Title *string `json:"title,omitempty"`
 }
 
+func (t *InputMediaAudio) GetCaption() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Caption; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMediaAudio) GetDuration() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.Duration; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMediaAudio) GetParseMode() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMediaAudio) GetPerformer() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Performer; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMediaAudio) GetThumb() InputDataType {
+	var res InputDataType
+	if t == nil {
+		return res
+	}
+	if field := t.Thumb; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMediaAudio) GetTitle() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Title; field != nil {
+		return *field
+	}
+	return res
+}
+
 // InputMediaDocument
 // Represents a general file to be sent.
 type InputMediaDocument struct {
@@ -1596,6 +3543,39 @@ type InputMediaDocument struct {
 	Thumb *InputDataType `json:"thumb,omitempty"`
 }
 
+func (t *InputMediaDocument) GetCaption() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Caption; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMediaDocument) GetParseMode() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMediaDocument) GetThumb() InputDataType {
+	var res InputDataType
+	if t == nil {
+		return res
+	}
+	if field := t.Thumb; field != nil {
+		return *field
+	}
+	return res
+}
+
 // InputMediaPhoto
 // Represents a photo to be sent.
 type InputMediaPhoto struct {
@@ -1614,6 +3594,28 @@ type InputMediaPhoto struct {
 	// ParseMode
 	// Mode for parsing entities in the photo caption. See formatting options for more details.
 	ParseMode *string `json:"parse_mode,omitempty"`
+}
+
+func (t *InputMediaPhoto) GetCaption() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Caption; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMediaPhoto) GetParseMode() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
 }
 
 // InputMediaVideo
@@ -1656,6 +3658,83 @@ type InputMediaVideo struct {
 	Width *int64 `json:"width,omitempty"`
 }
 
+func (t *InputMediaVideo) GetCaption() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Caption; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMediaVideo) GetDuration() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.Duration; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMediaVideo) GetHeight() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.Height; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMediaVideo) GetParseMode() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMediaVideo) GetSupportsStreaming() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.SupportsStreaming; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMediaVideo) GetThumb() InputDataType {
+	var res InputDataType
+	if t == nil {
+		return res
+	}
+	if field := t.Thumb; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMediaVideo) GetWidth() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.Width; field != nil {
+		return *field
+	}
+	return res
+}
+
 // InputMessageContent
 // This object represents the content of a message to be sent as a result of an inline query.
 // Telegram clients currently support the following 4 types:
@@ -1671,6 +3750,28 @@ type InputMessageContent struct {
 	ParseMode *string `json:"parse_mode,omitempty"`
 }
 
+func (t *InputMessageContent) GetDisableWebPagePreview() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.DisableWebPagePreview; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMessageContent) GetParseMode() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
 // InputTextMessageContent
 // Represents the content of a text message to be sent as the result of an inline query.
 type InputTextMessageContent struct {
@@ -1683,6 +3784,28 @@ type InputTextMessageContent struct {
 	// ParseMode
 	// Mode for parsing entities in the message text. See formatting options for more details.
 	ParseMode *string `json:"parse_mode,omitempty"`
+}
+
+func (t *InputTextMessageContent) GetDisableWebPagePreview() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.DisableWebPagePreview; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputTextMessageContent) GetParseMode() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
 }
 
 // InputVenueMessageContent
@@ -1707,6 +3830,28 @@ type InputVenueMessageContent struct {
 	// Foursquare type of the venue, if known. (For example, "arts_entertainment/default",
 	// "arts_entertainment/aquarium" or "food/icecream".)
 	FoursquareType *string `json:"foursquare_type,omitempty"`
+}
+
+func (t *InputVenueMessageContent) GetFoursquareID() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.FoursquareID; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputVenueMessageContent) GetFoursquareType() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.FoursquareType; field != nil {
+		return *field
+	}
+	return res
 }
 
 // Invoice
@@ -1753,6 +3898,28 @@ type KeyboardButton struct {
 	// If specified, the user will be asked to create a poll and send it to the bot when the button
 	// is pressed. Available in private chats only
 	RequestPoll *KeyboardButtonPollType `json:"request_poll,omitempty"`
+}
+
+func (t *KeyboardButton) GetRequestContact() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.RequestContact; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *KeyboardButton) GetRequestLocation() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.RequestLocation; field != nil {
+		return *field
+	}
+	return res
 }
 
 // KeyboardButtonPollType
@@ -1816,6 +3983,39 @@ type LoginURL struct {
 	// RequestWriteAccess
 	// Pass True to request the permission for your bot to send messages to the user.
 	RequestWriteAccess *bool `json:"request_write_access,omitempty"`
+}
+
+func (t *LoginURL) GetBotUsername() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.BotUsername; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *LoginURL) GetForwardText() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ForwardText; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *LoginURL) GetRequestWriteAccess() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.RequestWriteAccess; field != nil {
+		return *field
+	}
+	return res
 }
 
 // MaskPosition
@@ -2013,6 +4213,149 @@ type Message struct {
 	Voice *Voice `json:"voice,omitempty"`
 }
 
+func (t *Message) GetAuthorSignature() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.AuthorSignature; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetCaption() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Caption; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetConnectedWebsite() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ConnectedWebsite; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetEditDate() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.EditDate; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetForwardDate() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.ForwardDate; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetForwardFromMessageID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.ForwardFromMessageID; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetForwardSenderName() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ForwardSenderName; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetForwardSignature() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ForwardSignature; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetMediaGroupID() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.MediaGroupID; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetMigrateFromChatID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.MigrateFromChatID; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetMigrateToChatID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.MigrateToChatID; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetNewChatTitle() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.NewChatTitle; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetText() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Text; field != nil {
+		return *field
+	}
+	return res
+}
+
 // MessageEntity
 // This object represents one special entity in a text message. For example, hashtags, usernames,
 // URLs, etc.
@@ -2042,6 +4385,28 @@ type MessageEntity struct {
 	User *User `json:"user,omitempty"`
 }
 
+func (t *MessageEntity) GetLanguage() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Language; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *MessageEntity) GetURL() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.URL; field != nil {
+		return *field
+	}
+	return res
+}
+
 // OrderInfo
 // This object represents information about an order.
 type OrderInfo struct {
@@ -2057,6 +4422,39 @@ type OrderInfo struct {
 	// ShippingAddress
 	// User shipping address
 	ShippingAddress *ShippingAddress `json:"shipping_address,omitempty"`
+}
+
+func (t *OrderInfo) GetEmail() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Email; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *OrderInfo) GetName() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Name; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *OrderInfo) GetPhoneNumber() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.PhoneNumber; field != nil {
+		return *field
+	}
+	return res
 }
 
 // PassportData
@@ -2369,6 +4767,160 @@ type Payments struct {
 	SendPhoneNumberToProvider *bool `json:"send_phone_number_to_provider,omitempty"`
 }
 
+func (t *Payments) GetDisableNotification() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.DisableNotification; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Payments) GetIsFlexible() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.IsFlexible; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Payments) GetNeedEmail() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.NeedEmail; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Payments) GetNeedName() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.NeedName; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Payments) GetNeedPhoneNumber() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.NeedPhoneNumber; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Payments) GetNeedShippingAddress() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.NeedShippingAddress; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Payments) GetPhotoHeight() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.PhotoHeight; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Payments) GetPhotoSize() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.PhotoSize; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Payments) GetPhotoURL() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.PhotoURL; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Payments) GetPhotoWidth() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.PhotoWidth; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Payments) GetProviderData() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ProviderData; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Payments) GetReplyToMessageID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyToMessageID; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Payments) GetSendEmailToProvider() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.SendEmailToProvider; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Payments) GetSendPhoneNumberToProvider() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.SendPhoneNumberToProvider; field != nil {
+		return *field
+	}
+	return res
+}
+
 // PhotoSize
 // This object represents one size of a photo or a file / sticker thumbnail.
 type PhotoSize struct {
@@ -2388,6 +4940,17 @@ type PhotoSize struct {
 	// FileSize
 	// File size
 	FileSize *int64 `json:"file_size,omitempty"`
+}
+
+func (t *PhotoSize) GetFileSize() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.FileSize; field != nil {
+		return *field
+	}
+	return res
 }
 
 // Poll
@@ -2435,6 +4998,50 @@ type Poll struct {
 	// OpenPeriod
 	// Amount of time in seconds the poll will be active after creation
 	OpenPeriod *int64 `json:"open_period,omitempty"`
+}
+
+func (t *Poll) GetCloseDate() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.CloseDate; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Poll) GetCorrectOptionID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.CorrectOptionID; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Poll) GetExplanation() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Explanation; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Poll) GetOpenPeriod() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.OpenPeriod; field != nil {
+		return *field
+	}
+	return res
 }
 
 // PollAnswer
@@ -2492,6 +5099,17 @@ type PreCheckoutQuery struct {
 	ShippingOptionID *string `json:"shipping_option_id,omitempty"`
 }
 
+func (t *PreCheckoutQuery) GetShippingOptionID() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ShippingOptionID; field != nil {
+		return *field
+	}
+	return res
+}
+
 // ReplyKeyboardMarkup
 // This object represents a custom keyboard with reply options (see Introduction to bots for
 // details and examples).
@@ -2519,6 +5137,39 @@ type ReplyKeyboardMarkup struct {
 	Selective *bool `json:"selective,omitempty"`
 }
 
+func (t *ReplyKeyboardMarkup) GetOneTimeKeyboard() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.OneTimeKeyboard; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ReplyKeyboardMarkup) GetResizeKeyboard() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.ResizeKeyboard; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ReplyKeyboardMarkup) GetSelective() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.Selective; field != nil {
+		return *field
+	}
+	return res
+}
+
 // ReplyKeyboardRemove
 // Upon receiving a message with this object, Telegram clients will remove the current custom
 // keyboard and display the default letter-keyboard. By default, custom keyboards are displayed
@@ -2540,6 +5191,17 @@ type ReplyKeyboardRemove struct {
 	Selective *bool `json:"selective,omitempty"`
 }
 
+func (t *ReplyKeyboardRemove) GetSelective() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.Selective; field != nil {
+		return *field
+	}
+	return res
+}
+
 // ResponseParameters
 // Contains information about why a request was unsuccessful.
 type ResponseParameters struct {
@@ -2553,6 +5215,28 @@ type ResponseParameters struct {
 	// In case of exceeding flood control, the number of seconds left to wait before the request
 	// can be repeated
 	RetryAfter *int64 `json:"retry_after,omitempty"`
+}
+
+func (t *ResponseParameters) GetMigrateToChatID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.MigrateToChatID; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ResponseParameters) GetRetryAfter() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.RetryAfter; field != nil {
+		return *field
+	}
+	return res
 }
 
 // ShippingAddress
@@ -2645,6 +5329,39 @@ type Sticker struct {
 	Thumb *PhotoSize `json:"thumb,omitempty"`
 }
 
+func (t *Sticker) GetEmoji() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Emoji; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Sticker) GetFileSize() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.FileSize; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Sticker) GetSetName() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.SetName; field != nil {
+		return *field
+	}
+	return res
+}
+
 // StickerSet
 // This object represents a sticker set.
 type StickerSet struct {
@@ -2704,6 +5421,39 @@ type Stickers struct {
 	Thumb *PhotoSize `json:"thumb,omitempty"`
 }
 
+func (t *Stickers) GetEmoji() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Emoji; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Stickers) GetFileSize() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.FileSize; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Stickers) GetSetName() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.SetName; field != nil {
+		return *field
+	}
+	return res
+}
+
 // SuccessfulPayment
 // This object contains basic information about a successful payment.
 type SuccessfulPayment struct {
@@ -2731,6 +5481,17 @@ type SuccessfulPayment struct {
 	// ShippingOptionID
 	// Identifier of the shipping option chosen by the user
 	ShippingOptionID *string `json:"shipping_option_id,omitempty"`
+}
+
+func (t *SuccessfulPayment) GetShippingOptionID() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ShippingOptionID; field != nil {
+		return *field
+	}
+	return res
 }
 
 // Update
@@ -2815,6 +5576,72 @@ type User struct {
 	Username *string `json:"username,omitempty"`
 }
 
+func (t *User) GetCanJoinGroups() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanJoinGroups; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *User) GetCanReadAllGroupMessages() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanReadAllGroupMessages; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *User) GetLanguageCode() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.LanguageCode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *User) GetLastName() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.LastName; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *User) GetSupportsInlineQueries() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.SupportsInlineQueries; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *User) GetUsername() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Username; field != nil {
+		return *field
+	}
+	return res
+}
+
 // UserProfilePhotos
 // This object represent a user's profile pictures.
 type UserProfilePhotos struct {
@@ -2847,6 +5674,28 @@ type Venue struct {
 	FoursquareType *string `json:"foursquare_type,omitempty"`
 }
 
+func (t *Venue) GetFoursquareID() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.FoursquareID; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Venue) GetFoursquareType() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.FoursquareType; field != nil {
+		return *field
+	}
+	return res
+}
+
 // Video
 // This object represents a video file.
 type Video struct {
@@ -2877,6 +5726,28 @@ type Video struct {
 	Thumb *PhotoSize `json:"thumb,omitempty"`
 }
 
+func (t *Video) GetFileSize() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.FileSize; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Video) GetMimeType() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.MimeType; field != nil {
+		return *field
+	}
+	return res
+}
+
 // VideoNote
 // This object represents a video message (available in Telegram apps as of v.4.0).
 type VideoNote struct {
@@ -2901,6 +5772,17 @@ type VideoNote struct {
 	Thumb *PhotoSize `json:"thumb,omitempty"`
 }
 
+func (t *VideoNote) GetFileSize() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.FileSize; field != nil {
+		return *field
+	}
+	return res
+}
+
 // Voice
 // This object represents a voice note.
 type Voice struct {
@@ -2920,6 +5802,28 @@ type Voice struct {
 	// MimeType
 	// MIME type of the file as defined by sender
 	MimeType *string `json:"mime_type,omitempty"`
+}
+
+func (t *Voice) GetFileSize() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.FileSize; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Voice) GetMimeType() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.MimeType; field != nil {
+		return *field
+	}
+	return res
 }
 
 // WebhookInfo
@@ -2948,4 +5852,37 @@ type WebhookInfo struct {
 	// MaxConnections
 	// Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery
 	MaxConnections *int64 `json:"max_connections,omitempty"`
+}
+
+func (t *WebhookInfo) GetLastErrorDate() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.LastErrorDate; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *WebhookInfo) GetLastErrorMessage() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.LastErrorMessage; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *WebhookInfo) GetMaxConnections() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.MaxConnections; field != nil {
+		return *field
+	}
+	return res
 }

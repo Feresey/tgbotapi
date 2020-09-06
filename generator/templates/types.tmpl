@@ -21,4 +21,22 @@ type {{camel $typename}} struct {
 {{- end}}
 {{- end}}
 }
+
+{{range $field_name, $field_desc := $desc.Fields}}
+{{- $type := get_type $field_name $typename $field_desc.Types }}
+{{- if and (not $field_desc.Required) (not $type.IsArray) $type.IsSimpleType}}
+
+func (t *{{camel $typename}}) Get{{camel $field_name}}() {{$type.GoType}} {
+	var res {{$type.GoType}}
+	if t == nil {
+		return res
+	}
+	if field := t.{{camel $field_name}}; field != nil {
+		return *field
+	}
+	return res
+}
+{{- end}}
+{{- end}}
+
 {{end}}

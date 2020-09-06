@@ -12,7 +12,7 @@ type {{camel $method}} struct {
 	{{- if eq $arg.Required $put_required}}
 	// {{camel $argname}}
 	// {{format $arg.Description.PlainText 1}}
-	{{camel $argname}} {{if and (not $type.IsSimpleType) (not $arg.Required) -}}*{{end -}}
+	{{camel $argname}} {{if and (not $type.IsSimpleType) (not $arg.Required) (not $type.IsArray) -}}*{{end -}}
 		{{- $type.GoType}} `json:"{{$argname}}{{if not $arg.Required}},omitempty{{end}}"`
 	{{- end}}
 {{- end}}

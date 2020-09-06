@@ -143,7 +143,7 @@ type AnswerShippingQuery struct {
 	ErrorMessage string `json:"error_message,omitempty"`
 	// ShippingOptions
 	// Required if ok is True. A JSON-serialized array of available shipping options.
-	ShippingOptions *[]ShippingOption `json:"shipping_options,omitempty"`
+	ShippingOptions []ShippingOption `json:"shipping_options,omitempty"`
 }
 
 // CreateNewStickerSet
@@ -357,7 +357,7 @@ type GetUpdates struct {
 	// to receive all updates regardless of type (default). If not specified, the previous setting
 	// will be used.Please note that this parameter doesn't affect updates created before the call
 	// to the getUpdates, so unwanted updates may be received for a short period of time.
-	AllowedUpdates *[]string `json:"allowed_updates,omitempty"`
+	AllowedUpdates []string `json:"allowed_updates,omitempty"`
 	// Limit
 	// Limits the number of updates to be retrieved. Values between 1-100 are accepted. Defaults to
 	// 100.
@@ -1228,7 +1228,7 @@ type SetWebhook struct {
 	// to receive all updates regardless of type (default). If not specified, the previous setting
 	// will be used.Please note that this parameter doesn't affect updates created before the call
 	// to the setWebhook, so unwanted updates may be received for a short period of time.
-	AllowedUpdates *[]string `json:"allowed_updates,omitempty"`
+	AllowedUpdates []string `json:"allowed_updates,omitempty"`
 	// Certificate
 	// Upload your public key certificate so that the root certificate in use can be checked. See
 	// our self-signed guide for details.

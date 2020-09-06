@@ -26,6 +26,14 @@ func (i IntStr) MarshalText() ([]byte, error) {
 	return []byte(strconv.FormatInt(i.Int, 10)), nil
 }
 
+func NewInt(i int64) IntStr {
+	return IntStr{Int: i}
+}
+
+func NewStr(s string) IntStr {
+	return IntStr{String: s}
+}
+
 type InputDataType struct {
 	File   *InputFile
 	String string
