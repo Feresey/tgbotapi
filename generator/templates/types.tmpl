@@ -24,7 +24,7 @@ type {{camel $typename}} struct {
 
 {{range $field_name, $field_desc := $desc.Fields}}
 {{- $type := get_type $field_name $typename $field_desc.Types }}
-{{- if and (not $field_desc.Required) (not $type.IsArray) $type.IsSimpleType}}
+{{- if and (not $field_desc.Required) (not $type.IsArray)}}
 
 func (t *{{camel $typename}}) Get{{camel $field_name}}() {{$type.GoType}} {
 	var res {{$type.GoType}}

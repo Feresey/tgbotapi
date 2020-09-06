@@ -72,6 +72,17 @@ func (t *Animation) GetMimeType() string {
 	return res
 }
 
+func (t *Animation) GetThumb() PhotoSize {
+	var res PhotoSize
+	if t == nil {
+		return res
+	}
+	if field := t.Thumb; field != nil {
+		return *field
+	}
+	return res
+}
+
 // Audio
 // This object represents an audio file to be treated as music by the Telegram clients.
 type Audio struct {
@@ -130,6 +141,17 @@ func (t *Audio) GetPerformer() string {
 		return res
 	}
 	if field := t.Performer; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Audio) GetThumb() PhotoSize {
+	var res PhotoSize
+	if t == nil {
+		return res
+	}
+	if field := t.Thumb; field != nil {
 		return *field
 	}
 	return res
@@ -307,6 +329,17 @@ func (t *CallbackQuery) GetInlineMessageID() string {
 	return res
 }
 
+func (t *CallbackQuery) GetMessage() Message {
+	var res Message
+	if t == nil {
+		return res
+	}
+	if field := t.Message; field != nil {
+		return *field
+	}
+	return res
+}
+
 // Chat
 // This object represents a chat.
 type Chat struct {
@@ -410,6 +443,39 @@ func (t *Chat) GetLastName() string {
 		return res
 	}
 	if field := t.LastName; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Chat) GetPermissions() ChatPermissions {
+	var res ChatPermissions
+	if t == nil {
+		return res
+	}
+	if field := t.Permissions; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Chat) GetPhoto() ChatPhoto {
+	var res ChatPhoto
+	if t == nil {
+		return res
+	}
+	if field := t.Photo; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Chat) GetPinnedMessage() Message {
+	var res Message
+	if t == nil {
+		return res
+	}
+	if field := t.PinnedMessage; field != nil {
 		return *field
 	}
 	return res
@@ -895,6 +961,17 @@ func (t *ChosenInlineResult) GetInlineMessageID() string {
 	return res
 }
 
+func (t *ChosenInlineResult) GetLocation() Location {
+	var res Location
+	if t == nil {
+		return res
+	}
+	if field := t.Location; field != nil {
+		return *field
+	}
+	return res
+}
+
 // Contact
 // This object represents a phone contact.
 type Contact struct {
@@ -1016,6 +1093,17 @@ func (t *Document) GetMimeType() string {
 	return res
 }
 
+func (t *Document) GetThumb() PhotoSize {
+	var res PhotoSize
+	if t == nil {
+		return res
+	}
+	if field := t.Thumb; field != nil {
+		return *field
+	}
+	return res
+}
+
 // EncryptedCredentials
 // Contains data required for decrypting and authenticating EncryptedPassportElement. See the
 // Telegram Passport Documentation for a complete description of the data decryption and
@@ -1107,12 +1195,45 @@ func (t *EncryptedPassportElement) GetEmail() string {
 	return res
 }
 
+func (t *EncryptedPassportElement) GetFrontSide() PassportFile {
+	var res PassportFile
+	if t == nil {
+		return res
+	}
+	if field := t.FrontSide; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *EncryptedPassportElement) GetPhoneNumber() string {
 	var res string
 	if t == nil {
 		return res
 	}
 	if field := t.PhoneNumber; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *EncryptedPassportElement) GetReverseSide() PassportFile {
+	var res PassportFile
+	if t == nil {
+		return res
+	}
+	if field := t.ReverseSide; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *EncryptedPassportElement) GetSelfie() PassportFile {
+	var res PassportFile
+	if t == nil {
+		return res
+	}
+	if field := t.Selfie; field != nil {
 		return *field
 	}
 	return res
@@ -1214,6 +1335,17 @@ type Game struct {
 	TextEntities []MessageEntity `json:"text_entities,omitempty"`
 }
 
+func (t *Game) GetAnimation() Animation {
+	var res Animation
+	if t == nil {
+		return res
+	}
+	if field := t.Animation; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *Game) GetText() string {
 	var res string
 	if t == nil {
@@ -1270,6 +1402,17 @@ func (t *Games) GetDisableNotification() bool {
 		return res
 	}
 	if field := t.DisableNotification; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Games) GetReplyMarkup() InlineKeyboardMarkup {
+	var res InlineKeyboardMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
 		return *field
 	}
 	return res
@@ -1334,6 +1477,28 @@ func (t *InlineKeyboardButton) GetCallbackData() string {
 		return res
 	}
 	if field := t.CallbackData; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineKeyboardButton) GetCallbackGame() CallbackGame {
+	var res CallbackGame
+	if t == nil {
+		return res
+	}
+	if field := t.CallbackGame; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineKeyboardButton) GetLoginURL() LoginURL {
+	var res LoginURL
+	if t == nil {
+		return res
+	}
+	if field := t.LoginURL; field != nil {
 		return *field
 	}
 	return res
@@ -1412,6 +1577,17 @@ type InlineQuery struct {
 	Location *Location `json:"location,omitempty"`
 }
 
+func (t *InlineQuery) GetLocation() Location {
+	var res Location
+	if t == nil {
+		return res
+	}
+	if field := t.Location; field != nil {
+		return *field
+	}
+	return res
+}
+
 // InlineQueryResult
 // This object represents one result of an inline query. Telegram clients currently support results
 // of the following 20 types:
@@ -1468,6 +1644,17 @@ func (t *InlineQueryResult) GetHideURL() bool {
 		return res
 	}
 	if field := t.HideURL; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResult) GetReplyMarkup() InlineKeyboardMarkup {
+	var res InlineKeyboardMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
 		return *field
 	}
 	return res
@@ -1577,6 +1764,17 @@ func (t *InlineQueryResultArticle) GetHideURL() bool {
 	return res
 }
 
+func (t *InlineQueryResultArticle) GetReplyMarkup() InlineKeyboardMarkup {
+	var res InlineKeyboardMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *InlineQueryResultArticle) GetThumbHeight() int64 {
 	var res int64
 	if t == nil {
@@ -1680,6 +1878,17 @@ func (t *InlineQueryResultAudio) GetCaption() string {
 	return res
 }
 
+func (t *InlineQueryResultAudio) GetInputMessageContent() InputMessageContent {
+	var res InputMessageContent
+	if t == nil {
+		return res
+	}
+	if field := t.InputMessageContent; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *InlineQueryResultAudio) GetParseMode() string {
 	var res string
 	if t == nil {
@@ -1697,6 +1906,17 @@ func (t *InlineQueryResultAudio) GetPerformer() string {
 		return res
 	}
 	if field := t.Performer; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultAudio) GetReplyMarkup() InlineKeyboardMarkup {
+	var res InlineKeyboardMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
 		return *field
 	}
 	return res
@@ -1741,12 +1961,34 @@ func (t *InlineQueryResultCachedAudio) GetCaption() string {
 	return res
 }
 
+func (t *InlineQueryResultCachedAudio) GetInputMessageContent() InputMessageContent {
+	var res InputMessageContent
+	if t == nil {
+		return res
+	}
+	if field := t.InputMessageContent; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *InlineQueryResultCachedAudio) GetParseMode() string {
 	var res string
 	if t == nil {
 		return res
 	}
 	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultCachedAudio) GetReplyMarkup() InlineKeyboardMarkup {
+	var res InlineKeyboardMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
 		return *field
 	}
 	return res
@@ -1808,12 +2050,34 @@ func (t *InlineQueryResultCachedDocument) GetDescription() string {
 	return res
 }
 
+func (t *InlineQueryResultCachedDocument) GetInputMessageContent() InputMessageContent {
+	var res InputMessageContent
+	if t == nil {
+		return res
+	}
+	if field := t.InputMessageContent; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *InlineQueryResultCachedDocument) GetParseMode() string {
 	var res string
 	if t == nil {
 		return res
 	}
 	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultCachedDocument) GetReplyMarkup() InlineKeyboardMarkup {
+	var res InlineKeyboardMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
 		return *field
 	}
 	return res
@@ -1861,12 +2125,34 @@ func (t *InlineQueryResultCachedGif) GetCaption() string {
 	return res
 }
 
+func (t *InlineQueryResultCachedGif) GetInputMessageContent() InputMessageContent {
+	var res InputMessageContent
+	if t == nil {
+		return res
+	}
+	if field := t.InputMessageContent; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *InlineQueryResultCachedGif) GetParseMode() string {
 	var res string
 	if t == nil {
 		return res
 	}
 	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultCachedGif) GetReplyMarkup() InlineKeyboardMarkup {
+	var res InlineKeyboardMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
 		return *field
 	}
 	return res
@@ -1926,12 +2212,34 @@ func (t *InlineQueryResultCachedMpeg4Gif) GetCaption() string {
 	return res
 }
 
+func (t *InlineQueryResultCachedMpeg4Gif) GetInputMessageContent() InputMessageContent {
+	var res InputMessageContent
+	if t == nil {
+		return res
+	}
+	if field := t.InputMessageContent; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *InlineQueryResultCachedMpeg4Gif) GetParseMode() string {
 	var res string
 	if t == nil {
 		return res
 	}
 	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultCachedMpeg4Gif) GetReplyMarkup() InlineKeyboardMarkup {
+	var res InlineKeyboardMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
 		return *field
 	}
 	return res
@@ -2004,12 +2312,34 @@ func (t *InlineQueryResultCachedPhoto) GetDescription() string {
 	return res
 }
 
+func (t *InlineQueryResultCachedPhoto) GetInputMessageContent() InputMessageContent {
+	var res InputMessageContent
+	if t == nil {
+		return res
+	}
+	if field := t.InputMessageContent; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *InlineQueryResultCachedPhoto) GetParseMode() string {
 	var res string
 	if t == nil {
 		return res
 	}
 	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultCachedPhoto) GetReplyMarkup() InlineKeyboardMarkup {
+	var res InlineKeyboardMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
 		return *field
 	}
 	return res
@@ -2046,6 +2376,28 @@ type InlineQueryResultCachedSticker struct {
 	// ReplyMarkup
 	// Inline keyboard attached to the message
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
+}
+
+func (t *InlineQueryResultCachedSticker) GetInputMessageContent() InputMessageContent {
+	var res InputMessageContent
+	if t == nil {
+		return res
+	}
+	if field := t.InputMessageContent; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultCachedSticker) GetReplyMarkup() InlineKeyboardMarkup {
+	var res InlineKeyboardMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
+		return *field
+	}
+	return res
 }
 
 // InlineQueryResultCachedVideo
@@ -2104,12 +2456,34 @@ func (t *InlineQueryResultCachedVideo) GetDescription() string {
 	return res
 }
 
+func (t *InlineQueryResultCachedVideo) GetInputMessageContent() InputMessageContent {
+	var res InputMessageContent
+	if t == nil {
+		return res
+	}
+	if field := t.InputMessageContent; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *InlineQueryResultCachedVideo) GetParseMode() string {
 	var res string
 	if t == nil {
 		return res
 	}
 	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultCachedVideo) GetReplyMarkup() InlineKeyboardMarkup {
+	var res InlineKeyboardMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
 		return *field
 	}
 	return res
@@ -2158,12 +2532,34 @@ func (t *InlineQueryResultCachedVoice) GetCaption() string {
 	return res
 }
 
+func (t *InlineQueryResultCachedVoice) GetInputMessageContent() InputMessageContent {
+	var res InputMessageContent
+	if t == nil {
+		return res
+	}
+	if field := t.InputMessageContent; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *InlineQueryResultCachedVoice) GetParseMode() string {
 	var res string
 	if t == nil {
 		return res
 	}
 	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultCachedVoice) GetReplyMarkup() InlineKeyboardMarkup {
+	var res InlineKeyboardMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
 		return *field
 	}
 	return res
@@ -2209,12 +2605,34 @@ type InlineQueryResultContact struct {
 	Vcard *string `json:"vcard,omitempty"`
 }
 
+func (t *InlineQueryResultContact) GetInputMessageContent() InputMessageContent {
+	var res InputMessageContent
+	if t == nil {
+		return res
+	}
+	if field := t.InputMessageContent; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *InlineQueryResultContact) GetLastName() string {
 	var res string
 	if t == nil {
 		return res
 	}
 	if field := t.LastName; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultContact) GetReplyMarkup() InlineKeyboardMarkup {
+	var res InlineKeyboardMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
 		return *field
 	}
 	return res
@@ -2332,12 +2750,34 @@ func (t *InlineQueryResultDocument) GetDescription() string {
 	return res
 }
 
+func (t *InlineQueryResultDocument) GetInputMessageContent() InputMessageContent {
+	var res InputMessageContent
+	if t == nil {
+		return res
+	}
+	if field := t.InputMessageContent; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *InlineQueryResultDocument) GetParseMode() string {
 	var res string
 	if t == nil {
 		return res
 	}
 	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultDocument) GetReplyMarkup() InlineKeyboardMarkup {
+	var res InlineKeyboardMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
 		return *field
 	}
 	return res
@@ -2391,6 +2831,17 @@ type InlineQueryResultGame struct {
 	// ReplyMarkup
 	// Inline keyboard attached to the message
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
+}
+
+func (t *InlineQueryResultGame) GetReplyMarkup() InlineKeyboardMarkup {
+	var res InlineKeyboardMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
+		return *field
+	}
+	return res
 }
 
 // InlineQueryResultGif
@@ -2484,12 +2935,34 @@ func (t *InlineQueryResultGif) GetGifWidth() int64 {
 	return res
 }
 
+func (t *InlineQueryResultGif) GetInputMessageContent() InputMessageContent {
+	var res InputMessageContent
+	if t == nil {
+		return res
+	}
+	if field := t.InputMessageContent; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *InlineQueryResultGif) GetParseMode() string {
 	var res string
 	if t == nil {
 		return res
 	}
 	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultGif) GetReplyMarkup() InlineKeyboardMarkup {
+	var res InlineKeyboardMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
 		return *field
 	}
 	return res
@@ -2557,12 +3030,34 @@ type InlineQueryResultLocation struct {
 	ThumbWidth *int64 `json:"thumb_width,omitempty"`
 }
 
+func (t *InlineQueryResultLocation) GetInputMessageContent() InputMessageContent {
+	var res InputMessageContent
+	if t == nil {
+		return res
+	}
+	if field := t.InputMessageContent; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *InlineQueryResultLocation) GetLivePeriod() int64 {
 	var res int64
 	if t == nil {
 		return res
 	}
 	if field := t.LivePeriod; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultLocation) GetReplyMarkup() InlineKeyboardMarkup {
+	var res InlineKeyboardMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
 		return *field
 	}
 	return res
@@ -2659,6 +3154,17 @@ func (t *InlineQueryResultMpeg4Gif) GetCaption() string {
 	return res
 }
 
+func (t *InlineQueryResultMpeg4Gif) GetInputMessageContent() InputMessageContent {
+	var res InputMessageContent
+	if t == nil {
+		return res
+	}
+	if field := t.InputMessageContent; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *InlineQueryResultMpeg4Gif) GetMpeg4Duration() int64 {
 	var res int64
 	if t == nil {
@@ -2698,6 +3204,17 @@ func (t *InlineQueryResultMpeg4Gif) GetParseMode() string {
 		return res
 	}
 	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultMpeg4Gif) GetReplyMarkup() InlineKeyboardMarkup {
+	var res InlineKeyboardMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
 		return *field
 	}
 	return res
@@ -2790,6 +3307,17 @@ func (t *InlineQueryResultPhoto) GetDescription() string {
 	return res
 }
 
+func (t *InlineQueryResultPhoto) GetInputMessageContent() InputMessageContent {
+	var res InputMessageContent
+	if t == nil {
+		return res
+	}
+	if field := t.InputMessageContent; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *InlineQueryResultPhoto) GetParseMode() string {
 	var res string
 	if t == nil {
@@ -2818,6 +3346,17 @@ func (t *InlineQueryResultPhoto) GetPhotoWidth() int64 {
 		return res
 	}
 	if field := t.PhotoWidth; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultPhoto) GetReplyMarkup() InlineKeyboardMarkup {
+	var res InlineKeyboardMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
 		return *field
 	}
 	return res
@@ -2897,6 +3436,28 @@ func (t *InlineQueryResultVenue) GetFoursquareType() string {
 		return res
 	}
 	if field := t.FoursquareType; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultVenue) GetInputMessageContent() InputMessageContent {
+	var res InputMessageContent
+	if t == nil {
+		return res
+	}
+	if field := t.InputMessageContent; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultVenue) GetReplyMarkup() InlineKeyboardMarkup {
+	var res InlineKeyboardMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
 		return *field
 	}
 	return res
@@ -3007,12 +3568,34 @@ func (t *InlineQueryResultVideo) GetDescription() string {
 	return res
 }
 
+func (t *InlineQueryResultVideo) GetInputMessageContent() InputMessageContent {
+	var res InputMessageContent
+	if t == nil {
+		return res
+	}
+	if field := t.InputMessageContent; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *InlineQueryResultVideo) GetParseMode() string {
 	var res string
 	if t == nil {
 		return res
 	}
 	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultVideo) GetReplyMarkup() InlineKeyboardMarkup {
+	var res InlineKeyboardMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
 		return *field
 	}
 	return res
@@ -3097,12 +3680,34 @@ func (t *InlineQueryResultVoice) GetCaption() string {
 	return res
 }
 
+func (t *InlineQueryResultVoice) GetInputMessageContent() InputMessageContent {
+	var res InputMessageContent
+	if t == nil {
+		return res
+	}
+	if field := t.InputMessageContent; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *InlineQueryResultVoice) GetParseMode() string {
 	var res string
 	if t == nil {
 		return res
 	}
 	if field := t.ParseMode; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultVoice) GetReplyMarkup() InlineKeyboardMarkup {
+	var res InlineKeyboardMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
 		return *field
 	}
 	return res
@@ -3922,6 +4527,17 @@ func (t *KeyboardButton) GetRequestLocation() bool {
 	return res
 }
 
+func (t *KeyboardButton) GetRequestPoll() KeyboardButtonPollType {
+	var res KeyboardButtonPollType
+	if t == nil {
+		return res
+	}
+	if field := t.RequestPoll; field != nil {
+		return *field
+	}
+	return res
+}
+
 // KeyboardButtonPollType
 // This object represents type of a poll, which is allowed to be created and sent when the
 // corresponding button is pressed.
@@ -3931,6 +4547,17 @@ type KeyboardButtonPollType struct {
 	// regular is passed, only regular polls will be allowed. Otherwise, the user will be allowed
 	// to create a poll of any type.
 	Type *KeyboardButtonType `json:"type,omitempty"`
+}
+
+func (t *KeyboardButtonPollType) GetType() KeyboardButtonType {
+	var res KeyboardButtonType
+	if t == nil {
+		return res
+	}
+	if field := t.Type; field != nil {
+		return *field
+	}
+	return res
 }
 
 // LabeledPrice
@@ -4213,6 +4840,28 @@ type Message struct {
 	Voice *Voice `json:"voice,omitempty"`
 }
 
+func (t *Message) GetAnimation() Animation {
+	var res Animation
+	if t == nil {
+		return res
+	}
+	if field := t.Animation; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetAudio() Audio {
+	var res Audio
+	if t == nil {
+		return res
+	}
+	if field := t.Audio; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *Message) GetAuthorSignature() string {
 	var res string
 	if t == nil {
@@ -4235,12 +4884,67 @@ func (t *Message) GetCaption() string {
 	return res
 }
 
+func (t *Message) GetChannelChatCreated() True {
+	var res True
+	if t == nil {
+		return res
+	}
+	if field := t.ChannelChatCreated; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *Message) GetConnectedWebsite() string {
 	var res string
 	if t == nil {
 		return res
 	}
 	if field := t.ConnectedWebsite; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetContact() Contact {
+	var res Contact
+	if t == nil {
+		return res
+	}
+	if field := t.Contact; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetDeleteChatPhoto() True {
+	var res True
+	if t == nil {
+		return res
+	}
+	if field := t.DeleteChatPhoto; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetDice() Dice {
+	var res Dice
+	if t == nil {
+		return res
+	}
+	if field := t.Dice; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetDocument() Document {
+	var res Document
+	if t == nil {
+		return res
+	}
+	if field := t.Document; field != nil {
 		return *field
 	}
 	return res
@@ -4263,6 +4967,28 @@ func (t *Message) GetForwardDate() int64 {
 		return res
 	}
 	if field := t.ForwardDate; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetForwardFrom() User {
+	var res User
+	if t == nil {
+		return res
+	}
+	if field := t.ForwardFrom; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetForwardFromChat() Chat {
+	var res Chat
+	if t == nil {
+		return res
+	}
+	if field := t.ForwardFromChat; field != nil {
 		return *field
 	}
 	return res
@@ -4296,6 +5022,72 @@ func (t *Message) GetForwardSignature() string {
 		return res
 	}
 	if field := t.ForwardSignature; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetFrom() User {
+	var res User
+	if t == nil {
+		return res
+	}
+	if field := t.From; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetGame() Game {
+	var res Game
+	if t == nil {
+		return res
+	}
+	if field := t.Game; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetGroupChatCreated() True {
+	var res True
+	if t == nil {
+		return res
+	}
+	if field := t.GroupChatCreated; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetInvoice() Invoice {
+	var res Invoice
+	if t == nil {
+		return res
+	}
+	if field := t.Invoice; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetLeftChatMember() User {
+	var res User
+	if t == nil {
+		return res
+	}
+	if field := t.LeftChatMember; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetLocation() Location {
+	var res Location
+	if t == nil {
+		return res
+	}
+	if field := t.Location; field != nil {
 		return *field
 	}
 	return res
@@ -4345,12 +5137,155 @@ func (t *Message) GetNewChatTitle() string {
 	return res
 }
 
+func (t *Message) GetPassportData() PassportData {
+	var res PassportData
+	if t == nil {
+		return res
+	}
+	if field := t.PassportData; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetPinnedMessage() Message {
+	var res Message
+	if t == nil {
+		return res
+	}
+	if field := t.PinnedMessage; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetPoll() Poll {
+	var res Poll
+	if t == nil {
+		return res
+	}
+	if field := t.Poll; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetReplyMarkup() InlineKeyboardMarkup {
+	var res InlineKeyboardMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetReplyToMessage() Message {
+	var res Message
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyToMessage; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetSticker() Sticker {
+	var res Sticker
+	if t == nil {
+		return res
+	}
+	if field := t.Sticker; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetSuccessfulPayment() SuccessfulPayment {
+	var res SuccessfulPayment
+	if t == nil {
+		return res
+	}
+	if field := t.SuccessfulPayment; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetSupergroupChatCreated() True {
+	var res True
+	if t == nil {
+		return res
+	}
+	if field := t.SupergroupChatCreated; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *Message) GetText() string {
 	var res string
 	if t == nil {
 		return res
 	}
 	if field := t.Text; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetVenue() Venue {
+	var res Venue
+	if t == nil {
+		return res
+	}
+	if field := t.Venue; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetViaBot() User {
+	var res User
+	if t == nil {
+		return res
+	}
+	if field := t.ViaBot; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetVideo() Video {
+	var res Video
+	if t == nil {
+		return res
+	}
+	if field := t.Video; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetVideoNote() VideoNote {
+	var res VideoNote
+	if t == nil {
+		return res
+	}
+	if field := t.VideoNote; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Message) GetVoice() Voice {
+	var res Voice
+	if t == nil {
+		return res
+	}
+	if field := t.Voice; field != nil {
 		return *field
 	}
 	return res
@@ -4407,6 +5342,17 @@ func (t *MessageEntity) GetURL() string {
 	return res
 }
 
+func (t *MessageEntity) GetUser() User {
+	var res User
+	if t == nil {
+		return res
+	}
+	if field := t.User; field != nil {
+		return *field
+	}
+	return res
+}
+
 // OrderInfo
 // This object represents information about an order.
 type OrderInfo struct {
@@ -4452,6 +5398,17 @@ func (t *OrderInfo) GetPhoneNumber() string {
 		return res
 	}
 	if field := t.PhoneNumber; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *OrderInfo) GetShippingAddress() ShippingAddress {
+	var res ShippingAddress
+	if t == nil {
+		return res
+	}
+	if field := t.ShippingAddress; field != nil {
 		return *field
 	}
 	return res
@@ -4888,6 +5845,17 @@ func (t *Payments) GetProviderData() string {
 	return res
 }
 
+func (t *Payments) GetReplyMarkup() InlineKeyboardMarkup {
+	var res InlineKeyboardMarkup
+	if t == nil {
+		return res
+	}
+	if field := t.ReplyMarkup; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *Payments) GetReplyToMessageID() int64 {
 	var res int64
 	if t == nil {
@@ -5097,6 +6065,17 @@ type PreCheckoutQuery struct {
 	// ShippingOptionID
 	// Identifier of the shipping option chosen by the user
 	ShippingOptionID *string `json:"shipping_option_id,omitempty"`
+}
+
+func (t *PreCheckoutQuery) GetOrderInfo() OrderInfo {
+	var res OrderInfo
+	if t == nil {
+		return res
+	}
+	if field := t.OrderInfo; field != nil {
+		return *field
+	}
+	return res
 }
 
 func (t *PreCheckoutQuery) GetShippingOptionID() string {
@@ -5351,12 +6330,34 @@ func (t *Sticker) GetFileSize() int64 {
 	return res
 }
 
+func (t *Sticker) GetMaskPosition() MaskPosition {
+	var res MaskPosition
+	if t == nil {
+		return res
+	}
+	if field := t.MaskPosition; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *Sticker) GetSetName() string {
 	var res string
 	if t == nil {
 		return res
 	}
 	if field := t.SetName; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Sticker) GetThumb() PhotoSize {
+	var res PhotoSize
+	if t == nil {
+		return res
+	}
+	if field := t.Thumb; field != nil {
 		return *field
 	}
 	return res
@@ -5383,6 +6384,17 @@ type StickerSet struct {
 	// Thumb
 	// Sticker set thumbnail in the .WEBP or .TGS format
 	Thumb *PhotoSize `json:"thumb,omitempty"`
+}
+
+func (t *StickerSet) GetThumb() PhotoSize {
+	var res PhotoSize
+	if t == nil {
+		return res
+	}
+	if field := t.Thumb; field != nil {
+		return *field
+	}
+	return res
 }
 
 // Stickers
@@ -5443,12 +6455,34 @@ func (t *Stickers) GetFileSize() int64 {
 	return res
 }
 
+func (t *Stickers) GetMaskPosition() MaskPosition {
+	var res MaskPosition
+	if t == nil {
+		return res
+	}
+	if field := t.MaskPosition; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *Stickers) GetSetName() string {
 	var res string
 	if t == nil {
 		return res
 	}
 	if field := t.SetName; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Stickers) GetThumb() PhotoSize {
+	var res PhotoSize
+	if t == nil {
+		return res
+	}
+	if field := t.Thumb; field != nil {
 		return *field
 	}
 	return res
@@ -5481,6 +6515,17 @@ type SuccessfulPayment struct {
 	// ShippingOptionID
 	// Identifier of the shipping option chosen by the user
 	ShippingOptionID *string `json:"shipping_option_id,omitempty"`
+}
+
+func (t *SuccessfulPayment) GetOrderInfo() OrderInfo {
+	var res OrderInfo
+	if t == nil {
+		return res
+	}
+	if field := t.OrderInfo; field != nil {
+		return *field
+	}
+	return res
 }
 
 func (t *SuccessfulPayment) GetShippingOptionID() string {
@@ -5542,6 +6587,127 @@ type Update struct {
 	// ShippingQuery
 	// New incoming shipping query. Only for invoices with flexible price
 	ShippingQuery *ShippingQuery `json:"shipping_query,omitempty"`
+}
+
+func (t *Update) GetCallbackQuery() CallbackQuery {
+	var res CallbackQuery
+	if t == nil {
+		return res
+	}
+	if field := t.CallbackQuery; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Update) GetChannelPost() Message {
+	var res Message
+	if t == nil {
+		return res
+	}
+	if field := t.ChannelPost; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Update) GetChosenInlineResult() ChosenInlineResult {
+	var res ChosenInlineResult
+	if t == nil {
+		return res
+	}
+	if field := t.ChosenInlineResult; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Update) GetEditedChannelPost() Message {
+	var res Message
+	if t == nil {
+		return res
+	}
+	if field := t.EditedChannelPost; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Update) GetEditedMessage() Message {
+	var res Message
+	if t == nil {
+		return res
+	}
+	if field := t.EditedMessage; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Update) GetInlineQuery() InlineQuery {
+	var res InlineQuery
+	if t == nil {
+		return res
+	}
+	if field := t.InlineQuery; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Update) GetMessage() Message {
+	var res Message
+	if t == nil {
+		return res
+	}
+	if field := t.Message; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Update) GetPoll() Poll {
+	var res Poll
+	if t == nil {
+		return res
+	}
+	if field := t.Poll; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Update) GetPollAnswer() PollAnswer {
+	var res PollAnswer
+	if t == nil {
+		return res
+	}
+	if field := t.PollAnswer; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Update) GetPreCheckoutQuery() PreCheckoutQuery {
+	var res PreCheckoutQuery
+	if t == nil {
+		return res
+	}
+	if field := t.PreCheckoutQuery; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Update) GetShippingQuery() ShippingQuery {
+	var res ShippingQuery
+	if t == nil {
+		return res
+	}
+	if field := t.ShippingQuery; field != nil {
+		return *field
+	}
+	return res
 }
 
 // User
@@ -5748,6 +6914,17 @@ func (t *Video) GetMimeType() string {
 	return res
 }
 
+func (t *Video) GetThumb() PhotoSize {
+	var res PhotoSize
+	if t == nil {
+		return res
+	}
+	if field := t.Thumb; field != nil {
+		return *field
+	}
+	return res
+}
+
 // VideoNote
 // This object represents a video message (available in Telegram apps as of v.4.0).
 type VideoNote struct {
@@ -5778,6 +6955,17 @@ func (t *VideoNote) GetFileSize() int64 {
 		return res
 	}
 	if field := t.FileSize; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *VideoNote) GetThumb() PhotoSize {
+	var res PhotoSize
+	if t == nil {
+		return res
+	}
+	if field := t.Thumb; field != nil {
 		return *field
 	}
 	return res
