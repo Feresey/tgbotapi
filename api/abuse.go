@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"strconv"
 	"strings"
 )
@@ -123,4 +124,28 @@ func (t *Message) CommandArguments() string {
 	}
 
 	return t.GetText()[entity.Length+1:]
+}
+
+// String displays a simple text version of a user.
+//
+// It is normally a user's username, but falls back to a first/last
+// name as available.
+func (t *User) String() string {
+	if t == nil {
+		return ""
+	}
+	if t.Username != nil {
+		return t.GetUsername()
+	}
+
+	name := t.FirstName
+	if t.LastName != nil {
+		name += " " + t.GetLastName()
+	}
+
+	return name
+}
+
+func AskUser(user *User) string {
+	return fmt.Sprintf("[%s](tg://user?id=%d)", user.String(), user.ID)
 }
