@@ -57,3 +57,70 @@ func (i InputDataType) MarshalJSON() ([]byte, error) {
 */
 // мне влом писать, сами думайте.
 type ReplyMarkup interface{}
+
+func (t *MessageEntity) IsCommand() bool {
+	return t.Type == EntityTypeBotCommand
+}
+
+// IsCommand returns true if message starts with a "bot_command" entity.
+func (t *Message) IsCommand() bool {
+	if t.Entities == nil || len(t.Entities) == 0 {
+		return false
+	}
+
+	entity := t.Entities[0]
+	return entity.Offset == 0 && entity.IsCommand()
+}
+
+// Command checks if the message was a command and if it was, returns the
+// command. If the Message was not a command, it returns an empty string.
+//
+// If the command contains the at name syntax, it is removed. Use
+// CommandWithAt() if you do not want that.
+func (t *Message) Command() string {
+	command := t.CommandWithAt()
+
+	if i := strings.Index(command, "@"); i != -1 {
+		command = command[:i]
+	}
+
+	return command
+}
+
+// CommandWithAt checks if the message was a command and if it was, returns the
+// command. If the Message was not a command, it returns an empty string.
+//
+// If the command contains the at name syntax, it is not removed. Use Command()
+// if you want that.
+func (t *Message) CommandWithAt() string {
+	if !t.IsCommand() {
+		return ""
+	}
+
+	// IsCommand() checks that the message begins with a bot_command entity
+	entity := t.Entities[0]
+	return t.GetText()[1:entity.Length]
+}
+
+// CommandArguments checks if the message was a command and if it was,
+// returns all text after the command name. If the Message was not a
+// command, it returns an empty string.
+//
+// Note: The first character after the command name is omitted:
+// - "/foo bar baz" yields "bar baz", not " bar baz"
+// - "/foo-bar baz" yields "bar baz", too
+// Even though the latter is not a command conforming to the spec, the API
+// marks "/foo" as command entity.
+func (t *Message) CommandArguments() string {
+	if !t.IsCommand() {
+		return ""
+	}
+
+	// IsCommand() checks that the message begins with a bot_command entity
+	entity := t.Entities[0]
+	if int64(len(t.GetText())) == entity.Length {
+		return "" // The command makes up the whole message
+	}
+
+	return t.GetText()[entity.Length+1:]
+}
