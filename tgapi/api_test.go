@@ -1,6 +1,7 @@
 package tgapi
 
 import (
+	"context"
 	"flag"
 	"os"
 	"testing"
@@ -19,14 +20,16 @@ func TestMain(m *testing.M) {
 	os.Exit(m.Run())
 }
 
+var ctx = context.Background()
+
 func TestGetMe(t *testing.T) {
-	me, _, err := api.GetMe()
+	me, _, err := api.GetMe(ctx)
 	require.NoError(t, err)
 	require.NotEmpty(t, me)
 }
 
 func TestGetCommands(t *testing.T) {
-	_, _, err := api.GetMyCommands()
+	_, _, err := api.GetMyCommands(ctx)
 	require.NoError(t, err)
 }
 
@@ -47,17 +50,17 @@ const (
 var api = New(TestToken)
 
 func TestGetUpdates(t *testing.T) {
-	_, _, err := api.GetUpdates(nil)
+	_, _, err := api.GetUpdates(ctx, nil)
 	require.NoError(t, err)
 }
 
 func TestSendWithMessage(t *testing.T) {
-	msg := &SendMessage{
+	msg := &SendMessageConfig{
 		ChatID:    IntStr{Int: ChatID},
 		Text:      "A test message from the test library in telegram-bot-api",
 		ParseMode: "markdown",
 	}
-	resp, _, err := api.SendMessage(msg)
+	resp, _, err := api.SendMessage(ctx, msg)
 	require.NoError(t, err)
 
 	require.NotEmpty(t, resp.Text)
@@ -65,12 +68,12 @@ func TestSendWithMessage(t *testing.T) {
 }
 
 func TestSendWithMessageReply(t *testing.T) {
-	msg := &SendMessage{
+	msg := &SendMessageConfig{
 		ChatID:           IntStr{Int: ChatID},
 		Text:             "A test message from the test library in telegram-bot-api",
 		ReplyToMessageID: ReplyToMessageID,
 	}
-	resp, _, err := api.SendMessage(msg)
+	resp, _, err := api.SendMessage(ctx, msg)
 	require.NoError(t, err)
 	require.NotEmpty(t, resp.Text)
 	require.Equal(t, msg.Text, *resp.Text)
@@ -79,40 +82,40 @@ func TestSendWithMessageReply(t *testing.T) {
 }
 
 func TestSendWithMessageForward(t *testing.T) {
-	msg := &ForwardMessage{
+	msg := &ForwardMessageConfig{
 		ChatID:     IntStr{Int: ChatID},
 		FromChatID: IntStr{Int: ChatID},
 		MessageID:  ReplyToMessageID,
 	}
-	_, _, err := api.ForwardMessage(msg)
+	_, _, err := api.ForwardMessage(ctx, msg)
 	require.NoError(t, err)
 }
 
 func TestDeleteMessage(t *testing.T) {
-	msg := &SendMessage{
+	msg := &SendMessageConfig{
 		ChatID:    IntStr{Int: ChatID},
 		Text:      "A test message from the test library in telegram-bot-api",
 		ParseMode: "markdown",
 	}
-	message, _, err := api.SendMessage(msg)
+	message, _, err := api.SendMessage(ctx, msg)
 	require.NoError(t, err)
 
-	_, err = api.DeleteMessage(msg.ChatID, message.MessageID)
+	_, err = api.DeleteMessage(ctx, msg.ChatID, message.MessageID)
 	require.NoError(t, err)
 }
 
 func TestPin(t *testing.T) {
-	msg := &SendMessage{
+	msg := &SendMessageConfig{
 		ChatID:    IntStr{Int: SupergroupChatID},
 		Text:      "A test message from the test library in telegram-bot-api",
 		ParseMode: "markdown",
 	}
 
-	message, _, err := api.SendMessage(msg)
+	message, _, err := api.SendMessage(ctx, msg)
 	require.NoError(t, err)
 
 	t.Run("pin", func(t *testing.T) {
-		_, err = api.PinChatMessage(&PinChatMessage{
+		_, err = api.PinChatMessage(ctx, &PinChatMessageConfig{
 			ChatID:              msg.ChatID,
 			DisableNotification: false,
 			MessageID:           message.MessageID,
@@ -121,7 +124,7 @@ func TestPin(t *testing.T) {
 	})
 
 	t.Run("unpin", func(t *testing.T) {
-		_, err := api.UnpinChatMessage(msg.ChatID)
+		_, err := api.UnpinChatMessage(ctx, msg.ChatID)
 		require.NoError(t, err)
 	})
 }

@@ -81,7 +81,7 @@ func NewPoller(api *API, handler Handler, options ...LongPollerOption) *LongPoll
 	return poller
 }
 
-func (lp *LongPoller) Listen(updatesConfig *GetUpdates) {
+func (lp *LongPoller) Listen(updatesConfig *GetUpdatesConfig) {
 	for {
 		select {
 		case <-lp.stop:
@@ -91,7 +91,7 @@ func (lp *LongPoller) Listen(updatesConfig *GetUpdates) {
 		default:
 		}
 
-		updates, _, err := lp.api.GetUpdates(updatesConfig)
+		updates, _, err := lp.api.GetUpdates(lp.ctx, updatesConfig)
 		if err != nil {
 			if lp.opts.listenErrorCallback != nil {
 				lp.opts.listenErrorCallback(err)

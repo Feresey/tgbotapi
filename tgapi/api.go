@@ -2,17 +2,16 @@ package tgapi
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
-	"net/url"
 )
 
 const APIEndpoint = "https://api.telegram.org"
 
 type Response struct {
-	Ok          bool               `json:"ok"`
+	OK          bool               `json:"ok"`
 	Result      json.RawMessage    `json:"result"`
 	Description string             `json:"description,omitempty"`
 	Parameters  ResponseParameters `json:"parameters,omitempty"`
@@ -27,7 +26,7 @@ type Error struct {
 
 func (e Error) Error() string {
 	return fmt.Sprintf(
-		"response from api. code: %d, message: %s, parameters: %v",
+		"api response. code: %d, message: %s, parameters: %v",
 		e.Code, e.Message, e.ResponseParameters)
 }
 
@@ -48,25 +47,19 @@ func New(token string) *API {
 }
 
 // MakeRequest makes a request to a specific endpoint with our token.
-func (api *API) MakeRequest(method string, data interface{}) (*Response, error) {
+func (api *API) MakeRequest(ctx context.Context, method string, data interface{}) (*Response, error) {
 	body, err := json.Marshal(data)
 	if err != nil {
 		return nil, err
 	}
-	u, err := url.Parse(fmt.Sprintf("%s/%s", api.endpoint, method))
+
+	url := fmt.Sprintf("%s/%s", api.endpoint, method)
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewReader(body))
 	if err != nil {
 		return nil, err
 	}
+	req.Header.Set("Content-Type", "application/json")
 
-	req := &http.Request{
-		Method: http.MethodPost,
-		Body:   ioutil.NopCloser(bytes.NewReader(body)),
-		Header: http.Header{
-			"Content-Type": []string{"application/json"},
-		},
-		URL: u,
-		// context?
-	}
 	resp, err := api.cli.Do(req)
 	if err != nil {
 		return nil, err
@@ -78,7 +71,7 @@ func (api *API) MakeRequest(method string, data interface{}) (*Response, error) 
 		return &apiResp, err
 	}
 
-	if !apiResp.Ok {
+	if !apiResp.OK {
 		return &apiResp, Error{
 			Code:               apiResp.ErrorCode,
 			Message:            apiResp.Description,

@@ -2,14 +2,17 @@
 
 package tgapi
 
-import "encoding/json"
+import (
+	"context"
+	"encoding/json"
+)
 
 // AddStickerToSet
 // Use this method to add a new sticker to a set created by the bot. You must use exactly one of
 // the fields png_sticker or tgs_sticker. Animated stickers can be added to animated sticker sets
 // and only to them. Animated sticker sets can have up to 50 stickers. Static sticker sets can have
 // up to 120 stickers. Returns True on success.
-type AddStickerToSet struct {
+type AddStickerToSetConfig struct {
 	// Emojis
 	// One or more emoji corresponding to the sticker
 	Emojis string `json:"emojis"`
@@ -39,7 +42,7 @@ type AddStickerToSet struct {
 // Use this method to send answers to callback queries sent from inline keyboards. The answer will
 // be displayed to the user as a notification at the top of the chat screen or as an alert. On
 // success, True is returned.
-type AnswerCallbackQuery struct {
+type AnswerCallbackQueryConfig struct {
 	// CallbackQueryID
 	// Unique identifier for the query to be answered
 	CallbackQueryID string `json:"callback_query_id"`
@@ -66,7 +69,7 @@ type AnswerCallbackQuery struct {
 // AnswerInlineQuery
 // Use this method to send answers to an inline query. On success, True is returned.No more than 50
 // results per query are allowed.
-type AnswerInlineQuery struct {
+type AnswerInlineQueryConfig struct {
 	// InlineQueryID
 	// Unique identifier for the answered query
 	InlineQueryID string `json:"inline_query_id"`
@@ -108,7 +111,7 @@ type AnswerInlineQuery struct {
 // confirmation in the form of an Update with the field pre_checkout_query. Use this method to
 // respond to such pre-checkout queries. On success, True is returned. Note: The Bot API must
 // receive an answer within 10 seconds after the pre-checkout query was sent.
-type AnswerPreCheckoutQuery struct {
+type AnswerPreCheckoutQueryConfig struct {
 	// Ok
 	// Specify True if everything is alright (goods are available, etc.) and the bot is ready to
 	// proceed with the order. Use False if there are any problems.
@@ -128,7 +131,7 @@ type AnswerPreCheckoutQuery struct {
 // If you sent an invoice requesting a shipping address and the parameter is_flexible was
 // specified, the Bot API will send an Update with a shipping_query field to the bot. Use this
 // method to reply to shipping queries. On success, True is returned.
-type AnswerShippingQuery struct {
+type AnswerShippingQueryConfig struct {
 	// Ok
 	// Specify True if delivery to the specified address is possible and False if there are any
 	// problems (for example, if delivery to the specified address is not possible)
@@ -150,7 +153,7 @@ type AnswerShippingQuery struct {
 // Use this method to create a new sticker set owned by a user. The bot will be able to edit the
 // sticker set thus created. You must use exactly one of the fields png_sticker or tgs_sticker.
 // Returns True on success.
-type CreateNewStickerSet struct {
+type CreateNewStickerSetConfig struct {
 	// Emojis
 	// One or more emoji corresponding to the sticker
 	Emojis string `json:"emojis"`
@@ -188,7 +191,7 @@ type CreateNewStickerSet struct {
 // EditMessageCaption
 // Use this method to edit captions of messages. On success, if edited message is sent by the bot,
 // the edited Message is returned, otherwise True is returned.
-type EditMessageCaption struct {
+type EditMessageCaptionConfig struct {
 	// Caption
 	// New caption of the message, 0-1024 characters after entities parsing
 	Caption string `json:"caption,omitempty"`
@@ -215,7 +218,7 @@ type EditMessageCaption struct {
 // expires or editing is explicitly disabled by a call to stopMessageLiveLocation. On success, if
 // the edited message was sent by the bot, the edited Message is returned, otherwise True is
 // returned.
-type EditMessageLiveLocation struct {
+type EditMessageLiveLocationConfig struct {
 	// Latitude
 	// Latitude of new location
 	Latitude float64 `json:"latitude"`
@@ -243,7 +246,7 @@ type EditMessageLiveLocation struct {
 // type can be changed arbitrarily. When inline message is edited, new file can't be uploaded. Use
 // previously uploaded file via its file_id or specify a URL. On success, if the edited message was
 // sent by the bot, the edited Message is returned, otherwise True is returned.
-type EditMessageMedia struct {
+type EditMessageMediaConfig struct {
 	// Media
 	// A JSON-serialized object for a new media content of the message
 	Media InputMedia `json:"media"`
@@ -265,7 +268,7 @@ type EditMessageMedia struct {
 // EditMessageReplyMarkup
 // Use this method to edit only the reply markup of messages. On success, if edited message is sent
 // by the bot, the edited Message is returned, otherwise True is returned.
-type EditMessageReplyMarkup struct {
+type EditMessageReplyMarkupConfig struct {
 	// ChatID
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
@@ -284,7 +287,7 @@ type EditMessageReplyMarkup struct {
 // EditMessageText
 // Use this method to edit text and game messages. On success, if edited message is sent by the
 // bot, the edited Message is returned, otherwise True is returned.
-type EditMessageText struct {
+type EditMessageTextConfig struct {
 	// Text
 	// New text of the message, 1-4096 characters after entities parsing
 	Text string `json:"text"`
@@ -311,7 +314,7 @@ type EditMessageText struct {
 
 // ForwardMessage
 // Use this method to forward messages of any kind. On success, the sent Message is returned.
-type ForwardMessage struct {
+type ForwardMessageConfig struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
@@ -331,7 +334,7 @@ type ForwardMessage struct {
 // GetGameHighScores
 // Use this method to get data for high score tables. Will return the score of the specified user
 // and several of their neighbors in a game. On success, returns an Array of GameHighScore objects.
-type GetGameHighScores struct {
+type GetGameHighScoresConfig struct {
 	// UserID
 	// Target user id
 	UserID int64 `json:"user_id"`
@@ -349,7 +352,7 @@ type GetGameHighScores struct {
 // GetUpdates
 // Use this method to receive incoming updates using long polling (wiki). An Array of Update
 // objects is returned.
-type GetUpdates struct {
+type GetUpdatesConfig struct {
 	// AllowedUpdates
 	// A JSON-serialized list of the update types you want your bot to receive. For example,
 	// specify ["message", "edited_channel_post", "callback_query"] to only receive updates of
@@ -379,7 +382,7 @@ type GetUpdates struct {
 // GetUserProfilePhotos
 // Use this method to get a list of profile pictures for a user. Returns a UserProfilePhotos
 // object.
-type GetUserProfilePhotos struct {
+type GetUserProfilePhotosConfig struct {
 	// UserID
 	// Unique identifier of the target user
 	UserID int64 `json:"user_id"`
@@ -397,7 +400,7 @@ type GetUserProfilePhotos struct {
 // supergroups and channels, the user will not be able to return to the group on their own using
 // invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this
 // to work and must have the appropriate admin rights. Returns True on success.
-type KickChatMember struct {
+type KickChatMemberConfig struct {
 	// ChatID
 	// Unique identifier for the target group or username of the target supergroup or channel (in
 	// the format @channelusername)
@@ -415,7 +418,7 @@ type KickChatMember struct {
 // Use this method to pin a message in a group, a supergroup, or a channel. The bot must be an
 // administrator in the chat for this to work and must have the 'can_pin_messages' admin right in
 // the supergroup or 'can_edit_messages' admin right in the channel. Returns True on success.
-type PinChatMessage struct {
+type PinChatMessageConfig struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
@@ -433,7 +436,7 @@ type PinChatMessage struct {
 // Use this method to promote or demote a user in a supergroup or a channel. The bot must be an
 // administrator in the chat for this to work and must have the appropriate admin rights. Pass
 // False for all boolean parameters to demote a user. Returns True on success.
-type PromoteChatMember struct {
+type PromoteChatMemberConfig struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
@@ -474,7 +477,7 @@ type PromoteChatMember struct {
 // Use this method to restrict a user in a supergroup. The bot must be an administrator in the
 // supergroup for this to work and must have the appropriate admin rights. Pass True for all
 // permissions to lift restrictions from a user. Returns True on success.
-type RestrictChatMember struct {
+type RestrictChatMemberConfig struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target supergroup (in the format
 	// @supergroupusername)
@@ -496,7 +499,7 @@ type RestrictChatMember struct {
 // Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On
 // success, the sent Message is returned. Bots can currently send animation files of up to 50 MB in
 // size, this limit may be changed in the future.
-type SendAnimation struct {
+type SendAnimationConfig struct {
 	// Animation
 	// Animation to send. Pass a file_id as String to send an animation that exists on the Telegram
 	// servers (recommended), pass an HTTP URL as a String for Telegram to get an animation from
@@ -547,7 +550,7 @@ type SendAnimation struct {
 // player. Your audio must be in the .MP3 or .M4A format. On success, the sent Message is returned.
 // Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the
 // future.
-type SendAudio struct {
+type SendAudioConfig struct {
 	// Audio
 	// Audio file to send. Pass a file_id as String to send an audio file that exists on the
 	// Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an audio
@@ -594,7 +597,7 @@ type SendAudio struct {
 
 // SendContact
 // Use this method to send phone contacts. On success, the sent Message is returned.
-type SendContact struct {
+type SendContactConfig struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
@@ -626,7 +629,7 @@ type SendContact struct {
 // SendDice
 // Use this method to send an animated emoji that will display a random value. On success, the sent
 // Message is returned.
-type SendDice struct {
+type SendDiceConfig struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
@@ -651,7 +654,7 @@ type SendDice struct {
 // Use this method to send general files. On success, the sent Message is returned. Bots can
 // currently send files of any type of up to 50 MB in size, this limit may be changed in the
 // future.
-type SendDocument struct {
+type SendDocumentConfig struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
@@ -690,7 +693,7 @@ type SendDocument struct {
 
 // SendGame
 // Use this method to send a game. On success, the sent Message is returned.
-type SendGame struct {
+type SendGameConfig struct {
 	// ChatID
 	// Unique identifier for the target chat
 	ChatID int64 `json:"chat_id"`
@@ -712,7 +715,7 @@ type SendGame struct {
 
 // SendInvoice
 // Use this method to send invoices. On success, the sent Message is returned.
-type SendInvoice struct {
+type SendInvoiceConfig struct {
 	// ChatID
 	// Unique identifier for the target private chat
 	ChatID int64 `json:"chat_id"`
@@ -792,7 +795,7 @@ type SendInvoice struct {
 
 // SendLocation
 // Use this method to send point on the map. On success, the sent Message is returned.
-type SendLocation struct {
+type SendLocationConfig struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
@@ -822,7 +825,7 @@ type SendLocation struct {
 // SendMediaGroup
 // Use this method to send a group of photos or videos as an album. On success, an array of the
 // sent Messages is returned.
-type SendMediaGroup struct {
+type SendMediaGroupConfig struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
@@ -840,7 +843,7 @@ type SendMediaGroup struct {
 
 // SendMessage
 // Use this method to send text messages. On success, the sent Message is returned.
-type SendMessage struct {
+type SendMessageConfig struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
@@ -868,7 +871,7 @@ type SendMessage struct {
 
 // SendPhoto
 // Use this method to send photos. On success, the sent Message is returned.
-type SendPhoto struct {
+type SendPhotoConfig struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
@@ -899,7 +902,7 @@ type SendPhoto struct {
 
 // SendPoll
 // Use this method to send a native poll. On success, the sent Message is returned.
-type SendPoll struct {
+type SendPollConfig struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
@@ -955,7 +958,7 @@ type SendPoll struct {
 // SendSticker
 // Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is
 // returned.
-type SendSticker struct {
+type SendStickerConfig struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
@@ -979,7 +982,7 @@ type SendSticker struct {
 
 // SendVenue
 // Use this method to send information about a venue. On success, the sent Message is returned.
-type SendVenue struct {
+type SendVenueConfig struct {
 	// Address
 	// Address of the venue
 	Address string `json:"address"`
@@ -1019,7 +1022,7 @@ type SendVenue struct {
 // Use this method to send video files, Telegram clients support mp4 videos (other formats may be
 // sent as Document). On success, the sent Message is returned. Bots can currently send video files
 // of up to 50 MB in size, this limit may be changed in the future.
-type SendVideo struct {
+type SendVideoConfig struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
@@ -1071,7 +1074,7 @@ type SendVideo struct {
 // SendVideoNote
 // As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this
 // method to send video messages. On success, the sent Message is returned.
-type SendVideoNote struct {
+type SendVideoNoteConfig struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
@@ -1113,7 +1116,7 @@ type SendVideoNote struct {
 // (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots
 // can currently send voice messages of up to 50 MB in size, this limit may be changed in the
 // future.
-type SendVoice struct {
+type SendVoiceConfig struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
@@ -1148,7 +1151,7 @@ type SendVoice struct {
 // SetChatAdministratorCustomTitle
 // Use this method to set a custom title for an administrator in a supergroup promoted by the bot.
 // Returns True on success.
-type SetChatAdministratorCustomTitle struct {
+type SetChatAdministratorCustomTitleConfig struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target supergroup (in the format
 	// @supergroupusername)
@@ -1165,7 +1168,7 @@ type SetChatAdministratorCustomTitle struct {
 // Use this method to set the score of the specified user in a game. On success, if the message was
 // sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the
 // new score is not greater than the user's current score in the chat and force is False.
-type SetGameScore struct {
+type SetGameScoreConfig struct {
 	// Score
 	// New score, must be non-negative
 	Score int64 `json:"score"`
@@ -1194,7 +1197,7 @@ type SetGameScore struct {
 // SetStickerSetThumb
 // Use this method to set the thumbnail of a sticker set. Animated thumbnails can be set for
 // animated sticker sets only. Returns True on success.
-type SetStickerSetThumb struct {
+type SetStickerSetThumbConfig struct {
 	// Name
 	// Sticker set name
 	Name string `json:"name"`
@@ -1217,7 +1220,7 @@ type SetStickerSetThumb struct {
 // there is an update for the bot, we will send an HTTPS POST request to the specified url,
 // containing a JSON-serialized Update. In case of an unsuccessful request, we will give up after a
 // reasonable amount of attempts. Returns True on success.
-type SetWebhook struct {
+type SetWebhookConfig struct {
 	// URL
 	// HTTPS url to send updates to. Use an empty string to remove webhook integration
 	URL string `json:"url"`
@@ -1243,7 +1246,7 @@ type SetWebhook struct {
 // StopMessageLiveLocation
 // Use this method to stop updating a live location message before live_period expires. On success,
 // if the message was sent by the bot, the sent Message is returned, otherwise True is returned.
-type StopMessageLiveLocation struct {
+type StopMessageLiveLocationConfig struct {
 	// ChatID
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
@@ -1263,7 +1266,7 @@ type StopMessageLiveLocation struct {
 // StopPoll
 // Use this method to stop a poll which was sent by the bot. On success, the stopped Poll with the
 // final results is returned.
-type StopPoll struct {
+type StopPollConfig struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
@@ -1281,23 +1284,32 @@ type StopPoll struct {
 // the fields png_sticker or tgs_sticker. Animated stickers can be added to animated sticker sets
 // and only to them. Animated sticker sets can have up to 50 stickers. Static sticker sets can have
 // up to 120 stickers. Returns True on success.
-func (api *API) AddStickerToSet(args *AddStickerToSet) (*Response, error) {
-	return api.MakeRequest("addStickerToSet", args)
+func (api *API) AddStickerToSet(
+	ctx context.Context,
+	args *AddStickerToSetConfig,
+) (*Response, error) {
+	return api.MakeRequest(ctx, "addStickerToSet", args)
 }
 
 // AnswerCallbackQuery
 // Use this method to send answers to callback queries sent from inline keyboards. The answer will
 // be displayed to the user as a notification at the top of the chat screen or as an alert. On
 // success, True is returned.
-func (api *API) AnswerCallbackQuery(args *AnswerCallbackQuery) (*Response, error) {
-	return api.MakeRequest("answerCallbackQuery", args)
+func (api *API) AnswerCallbackQuery(
+	ctx context.Context,
+	args *AnswerCallbackQueryConfig,
+) (*Response, error) {
+	return api.MakeRequest(ctx, "answerCallbackQuery", args)
 }
 
 // AnswerInlineQuery
 // Use this method to send answers to an inline query. On success, True is returned.No more than 50
 // results per query are allowed.
-func (api *API) AnswerInlineQuery(args *AnswerInlineQuery) (*Response, error) {
-	return api.MakeRequest("answerInlineQuery", args)
+func (api *API) AnswerInlineQuery(
+	ctx context.Context,
+	args *AnswerInlineQueryConfig,
+) (*Response, error) {
+	return api.MakeRequest(ctx, "answerInlineQuery", args)
 }
 
 // AnswerPreCheckoutQuery
@@ -1305,37 +1317,50 @@ func (api *API) AnswerInlineQuery(args *AnswerInlineQuery) (*Response, error) {
 // confirmation in the form of an Update with the field pre_checkout_query. Use this method to
 // respond to such pre-checkout queries. On success, True is returned. Note: The Bot API must
 // receive an answer within 10 seconds after the pre-checkout query was sent.
-func (api *API) AnswerPreCheckoutQuery(args *AnswerPreCheckoutQuery) (*Response, error) {
-	return api.MakeRequest("answerPreCheckoutQuery", args)
+func (api *API) AnswerPreCheckoutQuery(
+	ctx context.Context,
+	args *AnswerPreCheckoutQueryConfig,
+) (*Response, error) {
+	return api.MakeRequest(ctx, "answerPreCheckoutQuery", args)
 }
 
 // AnswerShippingQuery
 // If you sent an invoice requesting a shipping address and the parameter is_flexible was
 // specified, the Bot API will send an Update with a shipping_query field to the bot. Use this
 // method to reply to shipping queries. On success, True is returned.
-func (api *API) AnswerShippingQuery(args *AnswerShippingQuery) (*Response, error) {
-	return api.MakeRequest("answerShippingQuery", args)
+func (api *API) AnswerShippingQuery(
+	ctx context.Context,
+	args *AnswerShippingQueryConfig,
+) (*Response, error) {
+	return api.MakeRequest(ctx, "answerShippingQuery", args)
 }
 
 // CreateNewStickerSet
 // Use this method to create a new sticker set owned by a user. The bot will be able to edit the
 // sticker set thus created. You must use exactly one of the fields png_sticker or tgs_sticker.
 // Returns True on success.
-func (api *API) CreateNewStickerSet(args *CreateNewStickerSet) (*Response, error) {
-	return api.MakeRequest("createNewStickerSet", args)
+func (api *API) CreateNewStickerSet(
+	ctx context.Context,
+	args *CreateNewStickerSetConfig,
+) (*Response, error) {
+	return api.MakeRequest(ctx, "createNewStickerSet", args)
 }
 
 // DeleteChatPhoto
 // Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must
 // be an administrator in the chat for this to work and must have the appropriate admin rights.
 // Returns True on success.
-func (api *API) DeleteChatPhoto(chatID IntStr) (*Response, error) {
+func (api *API) DeleteChatPhoto(
+	ctx context.Context,
+	// required.
+	// Unique identifier for the target chat or username of the target channel (in the format
+	// @channelusername)
+	chatID IntStr,
+) (*Response, error) {
 	args := map[string]interface{}{
-		// Unique identifier for the target chat or username of the target channel (in the format
-		// @channelusername)
 		"chat_id": chatID,
 	}
-	return api.MakeRequest("deleteChatPhoto", args)
+	return api.MakeRequest(ctx, "deleteChatPhoto", args)
 }
 
 // DeleteChatStickerSet
@@ -1343,13 +1368,17 @@ func (api *API) DeleteChatPhoto(chatID IntStr) (*Response, error) {
 // administrator in the chat for this to work and must have the appropriate admin rights. Use the
 // field can_set_sticker_set optionally returned in getChat requests to check if the bot can use
 // this method. Returns True on success.
-func (api *API) DeleteChatStickerSet(chatID IntStr) (*Response, error) {
+func (api *API) DeleteChatStickerSet(
+	ctx context.Context,
+	// required.
+	// Unique identifier for the target chat or username of the target supergroup (in the
+	// format @supergroupusername)
+	chatID IntStr,
+) (*Response, error) {
 	args := map[string]interface{}{
-		// Unique identifier for the target chat or username of the target supergroup (in the format
-		// @supergroupusername)
 		"chat_id": chatID,
 	}
-	return api.MakeRequest("deleteChatStickerSet", args)
+	return api.MakeRequest(ctx, "deleteChatStickerSet", args)
 }
 
 // DeleteMessage
@@ -1361,39 +1390,54 @@ func (api *API) DeleteChatStickerSet(chatID IntStr) (*Response, error) {
 // messages in channels.- If the bot is an administrator of a group, it can delete any message
 // there.- If the bot has can_delete_messages permission in a supergroup or a channel, it can
 // delete any message there.Returns True on success.
-func (api *API) DeleteMessage(chatID IntStr, messageID int64) (*Response, error) {
+func (api *API) DeleteMessage(
+	ctx context.Context,
+	// required.
+	// Unique identifier for the target chat or username of the target channel (in the format
+	// @channelusername)
+	chatID IntStr,
+	// required.
+	// Identifier of the message to delete
+	messageID int64,
+) (*Response, error) {
 	args := map[string]interface{}{
-		// Unique identifier for the target chat or username of the target channel (in the format
-		// @channelusername)
-		"chat_id": chatID,
-		// Identifier of the message to delete
+		"chat_id":    chatID,
 		"message_id": messageID,
 	}
-	return api.MakeRequest("deleteMessage", args)
+	return api.MakeRequest(ctx, "deleteMessage", args)
 }
 
 // DeleteStickerFromSet
 // Use this method to delete a sticker from a set created by the bot. Returns True on success.
-func (api *API) DeleteStickerFromSet(sticker string) (*Response, error) {
+func (api *API) DeleteStickerFromSet(
+	ctx context.Context,
+	// required.
+	// File identifier of the sticker
+	sticker string,
+) (*Response, error) {
 	args := map[string]interface{}{
-		// File identifier of the sticker
 		"sticker": sticker,
 	}
-	return api.MakeRequest("deleteStickerFromSet", args)
+	return api.MakeRequest(ctx, "deleteStickerFromSet", args)
 }
 
 // DeleteWebhook
 // Use this method to remove webhook integration if you decide to switch back to getUpdates.
 // Returns True on success. Requires no parameters.
-func (api *API) DeleteWebhook() (*Response, error) {
-	return api.MakeRequest("deleteWebhook", nil)
+func (api *API) DeleteWebhook(
+	ctx context.Context,
+) (*Response, error) {
+	return api.MakeRequest(ctx, "deleteWebhook", nil)
 }
 
 // EditMessageCaption
 // Use this method to edit captions of messages. On success, if edited message is sent by the bot,
 // the edited Message is returned, otherwise True is returned.
-func (api *API) EditMessageCaption(args *EditMessageCaption) (*Message, *Response, error) {
-	resp, err := api.MakeRequest("editMessageCaption", args)
+func (api *API) EditMessageCaption(
+	ctx context.Context,
+	args *EditMessageCaptionConfig,
+) (*Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "editMessageCaption", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1407,8 +1451,11 @@ func (api *API) EditMessageCaption(args *EditMessageCaption) (*Message, *Respons
 // expires or editing is explicitly disabled by a call to stopMessageLiveLocation. On success, if
 // the edited message was sent by the bot, the edited Message is returned, otherwise True is
 // returned.
-func (api *API) EditMessageLiveLocation(args *EditMessageLiveLocation) (*Message, *Response, error) {
-	resp, err := api.MakeRequest("editMessageLiveLocation", args)
+func (api *API) EditMessageLiveLocation(
+	ctx context.Context,
+	args *EditMessageLiveLocationConfig,
+) (*Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "editMessageLiveLocation", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1423,8 +1470,11 @@ func (api *API) EditMessageLiveLocation(args *EditMessageLiveLocation) (*Message
 // type can be changed arbitrarily. When inline message is edited, new file can't be uploaded. Use
 // previously uploaded file via its file_id or specify a URL. On success, if the edited message was
 // sent by the bot, the edited Message is returned, otherwise True is returned.
-func (api *API) EditMessageMedia(args *EditMessageMedia) (*Message, *Response, error) {
-	resp, err := api.MakeRequest("editMessageMedia", args)
+func (api *API) EditMessageMedia(
+	ctx context.Context,
+	args *EditMessageMediaConfig,
+) (*Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "editMessageMedia", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1436,8 +1486,11 @@ func (api *API) EditMessageMedia(args *EditMessageMedia) (*Message, *Response, e
 // EditMessageReplyMarkup
 // Use this method to edit only the reply markup of messages. On success, if edited message is sent
 // by the bot, the edited Message is returned, otherwise True is returned.
-func (api *API) EditMessageReplyMarkup(args *EditMessageReplyMarkup) (*Message, *Response, error) {
-	resp, err := api.MakeRequest("editMessageReplyMarkup", args)
+func (api *API) EditMessageReplyMarkup(
+	ctx context.Context,
+	args *EditMessageReplyMarkupConfig,
+) (*Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "editMessageReplyMarkup", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1449,8 +1502,11 @@ func (api *API) EditMessageReplyMarkup(args *EditMessageReplyMarkup) (*Message, 
 // EditMessageText
 // Use this method to edit text and game messages. On success, if edited message is sent by the
 // bot, the edited Message is returned, otherwise True is returned.
-func (api *API) EditMessageText(args *EditMessageText) (*Message, *Response, error) {
-	resp, err := api.MakeRequest("editMessageText", args)
+func (api *API) EditMessageText(
+	ctx context.Context,
+	args *EditMessageTextConfig,
+) (*Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "editMessageText", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1463,13 +1519,17 @@ func (api *API) EditMessageText(args *EditMessageText) (*Message, *Response, err
 // Use this method to generate a new invite link for a chat; any previously generated link is
 // revoked. The bot must be an administrator in the chat for this to work and must have the
 // appropriate admin rights. Returns the new invite link as String on success.
-func (api *API) ExportChatInviteLink(chatID IntStr) (string, *Response, error) {
+func (api *API) ExportChatInviteLink(
+	ctx context.Context,
+	// required.
+	// Unique identifier for the target chat or username of the target channel (in the format
+	// @channelusername)
+	chatID IntStr,
+) (string, *Response, error) {
 	args := map[string]interface{}{
-		// Unique identifier for the target chat or username of the target channel (in the format
-		// @channelusername)
 		"chat_id": chatID,
 	}
-	resp, err := api.MakeRequest("exportChatInviteLink", args)
+	resp, err := api.MakeRequest(ctx, "exportChatInviteLink", args)
 	if err != nil {
 		return "", resp, err
 	}
@@ -1480,8 +1540,11 @@ func (api *API) ExportChatInviteLink(chatID IntStr) (string, *Response, error) {
 
 // ForwardMessage
 // Use this method to forward messages of any kind. On success, the sent Message is returned.
-func (api *API) ForwardMessage(args *ForwardMessage) (*Message, *Response, error) {
-	resp, err := api.MakeRequest("forwardMessage", args)
+func (api *API) ForwardMessage(
+	ctx context.Context,
+	args *ForwardMessageConfig,
+) (*Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "forwardMessage", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1494,13 +1557,17 @@ func (api *API) ForwardMessage(args *ForwardMessage) (*Message, *Response, error
 // Use this method to get up to date information about the chat (current name of the user for
 // one-on-one conversations, current username of a user, group or channel, etc.). Returns a Chat
 // object on success.
-func (api *API) GetChat(chatID IntStr) (*Chat, *Response, error) {
+func (api *API) GetChat(
+	ctx context.Context,
+	// required.
+	// Unique identifier for the target chat or username of the target supergroup or channel
+	// (in the format @channelusername)
+	chatID IntStr,
+) (*Chat, *Response, error) {
 	args := map[string]interface{}{
-		// Unique identifier for the target chat or username of the target supergroup or channel (in
-		// the format @channelusername)
 		"chat_id": chatID,
 	}
-	resp, err := api.MakeRequest("getChat", args)
+	resp, err := api.MakeRequest(ctx, "getChat", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1514,13 +1581,17 @@ func (api *API) GetChat(chatID IntStr) (*Chat, *Response, error) {
 // ChatMember objects that contains information about all chat administrators except other bots. If
 // the chat is a group or a supergroup and no administrators were appointed, only the creator will
 // be returned.
-func (api *API) GetChatAdministrators(chatID IntStr) ([]ChatMember, *Response, error) {
+func (api *API) GetChatAdministrators(
+	ctx context.Context,
+	// required.
+	// Unique identifier for the target chat or username of the target supergroup or channel
+	// (in the format @channelusername)
+	chatID IntStr,
+) ([]ChatMember, *Response, error) {
 	args := map[string]interface{}{
-		// Unique identifier for the target chat or username of the target supergroup or channel (in
-		// the format @channelusername)
 		"chat_id": chatID,
 	}
-	resp, err := api.MakeRequest("getChatAdministrators", args)
+	resp, err := api.MakeRequest(ctx, "getChatAdministrators", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1532,15 +1603,21 @@ func (api *API) GetChatAdministrators(chatID IntStr) ([]ChatMember, *Response, e
 // GetChatMember
 // Use this method to get information about a member of a chat. Returns a ChatMember object on
 // success.
-func (api *API) GetChatMember(chatID IntStr, userID int64) (*ChatMember, *Response, error) {
+func (api *API) GetChatMember(
+	ctx context.Context,
+	// required.
+	// Unique identifier for the target chat or username of the target supergroup or channel
+	// (in the format @channelusername)
+	chatID IntStr,
+	// required.
+	// Unique identifier of the target user
+	userID int64,
+) (*ChatMember, *Response, error) {
 	args := map[string]interface{}{
-		// Unique identifier for the target chat or username of the target supergroup or channel (in
-		// the format @channelusername)
 		"chat_id": chatID,
-		// Unique identifier of the target user
 		"user_id": userID,
 	}
-	resp, err := api.MakeRequest("getChatMember", args)
+	resp, err := api.MakeRequest(ctx, "getChatMember", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1551,13 +1628,17 @@ func (api *API) GetChatMember(chatID IntStr, userID int64) (*ChatMember, *Respon
 
 // GetChatMembersCount
 // Use this method to get the number of members in a chat. Returns Int on success.
-func (api *API) GetChatMembersCount(chatID IntStr) (int64, *Response, error) {
+func (api *API) GetChatMembersCount(
+	ctx context.Context,
+	// required.
+	// Unique identifier for the target chat or username of the target supergroup or channel
+	// (in the format @channelusername)
+	chatID IntStr,
+) (int64, *Response, error) {
 	args := map[string]interface{}{
-		// Unique identifier for the target chat or username of the target supergroup or channel (in
-		// the format @channelusername)
 		"chat_id": chatID,
 	}
-	resp, err := api.MakeRequest("getChatMembersCount", args)
+	resp, err := api.MakeRequest(ctx, "getChatMembersCount", args)
 	if err != nil {
 		return 0, resp, err
 	}
@@ -1572,12 +1653,16 @@ func (api *API) GetChatMembersCount(chatID IntStr) (int64, *Response, error) {
 // can then be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>, where
 // <file_path> is taken from the response. It is guaranteed that the link will be valid for at
 // least 1 hour. When the link expires, a new one can be requested by calling getFile again.
-func (api *API) GetFile(fileID string) (*File, *Response, error) {
+func (api *API) GetFile(
+	ctx context.Context,
+	// required.
+	// File identifier to get info about
+	fileID string,
+) (*File, *Response, error) {
 	args := map[string]interface{}{
-		// File identifier to get info about
 		"file_id": fileID,
 	}
-	resp, err := api.MakeRequest("getFile", args)
+	resp, err := api.MakeRequest(ctx, "getFile", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1589,8 +1674,11 @@ func (api *API) GetFile(fileID string) (*File, *Response, error) {
 // GetGameHighScores
 // Use this method to get data for high score tables. Will return the score of the specified user
 // and several of their neighbors in a game. On success, returns an Array of GameHighScore objects.
-func (api *API) GetGameHighScores(args *GetGameHighScores) ([]GameHighScore, *Response, error) {
-	resp, err := api.MakeRequest("getGameHighScores", args)
+func (api *API) GetGameHighScores(
+	ctx context.Context,
+	args *GetGameHighScoresConfig,
+) ([]GameHighScore, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "getGameHighScores", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1602,8 +1690,10 @@ func (api *API) GetGameHighScores(args *GetGameHighScores) ([]GameHighScore, *Re
 // GetMe
 // A simple method for testing your bot's auth token. Requires no parameters. Returns basic
 // information about the bot in form of a User object.
-func (api *API) GetMe() (*User, *Response, error) {
-	resp, err := api.MakeRequest("getMe", nil)
+func (api *API) GetMe(
+	ctx context.Context,
+) (*User, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "getMe", nil)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1615,8 +1705,10 @@ func (api *API) GetMe() (*User, *Response, error) {
 // GetMyCommands
 // Use this method to get the current list of the bot's commands. Requires no parameters. Returns
 // Array of BotCommand on success.
-func (api *API) GetMyCommands() ([]BotCommand, *Response, error) {
-	resp, err := api.MakeRequest("getMyCommands", nil)
+func (api *API) GetMyCommands(
+	ctx context.Context,
+) ([]BotCommand, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "getMyCommands", nil)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1627,12 +1719,16 @@ func (api *API) GetMyCommands() ([]BotCommand, *Response, error) {
 
 // GetStickerSet
 // Use this method to get a sticker set. On success, a StickerSet object is returned.
-func (api *API) GetStickerSet(name string) (*StickerSet, *Response, error) {
+func (api *API) GetStickerSet(
+	ctx context.Context,
+	// required.
+	// Name of the sticker set
+	name string,
+) (*StickerSet, *Response, error) {
 	args := map[string]interface{}{
-		// Name of the sticker set
 		"name": name,
 	}
-	resp, err := api.MakeRequest("getStickerSet", args)
+	resp, err := api.MakeRequest(ctx, "getStickerSet", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1644,8 +1740,11 @@ func (api *API) GetStickerSet(name string) (*StickerSet, *Response, error) {
 // GetUpdates
 // Use this method to receive incoming updates using long polling (wiki). An Array of Update
 // objects is returned.
-func (api *API) GetUpdates(args *GetUpdates) ([]Update, *Response, error) {
-	resp, err := api.MakeRequest("getUpdates", args)
+func (api *API) GetUpdates(
+	ctx context.Context,
+	args *GetUpdatesConfig,
+) ([]Update, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "getUpdates", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1657,8 +1756,11 @@ func (api *API) GetUpdates(args *GetUpdates) ([]Update, *Response, error) {
 // GetUserProfilePhotos
 // Use this method to get a list of profile pictures for a user. Returns a UserProfilePhotos
 // object.
-func (api *API) GetUserProfilePhotos(args *GetUserProfilePhotos) (*UserProfilePhotos, *Response, error) {
-	resp, err := api.MakeRequest("getUserProfilePhotos", args)
+func (api *API) GetUserProfilePhotos(
+	ctx context.Context,
+	args *GetUserProfilePhotosConfig,
+) (*UserProfilePhotos, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "getUserProfilePhotos", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1671,8 +1773,10 @@ func (api *API) GetUserProfilePhotos(args *GetUserProfilePhotos) (*UserProfilePh
 // Use this method to get current webhook status. Requires no parameters. On success, returns a
 // WebhookInfo object. If the bot is using getUpdates, will return an object with the url field
 // empty.
-func (api *API) GetWebhookInfo() (*WebhookInfo, *Response, error) {
-	resp, err := api.MakeRequest("getWebhookInfo", nil)
+func (api *API) GetWebhookInfo(
+	ctx context.Context,
+) (*WebhookInfo, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "getWebhookInfo", nil)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1686,51 +1790,70 @@ func (api *API) GetWebhookInfo() (*WebhookInfo, *Response, error) {
 // supergroups and channels, the user will not be able to return to the group on their own using
 // invite links, etc., unless unbanned first. The bot must be an administrator in the chat for this
 // to work and must have the appropriate admin rights. Returns True on success.
-func (api *API) KickChatMember(args *KickChatMember) (*Response, error) {
-	return api.MakeRequest("kickChatMember", args)
+func (api *API) KickChatMember(
+	ctx context.Context,
+	args *KickChatMemberConfig,
+) (*Response, error) {
+	return api.MakeRequest(ctx, "kickChatMember", args)
 }
 
 // LeaveChat
 // Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
-func (api *API) LeaveChat(chatID IntStr) (*Response, error) {
+func (api *API) LeaveChat(
+	ctx context.Context,
+	// required.
+	// Unique identifier for the target chat or username of the target supergroup or channel
+	// (in the format @channelusername)
+	chatID IntStr,
+) (*Response, error) {
 	args := map[string]interface{}{
-		// Unique identifier for the target chat or username of the target supergroup or channel (in
-		// the format @channelusername)
 		"chat_id": chatID,
 	}
-	return api.MakeRequest("leaveChat", args)
+	return api.MakeRequest(ctx, "leaveChat", args)
 }
 
 // PinChatMessage
 // Use this method to pin a message in a group, a supergroup, or a channel. The bot must be an
 // administrator in the chat for this to work and must have the 'can_pin_messages' admin right in
 // the supergroup or 'can_edit_messages' admin right in the channel. Returns True on success.
-func (api *API) PinChatMessage(args *PinChatMessage) (*Response, error) {
-	return api.MakeRequest("pinChatMessage", args)
+func (api *API) PinChatMessage(
+	ctx context.Context,
+	args *PinChatMessageConfig,
+) (*Response, error) {
+	return api.MakeRequest(ctx, "pinChatMessage", args)
 }
 
 // PromoteChatMember
 // Use this method to promote or demote a user in a supergroup or a channel. The bot must be an
 // administrator in the chat for this to work and must have the appropriate admin rights. Pass
 // False for all boolean parameters to demote a user. Returns True on success.
-func (api *API) PromoteChatMember(args *PromoteChatMember) (*Response, error) {
-	return api.MakeRequest("promoteChatMember", args)
+func (api *API) PromoteChatMember(
+	ctx context.Context,
+	args *PromoteChatMemberConfig,
+) (*Response, error) {
+	return api.MakeRequest(ctx, "promoteChatMember", args)
 }
 
 // RestrictChatMember
 // Use this method to restrict a user in a supergroup. The bot must be an administrator in the
 // supergroup for this to work and must have the appropriate admin rights. Pass True for all
 // permissions to lift restrictions from a user. Returns True on success.
-func (api *API) RestrictChatMember(args *RestrictChatMember) (*Response, error) {
-	return api.MakeRequest("restrictChatMember", args)
+func (api *API) RestrictChatMember(
+	ctx context.Context,
+	args *RestrictChatMemberConfig,
+) (*Response, error) {
+	return api.MakeRequest(ctx, "restrictChatMember", args)
 }
 
 // SendAnimation
 // Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On
 // success, the sent Message is returned. Bots can currently send animation files of up to 50 MB in
 // size, this limit may be changed in the future.
-func (api *API) SendAnimation(args *SendAnimation) (*Message, *Response, error) {
-	resp, err := api.MakeRequest("sendAnimation", args)
+func (api *API) SendAnimation(
+	ctx context.Context,
+	args *SendAnimationConfig,
+) (*Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "sendAnimation", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1744,8 +1867,11 @@ func (api *API) SendAnimation(args *SendAnimation) (*Message, *Response, error) 
 // player. Your audio must be in the .MP3 or .M4A format. On success, the sent Message is returned.
 // Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the
 // future.
-func (api *API) SendAudio(args *SendAudio) (*Message, *Response, error) {
-	resp, err := api.MakeRequest("sendAudio", args)
+func (api *API) SendAudio(
+	ctx context.Context,
+	args *SendAudioConfig,
+) (*Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "sendAudio", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1758,24 +1884,33 @@ func (api *API) SendAudio(args *SendAudio) (*Message, *Response, error) {
 // Use this method when you need to tell the user that something is happening on the bot's side.
 // The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients
 // clear its typing status). Returns True on success.
-func (api *API) SendChatAction(action string, chatID IntStr) (*Response, error) {
+func (api *API) SendChatAction(
+	ctx context.Context,
+	// required.
+	// Type of action to broadcast. Choose one, depending on what the user is about to receive:
+	// typing for text messages, upload_photo for photos, record_video or upload_video for
+	// videos, record_audio or upload_audio for audio files, upload_document for general files,
+	// find_location for location data, record_video_note or upload_video_note for video notes.
+	action string,
+	// required.
+	// Unique identifier for the target chat or username of the target channel (in the format
+	// @channelusername)
+	chatID IntStr,
+) (*Response, error) {
 	args := map[string]interface{}{
-		// Type of action to broadcast. Choose one, depending on what the user is about to receive:
-		// typing for text messages, upload_photo for photos, record_video or upload_video for videos,
-		// record_audio or upload_audio for audio files, upload_document for general files,
-		// find_location for location data, record_video_note or upload_video_note for video notes.
-		"action": action,
-		// Unique identifier for the target chat or username of the target channel (in the format
-		// @channelusername)
+		"action":  action,
 		"chat_id": chatID,
 	}
-	return api.MakeRequest("sendChatAction", args)
+	return api.MakeRequest(ctx, "sendChatAction", args)
 }
 
 // SendContact
 // Use this method to send phone contacts. On success, the sent Message is returned.
-func (api *API) SendContact(args *SendContact) (*Message, *Response, error) {
-	resp, err := api.MakeRequest("sendContact", args)
+func (api *API) SendContact(
+	ctx context.Context,
+	args *SendContactConfig,
+) (*Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "sendContact", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1787,8 +1922,11 @@ func (api *API) SendContact(args *SendContact) (*Message, *Response, error) {
 // SendDice
 // Use this method to send an animated emoji that will display a random value. On success, the sent
 // Message is returned.
-func (api *API) SendDice(args *SendDice) (*Message, *Response, error) {
-	resp, err := api.MakeRequest("sendDice", args)
+func (api *API) SendDice(
+	ctx context.Context,
+	args *SendDiceConfig,
+) (*Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "sendDice", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1801,8 +1939,11 @@ func (api *API) SendDice(args *SendDice) (*Message, *Response, error) {
 // Use this method to send general files. On success, the sent Message is returned. Bots can
 // currently send files of any type of up to 50 MB in size, this limit may be changed in the
 // future.
-func (api *API) SendDocument(args *SendDocument) (*Message, *Response, error) {
-	resp, err := api.MakeRequest("sendDocument", args)
+func (api *API) SendDocument(
+	ctx context.Context,
+	args *SendDocumentConfig,
+) (*Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "sendDocument", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1813,8 +1954,11 @@ func (api *API) SendDocument(args *SendDocument) (*Message, *Response, error) {
 
 // SendGame
 // Use this method to send a game. On success, the sent Message is returned.
-func (api *API) SendGame(args *SendGame) (*Message, *Response, error) {
-	resp, err := api.MakeRequest("sendGame", args)
+func (api *API) SendGame(
+	ctx context.Context,
+	args *SendGameConfig,
+) (*Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "sendGame", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1825,8 +1969,11 @@ func (api *API) SendGame(args *SendGame) (*Message, *Response, error) {
 
 // SendInvoice
 // Use this method to send invoices. On success, the sent Message is returned.
-func (api *API) SendInvoice(args *SendInvoice) (*Message, *Response, error) {
-	resp, err := api.MakeRequest("sendInvoice", args)
+func (api *API) SendInvoice(
+	ctx context.Context,
+	args *SendInvoiceConfig,
+) (*Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "sendInvoice", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1837,8 +1984,11 @@ func (api *API) SendInvoice(args *SendInvoice) (*Message, *Response, error) {
 
 // SendLocation
 // Use this method to send point on the map. On success, the sent Message is returned.
-func (api *API) SendLocation(args *SendLocation) (*Message, *Response, error) {
-	resp, err := api.MakeRequest("sendLocation", args)
+func (api *API) SendLocation(
+	ctx context.Context,
+	args *SendLocationConfig,
+) (*Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "sendLocation", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1850,8 +2000,11 @@ func (api *API) SendLocation(args *SendLocation) (*Message, *Response, error) {
 // SendMediaGroup
 // Use this method to send a group of photos or videos as an album. On success, an array of the
 // sent Messages is returned.
-func (api *API) SendMediaGroup(args *SendMediaGroup) ([]Message, *Response, error) {
-	resp, err := api.MakeRequest("sendMediaGroup", args)
+func (api *API) SendMediaGroup(
+	ctx context.Context,
+	args *SendMediaGroupConfig,
+) ([]Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "sendMediaGroup", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1862,8 +2015,11 @@ func (api *API) SendMediaGroup(args *SendMediaGroup) ([]Message, *Response, erro
 
 // SendMessage
 // Use this method to send text messages. On success, the sent Message is returned.
-func (api *API) SendMessage(args *SendMessage) (*Message, *Response, error) {
-	resp, err := api.MakeRequest("sendMessage", args)
+func (api *API) SendMessage(
+	ctx context.Context,
+	args *SendMessageConfig,
+) (*Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "sendMessage", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1874,8 +2030,11 @@ func (api *API) SendMessage(args *SendMessage) (*Message, *Response, error) {
 
 // SendPhoto
 // Use this method to send photos. On success, the sent Message is returned.
-func (api *API) SendPhoto(args *SendPhoto) (*Message, *Response, error) {
-	resp, err := api.MakeRequest("sendPhoto", args)
+func (api *API) SendPhoto(
+	ctx context.Context,
+	args *SendPhotoConfig,
+) (*Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "sendPhoto", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1886,8 +2045,11 @@ func (api *API) SendPhoto(args *SendPhoto) (*Message, *Response, error) {
 
 // SendPoll
 // Use this method to send a native poll. On success, the sent Message is returned.
-func (api *API) SendPoll(args *SendPoll) (*Message, *Response, error) {
-	resp, err := api.MakeRequest("sendPoll", args)
+func (api *API) SendPoll(
+	ctx context.Context,
+	args *SendPollConfig,
+) (*Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "sendPoll", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1899,8 +2061,11 @@ func (api *API) SendPoll(args *SendPoll) (*Message, *Response, error) {
 // SendSticker
 // Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is
 // returned.
-func (api *API) SendSticker(args *SendSticker) (*Message, *Response, error) {
-	resp, err := api.MakeRequest("sendSticker", args)
+func (api *API) SendSticker(
+	ctx context.Context,
+	args *SendStickerConfig,
+) (*Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "sendSticker", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1911,8 +2076,11 @@ func (api *API) SendSticker(args *SendSticker) (*Message, *Response, error) {
 
 // SendVenue
 // Use this method to send information about a venue. On success, the sent Message is returned.
-func (api *API) SendVenue(args *SendVenue) (*Message, *Response, error) {
-	resp, err := api.MakeRequest("sendVenue", args)
+func (api *API) SendVenue(
+	ctx context.Context,
+	args *SendVenueConfig,
+) (*Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "sendVenue", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1925,8 +2093,11 @@ func (api *API) SendVenue(args *SendVenue) (*Message, *Response, error) {
 // Use this method to send video files, Telegram clients support mp4 videos (other formats may be
 // sent as Document). On success, the sent Message is returned. Bots can currently send video files
 // of up to 50 MB in size, this limit may be changed in the future.
-func (api *API) SendVideo(args *SendVideo) (*Message, *Response, error) {
-	resp, err := api.MakeRequest("sendVideo", args)
+func (api *API) SendVideo(
+	ctx context.Context,
+	args *SendVideoConfig,
+) (*Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "sendVideo", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1938,8 +2109,11 @@ func (api *API) SendVideo(args *SendVideo) (*Message, *Response, error) {
 // SendVideoNote
 // As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this
 // method to send video messages. On success, the sent Message is returned.
-func (api *API) SendVideoNote(args *SendVideoNote) (*Message, *Response, error) {
-	resp, err := api.MakeRequest("sendVideoNote", args)
+func (api *API) SendVideoNote(
+	ctx context.Context,
+	args *SendVideoNoteConfig,
+) (*Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "sendVideoNote", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1954,8 +2128,11 @@ func (api *API) SendVideoNote(args *SendVideoNote) (*Message, *Response, error) 
 // (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots
 // can currently send voice messages of up to 50 MB in size, this limit may be changed in the
 // future.
-func (api *API) SendVoice(args *SendVoice) (*Message, *Response, error) {
-	resp, err := api.MakeRequest("sendVoice", args)
+func (api *API) SendVoice(
+	ctx context.Context,
+	args *SendVoiceConfig,
+) (*Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "sendVoice", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -1967,53 +2144,74 @@ func (api *API) SendVoice(args *SendVoice) (*Message, *Response, error) {
 // SetChatAdministratorCustomTitle
 // Use this method to set a custom title for an administrator in a supergroup promoted by the bot.
 // Returns True on success.
-func (api *API) SetChatAdministratorCustomTitle(args *SetChatAdministratorCustomTitle) (*Response, error) {
-	return api.MakeRequest("setChatAdministratorCustomTitle", args)
+func (api *API) SetChatAdministratorCustomTitle(
+	ctx context.Context,
+	args *SetChatAdministratorCustomTitleConfig,
+) (*Response, error) {
+	return api.MakeRequest(ctx, "setChatAdministratorCustomTitle", args)
 }
 
 // SetChatDescription
 // Use this method to change the description of a group, a supergroup or a channel. The bot must be
 // an administrator in the chat for this to work and must have the appropriate admin rights.
 // Returns True on success.
-func (api *API) SetChatDescription(chatID IntStr, description string) (*Response, error) {
+func (api *API) SetChatDescription(
+	ctx context.Context,
+	// required.
+	// Unique identifier for the target chat or username of the target channel (in the format
+	// @channelusername)
+	chatID IntStr,
+	// not required.
+	// New chat description, 0-255 characters
+	description *string,
+) (*Response, error) {
 	args := map[string]interface{}{
-		// Unique identifier for the target chat or username of the target channel (in the format
-		// @channelusername)
-		"chat_id": chatID,
-		// New chat description, 0-255 characters
+		"chat_id":     chatID,
 		"description": description,
 	}
-	return api.MakeRequest("setChatDescription", args)
+	return api.MakeRequest(ctx, "setChatDescription", args)
 }
 
 // SetChatPermissions
 // Use this method to set default chat permissions for all members. The bot must be an
 // administrator in the group or a supergroup for this to work and must have the
 // can_restrict_members admin rights. Returns True on success.
-func (api *API) SetChatPermissions(chatID IntStr, permissions ChatPermissions) (*Response, error) {
+func (api *API) SetChatPermissions(
+	ctx context.Context,
+	// required.
+	// Unique identifier for the target chat or username of the target supergroup (in the
+	// format @supergroupusername)
+	chatID IntStr,
+	// required.
+	// New default chat permissions
+	permissions ChatPermissions,
+) (*Response, error) {
 	args := map[string]interface{}{
-		// Unique identifier for the target chat or username of the target supergroup (in the format
-		// @supergroupusername)
-		"chat_id": chatID,
-		// New default chat permissions
+		"chat_id":     chatID,
 		"permissions": permissions,
 	}
-	return api.MakeRequest("setChatPermissions", args)
+	return api.MakeRequest(ctx, "setChatPermissions", args)
 }
 
 // SetChatPhoto
 // Use this method to set a new profile photo for the chat. Photos can't be changed for private
 // chats. The bot must be an administrator in the chat for this to work and must have the
 // appropriate admin rights. Returns True on success.
-func (api *API) SetChatPhoto(chatID IntStr, photo InputFile) (*Response, error) {
+func (api *API) SetChatPhoto(
+	ctx context.Context,
+	// required.
+	// Unique identifier for the target chat or username of the target channel (in the format
+	// @channelusername)
+	chatID IntStr,
+	// required.
+	// New chat photo, uploaded using multipart/form-data
+	photo InputFile,
+) (*Response, error) {
 	args := map[string]interface{}{
-		// Unique identifier for the target chat or username of the target channel (in the format
-		// @channelusername)
 		"chat_id": chatID,
-		// New chat photo, uploaded using multipart/form-data
-		"photo": photo,
+		"photo":   photo,
 	}
-	return api.MakeRequest("setChatPhoto", args)
+	return api.MakeRequest(ctx, "setChatPhoto", args)
 }
 
 // SetChatStickerSet
@@ -2021,38 +2219,53 @@ func (api *API) SetChatPhoto(chatID IntStr, photo InputFile) (*Response, error) 
 // administrator in the chat for this to work and must have the appropriate admin rights. Use the
 // field can_set_sticker_set optionally returned in getChat requests to check if the bot can use
 // this method. Returns True on success.
-func (api *API) SetChatStickerSet(chatID IntStr, stickerSetName string) (*Response, error) {
+func (api *API) SetChatStickerSet(
+	ctx context.Context,
+	// required.
+	// Unique identifier for the target chat or username of the target supergroup (in the
+	// format @supergroupusername)
+	chatID IntStr,
+	// required.
+	// Name of the sticker set to be set as the group sticker set
+	stickerSetName string,
+) (*Response, error) {
 	args := map[string]interface{}{
-		// Unique identifier for the target chat or username of the target supergroup (in the format
-		// @supergroupusername)
-		"chat_id": chatID,
-		// Name of the sticker set to be set as the group sticker set
+		"chat_id":          chatID,
 		"sticker_set_name": stickerSetName,
 	}
-	return api.MakeRequest("setChatStickerSet", args)
+	return api.MakeRequest(ctx, "setChatStickerSet", args)
 }
 
 // SetChatTitle
 // Use this method to change the title of a chat. Titles can't be changed for private chats. The
 // bot must be an administrator in the chat for this to work and must have the appropriate admin
 // rights. Returns True on success.
-func (api *API) SetChatTitle(chatID IntStr, title string) (*Response, error) {
+func (api *API) SetChatTitle(
+	ctx context.Context,
+	// required.
+	// Unique identifier for the target chat or username of the target channel (in the format
+	// @channelusername)
+	chatID IntStr,
+	// required.
+	// New chat title, 1-255 characters
+	title string,
+) (*Response, error) {
 	args := map[string]interface{}{
-		// Unique identifier for the target chat or username of the target channel (in the format
-		// @channelusername)
 		"chat_id": chatID,
-		// New chat title, 1-255 characters
-		"title": title,
+		"title":   title,
 	}
-	return api.MakeRequest("setChatTitle", args)
+	return api.MakeRequest(ctx, "setChatTitle", args)
 }
 
 // SetGameScore
 // Use this method to set the score of the specified user in a game. On success, if the message was
 // sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the
 // new score is not greater than the user's current score in the chat and force is False.
-func (api *API) SetGameScore(args *SetGameScore) (*Message, *Response, error) {
-	resp, err := api.MakeRequest("setGameScore", args)
+func (api *API) SetGameScore(
+	ctx context.Context,
+	args *SetGameScoreConfig,
+) (*Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "setGameScore", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -2063,47 +2276,66 @@ func (api *API) SetGameScore(args *SetGameScore) (*Message, *Response, error) {
 
 // SetMyCommands
 // Use this method to change the list of the bot's commands. Returns True on success.
-func (api *API) SetMyCommands(commands []BotCommand) (*Response, error) {
+func (api *API) SetMyCommands(
+	ctx context.Context,
+	// required.
+	// A JSON-serialized list of bot commands to be set as the list of the bot's commands. At
+	// most 100 commands can be specified.
+	commands []BotCommand,
+) (*Response, error) {
 	args := map[string]interface{}{
-		// A JSON-serialized list of bot commands to be set as the list of the bot's commands. At most
-		// 100 commands can be specified.
 		"commands": commands,
 	}
-	return api.MakeRequest("setMyCommands", args)
+	return api.MakeRequest(ctx, "setMyCommands", args)
 }
 
 // SetPassportDataErrors
 // Informs a user that some of the Telegram Passport elements they provided contains errors. The
 // user will not be able to re-submit their Passport to you until the errors are fixed (the
 // contents of the field for which you returned the error must change). Returns True on success.
-func (api *API) SetPassportDataErrors(errors []PassportElementError, userID int64) (*Response, error) {
+func (api *API) SetPassportDataErrors(
+	ctx context.Context,
+	// required.
+	// A JSON-serialized array describing the errors
+	errors []PassportElementError,
+	// required.
+	// User identifier
+	userID int64,
+) (*Response, error) {
 	args := map[string]interface{}{
-		// A JSON-serialized array describing the errors
-		"errors": errors,
-		// User identifier
+		"errors":  errors,
 		"user_id": userID,
 	}
-	return api.MakeRequest("setPassportDataErrors", args)
+	return api.MakeRequest(ctx, "setPassportDataErrors", args)
 }
 
 // SetStickerPositionInSet
 // Use this method to move a sticker in a set created by the bot to a specific position. Returns
 // True on success.
-func (api *API) SetStickerPositionInSet(position int64, sticker string) (*Response, error) {
+func (api *API) SetStickerPositionInSet(
+	ctx context.Context,
+	// required.
+	// New sticker position in the set, zero-based
+	position int64,
+	// required.
+	// File identifier of the sticker
+	sticker string,
+) (*Response, error) {
 	args := map[string]interface{}{
-		// New sticker position in the set, zero-based
 		"position": position,
-		// File identifier of the sticker
-		"sticker": sticker,
+		"sticker":  sticker,
 	}
-	return api.MakeRequest("setStickerPositionInSet", args)
+	return api.MakeRequest(ctx, "setStickerPositionInSet", args)
 }
 
 // SetStickerSetThumb
 // Use this method to set the thumbnail of a sticker set. Animated thumbnails can be set for
 // animated sticker sets only. Returns True on success.
-func (api *API) SetStickerSetThumb(args *SetStickerSetThumb) (*Response, error) {
-	return api.MakeRequest("setStickerSetThumb", args)
+func (api *API) SetStickerSetThumb(
+	ctx context.Context,
+	args *SetStickerSetThumbConfig,
+) (*Response, error) {
+	return api.MakeRequest(ctx, "setStickerSetThumb", args)
 }
 
 // SetWebhook
@@ -2111,15 +2343,21 @@ func (api *API) SetStickerSetThumb(args *SetStickerSetThumb) (*Response, error) 
 // there is an update for the bot, we will send an HTTPS POST request to the specified url,
 // containing a JSON-serialized Update. In case of an unsuccessful request, we will give up after a
 // reasonable amount of attempts. Returns True on success.
-func (api *API) SetWebhook(args *SetWebhook) (*Response, error) {
-	return api.MakeRequest("setWebhook", args)
+func (api *API) SetWebhook(
+	ctx context.Context,
+	args *SetWebhookConfig,
+) (*Response, error) {
+	return api.MakeRequest(ctx, "setWebhook", args)
 }
 
 // StopMessageLiveLocation
 // Use this method to stop updating a live location message before live_period expires. On success,
 // if the message was sent by the bot, the sent Message is returned, otherwise True is returned.
-func (api *API) StopMessageLiveLocation(args *StopMessageLiveLocation) (*Message, *Response, error) {
-	resp, err := api.MakeRequest("stopMessageLiveLocation", args)
+func (api *API) StopMessageLiveLocation(
+	ctx context.Context,
+	args *StopMessageLiveLocationConfig,
+) (*Message, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "stopMessageLiveLocation", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -2131,8 +2369,11 @@ func (api *API) StopMessageLiveLocation(args *StopMessageLiveLocation) (*Message
 // StopPoll
 // Use this method to stop a poll which was sent by the bot. On success, the stopped Poll with the
 // final results is returned.
-func (api *API) StopPoll(args *StopPoll) (*Poll, *Response, error) {
-	resp, err := api.MakeRequest("stopPoll", args)
+func (api *API) StopPoll(
+	ctx context.Context,
+	args *StopPollConfig,
+) (*Poll, *Response, error) {
+	resp, err := api.MakeRequest(ctx, "stopPoll", args)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -2145,42 +2386,58 @@ func (api *API) StopPoll(args *StopPoll) (*Poll, *Response, error) {
 // Use this method to unban a previously kicked user in a supergroup or channel. The user will not
 // return to the group or channel automatically, but will be able to join via link, etc. The bot
 // must be an administrator for this to work. Returns True on success.
-func (api *API) UnbanChatMember(chatID IntStr, userID int64) (*Response, error) {
+func (api *API) UnbanChatMember(
+	ctx context.Context,
+	// required.
+	// Unique identifier for the target group or username of the target supergroup or channel
+	// (in the format @username)
+	chatID IntStr,
+	// required.
+	// Unique identifier of the target user
+	userID int64,
+) (*Response, error) {
 	args := map[string]interface{}{
-		// Unique identifier for the target group or username of the target supergroup or channel (in
-		// the format @username)
 		"chat_id": chatID,
-		// Unique identifier of the target user
 		"user_id": userID,
 	}
-	return api.MakeRequest("unbanChatMember", args)
+	return api.MakeRequest(ctx, "unbanChatMember", args)
 }
 
 // UnpinChatMessage
 // Use this method to unpin a message in a group, a supergroup, or a channel. The bot must be an
 // administrator in the chat for this to work and must have the 'can_pin_messages' admin right in
 // the supergroup or 'can_edit_messages' admin right in the channel. Returns True on success.
-func (api *API) UnpinChatMessage(chatID IntStr) (*Response, error) {
+func (api *API) UnpinChatMessage(
+	ctx context.Context,
+	// required.
+	// Unique identifier for the target chat or username of the target channel (in the format
+	// @channelusername)
+	chatID IntStr,
+) (*Response, error) {
 	args := map[string]interface{}{
-		// Unique identifier for the target chat or username of the target channel (in the format
-		// @channelusername)
 		"chat_id": chatID,
 	}
-	return api.MakeRequest("unpinChatMessage", args)
+	return api.MakeRequest(ctx, "unpinChatMessage", args)
 }
 
 // UploadStickerFile
 // Use this method to upload a .PNG file with a sticker for later use in createNewStickerSet and
 // addStickerToSet methods (can be used multiple times). Returns the uploaded File on success.
-func (api *API) UploadStickerFile(pngSticker InputFile, userID int64) (*File, *Response, error) {
+func (api *API) UploadStickerFile(
+	ctx context.Context,
+	// required.
+	// PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not
+	// exceed 512px, and either width or height must be exactly 512px.
+	pngSticker InputFile,
+	// required.
+	// User identifier of sticker file owner
+	userID int64,
+) (*File, *Response, error) {
 	args := map[string]interface{}{
-		// PNG image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed
-		// 512px, and either width or height must be exactly 512px.
 		"png_sticker": pngSticker,
-		// User identifier of sticker file owner
-		"user_id": userID,
+		"user_id":     userID,
 	}
-	resp, err := api.MakeRequest("uploadStickerFile", args)
+	resp, err := api.MakeRequest(ctx, "uploadStickerFile", args)
 	if err != nil {
 		return nil, resp, err
 	}
