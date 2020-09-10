@@ -1395,7 +1395,7 @@ func (api *API) DeleteWebhook() (*Response, error) {
 func (api *API) EditMessageCaption(args *EditMessageCaption) (*Message, *Response, error) {
 	resp, err := api.MakeRequest("editMessageCaption", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -1410,7 +1410,7 @@ func (api *API) EditMessageCaption(args *EditMessageCaption) (*Message, *Respons
 func (api *API) EditMessageLiveLocation(args *EditMessageLiveLocation) (*Message, *Response, error) {
 	resp, err := api.MakeRequest("editMessageLiveLocation", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -1426,7 +1426,7 @@ func (api *API) EditMessageLiveLocation(args *EditMessageLiveLocation) (*Message
 func (api *API) EditMessageMedia(args *EditMessageMedia) (*Message, *Response, error) {
 	resp, err := api.MakeRequest("editMessageMedia", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -1439,7 +1439,7 @@ func (api *API) EditMessageMedia(args *EditMessageMedia) (*Message, *Response, e
 func (api *API) EditMessageReplyMarkup(args *EditMessageReplyMarkup) (*Message, *Response, error) {
 	resp, err := api.MakeRequest("editMessageReplyMarkup", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -1452,7 +1452,7 @@ func (api *API) EditMessageReplyMarkup(args *EditMessageReplyMarkup) (*Message, 
 func (api *API) EditMessageText(args *EditMessageText) (*Message, *Response, error) {
 	resp, err := api.MakeRequest("editMessageText", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -1471,7 +1471,7 @@ func (api *API) ExportChatInviteLink(chatID IntStr) (string, *Response, error) {
 	}
 	resp, err := api.MakeRequest("exportChatInviteLink", args)
 	if err != nil {
-		return "", nil, err
+		return "", resp, err
 	}
 	var data string
 	err = json.Unmarshal(resp.Result, &data)
@@ -1483,7 +1483,7 @@ func (api *API) ExportChatInviteLink(chatID IntStr) (string, *Response, error) {
 func (api *API) ForwardMessage(args *ForwardMessage) (*Message, *Response, error) {
 	resp, err := api.MakeRequest("forwardMessage", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -1502,7 +1502,7 @@ func (api *API) GetChat(chatID IntStr) (*Chat, *Response, error) {
 	}
 	resp, err := api.MakeRequest("getChat", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Chat
 	err = json.Unmarshal(resp.Result, &data)
@@ -1522,7 +1522,7 @@ func (api *API) GetChatAdministrators(chatID IntStr) ([]ChatMember, *Response, e
 	}
 	resp, err := api.MakeRequest("getChatAdministrators", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data []ChatMember
 	err = json.Unmarshal(resp.Result, &data)
@@ -1542,7 +1542,7 @@ func (api *API) GetChatMember(chatID IntStr, userID int64) (*ChatMember, *Respon
 	}
 	resp, err := api.MakeRequest("getChatMember", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data ChatMember
 	err = json.Unmarshal(resp.Result, &data)
@@ -1559,7 +1559,7 @@ func (api *API) GetChatMembersCount(chatID IntStr) (int64, *Response, error) {
 	}
 	resp, err := api.MakeRequest("getChatMembersCount", args)
 	if err != nil {
-		return 0, nil, err
+		return 0, resp, err
 	}
 	var data int64
 	err = json.Unmarshal(resp.Result, &data)
@@ -1579,7 +1579,7 @@ func (api *API) GetFile(fileID string) (*File, *Response, error) {
 	}
 	resp, err := api.MakeRequest("getFile", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data File
 	err = json.Unmarshal(resp.Result, &data)
@@ -1592,7 +1592,7 @@ func (api *API) GetFile(fileID string) (*File, *Response, error) {
 func (api *API) GetGameHighScores(args *GetGameHighScores) ([]GameHighScore, *Response, error) {
 	resp, err := api.MakeRequest("getGameHighScores", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data []GameHighScore
 	err = json.Unmarshal(resp.Result, &data)
@@ -1605,7 +1605,7 @@ func (api *API) GetGameHighScores(args *GetGameHighScores) ([]GameHighScore, *Re
 func (api *API) GetMe() (*User, *Response, error) {
 	resp, err := api.MakeRequest("getMe", nil)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data User
 	err = json.Unmarshal(resp.Result, &data)
@@ -1618,7 +1618,7 @@ func (api *API) GetMe() (*User, *Response, error) {
 func (api *API) GetMyCommands() ([]BotCommand, *Response, error) {
 	resp, err := api.MakeRequest("getMyCommands", nil)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data []BotCommand
 	err = json.Unmarshal(resp.Result, &data)
@@ -1634,7 +1634,7 @@ func (api *API) GetStickerSet(name string) (*StickerSet, *Response, error) {
 	}
 	resp, err := api.MakeRequest("getStickerSet", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data StickerSet
 	err = json.Unmarshal(resp.Result, &data)
@@ -1647,7 +1647,7 @@ func (api *API) GetStickerSet(name string) (*StickerSet, *Response, error) {
 func (api *API) GetUpdates(args *GetUpdates) ([]Update, *Response, error) {
 	resp, err := api.MakeRequest("getUpdates", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data []Update
 	err = json.Unmarshal(resp.Result, &data)
@@ -1660,7 +1660,7 @@ func (api *API) GetUpdates(args *GetUpdates) ([]Update, *Response, error) {
 func (api *API) GetUserProfilePhotos(args *GetUserProfilePhotos) (*UserProfilePhotos, *Response, error) {
 	resp, err := api.MakeRequest("getUserProfilePhotos", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data UserProfilePhotos
 	err = json.Unmarshal(resp.Result, &data)
@@ -1674,7 +1674,7 @@ func (api *API) GetUserProfilePhotos(args *GetUserProfilePhotos) (*UserProfilePh
 func (api *API) GetWebhookInfo() (*WebhookInfo, *Response, error) {
 	resp, err := api.MakeRequest("getWebhookInfo", nil)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data WebhookInfo
 	err = json.Unmarshal(resp.Result, &data)
@@ -1732,7 +1732,7 @@ func (api *API) RestrictChatMember(args *RestrictChatMember) (*Response, error) 
 func (api *API) SendAnimation(args *SendAnimation) (*Message, *Response, error) {
 	resp, err := api.MakeRequest("sendAnimation", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -1747,7 +1747,7 @@ func (api *API) SendAnimation(args *SendAnimation) (*Message, *Response, error) 
 func (api *API) SendAudio(args *SendAudio) (*Message, *Response, error) {
 	resp, err := api.MakeRequest("sendAudio", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -1777,7 +1777,7 @@ func (api *API) SendChatAction(action string, chatID IntStr) (*Response, error) 
 func (api *API) SendContact(args *SendContact) (*Message, *Response, error) {
 	resp, err := api.MakeRequest("sendContact", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -1790,7 +1790,7 @@ func (api *API) SendContact(args *SendContact) (*Message, *Response, error) {
 func (api *API) SendDice(args *SendDice) (*Message, *Response, error) {
 	resp, err := api.MakeRequest("sendDice", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -1804,7 +1804,7 @@ func (api *API) SendDice(args *SendDice) (*Message, *Response, error) {
 func (api *API) SendDocument(args *SendDocument) (*Message, *Response, error) {
 	resp, err := api.MakeRequest("sendDocument", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -1816,7 +1816,7 @@ func (api *API) SendDocument(args *SendDocument) (*Message, *Response, error) {
 func (api *API) SendGame(args *SendGame) (*Message, *Response, error) {
 	resp, err := api.MakeRequest("sendGame", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -1828,7 +1828,7 @@ func (api *API) SendGame(args *SendGame) (*Message, *Response, error) {
 func (api *API) SendInvoice(args *SendInvoice) (*Message, *Response, error) {
 	resp, err := api.MakeRequest("sendInvoice", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -1840,7 +1840,7 @@ func (api *API) SendInvoice(args *SendInvoice) (*Message, *Response, error) {
 func (api *API) SendLocation(args *SendLocation) (*Message, *Response, error) {
 	resp, err := api.MakeRequest("sendLocation", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -1853,7 +1853,7 @@ func (api *API) SendLocation(args *SendLocation) (*Message, *Response, error) {
 func (api *API) SendMediaGroup(args *SendMediaGroup) ([]Message, *Response, error) {
 	resp, err := api.MakeRequest("sendMediaGroup", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data []Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -1865,7 +1865,7 @@ func (api *API) SendMediaGroup(args *SendMediaGroup) ([]Message, *Response, erro
 func (api *API) SendMessage(args *SendMessage) (*Message, *Response, error) {
 	resp, err := api.MakeRequest("sendMessage", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -1877,7 +1877,7 @@ func (api *API) SendMessage(args *SendMessage) (*Message, *Response, error) {
 func (api *API) SendPhoto(args *SendPhoto) (*Message, *Response, error) {
 	resp, err := api.MakeRequest("sendPhoto", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -1889,7 +1889,7 @@ func (api *API) SendPhoto(args *SendPhoto) (*Message, *Response, error) {
 func (api *API) SendPoll(args *SendPoll) (*Message, *Response, error) {
 	resp, err := api.MakeRequest("sendPoll", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -1902,7 +1902,7 @@ func (api *API) SendPoll(args *SendPoll) (*Message, *Response, error) {
 func (api *API) SendSticker(args *SendSticker) (*Message, *Response, error) {
 	resp, err := api.MakeRequest("sendSticker", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -1914,7 +1914,7 @@ func (api *API) SendSticker(args *SendSticker) (*Message, *Response, error) {
 func (api *API) SendVenue(args *SendVenue) (*Message, *Response, error) {
 	resp, err := api.MakeRequest("sendVenue", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -1928,7 +1928,7 @@ func (api *API) SendVenue(args *SendVenue) (*Message, *Response, error) {
 func (api *API) SendVideo(args *SendVideo) (*Message, *Response, error) {
 	resp, err := api.MakeRequest("sendVideo", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -1941,7 +1941,7 @@ func (api *API) SendVideo(args *SendVideo) (*Message, *Response, error) {
 func (api *API) SendVideoNote(args *SendVideoNote) (*Message, *Response, error) {
 	resp, err := api.MakeRequest("sendVideoNote", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -1957,7 +1957,7 @@ func (api *API) SendVideoNote(args *SendVideoNote) (*Message, *Response, error) 
 func (api *API) SendVoice(args *SendVoice) (*Message, *Response, error) {
 	resp, err := api.MakeRequest("sendVoice", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -2054,7 +2054,7 @@ func (api *API) SetChatTitle(chatID IntStr, title string) (*Response, error) {
 func (api *API) SetGameScore(args *SetGameScore) (*Message, *Response, error) {
 	resp, err := api.MakeRequest("setGameScore", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -2121,7 +2121,7 @@ func (api *API) SetWebhook(args *SetWebhook) (*Response, error) {
 func (api *API) StopMessageLiveLocation(args *StopMessageLiveLocation) (*Message, *Response, error) {
 	resp, err := api.MakeRequest("stopMessageLiveLocation", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
@@ -2134,7 +2134,7 @@ func (api *API) StopMessageLiveLocation(args *StopMessageLiveLocation) (*Message
 func (api *API) StopPoll(args *StopPoll) (*Poll, *Response, error) {
 	resp, err := api.MakeRequest("stopPoll", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data Poll
 	err = json.Unmarshal(resp.Result, &data)
@@ -2182,7 +2182,7 @@ func (api *API) UploadStickerFile(pngSticker InputFile, userID int64) (*File, *R
 	}
 	resp, err := api.MakeRequest("uploadStickerFile", args)
 	if err != nil {
-		return nil, nil, err
+		return nil, resp, err
 	}
 	var data File
 	err = json.Unmarshal(resp.Result, &data)
