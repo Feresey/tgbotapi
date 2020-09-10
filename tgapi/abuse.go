@@ -1,4 +1,4 @@
-package api
+package tgapi
 
 import (
 	"encoding/json"

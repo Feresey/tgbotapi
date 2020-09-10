@@ -4,7 +4,7 @@ import "strings"
 
 type TypeMapping string
 
-//cat ../schema/public/types.json | jq '[.[].fields | to_entries | .[].value.types[]] | unique'
+// cat ../schema/public/types.json | jq '[.[].fields | to_entries | .[].value.types[]] | unique'
 
 func (t TypeMapping) GoType() string {
 	if t.IsArray() {

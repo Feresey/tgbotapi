@@ -1,10 +1,23 @@
-package api
+package tgapi
 
 import (
+	"flag"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 )
+
+func TestMain(m *testing.M) {
+	if !flag.Parsed() {
+		flag.Parse()
+	}
+	if testing.Short() {
+		return
+	}
+
+	os.Exit(m.Run())
+}
 
 func TestGetMe(t *testing.T) {
 	me, _, err := api.GetMe()
