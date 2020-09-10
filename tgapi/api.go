@@ -79,7 +79,7 @@ func (api *API) MakeRequest(method string, data interface{}) (*Response, error) 
 	}
 
 	if !apiResp.Ok {
-		return nil, Error{
+		return &apiResp, Error{
 			Code:               apiResp.ErrorCode,
 			Message:            apiResp.Description,
 			ResponseParameters: apiResp.Parameters,
