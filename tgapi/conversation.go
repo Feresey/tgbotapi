@@ -15,7 +15,10 @@ var (
 
 type State int
 
-const StateFinished State = 0
+const (
+	StateUndefined State = -1
+	StateFinished  State = 0
+)
 
 type Choice struct {
 	// nil === true
@@ -67,15 +70,16 @@ func (c *Conversation) RemoveUser(userID int64) {
 	c.cache.Remove(keyFromUserID(userID))
 }
 
-func (c *Conversation) Handle(ctx context.Context, msg *Message) error {
+func (c *Conversation) Handle(ctx context.Context, msg *Message) (State, error) {
 	userID := msg.GetFrom().GetID()
 	key := keyFromUserID(userID)
-	state, ok := c.cache.Get(key)
+	stateI, ok := c.cache.Get(key)
 	if !ok {
-		return ErrNoSuchConversation
+		return StateUndefined, ErrNoSuchConversation
 	}
+	state := stateI.(State)
 
-	for _, choice := range c.states[state.(State)] {
+	for _, choice := range c.states[state] {
 		ok := choice.Accept == nil || choice.Accept(msg)
 		if ok {
 			next, err := choice.Apply(ctx, msg)
@@ -85,10 +89,11 @@ func (c *Conversation) Handle(ctx context.Context, msg *Message) error {
 				} else {
 					c.cache.Set(key, next)
 				}
+				return next, nil
 			}
-			return err
+			return state, err
 		}
 	}
 
-	return ErrNoSuchChoice
+	return state, ErrNoSuchChoice
 }
