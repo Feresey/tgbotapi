@@ -9,6 +9,7 @@ import (
 )
 
 const APIEndpoint = "https://api.telegram.org"
+const FileEndpoint = "https://api.telegram.org/file"
 
 type Response struct {
 	OK          bool               `json:"ok"`
@@ -31,19 +32,21 @@ func (e Error) Error() string {
 }
 
 type API struct {
-	cli      *http.Client
-	endpoint string
+	cli          *http.Client
+	endpoint     string
+	fileEndpoint string
 }
 
-func NewWithEndpointAndClient(token, endpoint string, cli *http.Client) *API {
+func NewWithEndpointAndClient(token, endpoint, fileEndpoint string, cli *http.Client) *API {
 	return &API{
-		cli:      cli,
-		endpoint: fmt.Sprintf("%s/bot%s", endpoint, token),
+		cli:          cli,
+		endpoint:     fmt.Sprintf("%s/bot%s", endpoint, token),
+		fileEndpoint: fmt.Sprintf("%s/bot%s", fileEndpoint, token),
 	}
 }
 
 func New(token string) *API {
-	return NewWithEndpointAndClient(token, APIEndpoint, http.DefaultClient)
+	return NewWithEndpointAndClient(token, APIEndpoint, FileEndpoint, http.DefaultClient)
 }
 
 // MakeRequest makes a request to a specific endpoint with our token.
