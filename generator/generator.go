@@ -65,7 +65,7 @@ func multitype(ss []TypeMapping) TypeMapping {
 }
 
 func isInterface(t TypeMapping) bool {
-	for _, name := range []TypeMapping{"ReplyMarkup", "IntStr"} {
+	for _, name := range []TypeMapping{"ReplyMarkup"} {
 		if t == name {
 			return true
 		}

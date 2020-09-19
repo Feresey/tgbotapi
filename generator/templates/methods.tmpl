@@ -21,22 +21,30 @@ type {{camel $method}}Config struct {
 {{- end}}
 
 {{- if is_sendable $desc.Arguments}}
-func (t {{camel $method}}Config) EncodeURL() url.Values {
+func (t {{camel $method}}Config) EncodeURL() (url.Values, error) {
 	res := make(url.Values)
 {{- range $argname, $arg := $desc.Arguments}}
 	{{- $type := (get_type $argname $method $arg.Types)}}
 
 	{{- if not (and $arg.Required (eq $type.GoType "InputFile"))}}
-		{{- if or $type.IsSimpleType $arg.Required $type.IsArray}}
+		{{- if and (not (is_interface $type)) (or $type.IsSimpleType $arg.Required $type.IsArray)}}
 	res.Add("{{$argname}}", {{format_url (print "t." (camel $argname)) false $type}})
 		{{- else}}
 	if t.{{camel $argname}} != nil {
-		res.Add("{{$argname}}", {{format_url (print "t." (camel $argname)) true $type}})
+		{{- if is_interface $type}}
+	raw, err := json.Marshal({{print "t." (camel $argname)}})
+	if err != nil {
+		return nil, err
+	}
+	res.Add("{{$argname}}", string(raw))
+			{{- else}}
+	res.Add("{{$argname}}", {{format_url (print "t." (camel $argname)) true $type}})
+			{{- end}}
 	}
 		{{- end}}
 	{{- end}}
 {{- end}}
-	return res
+	return res, nil
 }
 {{- end}}
 

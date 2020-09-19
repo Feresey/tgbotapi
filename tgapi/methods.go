@@ -362,7 +362,7 @@ type EditMessageCaptionConfig struct {
 	// ChatID
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
-	ChatID IntStr `json:"chat_id,omitempty"`
+	ChatID *IntStr `json:"chat_id,omitempty"`
 	// InlineMessageID
 	// Required if chat_id and message_id are not specified. Identifier of the inline message
 	InlineMessageID string `json:"inline_message_id,omitempty"`
@@ -409,7 +409,7 @@ type EditMessageLiveLocationConfig struct {
 	// ChatID
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
-	ChatID IntStr `json:"chat_id,omitempty"`
+	ChatID *IntStr `json:"chat_id,omitempty"`
 	// InlineMessageID
 	// Required if chat_id and message_id are not specified. Identifier of the inline message
 	InlineMessageID string `json:"inline_message_id,omitempty"`
@@ -453,7 +453,7 @@ type EditMessageMediaConfig struct {
 	// ChatID
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
-	ChatID IntStr `json:"chat_id,omitempty"`
+	ChatID *IntStr `json:"chat_id,omitempty"`
 	// InlineMessageID
 	// Required if chat_id and message_id are not specified. Identifier of the inline message
 	InlineMessageID string `json:"inline_message_id,omitempty"`
@@ -492,7 +492,7 @@ type EditMessageReplyMarkupConfig struct {
 	// ChatID
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
-	ChatID IntStr `json:"chat_id,omitempty"`
+	ChatID *IntStr `json:"chat_id,omitempty"`
 	// InlineMessageID
 	// Required if chat_id and message_id are not specified. Identifier of the inline message
 	InlineMessageID string `json:"inline_message_id,omitempty"`
@@ -531,7 +531,7 @@ type EditMessageTextConfig struct {
 	// ChatID
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
-	ChatID IntStr `json:"chat_id,omitempty"`
+	ChatID *IntStr `json:"chat_id,omitempty"`
 	// DisableWebPagePreview
 	// Disables link previews for links in this message
 	DisableWebPagePreview bool `json:"disable_web_page_preview,omitempty"`
@@ -1148,7 +1148,7 @@ type SendAnimationConfig struct {
 	Width int64 `json:"width,omitempty"`
 }
 
-func (t SendAnimationConfig) EncodeURL() url.Values {
+func (t SendAnimationConfig) EncodeURL() (url.Values, error) {
 	res := make(url.Values)
 	res.Add("caption", t.Caption)
 	res.Add("chat_id", t.ChatID.String())
@@ -1156,13 +1156,19 @@ func (t SendAnimationConfig) EncodeURL() url.Values {
 	res.Add("duration", strconv.FormatInt(t.Duration, 10))
 	res.Add("height", strconv.FormatInt(t.Height, 10))
 	res.Add("parse_mode", t.ParseMode)
-	res.Add("reply_markup", t.ReplyMarkup)
+	if t.ReplyMarkup != nil {
+		raw, err := json.Marshal(t.ReplyMarkup)
+		if err != nil {
+			return nil, err
+		}
+		res.Add("reply_markup", string(raw))
+	}
 	res.Add("reply_to_message_id", strconv.FormatInt(t.ReplyToMessageID, 10))
 	if t.Thumb != nil {
 		res.Add("thumb", t.Thumb.String())
 	}
 	res.Add("width", strconv.FormatInt(t.Width, 10))
-	return res
+	return res, nil
 }
 
 // SendAnimation
@@ -1233,7 +1239,7 @@ type SendAudioConfig struct {
 	Title string `json:"title,omitempty"`
 }
 
-func (t SendAudioConfig) EncodeURL() url.Values {
+func (t SendAudioConfig) EncodeURL() (url.Values, error) {
 	res := make(url.Values)
 	res.Add("caption", t.Caption)
 	res.Add("chat_id", t.ChatID.String())
@@ -1241,13 +1247,19 @@ func (t SendAudioConfig) EncodeURL() url.Values {
 	res.Add("duration", strconv.FormatInt(t.Duration, 10))
 	res.Add("parse_mode", t.ParseMode)
 	res.Add("performer", t.Performer)
-	res.Add("reply_markup", t.ReplyMarkup)
+	if t.ReplyMarkup != nil {
+		raw, err := json.Marshal(t.ReplyMarkup)
+		if err != nil {
+			return nil, err
+		}
+		res.Add("reply_markup", string(raw))
+	}
 	res.Add("reply_to_message_id", strconv.FormatInt(t.ReplyToMessageID, 10))
 	if t.Thumb != nil {
 		res.Add("thumb", t.Thumb.String())
 	}
 	res.Add("title", t.Title)
-	return res
+	return res, nil
 }
 
 // SendAudio
@@ -1423,18 +1435,24 @@ type SendDocumentConfig struct {
 	Thumb *InputFile `json:"thumb,omitempty"`
 }
 
-func (t SendDocumentConfig) EncodeURL() url.Values {
+func (t SendDocumentConfig) EncodeURL() (url.Values, error) {
 	res := make(url.Values)
 	res.Add("caption", t.Caption)
 	res.Add("chat_id", t.ChatID.String())
 	res.Add("disable_notification", strconv.FormatBool(t.DisableNotification))
 	res.Add("parse_mode", t.ParseMode)
-	res.Add("reply_markup", t.ReplyMarkup)
+	if t.ReplyMarkup != nil {
+		raw, err := json.Marshal(t.ReplyMarkup)
+		if err != nil {
+			return nil, err
+		}
+		res.Add("reply_markup", string(raw))
+	}
 	res.Add("reply_to_message_id", strconv.FormatInt(t.ReplyToMessageID, 10))
 	if t.Thumb != nil {
 		res.Add("thumb", t.Thumb.String())
 	}
-	return res
+	return res, nil
 }
 
 // SendDocument
@@ -1745,15 +1763,21 @@ type SendPhotoConfig struct {
 	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 }
 
-func (t SendPhotoConfig) EncodeURL() url.Values {
+func (t SendPhotoConfig) EncodeURL() (url.Values, error) {
 	res := make(url.Values)
 	res.Add("caption", t.Caption)
 	res.Add("chat_id", t.ChatID.String())
 	res.Add("disable_notification", strconv.FormatBool(t.DisableNotification))
 	res.Add("parse_mode", t.ParseMode)
-	res.Add("reply_markup", t.ReplyMarkup)
+	if t.ReplyMarkup != nil {
+		raw, err := json.Marshal(t.ReplyMarkup)
+		if err != nil {
+			return nil, err
+		}
+		res.Add("reply_markup", string(raw))
+	}
 	res.Add("reply_to_message_id", strconv.FormatInt(t.ReplyToMessageID, 10))
-	return res
+	return res, nil
 }
 
 // SendPhoto
@@ -1868,13 +1892,19 @@ type SendStickerConfig struct {
 	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 }
 
-func (t SendStickerConfig) EncodeURL() url.Values {
+func (t SendStickerConfig) EncodeURL() (url.Values, error) {
 	res := make(url.Values)
 	res.Add("chat_id", t.ChatID.String())
 	res.Add("disable_notification", strconv.FormatBool(t.DisableNotification))
-	res.Add("reply_markup", t.ReplyMarkup)
+	if t.ReplyMarkup != nil {
+		raw, err := json.Marshal(t.ReplyMarkup)
+		if err != nil {
+			return nil, err
+		}
+		res.Add("reply_markup", string(raw))
+	}
 	res.Add("reply_to_message_id", strconv.FormatInt(t.ReplyToMessageID, 10))
-	return res
+	return res, nil
 }
 
 // SendSticker
@@ -2001,7 +2031,7 @@ type SendVideoConfig struct {
 	Width int64 `json:"width,omitempty"`
 }
 
-func (t SendVideoConfig) EncodeURL() url.Values {
+func (t SendVideoConfig) EncodeURL() (url.Values, error) {
 	res := make(url.Values)
 	res.Add("caption", t.Caption)
 	res.Add("chat_id", t.ChatID.String())
@@ -2009,14 +2039,20 @@ func (t SendVideoConfig) EncodeURL() url.Values {
 	res.Add("duration", strconv.FormatInt(t.Duration, 10))
 	res.Add("height", strconv.FormatInt(t.Height, 10))
 	res.Add("parse_mode", t.ParseMode)
-	res.Add("reply_markup", t.ReplyMarkup)
+	if t.ReplyMarkup != nil {
+		raw, err := json.Marshal(t.ReplyMarkup)
+		if err != nil {
+			return nil, err
+		}
+		res.Add("reply_markup", string(raw))
+	}
 	res.Add("reply_to_message_id", strconv.FormatInt(t.ReplyToMessageID, 10))
 	res.Add("supports_streaming", strconv.FormatBool(t.SupportsStreaming))
 	if t.Thumb != nil {
 		res.Add("thumb", t.Thumb.String())
 	}
 	res.Add("width", strconv.FormatInt(t.Width, 10))
-	return res
+	return res, nil
 }
 
 // SendVideo
@@ -2076,18 +2112,24 @@ type SendVideoNoteConfig struct {
 	Thumb *InputFile `json:"thumb,omitempty"`
 }
 
-func (t SendVideoNoteConfig) EncodeURL() url.Values {
+func (t SendVideoNoteConfig) EncodeURL() (url.Values, error) {
 	res := make(url.Values)
 	res.Add("chat_id", t.ChatID.String())
 	res.Add("disable_notification", strconv.FormatBool(t.DisableNotification))
 	res.Add("duration", strconv.FormatInt(t.Duration, 10))
 	res.Add("length", strconv.FormatInt(t.Length, 10))
-	res.Add("reply_markup", t.ReplyMarkup)
+	if t.ReplyMarkup != nil {
+		raw, err := json.Marshal(t.ReplyMarkup)
+		if err != nil {
+			return nil, err
+		}
+		res.Add("reply_markup", string(raw))
+	}
 	res.Add("reply_to_message_id", strconv.FormatInt(t.ReplyToMessageID, 10))
 	if t.Thumb != nil {
 		res.Add("thumb", t.Thumb.String())
 	}
-	return res
+	return res, nil
 }
 
 // SendVideoNote
@@ -2145,16 +2187,22 @@ type SendVoiceConfig struct {
 	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
 }
 
-func (t SendVoiceConfig) EncodeURL() url.Values {
+func (t SendVoiceConfig) EncodeURL() (url.Values, error) {
 	res := make(url.Values)
 	res.Add("caption", t.Caption)
 	res.Add("chat_id", t.ChatID.String())
 	res.Add("disable_notification", strconv.FormatBool(t.DisableNotification))
 	res.Add("duration", strconv.FormatInt(t.Duration, 10))
 	res.Add("parse_mode", t.ParseMode)
-	res.Add("reply_markup", t.ReplyMarkup)
+	if t.ReplyMarkup != nil {
+		raw, err := json.Marshal(t.ReplyMarkup)
+		if err != nil {
+			return nil, err
+		}
+		res.Add("reply_markup", string(raw))
+	}
 	res.Add("reply_to_message_id", strconv.FormatInt(t.ReplyToMessageID, 10))
-	return res
+	return res, nil
 }
 
 // SendVoice
@@ -2500,7 +2548,7 @@ type StopMessageLiveLocationConfig struct {
 	// ChatID
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
-	ChatID IntStr `json:"chat_id,omitempty"`
+	ChatID *IntStr `json:"chat_id,omitempty"`
 	// InlineMessageID
 	// Required if chat_id and message_id are not specified. Identifier of the inline message
 	InlineMessageID string `json:"inline_message_id,omitempty"`
