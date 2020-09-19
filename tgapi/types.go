@@ -4612,106 +4612,6 @@ func (t *InputContactMessageContent) GetVcard() string {
 	return res
 }
 
-// InputFile
-// This object represents the contents of a file to be uploaded. Must be posted using
-// multipart/form-data in the usual way that files are uploaded via the browser.
-type InputFile struct {
-	// ChatID
-	// Unique identifier for the target chat or username of the target channel (in the format
-	// @channelusername)
-	ChatID IntStr `json:"chat_id"`
-	// Text
-	// Text of the message to be sent, 1-4096 characters after entities parsing
-	Text string `json:"text"`
-	// DisableNotification
-	// Sends the message silently. Users will receive a notification with no sound.
-	DisableNotification *bool `json:"disable_notification,omitempty"`
-	// DisableWebPagePreview
-	// Disables link previews for links in this message
-	DisableWebPagePreview *bool `json:"disable_web_page_preview,omitempty"`
-	// ParseMode
-	// Mode for parsing entities in the message text. See formatting options for more details.
-	ParseMode *string `json:"parse_mode,omitempty"`
-	// ReplyMarkup
-	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
-	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
-	ReplyMarkup *ReplyMarkup `json:"reply_markup,omitempty"`
-	// ReplyToMessageID
-	// If the message is a reply, ID of the original message
-	ReplyToMessageID *int64 `json:"reply_to_message_id,omitempty"`
-}
-
-func (t *InputFile) GetChatID() IntStr {
-	var res IntStr
-	if t == nil {
-		return res
-	}
-	return t.ChatID
-}
-
-func (t *InputFile) GetDisableNotification() bool {
-	var res bool
-	if t == nil {
-		return res
-	}
-	if field := t.DisableNotification; field != nil {
-		return *field
-	}
-	return res
-}
-
-func (t *InputFile) GetDisableWebPagePreview() bool {
-	var res bool
-	if t == nil {
-		return res
-	}
-	if field := t.DisableWebPagePreview; field != nil {
-		return *field
-	}
-	return res
-}
-
-func (t *InputFile) GetParseMode() string {
-	var res string
-	if t == nil {
-		return res
-	}
-	if field := t.ParseMode; field != nil {
-		return *field
-	}
-	return res
-}
-
-func (t *InputFile) GetReplyMarkup() ReplyMarkup {
-	var res ReplyMarkup
-	if t == nil {
-		return res
-	}
-	if field := t.ReplyMarkup; field != nil {
-		return *field
-	}
-	return res
-}
-
-func (t *InputFile) GetReplyToMessageID() int64 {
-	var res int64
-	if t == nil {
-		return res
-	}
-	if field := t.ReplyToMessageID; field != nil {
-		return *field
-	}
-	return res
-}
-
-func (t *InputFile) GetText() string {
-	var res string
-	if t == nil {
-		return res
-	}
-	return t.Text
-}
-
 // InputLocationMessageContent
 // Represents the content of a location message to be sent as the result of an inline query.
 type InputLocationMessageContent struct {
@@ -4839,7 +4739,7 @@ type InputMediaAnimation struct {
 	// using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new
 	// file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using
 	// multipart/form-data under <file_attach_name>.
-	Thumb *InputDataType `json:"thumb,omitempty"`
+	Thumb *FileID `json:"thumb,omitempty"`
 	// Width
 	// Animation width
 	Width *int64 `json:"width,omitempty"`
@@ -4897,15 +4797,11 @@ func (t *InputMediaAnimation) GetParseMode() string {
 	return res
 }
 
-func (t *InputMediaAnimation) GetThumb() InputDataType {
-	var res InputDataType
+func (t *InputMediaAnimation) GetThumb() *FileID {
 	if t == nil {
-		return res
+		return nil
 	}
-	if field := t.Thumb; field != nil {
-		return *field
-	}
-	return res
+	return t.Thumb
 }
 
 func (t *InputMediaAnimation) GetType() *InputType {
@@ -4957,7 +4853,7 @@ type InputMediaAudio struct {
 	// using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new
 	// file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using
 	// multipart/form-data under <file_attach_name>.
-	Thumb *InputDataType `json:"thumb,omitempty"`
+	Thumb *FileID `json:"thumb,omitempty"`
 	// Title
 	// Title of the audio
 	Title *string `json:"title,omitempty"`
@@ -5015,15 +4911,11 @@ func (t *InputMediaAudio) GetPerformer() string {
 	return res
 }
 
-func (t *InputMediaAudio) GetThumb() InputDataType {
-	var res InputDataType
+func (t *InputMediaAudio) GetThumb() *FileID {
 	if t == nil {
-		return res
+		return nil
 	}
-	if field := t.Thumb; field != nil {
-		return *field
-	}
-	return res
+	return t.Thumb
 }
 
 func (t *InputMediaAudio) GetTitle() string {
@@ -5069,7 +4961,7 @@ type InputMediaDocument struct {
 	// using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new
 	// file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using
 	// multipart/form-data under <file_attach_name>.
-	Thumb *InputDataType `json:"thumb,omitempty"`
+	Thumb *FileID `json:"thumb,omitempty"`
 }
 
 func (t *InputMediaDocument) GetCaption() string {
@@ -5102,15 +4994,11 @@ func (t *InputMediaDocument) GetParseMode() string {
 	return res
 }
 
-func (t *InputMediaDocument) GetThumb() InputDataType {
-	var res InputDataType
+func (t *InputMediaDocument) GetThumb() *FileID {
 	if t == nil {
-		return res
+		return nil
 	}
-	if field := t.Thumb; field != nil {
-		return *field
-	}
-	return res
+	return t.Thumb
 }
 
 func (t *InputMediaDocument) GetType() *InputType {
@@ -5211,7 +5099,7 @@ type InputMediaVideo struct {
 	// using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new
 	// file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using
 	// multipart/form-data under <file_attach_name>.
-	Thumb *InputDataType `json:"thumb,omitempty"`
+	Thumb *FileID `json:"thumb,omitempty"`
 	// Width
 	// Video width
 	Width *int64 `json:"width,omitempty"`
@@ -5280,15 +5168,11 @@ func (t *InputMediaVideo) GetSupportsStreaming() bool {
 	return res
 }
 
-func (t *InputMediaVideo) GetThumb() InputDataType {
-	var res InputDataType
+func (t *InputMediaVideo) GetThumb() *FileID {
 	if t == nil {
-		return res
+		return nil
 	}
-	if field := t.Thumb; field != nil {
-		return *field
-	}
-	return res
+	return t.Thumb
 }
 
 func (t *InputMediaVideo) GetType() *InputType {
@@ -7551,10 +7435,10 @@ func (t *Poll) GetType() *PollType {
 // PollAnswer
 // This object represents an answer of a user in a non-anonymous poll.
 type PollAnswer struct {
-	// OptionIds
+	// OptionIDs
 	// 0-based identifiers of answer options, chosen by the user. May be empty if the user
 	// retracted their vote.
-	OptionIds []int64 `json:"option_ids"`
+	OptionIDs []int64 `json:"option_ids"`
 	// PollID
 	// Unique poll identifier
 	PollID string `json:"poll_id"`

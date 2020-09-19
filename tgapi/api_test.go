@@ -47,6 +47,10 @@ const (
 	ExistingStickerFileID   = "BQADAgADcwADjMcoCbdl-6eB--YPAg"
 )
 
+func newInt(i int64) *int64      { return &i }
+func newString(s string) *string { return &s }
+func newBool(b bool) *bool       { return &b }
+
 var api = New(TestToken)
 
 func TestGetUpdates(t *testing.T) {
@@ -58,7 +62,7 @@ func TestSendWithMessage(t *testing.T) {
 	msg := &SendMessageConfig{
 		ChatID:    IntStr{Int: ChatID},
 		Text:      "A test message from the test library in telegram-bot-api",
-		ParseMode: "markdown",
+		ParseMode: newString(ParseModeMarkdown),
 	}
 	resp, _, err := api.SendMessage(ctx, msg)
 	require.NoError(t, err)
@@ -71,7 +75,7 @@ func TestSendWithMessageReply(t *testing.T) {
 	msg := &SendMessageConfig{
 		ChatID:           IntStr{Int: ChatID},
 		Text:             "A test message from the test library in telegram-bot-api",
-		ReplyToMessageID: ReplyToMessageID,
+		ReplyToMessageID: newInt(ReplyToMessageID),
 	}
 	resp, _, err := api.SendMessage(ctx, msg)
 	require.NoError(t, err)
@@ -95,7 +99,7 @@ func TestDeleteMessage(t *testing.T) {
 	msg := &SendMessageConfig{
 		ChatID:    IntStr{Int: ChatID},
 		Text:      "A test message from the test library in telegram-bot-api",
-		ParseMode: "markdown",
+		ParseMode: newString(ParseModeMarkdown),
 	}
 	message, _, err := api.SendMessage(ctx, msg)
 	require.NoError(t, err)
@@ -108,7 +112,7 @@ func TestPin(t *testing.T) {
 	msg := &SendMessageConfig{
 		ChatID:    IntStr{Int: SupergroupChatID},
 		Text:      "A test message from the test library in telegram-bot-api",
-		ParseMode: "markdown",
+		ParseMode: newString(ParseModeMarkdown),
 	}
 
 	message, _, err := api.SendMessage(ctx, msg)
@@ -116,9 +120,8 @@ func TestPin(t *testing.T) {
 
 	t.Run("pin", func(t *testing.T) {
 		_, err = api.PinChatMessage(ctx, &PinChatMessageConfig{
-			ChatID:              msg.ChatID,
-			DisableNotification: false,
-			MessageID:           message.MessageID,
+			ChatID:    msg.ChatID,
+			MessageID: message.MessageID,
 		})
 		require.NoError(t, err)
 	})

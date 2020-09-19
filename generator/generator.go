@@ -20,6 +20,8 @@ import (
 	"golang.org/x/tools/imports"
 )
 
+const InputFile = "InputFile"
+
 const maxInLine = 100
 
 func getEnumName(s string) string {
@@ -40,7 +42,7 @@ var (
 		"ForceReply",
 	}
 	inputType = []TypeMapping{
-		"InputFile",
+		InputFile,
 		"str",
 	}
 	intStr = []TypeMapping{
@@ -54,7 +56,7 @@ func multitype(ss []TypeMapping) TypeMapping {
 		return "ReplyMarkup"
 	}
 	if reflect.DeepEqual(ss, inputType) {
-		return "InputDataType"
+		return InputFile
 	}
 	if reflect.DeepEqual(ss, intStr) {
 		return "IntStr"
@@ -63,7 +65,7 @@ func multitype(ss []TypeMapping) TypeMapping {
 }
 
 func isInterface(t TypeMapping) bool {
-	for _, name := range []TypeMapping{"ReplyMarkup", "InputDataType", "IntStr"} {
+	for _, name := range []TypeMapping{"ReplyMarkup", "IntStr"} {
 		if t == name {
 			return true
 		}
@@ -98,16 +100,50 @@ func defaultReturn(t TypeMapping) string {
 	}
 }
 
+var goNameReplacer = strings.NewReplacer(
+	"Url", "URL",
+	"Html", "HTML",
+	"Id", "ID",
+)
+
 func rename(s string) string {
-	s = strings.ReplaceAll(s, "Url", "URL")
-	s = strings.ReplaceAll(s, "Html", "HTML")
-	if strings.HasSuffix(s, "Id") {
-		return s[:len(s)-2] + "ID"
+	return goNameReplacer.Replace(s)
+}
+
+func formatURL(name string, stared bool, t TypeMapping) string {
+	var sname = name
+	if stared {
+		sname = "*" + name
 	}
-	return s
+	switch t.GoType() {
+	case "IntStr", "FileID", "InputFile":
+		return fmt.Sprintf("%s.String()", name)
+	case "int64":
+		return fmt.Sprintf("strconv.FormatInt(%s, 10)", sname)
+	case "bool":
+		return fmt.Sprintf("strconv.FormatBool(%s)", sname)
+	}
+
+	return name
 }
 
 var funcs = template.FuncMap{
+	"is_sendable": func(m map[string]Field) bool {
+		for _, field := range m {
+			if len(field.Types) != 1 {
+				typ := multitype(field.Types)
+				if typ == InputFile && field.Required {
+					return true
+				}
+			}
+		}
+
+		return false
+	},
+	"skip": func(s string) bool {
+		return s == InputFile
+	},
+	"format_url":     formatURL,
 	"default_return": defaultReturn,
 	"get_type":       getType,
 	"is_interface":   isInterface,

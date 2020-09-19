@@ -1,10 +1,15 @@
 package tgapi
 
 import (
-	"encoding/json"
 	"fmt"
+	"io"
 	"strconv"
 	"strings"
+)
+
+const (
+	ParseModeMarkdown = "markdown"
+	ParseModeHTML     = "html"
 )
 
 type True struct{}
@@ -16,13 +21,20 @@ func (*True) UnmarshalText([]byte) error  { return nil }
 type InputMediaGraphics interface{}
 
 type IntStr struct {
-	Int    int64
-	String string
+	Int int64
+	Str string
+}
+
+func (i IntStr) String() string {
+	if strings.HasPrefix(i.Str, "@") {
+		return i.Str
+	}
+	return strconv.FormatInt(i.Int, 10)
 }
 
 func (i IntStr) MarshalText() ([]byte, error) {
-	if strings.HasPrefix(i.String, "@") {
-		return []byte(i.String), nil
+	if strings.HasPrefix(i.Str, "@") {
+		return []byte(i.Str), nil
 	}
 	return []byte(strconv.FormatInt(i.Int, 10)), nil
 }
@@ -32,19 +44,30 @@ func NewInt(i int64) IntStr {
 }
 
 func NewStr(s string) IntStr {
-	return IntStr{String: s}
+	return IntStr{Str: s}
 }
 
-type InputDataType struct {
-	File   *InputFile
-	String string
+type FileID = string
+
+type InputFile struct {
+	Name   string
+	FileID FileID
+	Reader io.Reader
+	URL    string
 }
 
-func (i InputDataType) MarshalJSON() ([]byte, error) {
-	if i.File != nil {
-		return json.Marshal(i.File)
+func (i *InputFile) String() string {
+	if i.Name != "" {
+		return i.Name
 	}
-	return []byte(i.String), nil
+	if i.FileID != "" {
+		return i.FileID
+	}
+	return i.URL
+}
+
+func (i InputFile) MarshalText() ([]byte, error) {
+	return []byte(i.String()), nil
 }
 
 // one of

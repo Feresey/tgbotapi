@@ -19,9 +19,27 @@ type {{camel $method}}Config struct {
 {{- end}}
 }
 {{- end}}
-{{end}}
 
-{{range $method, $desc := .Methods}}
+{{- if is_sendable $desc.Arguments}}
+func (t {{camel $method}}Config) EncodeURL() url.Values {
+	res := make(url.Values)
+{{- range $argname, $arg := $desc.Arguments}}
+	{{- $type := (get_type $argname $method $arg.Types)}}
+
+	{{- if not (and $arg.Required (eq $type.GoType "InputFile"))}}
+		{{- if or $type.IsSimpleType $arg.Required $type.IsArray}}
+	res.Add("{{$argname}}", {{format_url (print "t." (camel $argname)) false $type}})
+		{{- else}}
+	if t.{{camel $argname}} != nil {
+		res.Add("{{$argname}}", {{format_url (print "t." (camel $argname)) true $type}})
+	}
+		{{- end}}
+	{{- end}}
+{{- end}}
+	return res
+}
+{{- end}}
+
 // {{camel $method}}
 // {{format $desc.Description.PlainText 0}}
 func (api *API) {{camel $method}}(
@@ -49,6 +67,11 @@ args *{{camel $method}}Config,
 	{{- end}}
 {{- end -}}
 *Response, error) {
+{{/* {{- if is_sendable $desc.Arguments}}
+	if err := args.Send(ctx, api); err != nil {
+		return {{if $returns}}{{default_return $desc.Returns}}, {{end}}nil, err
+	}
+{{- end}} */}}
 {{- if not (gt (len $desc.Arguments) 2)}}
 	{{- if gt (len $desc.Arguments) 0}}
 	args := map[string]interface{} {

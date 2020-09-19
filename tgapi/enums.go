@@ -61,7 +61,7 @@ const (
 	EncryptedTypeBankStatement
 	EncryptedTypeDriverLicense
 	EncryptedTypeEmail
-	EncryptedTypeIdentityCard
+	EncryptedTypeIDentityCard
 	EncryptedTypeInternalPassport
 	EncryptedTypePassport
 	EncryptedTypePassportRegistration
@@ -77,7 +77,7 @@ var valueEncryptedType = map[EncryptedType]string{
 	EncryptedTypeBankStatement:         "bank_statement",
 	EncryptedTypeDriverLicense:         "driver_license",
 	EncryptedTypeEmail:                 "email",
-	EncryptedTypeIdentityCard:          "identity_card",
+	EncryptedTypeIDentityCard:          "identity_card",
 	EncryptedTypeInternalPassport:      "internal_passport",
 	EncryptedTypePassport:              "passport",
 	EncryptedTypePassportRegistration:  "passport_registration",
@@ -93,7 +93,7 @@ var indexEncryptedType = map[string]EncryptedType{
 	"bank_statement":         EncryptedTypeBankStatement,
 	"driver_license":         EncryptedTypeDriverLicense,
 	"email":                  EncryptedTypeEmail,
-	"identity_card":          EncryptedTypeIdentityCard,
+	"identity_card":          EncryptedTypeIDentityCard,
 	"internal_passport":      EncryptedTypeInternalPassport,
 	"passport":               EncryptedTypePassport,
 	"passport_registration":  EncryptedTypePassportRegistration,
@@ -349,7 +349,7 @@ const (
 	PassportTypeAddress
 	PassportTypeBankStatement
 	PassportTypeDriverLicense
-	PassportTypeIdentityCard
+	PassportTypeIDentityCard
 	PassportTypeInternalPassport
 	PassportTypePassport
 	PassportTypePassportRegistration
@@ -363,7 +363,7 @@ var valuePassportType = map[PassportType]string{
 	PassportTypeAddress:               "address",
 	PassportTypeBankStatement:         "bank_statement",
 	PassportTypeDriverLicense:         "driver_license",
-	PassportTypeIdentityCard:          "identity_card",
+	PassportTypeIDentityCard:          "identity_card",
 	PassportTypeInternalPassport:      "internal_passport",
 	PassportTypePassport:              "passport",
 	PassportTypePassportRegistration:  "passport_registration",
@@ -377,7 +377,7 @@ var indexPassportType = map[string]PassportType{
 	"address":                PassportTypeAddress,
 	"bank_statement":         PassportTypeBankStatement,
 	"driver_license":         PassportTypeDriverLicense,
-	"identity_card":          PassportTypeIdentityCard,
+	"identity_card":          PassportTypeIDentityCard,
 	"internal_passport":      PassportTypeInternalPassport,
 	"passport":               PassportTypePassport,
 	"passport_registration":  PassportTypePassportRegistration,
