@@ -48,9 +48,9 @@ type AddStickerToSetConfig struct {
 func (api *API) AddStickerToSet(
 	ctx context.Context,
 	args *AddStickerToSetConfig,
-) (*Response, error) {
-
-	return api.MakeRequest(ctx, "addStickerToSet", args)
+) error {
+	_, err := api.MakeRequest(ctx, "addStickerToSet", args)
+	return err
 }
 
 // AnswerCallbackQuery
@@ -88,9 +88,9 @@ type AnswerCallbackQueryConfig struct {
 func (api *API) AnswerCallbackQuery(
 	ctx context.Context,
 	args *AnswerCallbackQueryConfig,
-) (*Response, error) {
-
-	return api.MakeRequest(ctx, "answerCallbackQuery", args)
+) error {
+	_, err := api.MakeRequest(ctx, "answerCallbackQuery", args)
+	return err
 }
 
 // AnswerInlineQuery
@@ -139,9 +139,9 @@ type AnswerInlineQueryConfig struct {
 func (api *API) AnswerInlineQuery(
 	ctx context.Context,
 	args *AnswerInlineQueryConfig,
-) (*Response, error) {
-
-	return api.MakeRequest(ctx, "answerInlineQuery", args)
+) error {
+	_, err := api.MakeRequest(ctx, "answerInlineQuery", args)
+	return err
 }
 
 // AnswerPreCheckoutQuery
@@ -173,9 +173,9 @@ type AnswerPreCheckoutQueryConfig struct {
 func (api *API) AnswerPreCheckoutQuery(
 	ctx context.Context,
 	args *AnswerPreCheckoutQueryConfig,
-) (*Response, error) {
-
-	return api.MakeRequest(ctx, "answerPreCheckoutQuery", args)
+) error {
+	_, err := api.MakeRequest(ctx, "answerPreCheckoutQuery", args)
+	return err
 }
 
 // AnswerShippingQuery
@@ -207,9 +207,9 @@ type AnswerShippingQueryConfig struct {
 func (api *API) AnswerShippingQuery(
 	ctx context.Context,
 	args *AnswerShippingQueryConfig,
-) (*Response, error) {
-
-	return api.MakeRequest(ctx, "answerShippingQuery", args)
+) error {
+	_, err := api.MakeRequest(ctx, "answerShippingQuery", args)
+	return err
 }
 
 // CreateNewStickerSet
@@ -258,9 +258,9 @@ type CreateNewStickerSetConfig struct {
 func (api *API) CreateNewStickerSet(
 	ctx context.Context,
 	args *CreateNewStickerSetConfig,
-) (*Response, error) {
-
-	return api.MakeRequest(ctx, "createNewStickerSet", args)
+) error {
+	_, err := api.MakeRequest(ctx, "createNewStickerSet", args)
+	return err
 }
 
 // DeleteChatPhoto
@@ -273,12 +273,12 @@ func (api *API) DeleteChatPhoto(
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
 	chatID IntStr,
-) (*Response, error) {
-
+) error {
 	args := map[string]interface{}{
 		"chat_id": chatID,
 	}
-	return api.MakeRequest(ctx, "deleteChatPhoto", args)
+	_, err := api.MakeRequest(ctx, "deleteChatPhoto", args)
+	return err
 }
 
 // DeleteChatStickerSet
@@ -292,12 +292,12 @@ func (api *API) DeleteChatStickerSet(
 	// Unique identifier for the target chat or username of the target supergroup (in the
 	// format @supergroupusername)
 	chatID IntStr,
-) (*Response, error) {
-
+) error {
 	args := map[string]interface{}{
 		"chat_id": chatID,
 	}
-	return api.MakeRequest(ctx, "deleteChatStickerSet", args)
+	_, err := api.MakeRequest(ctx, "deleteChatStickerSet", args)
+	return err
 }
 
 // DeleteMessage
@@ -318,13 +318,13 @@ func (api *API) DeleteMessage(
 	// required.
 	// Identifier of the message to delete
 	messageID int64,
-) (*Response, error) {
-
+) error {
 	args := map[string]interface{}{
 		"chat_id":    chatID,
 		"message_id": messageID,
 	}
-	return api.MakeRequest(ctx, "deleteMessage", args)
+	_, err := api.MakeRequest(ctx, "deleteMessage", args)
+	return err
 }
 
 // DeleteStickerFromSet
@@ -334,12 +334,12 @@ func (api *API) DeleteStickerFromSet(
 	// required.
 	// File identifier of the sticker
 	sticker string,
-) (*Response, error) {
-
+) error {
 	args := map[string]interface{}{
 		"sticker": sticker,
 	}
-	return api.MakeRequest(ctx, "deleteStickerFromSet", args)
+	_, err := api.MakeRequest(ctx, "deleteStickerFromSet", args)
+	return err
 }
 
 // DeleteWebhook
@@ -347,9 +347,9 @@ func (api *API) DeleteStickerFromSet(
 // Returns True on success. Requires no parameters.
 func (api *API) DeleteWebhook(
 	ctx context.Context,
-) (*Response, error) {
-
-	return api.MakeRequest(ctx, "deleteWebhook", nil)
+) error {
+	_, err := api.MakeRequest(ctx, "deleteWebhook", nil)
+	return err
 }
 
 // EditMessageCaption
@@ -383,15 +383,14 @@ type EditMessageCaptionConfig struct {
 func (api *API) EditMessageCaption(
 	ctx context.Context,
 	args *EditMessageCaptionConfig,
-) (*Message, *Response, error) {
-
+) (*Message, error) {
 	resp, err := api.MakeRequest(ctx, "editMessageCaption", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+	return &data, err
 }
 
 // EditMessageLiveLocation
@@ -429,15 +428,14 @@ type EditMessageLiveLocationConfig struct {
 func (api *API) EditMessageLiveLocation(
 	ctx context.Context,
 	args *EditMessageLiveLocationConfig,
-) (*Message, *Response, error) {
-
+) (*Message, error) {
 	resp, err := api.MakeRequest(ctx, "editMessageLiveLocation", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+	return &data, err
 }
 
 // EditMessageMedia
@@ -474,15 +472,14 @@ type EditMessageMediaConfig struct {
 func (api *API) EditMessageMedia(
 	ctx context.Context,
 	args *EditMessageMediaConfig,
-) (*Message, *Response, error) {
-
+) (*Message, error) {
 	resp, err := api.MakeRequest(ctx, "editMessageMedia", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+	return &data, err
 }
 
 // EditMessageReplyMarkup
@@ -510,15 +507,14 @@ type EditMessageReplyMarkupConfig struct {
 func (api *API) EditMessageReplyMarkup(
 	ctx context.Context,
 	args *EditMessageReplyMarkupConfig,
-) (*Message, *Response, error) {
-
+) (*Message, error) {
 	resp, err := api.MakeRequest(ctx, "editMessageReplyMarkup", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+	return &data, err
 }
 
 // EditMessageText
@@ -555,15 +551,14 @@ type EditMessageTextConfig struct {
 func (api *API) EditMessageText(
 	ctx context.Context,
 	args *EditMessageTextConfig,
-) (*Message, *Response, error) {
-
+) (*Message, error) {
 	resp, err := api.MakeRequest(ctx, "editMessageText", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+	return &data, err
 }
 
 // ExportChatInviteLink
@@ -576,18 +571,17 @@ func (api *API) ExportChatInviteLink(
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
 	chatID IntStr,
-) (string, *Response, error) {
-
+) (string, error) {
 	args := map[string]interface{}{
 		"chat_id": chatID,
 	}
 	resp, err := api.MakeRequest(ctx, "exportChatInviteLink", args)
 	if err != nil {
-		return "", resp, err
+		return "", err
 	}
 	var data string
 	err = json.Unmarshal(resp.Result, &data)
-	return data, resp, err
+	return data, err
 }
 
 // ForwardMessage
@@ -614,15 +608,14 @@ type ForwardMessageConfig struct {
 func (api *API) ForwardMessage(
 	ctx context.Context,
 	args *ForwardMessageConfig,
-) (*Message, *Response, error) {
-
+) (*Message, error) {
 	resp, err := api.MakeRequest(ctx, "forwardMessage", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+	return &data, err
 }
 
 // GetChat
@@ -635,18 +628,17 @@ func (api *API) GetChat(
 	// Unique identifier for the target chat or username of the target supergroup or channel
 	// (in the format @channelusername)
 	chatID IntStr,
-) (*Chat, *Response, error) {
-
+) (*Chat, error) {
 	args := map[string]interface{}{
 		"chat_id": chatID,
 	}
 	resp, err := api.MakeRequest(ctx, "getChat", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data Chat
 	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+	return &data, err
 }
 
 // GetChatAdministrators
@@ -660,18 +652,17 @@ func (api *API) GetChatAdministrators(
 	// Unique identifier for the target chat or username of the target supergroup or channel
 	// (in the format @channelusername)
 	chatID IntStr,
-) ([]ChatMember, *Response, error) {
-
+) ([]ChatMember, error) {
 	args := map[string]interface{}{
 		"chat_id": chatID,
 	}
 	resp, err := api.MakeRequest(ctx, "getChatAdministrators", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data []ChatMember
 	err = json.Unmarshal(resp.Result, &data)
-	return data, resp, err
+	return data, err
 }
 
 // GetChatMember
@@ -686,19 +677,18 @@ func (api *API) GetChatMember(
 	// required.
 	// Unique identifier of the target user
 	userID int64,
-) (*ChatMember, *Response, error) {
-
+) (*ChatMember, error) {
 	args := map[string]interface{}{
 		"chat_id": chatID,
 		"user_id": userID,
 	}
 	resp, err := api.MakeRequest(ctx, "getChatMember", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data ChatMember
 	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+	return &data, err
 }
 
 // GetChatMembersCount
@@ -709,18 +699,17 @@ func (api *API) GetChatMembersCount(
 	// Unique identifier for the target chat or username of the target supergroup or channel
 	// (in the format @channelusername)
 	chatID IntStr,
-) (int64, *Response, error) {
-
+) (int64, error) {
 	args := map[string]interface{}{
 		"chat_id": chatID,
 	}
 	resp, err := api.MakeRequest(ctx, "getChatMembersCount", args)
 	if err != nil {
-		return 0, resp, err
+		return 0, err
 	}
 	var data int64
 	err = json.Unmarshal(resp.Result, &data)
-	return data, resp, err
+	return data, err
 }
 
 // GetFile
@@ -734,18 +723,17 @@ func (api *API) GetFile(
 	// required.
 	// File identifier to get info about
 	fileID string,
-) (*File, *Response, error) {
-
+) (*File, error) {
 	args := map[string]interface{}{
 		"file_id": fileID,
 	}
 	resp, err := api.MakeRequest(ctx, "getFile", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data File
 	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+	return &data, err
 }
 
 // GetGameHighScores
@@ -772,15 +760,14 @@ type GetGameHighScoresConfig struct {
 func (api *API) GetGameHighScores(
 	ctx context.Context,
 	args *GetGameHighScoresConfig,
-) ([]GameHighScore, *Response, error) {
-
+) ([]GameHighScore, error) {
 	resp, err := api.MakeRequest(ctx, "getGameHighScores", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data []GameHighScore
 	err = json.Unmarshal(resp.Result, &data)
-	return data, resp, err
+	return data, err
 }
 
 // GetMe
@@ -788,15 +775,14 @@ func (api *API) GetGameHighScores(
 // information about the bot in form of a User object.
 func (api *API) GetMe(
 	ctx context.Context,
-) (*User, *Response, error) {
-
+) (*User, error) {
 	resp, err := api.MakeRequest(ctx, "getMe", nil)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data User
 	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+	return &data, err
 }
 
 // GetMyCommands
@@ -804,15 +790,14 @@ func (api *API) GetMe(
 // Array of BotCommand on success.
 func (api *API) GetMyCommands(
 	ctx context.Context,
-) ([]BotCommand, *Response, error) {
-
+) ([]BotCommand, error) {
 	resp, err := api.MakeRequest(ctx, "getMyCommands", nil)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data []BotCommand
 	err = json.Unmarshal(resp.Result, &data)
-	return data, resp, err
+	return data, err
 }
 
 // GetStickerSet
@@ -822,18 +807,17 @@ func (api *API) GetStickerSet(
 	// required.
 	// Name of the sticker set
 	name string,
-) (*StickerSet, *Response, error) {
-
+) (*StickerSet, error) {
 	args := map[string]interface{}{
 		"name": name,
 	}
 	resp, err := api.MakeRequest(ctx, "getStickerSet", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data StickerSet
 	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+	return &data, err
 }
 
 // GetUpdates
@@ -872,15 +856,14 @@ type GetUpdatesConfig struct {
 func (api *API) GetUpdates(
 	ctx context.Context,
 	args *GetUpdatesConfig,
-) ([]Update, *Response, error) {
-
+) ([]Update, error) {
 	resp, err := api.MakeRequest(ctx, "getUpdates", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data []Update
 	err = json.Unmarshal(resp.Result, &data)
-	return data, resp, err
+	return data, err
 }
 
 // GetUserProfilePhotos
@@ -905,15 +888,14 @@ type GetUserProfilePhotosConfig struct {
 func (api *API) GetUserProfilePhotos(
 	ctx context.Context,
 	args *GetUserProfilePhotosConfig,
-) (*UserProfilePhotos, *Response, error) {
-
+) (*UserProfilePhotos, error) {
 	resp, err := api.MakeRequest(ctx, "getUserProfilePhotos", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data UserProfilePhotos
 	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+	return &data, err
 }
 
 // GetWebhookInfo
@@ -922,15 +904,14 @@ func (api *API) GetUserProfilePhotos(
 // empty.
 func (api *API) GetWebhookInfo(
 	ctx context.Context,
-) (*WebhookInfo, *Response, error) {
-
+) (*WebhookInfo, error) {
 	resp, err := api.MakeRequest(ctx, "getWebhookInfo", nil)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data WebhookInfo
 	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+	return &data, err
 }
 
 // KickChatMember
@@ -960,9 +941,9 @@ type KickChatMemberConfig struct {
 func (api *API) KickChatMember(
 	ctx context.Context,
 	args *KickChatMemberConfig,
-) (*Response, error) {
-
-	return api.MakeRequest(ctx, "kickChatMember", args)
+) error {
+	_, err := api.MakeRequest(ctx, "kickChatMember", args)
+	return err
 }
 
 // LeaveChat
@@ -973,12 +954,12 @@ func (api *API) LeaveChat(
 	// Unique identifier for the target chat or username of the target supergroup or channel
 	// (in the format @channelusername)
 	chatID IntStr,
-) (*Response, error) {
-
+) error {
 	args := map[string]interface{}{
 		"chat_id": chatID,
 	}
-	return api.MakeRequest(ctx, "leaveChat", args)
+	_, err := api.MakeRequest(ctx, "leaveChat", args)
+	return err
 }
 
 // PinChatMessage
@@ -1006,9 +987,9 @@ type PinChatMessageConfig struct {
 func (api *API) PinChatMessage(
 	ctx context.Context,
 	args *PinChatMessageConfig,
-) (*Response, error) {
-
-	return api.MakeRequest(ctx, "pinChatMessage", args)
+) error {
+	_, err := api.MakeRequest(ctx, "pinChatMessage", args)
+	return err
 }
 
 // PromoteChatMember
@@ -1059,9 +1040,9 @@ type PromoteChatMemberConfig struct {
 func (api *API) PromoteChatMember(
 	ctx context.Context,
 	args *PromoteChatMemberConfig,
-) (*Response, error) {
-
-	return api.MakeRequest(ctx, "promoteChatMember", args)
+) error {
+	_, err := api.MakeRequest(ctx, "promoteChatMember", args)
+	return err
 }
 
 // RestrictChatMember
@@ -1093,9 +1074,9 @@ type RestrictChatMemberConfig struct {
 func (api *API) RestrictChatMember(
 	ctx context.Context,
 	args *RestrictChatMemberConfig,
-) (*Response, error) {
-
-	return api.MakeRequest(ctx, "restrictChatMember", args)
+) error {
+	_, err := api.MakeRequest(ctx, "restrictChatMember", args)
+	return err
 }
 
 // SendAnimation
@@ -1174,19 +1155,12 @@ func (t SendAnimationConfig) EncodeURL() (url.Values, error) {
 // SendAnimation
 // Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On
 // success, the sent Message is returned. Bots can currently send animation files of up to 50 MB in
-// size, this limit may be changed in the future.
+// size, this limit may be changed in the future.}}
 func (api *API) SendAnimation(
 	ctx context.Context,
 	args *SendAnimationConfig,
-) (*Message, *Response, error) {
-
-	resp, err := api.MakeRequest(ctx, "sendAnimation", args)
-	if err != nil {
-		return nil, resp, err
-	}
-	var data Message
-	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+) (*Message, error) {
+	return nil, nil
 }
 
 // SendAudio
@@ -1266,19 +1240,12 @@ func (t SendAudioConfig) EncodeURL() (url.Values, error) {
 // Use this method to send audio files, if you want Telegram clients to display them in the music
 // player. Your audio must be in the .MP3 or .M4A format. On success, the sent Message is returned.
 // Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the
-// future.
+// future.}}
 func (api *API) SendAudio(
 	ctx context.Context,
 	args *SendAudioConfig,
-) (*Message, *Response, error) {
-
-	resp, err := api.MakeRequest(ctx, "sendAudio", args)
-	if err != nil {
-		return nil, resp, err
-	}
-	var data Message
-	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+) (*Message, error) {
+	return nil, nil
 }
 
 // SendChatAction
@@ -1297,13 +1264,13 @@ func (api *API) SendChatAction(
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
 	chatID IntStr,
-) (*Response, error) {
-
+) error {
 	args := map[string]interface{}{
 		"action":  action,
 		"chat_id": chatID,
 	}
-	return api.MakeRequest(ctx, "sendChatAction", args)
+	_, err := api.MakeRequest(ctx, "sendChatAction", args)
+	return err
 }
 
 // SendContact
@@ -1342,15 +1309,14 @@ type SendContactConfig struct {
 func (api *API) SendContact(
 	ctx context.Context,
 	args *SendContactConfig,
-) (*Message, *Response, error) {
-
+) (*Message, error) {
 	resp, err := api.MakeRequest(ctx, "sendContact", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+	return &data, err
 }
 
 // SendDice
@@ -1383,15 +1349,14 @@ type SendDiceConfig struct {
 func (api *API) SendDice(
 	ctx context.Context,
 	args *SendDiceConfig,
-) (*Message, *Response, error) {
-
+) (*Message, error) {
 	resp, err := api.MakeRequest(ctx, "sendDice", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+	return &data, err
 }
 
 // SendDocument
@@ -1458,19 +1423,12 @@ func (t SendDocumentConfig) EncodeURL() (url.Values, error) {
 // SendDocument
 // Use this method to send general files. On success, the sent Message is returned. Bots can
 // currently send files of any type of up to 50 MB in size, this limit may be changed in the
-// future.
+// future.}}
 func (api *API) SendDocument(
 	ctx context.Context,
 	args *SendDocumentConfig,
-) (*Message, *Response, error) {
-
-	resp, err := api.MakeRequest(ctx, "sendDocument", args)
-	if err != nil {
-		return nil, resp, err
-	}
-	var data Message
-	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+) (*Message, error) {
+	return nil, nil
 }
 
 // SendGame
@@ -1500,15 +1458,14 @@ type SendGameConfig struct {
 func (api *API) SendGame(
 	ctx context.Context,
 	args *SendGameConfig,
-) (*Message, *Response, error) {
-
+) (*Message, error) {
 	resp, err := api.MakeRequest(ctx, "sendGame", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+	return &data, err
 }
 
 // SendInvoice
@@ -1596,15 +1553,14 @@ type SendInvoiceConfig struct {
 func (api *API) SendInvoice(
 	ctx context.Context,
 	args *SendInvoiceConfig,
-) (*Message, *Response, error) {
-
+) (*Message, error) {
 	resp, err := api.MakeRequest(ctx, "sendInvoice", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+	return &data, err
 }
 
 // SendLocation
@@ -1641,15 +1597,14 @@ type SendLocationConfig struct {
 func (api *API) SendLocation(
 	ctx context.Context,
 	args *SendLocationConfig,
-) (*Message, *Response, error) {
-
+) (*Message, error) {
 	resp, err := api.MakeRequest(ctx, "sendLocation", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+	return &data, err
 }
 
 // SendMediaGroup
@@ -1677,15 +1632,14 @@ type SendMediaGroupConfig struct {
 func (api *API) SendMediaGroup(
 	ctx context.Context,
 	args *SendMediaGroupConfig,
-) ([]Message, *Response, error) {
-
+) ([]Message, error) {
 	resp, err := api.MakeRequest(ctx, "sendMediaGroup", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data []Message
 	err = json.Unmarshal(resp.Result, &data)
-	return data, resp, err
+	return data, err
 }
 
 // SendMessage
@@ -1721,15 +1675,14 @@ type SendMessageConfig struct {
 func (api *API) SendMessage(
 	ctx context.Context,
 	args *SendMessageConfig,
-) (*Message, *Response, error) {
-
+) (*Message, error) {
 	resp, err := api.MakeRequest(ctx, "sendMessage", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+	return &data, err
 }
 
 // SendPhoto
@@ -1781,19 +1734,12 @@ func (t SendPhotoConfig) EncodeURL() (url.Values, error) {
 }
 
 // SendPhoto
-// Use this method to send photos. On success, the sent Message is returned.
+// Use this method to send photos. On success, the sent Message is returned.}}
 func (api *API) SendPhoto(
 	ctx context.Context,
 	args *SendPhotoConfig,
-) (*Message, *Response, error) {
-
-	resp, err := api.MakeRequest(ctx, "sendPhoto", args)
-	if err != nil {
-		return nil, resp, err
-	}
-	var data Message
-	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+) (*Message, error) {
+	return nil, nil
 }
 
 // SendPoll
@@ -1856,15 +1802,14 @@ type SendPollConfig struct {
 func (api *API) SendPoll(
 	ctx context.Context,
 	args *SendPollConfig,
-) (*Message, *Response, error) {
-
+) (*Message, error) {
 	resp, err := api.MakeRequest(ctx, "sendPoll", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+	return &data, err
 }
 
 // SendSticker
@@ -1909,19 +1854,12 @@ func (t SendStickerConfig) EncodeURL() (url.Values, error) {
 
 // SendSticker
 // Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is
-// returned.
+// returned.}}
 func (api *API) SendSticker(
 	ctx context.Context,
 	args *SendStickerConfig,
-) (*Message, *Response, error) {
-
-	resp, err := api.MakeRequest(ctx, "sendSticker", args)
-	if err != nil {
-		return nil, resp, err
-	}
-	var data Message
-	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+) (*Message, error) {
+	return nil, nil
 }
 
 // SendVenue
@@ -1967,15 +1905,14 @@ type SendVenueConfig struct {
 func (api *API) SendVenue(
 	ctx context.Context,
 	args *SendVenueConfig,
-) (*Message, *Response, error) {
-
+) (*Message, error) {
 	resp, err := api.MakeRequest(ctx, "sendVenue", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+	return &data, err
 }
 
 // SendVideo
@@ -2058,19 +1995,12 @@ func (t SendVideoConfig) EncodeURL() (url.Values, error) {
 // SendVideo
 // Use this method to send video files, Telegram clients support mp4 videos (other formats may be
 // sent as Document). On success, the sent Message is returned. Bots can currently send video files
-// of up to 50 MB in size, this limit may be changed in the future.
+// of up to 50 MB in size, this limit may be changed in the future.}}
 func (api *API) SendVideo(
 	ctx context.Context,
 	args *SendVideoConfig,
-) (*Message, *Response, error) {
-
-	resp, err := api.MakeRequest(ctx, "sendVideo", args)
-	if err != nil {
-		return nil, resp, err
-	}
-	var data Message
-	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+) (*Message, error) {
+	return nil, nil
 }
 
 // SendVideoNote
@@ -2134,19 +2064,12 @@ func (t SendVideoNoteConfig) EncodeURL() (url.Values, error) {
 
 // SendVideoNote
 // As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this
-// method to send video messages. On success, the sent Message is returned.
+// method to send video messages. On success, the sent Message is returned.}}
 func (api *API) SendVideoNote(
 	ctx context.Context,
 	args *SendVideoNoteConfig,
-) (*Message, *Response, error) {
-
-	resp, err := api.MakeRequest(ctx, "sendVideoNote", args)
-	if err != nil {
-		return nil, resp, err
-	}
-	var data Message
-	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+) (*Message, error) {
+	return nil, nil
 }
 
 // SendVoice
@@ -2210,19 +2133,12 @@ func (t SendVoiceConfig) EncodeURL() (url.Values, error) {
 // playable voice message. For this to work, your audio must be in an .OGG file encoded with OPUS
 // (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots
 // can currently send voice messages of up to 50 MB in size, this limit may be changed in the
-// future.
+// future.}}
 func (api *API) SendVoice(
 	ctx context.Context,
 	args *SendVoiceConfig,
-) (*Message, *Response, error) {
-
-	resp, err := api.MakeRequest(ctx, "sendVoice", args)
-	if err != nil {
-		return nil, resp, err
-	}
-	var data Message
-	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+) (*Message, error) {
+	return nil, nil
 }
 
 // SetChatAdministratorCustomTitle
@@ -2247,9 +2163,9 @@ type SetChatAdministratorCustomTitleConfig struct {
 func (api *API) SetChatAdministratorCustomTitle(
 	ctx context.Context,
 	args *SetChatAdministratorCustomTitleConfig,
-) (*Response, error) {
-
-	return api.MakeRequest(ctx, "setChatAdministratorCustomTitle", args)
+) error {
+	_, err := api.MakeRequest(ctx, "setChatAdministratorCustomTitle", args)
+	return err
 }
 
 // SetChatDescription
@@ -2265,13 +2181,13 @@ func (api *API) SetChatDescription(
 	// not required.
 	// New chat description, 0-255 characters
 	description *string,
-) (*Response, error) {
-
+) error {
 	args := map[string]interface{}{
 		"chat_id":     chatID,
 		"description": description,
 	}
-	return api.MakeRequest(ctx, "setChatDescription", args)
+	_, err := api.MakeRequest(ctx, "setChatDescription", args)
+	return err
 }
 
 // SetChatPermissions
@@ -2287,19 +2203,19 @@ func (api *API) SetChatPermissions(
 	// required.
 	// New default chat permissions
 	permissions ChatPermissions,
-) (*Response, error) {
-
+) error {
 	args := map[string]interface{}{
 		"chat_id":     chatID,
 		"permissions": permissions,
 	}
-	return api.MakeRequest(ctx, "setChatPermissions", args)
+	_, err := api.MakeRequest(ctx, "setChatPermissions", args)
+	return err
 }
 
 // SetChatPhoto
 // Use this method to set a new profile photo for the chat. Photos can't be changed for private
 // chats. The bot must be an administrator in the chat for this to work and must have the
-// appropriate admin rights. Returns True on success.
+// appropriate admin rights. Returns True on success.}}
 func (api *API) SetChatPhoto(
 	ctx context.Context,
 	// required.
@@ -2309,13 +2225,8 @@ func (api *API) SetChatPhoto(
 	// required.
 	// New chat photo, uploaded using multipart/form-data
 	photo InputFile,
-) (*Response, error) {
-
-	args := map[string]interface{}{
-		"chat_id": chatID,
-		"photo":   photo,
-	}
-	return api.MakeRequest(ctx, "setChatPhoto", args)
+) error {
+	return nil
 }
 
 // SetChatStickerSet
@@ -2332,13 +2243,13 @@ func (api *API) SetChatStickerSet(
 	// required.
 	// Name of the sticker set to be set as the group sticker set
 	stickerSetName string,
-) (*Response, error) {
-
+) error {
 	args := map[string]interface{}{
 		"chat_id":          chatID,
 		"sticker_set_name": stickerSetName,
 	}
-	return api.MakeRequest(ctx, "setChatStickerSet", args)
+	_, err := api.MakeRequest(ctx, "setChatStickerSet", args)
+	return err
 }
 
 // SetChatTitle
@@ -2354,13 +2265,13 @@ func (api *API) SetChatTitle(
 	// required.
 	// New chat title, 1-255 characters
 	title string,
-) (*Response, error) {
-
+) error {
 	args := map[string]interface{}{
 		"chat_id": chatID,
 		"title":   title,
 	}
-	return api.MakeRequest(ctx, "setChatTitle", args)
+	_, err := api.MakeRequest(ctx, "setChatTitle", args)
+	return err
 }
 
 // SetGameScore
@@ -2400,15 +2311,14 @@ type SetGameScoreConfig struct {
 func (api *API) SetGameScore(
 	ctx context.Context,
 	args *SetGameScoreConfig,
-) (*Message, *Response, error) {
-
+) (*Message, error) {
 	resp, err := api.MakeRequest(ctx, "setGameScore", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+	return &data, err
 }
 
 // SetMyCommands
@@ -2419,12 +2329,12 @@ func (api *API) SetMyCommands(
 	// A JSON-serialized list of bot commands to be set as the list of the bot's commands. At
 	// most 100 commands can be specified.
 	commands []BotCommand,
-) (*Response, error) {
-
+) error {
 	args := map[string]interface{}{
 		"commands": commands,
 	}
-	return api.MakeRequest(ctx, "setMyCommands", args)
+	_, err := api.MakeRequest(ctx, "setMyCommands", args)
+	return err
 }
 
 // SetPassportDataErrors
@@ -2439,13 +2349,13 @@ func (api *API) SetPassportDataErrors(
 	// required.
 	// User identifier
 	userID int64,
-) (*Response, error) {
-
+) error {
 	args := map[string]interface{}{
 		"errors":  errors,
 		"user_id": userID,
 	}
-	return api.MakeRequest(ctx, "setPassportDataErrors", args)
+	_, err := api.MakeRequest(ctx, "setPassportDataErrors", args)
+	return err
 }
 
 // SetStickerPositionInSet
@@ -2459,13 +2369,13 @@ func (api *API) SetStickerPositionInSet(
 	// required.
 	// File identifier of the sticker
 	sticker string,
-) (*Response, error) {
-
+) error {
 	args := map[string]interface{}{
 		"position": position,
 		"sticker":  sticker,
 	}
-	return api.MakeRequest(ctx, "setStickerPositionInSet", args)
+	_, err := api.MakeRequest(ctx, "setStickerPositionInSet", args)
+	return err
 }
 
 // SetStickerSetThumb
@@ -2495,9 +2405,9 @@ type SetStickerSetThumbConfig struct {
 func (api *API) SetStickerSetThumb(
 	ctx context.Context,
 	args *SetStickerSetThumbConfig,
-) (*Response, error) {
-
-	return api.MakeRequest(ctx, "setStickerSetThumb", args)
+) error {
+	_, err := api.MakeRequest(ctx, "setStickerSetThumb", args)
+	return err
 }
 
 // SetWebhook
@@ -2536,9 +2446,9 @@ type SetWebhookConfig struct {
 func (api *API) SetWebhook(
 	ctx context.Context,
 	args *SetWebhookConfig,
-) (*Response, error) {
-
-	return api.MakeRequest(ctx, "setWebhook", args)
+) error {
+	_, err := api.MakeRequest(ctx, "setWebhook", args)
+	return err
 }
 
 // StopMessageLiveLocation
@@ -2567,15 +2477,14 @@ type StopMessageLiveLocationConfig struct {
 func (api *API) StopMessageLiveLocation(
 	ctx context.Context,
 	args *StopMessageLiveLocationConfig,
-) (*Message, *Response, error) {
-
+) (*Message, error) {
 	resp, err := api.MakeRequest(ctx, "stopMessageLiveLocation", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data Message
 	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+	return &data, err
 }
 
 // StopPoll
@@ -2600,15 +2509,14 @@ type StopPollConfig struct {
 func (api *API) StopPoll(
 	ctx context.Context,
 	args *StopPollConfig,
-) (*Poll, *Response, error) {
-
+) (*Poll, error) {
 	resp, err := api.MakeRequest(ctx, "stopPoll", args)
 	if err != nil {
-		return nil, resp, err
+		return nil, err
 	}
 	var data Poll
 	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+	return &data, err
 }
 
 // UnbanChatMember
@@ -2624,13 +2532,13 @@ func (api *API) UnbanChatMember(
 	// required.
 	// Unique identifier of the target user
 	userID int64,
-) (*Response, error) {
-
+) error {
 	args := map[string]interface{}{
 		"chat_id": chatID,
 		"user_id": userID,
 	}
-	return api.MakeRequest(ctx, "unbanChatMember", args)
+	_, err := api.MakeRequest(ctx, "unbanChatMember", args)
+	return err
 }
 
 // UnpinChatMessage
@@ -2643,17 +2551,17 @@ func (api *API) UnpinChatMessage(
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
 	chatID IntStr,
-) (*Response, error) {
-
+) error {
 	args := map[string]interface{}{
 		"chat_id": chatID,
 	}
-	return api.MakeRequest(ctx, "unpinChatMessage", args)
+	_, err := api.MakeRequest(ctx, "unpinChatMessage", args)
+	return err
 }
 
 // UploadStickerFile
 // Use this method to upload a .PNG file with a sticker for later use in createNewStickerSet and
-// addStickerToSet methods (can be used multiple times). Returns the uploaded File on success.
+// addStickerToSet methods (can be used multiple times). Returns the uploaded File on success.}}
 func (api *API) UploadStickerFile(
 	ctx context.Context,
 	// required.
@@ -2663,17 +2571,6 @@ func (api *API) UploadStickerFile(
 	// required.
 	// User identifier of sticker file owner
 	userID int64,
-) (*File, *Response, error) {
-
-	args := map[string]interface{}{
-		"png_sticker": pngSticker,
-		"user_id":     userID,
-	}
-	resp, err := api.MakeRequest(ctx, "uploadStickerFile", args)
-	if err != nil {
-		return nil, resp, err
-	}
-	var data File
-	err = json.Unmarshal(resp.Result, &data)
-	return &data, resp, err
+) (*File, error) {
+	return nil, nil
 }

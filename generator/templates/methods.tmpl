@@ -50,12 +50,20 @@ func (t {{camel $method}}Config) EncodeURL() (url.Values, error) {
 
 // {{camel $method}}
 // {{format $desc.Description.PlainText 0}}
+
+{{- $send_name := ""}}
+{{- range $argname, $arg := $desc.Arguments}}
+	{{- $type := (get_type $argname $method $arg.Types)}}
+	{{- if and $arg.Required (eq $type.GoType "InputFile")}}
+		{{- $send_name = (print "args." $argname)}}}}
+	{{- end}}
+{{- end}}
 func (api *API) {{camel $method}}(
-{{- if gt (len $desc.Arguments) 2}}
 ctx context.Context,
+
+{{- if gt (len $desc.Arguments) 2}}
 args *{{camel $method}}Config,
 {{else}}
-	ctx context.Context,
 	{{range $argname, $arg := $desc.Arguments -}}
 		// {{if not $arg.Required}}not {{end}}required.
 		// {{format $arg.Description.PlainText 2}}
@@ -64,7 +72,9 @@ args *{{camel $method}}Config,
 			{{$type.GoType}},
 	{{end}}
 {{- end -}}
+
 ) (
+
 {{- $returns := false}}
 {{- $return_stared := false}}
 {{- with $desc.Returns}}
@@ -74,12 +84,12 @@ args *{{camel $method}}Config,
 		{{- $returns = true}}
 	{{- end}}
 {{- end -}}
-*Response, error) {
-{{/* {{- if is_sendable $desc.Arguments}}
-	if err := args.Send(ctx, api); err != nil {
-		return {{if $returns}}{{default_return $desc.Returns}}, {{end}}nil, err
-	}
-{{- end}} */}}
+
+error) {
+
+{{- if not (empty $send_name)}}
+	return nil, nil
+{{- else}}
 {{- if not (gt (len $desc.Arguments) 2)}}
 	{{- if gt (len $desc.Arguments) 0}}
 	args := map[string]interface{} {
@@ -89,17 +99,19 @@ args *{{camel $method}}Config,
 	}
 	{{- end}}
 {{- end}}
-	{{- if $returns}}
-	resp, err :=
+	{{if $returns}}resp{{else}}_{{end}},err := api.MakeRequest(ctx, "{{$method}}", {{if eq (len $desc.Arguments) 0}}nil{{else}}args{{end}})
+	{{- if not $returns}}
+	return err
 	{{- else}}
-	return {{end}} api.MakeRequest(ctx, "{{$method}}",{{- if eq (len $desc.Arguments) 0}}nil{{else}}args{{end}})
-	{{- if $returns}}
 	if err != nil {
-		return {{if $returns}}{{default_return $desc.Returns}}, {{end}}resp, err
+		return {{if $returns}}{{default_return $desc.Returns}}, {{end}}err
 	}
 	var data {{$desc.Returns.GoType}}
 	err = json.Unmarshal(resp.Result, &data)
-	return {{if $return_stared}}&{{end}}data, resp, err
+	return {{if $return_stared}}&{{end}}data, err
 	{{- end}}
+{{- end}}
 }
+
+
 {{end}}

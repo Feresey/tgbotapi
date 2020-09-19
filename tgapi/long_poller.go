@@ -91,7 +91,7 @@ func (lp *LongPoller) Listen(updatesConfig *GetUpdatesConfig) {
 		default:
 		}
 
-		updates, _, err := lp.api.GetUpdates(lp.ctx, updatesConfig)
+		updates, err := lp.api.GetUpdates(lp.ctx, updatesConfig)
 		if err != nil {
 			if lp.opts.listenErrorCallback != nil {
 				lp.opts.listenErrorCallback(err)

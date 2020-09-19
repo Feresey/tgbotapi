@@ -29,7 +29,7 @@ func (api *API) GetFileDirectlyConfig(
 }
 
 func (api *API) GetFileDirectly(ctx context.Context, fileID string) (io.ReadCloser, error) {
-	fileConfig, _, err := api.GetFile(ctx, fileID)
+	fileConfig, err := api.GetFile(ctx, fileID)
 	if err != nil {
 		return nil, err
 	}
