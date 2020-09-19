@@ -106,7 +106,7 @@ error) {
 			"{{$second}}" : []string{ {{- format_url (lowercamel $second) false (get_type $second $method (index $desc.Arguments $second).Types) -}} },
 		}
 		{{- end}}
-		{{if $returns}}resp{{else}}_{{end}}, err := api.UploadFile(ctx, values, "{{$method}}", &{{$input_file}})
+		{{if $returns}}resp{{else}}_{{end}}, err := api.UploadFile(ctx, values, "{{$method}}","{{input_type $method}}", &{{$input_file}})
 		{{- if not $returns}}
 		return err
 		{{- else}}

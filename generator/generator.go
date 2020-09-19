@@ -128,6 +128,9 @@ func formatURL(name string, stared bool, t TypeMapping) string {
 }
 
 var funcs = template.FuncMap{
+	"input_type": func(s string) string {
+		return strings.ToLower(strings.TrimPrefix(s, "send"))
+	},
 	"is_sendable": func(m map[string]Field) bool {
 		for _, field := range m {
 			if len(field.Types) != 1 {

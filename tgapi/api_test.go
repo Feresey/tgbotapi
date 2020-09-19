@@ -23,38 +23,35 @@ func TestMain(m *testing.M) {
 var ctx = context.Background()
 
 func TestGetMe(t *testing.T) {
-	me, _, err := api.GetMe(ctx)
+	me, err := api.GetMe(ctx)
 	require.NoError(t, err)
 	require.NotEmpty(t, me)
 }
 
 func TestGetCommands(t *testing.T) {
-	_, _, err := api.GetMyCommands(ctx)
+	_, err := api.GetMyCommands(ctx)
 	require.NoError(t, err)
 }
 
-const (
-	TestToken               = "153667468:AAHlSHlMqSt1f_uFmVRJbm5gntu2HI4WW8I" //nolint:gosec // this is not my credentials
-	ChatID                  = 76918703
-	SupergroupChatID        = -1001120141283
-	ReplyToMessageID        = 35
-	ExistingPhotoFileID     = "AgADAgADw6cxG4zHKAkr42N7RwEN3IFShCoABHQwXEtVks4EH2wBAAEC"
-	ExistingDocumentFileID  = "BQADAgADOQADjMcoCcioX1GrDvp3Ag"
-	ExistingAudioFileID     = "BQADAgADRgADjMcoCdXg3lSIN49lAg"
-	ExistingVoiceFileID     = "AwADAgADWQADjMcoCeul6r_q52IyAg"
-	ExistingVideoFileID     = "BAADAgADZgADjMcoCav432kYe0FRAg"
-	ExistingVideoNoteFileID = "DQADAgADdQAD70cQSUK41dLsRMqfAg"
-	ExistingStickerFileID   = "BQADAgADcwADjMcoCbdl-6eB--YPAg"
-)
+var TestToken = os.Getenv("TEST_TOKEN")
 
-func newInt(i int64) *int64      { return &i }
-func newString(s string) *string { return &s }
-func newBool(b bool) *bool       { return &b }
+const (
+	ChatID = 425496698
+	// SupergroupChatID        = -1001120141283
+	ReplyToMessageID = 35
+	// ExistingPhotoFileID     = "AgADAgADw6cxG4zHKAkr42N7RwEN3IFShCoABHQwXEtVks4EH2wBAAEC"
+	// ExistingDocumentFileID  = "BQADAgADOQADjMcoCcioX1GrDvp3Ag"
+	// ExistingAudioFileID     = "BQADAgADRgADjMcoCdXg3lSIN49lAg"
+	// ExistingVoiceFileID     = "AwADAgADWQADjMcoCeul6r_q52IyAg"
+	// ExistingVideoFileID     = "BAADAgADZgADjMcoCav432kYe0FRAg"
+	// ExistingVideoNoteFileID = "DQADAgADdQAD70cQSUK41dLsRMqfAg"
+	// ExistingStickerFileID   = "BQADAgADcwADjMcoCbdl-6eB--YPAg"
+)
 
 var api = New(TestToken)
 
 func TestGetUpdates(t *testing.T) {
-	_, _, err := api.GetUpdates(ctx, nil)
+	_, err := api.GetUpdates(ctx, nil)
 	require.NoError(t, err)
 }
 
@@ -62,9 +59,9 @@ func TestSendWithMessage(t *testing.T) {
 	msg := &SendMessageConfig{
 		ChatID:    IntStr{Int: ChatID},
 		Text:      "A test message from the test library in telegram-bot-api",
-		ParseMode: newString(ParseModeMarkdown),
+		ParseMode: ParseModeMarkdown,
 	}
-	resp, _, err := api.SendMessage(ctx, msg)
+	resp, err := api.SendMessage(ctx, msg)
 	require.NoError(t, err)
 
 	require.NotEmpty(t, resp.Text)
@@ -75,9 +72,9 @@ func TestSendWithMessageReply(t *testing.T) {
 	msg := &SendMessageConfig{
 		ChatID:           IntStr{Int: ChatID},
 		Text:             "A test message from the test library in telegram-bot-api",
-		ReplyToMessageID: newInt(ReplyToMessageID),
+		ReplyToMessageID: ReplyToMessageID,
 	}
-	resp, _, err := api.SendMessage(ctx, msg)
+	resp, err := api.SendMessage(ctx, msg)
 	require.NoError(t, err)
 	require.NotEmpty(t, resp.Text)
 	require.Equal(t, msg.Text, *resp.Text)
@@ -91,7 +88,7 @@ func TestSendWithMessageForward(t *testing.T) {
 		FromChatID: IntStr{Int: ChatID},
 		MessageID:  ReplyToMessageID,
 	}
-	_, _, err := api.ForwardMessage(ctx, msg)
+	_, err := api.ForwardMessage(ctx, msg)
 	require.NoError(t, err)
 }
 
@@ -99,43 +96,43 @@ func TestDeleteMessage(t *testing.T) {
 	msg := &SendMessageConfig{
 		ChatID:    IntStr{Int: ChatID},
 		Text:      "A test message from the test library in telegram-bot-api",
-		ParseMode: newString(ParseModeMarkdown),
+		ParseMode: ParseModeMarkdown,
 	}
-	message, _, err := api.SendMessage(ctx, msg)
+	message, err := api.SendMessage(ctx, msg)
 	require.NoError(t, err)
 
-	_, err = api.DeleteMessage(ctx, msg.ChatID, message.MessageID)
+	err = api.DeleteMessage(ctx, msg.ChatID, message.MessageID)
 	require.NoError(t, err)
 }
 
-func TestPin(t *testing.T) {
-	msg := &SendMessageConfig{
-		ChatID:    IntStr{Int: SupergroupChatID},
-		Text:      "A test message from the test library in telegram-bot-api",
-		ParseMode: newString(ParseModeMarkdown),
-	}
+// func TestPin(t *testing.T) {
+// 	msg := &SendMessageConfig{
+// 		ChatID:    IntStr{Int: SupergroupChatID},
+// 		Text:      "A test message from the test library in telegram-bot-api",
+// 		ParseMode: ParseModeMarkdown,
+// 	}
 
-	message, _, err := api.SendMessage(ctx, msg)
-	require.NoError(t, err)
+// 	message, err := api.SendMessage(ctx, msg)
+// 	require.NoError(t, err)
 
-	t.Run("pin", func(t *testing.T) {
-		_, err = api.PinChatMessage(ctx, &PinChatMessageConfig{
-			ChatID:    msg.ChatID,
-			MessageID: message.MessageID,
-		})
-		require.NoError(t, err)
-	})
+// 	t.Run("pin", func(t *testing.T) {
+// 		err = api.PinChatMessage(ctx, &PinChatMessageConfig{
+// 			ChatID:    msg.ChatID,
+// 			MessageID: message.MessageID,
+// 		})
+// 		require.NoError(t, err)
+// 	})
 
-	t.Run("unpin", func(t *testing.T) {
-		_, err := api.UnpinChatMessage(ctx, msg.ChatID)
-		require.NoError(t, err)
-	})
-}
+// 	t.Run("unpin", func(t *testing.T) {
+// 		err := api.UnpinChatMessage(ctx, msg.ChatID)
+// 		require.NoError(t, err)
+// 	})
+// }
 
 // func TestSendWithNewPhoto(t *testing.T) {
 // 	msg := NewPhotoUpload(ChatID, "tests/image.jpg")
 // 	msg.Caption = "Test"
-// 	resp, _, err := api.SendMessage(msg)
+// 	resp, err := api.SendMessage(msg)
 
 // 	require.NoError(t, err)
 // }
@@ -146,7 +143,7 @@ func TestPin(t *testing.T) {
 
 // 	msg := NewPhotoUpload(ChatID, b)
 // 	msg.Caption = "Test"
-// 	resp, _, err := api.SendMessage(msg)
+// 	resp, err := api.SendMessage(msg)
 
 // 	require.NoError(t, err)
 // }
@@ -157,7 +154,7 @@ func TestPin(t *testing.T) {
 
 // 	msg := NewPhotoUpload(ChatID, reader)
 // 	msg.Caption = "Test"
-// 	resp, _, err := api.SendMessage(msg)
+// 	resp, err := api.SendMessage(msg)
 
 // 	require.NoError(t, err)
 // }
@@ -166,7 +163,7 @@ func TestPin(t *testing.T) {
 // 	msg := NewPhotoUpload(ChatID, "tests/image.jpg")
 // 	msg.ReplyToMessageID = ReplyToMessageID
 
-// 	resp, _, err := api.SendMessage(msg)
+// 	resp, err := api.SendMessage(msg)
 
 // 	require.NoError(t, err)
 // }
@@ -174,21 +171,30 @@ func TestPin(t *testing.T) {
 // func TestSendWithExistingPhoto(t *testing.T) {
 // 	msg := NewPhotoShare(ChatID, ExistingPhotoFileID)
 // 	msg.Caption = "Test"
-// 	resp, _, err := api.SendMessage(msg)
+// 	resp, err := api.SendMessage(msg)
 
 // 	require.NoError(t, err)
 // }
 
-// func TestSendWithNewDocument(t *testing.T) {
-// 	msg := NewDocumentUpload(ChatID, "tests/image.jpg")
-// 	resp, _, err := api.SendMessage(msg)
+func TestSendWithNewDocument(t *testing.T) {
+	file, err := os.Open("testdata/image.jpg")
+	require.NoError(t, err)
+	defer file.Close()
 
-// 	require.NoError(t, err)
-// }
+	_, err = api.SendDocument(ctx, &SendDocumentConfig{
+		ChatID: NewInt(ChatID),
+		Document: InputFile{
+			Name:   "image.jpg",
+			Reader: file,
+		},
+	})
+
+	require.NoError(t, err)
+}
 
 // func TestSendWithExistingDocument(t *testing.T) {
 // 	msg := NewDocumentShare(ChatID, ExistingDocumentFileID)
-// 	resp, _, err := api.SendMessage(msg)
+// 	resp, err := api.SendMessage(msg)
 
 // 	require.NoError(t, err)
 // }
@@ -200,7 +206,7 @@ func TestPin(t *testing.T) {
 // 	msg.Performer = "TEST"
 // 	msg.MimeType = "audio/mpeg"
 // 	msg.FileSize = 688
-// 	resp, _, err := api.SendMessage(msg)
+// 	resp, err := api.SendMessage(msg)
 
 // 	require.NoError(t, err)
 // }
@@ -211,7 +217,7 @@ func TestPin(t *testing.T) {
 // 	msg.Duration = 10
 // 	msg.Performer = "TEST"
 
-// 	resp, _, err := api.SendMessage(msg)
+// 	resp, err := api.SendMessage(msg)
 
 // 	require.NoError(t, err)
 // }
@@ -219,7 +225,7 @@ func TestPin(t *testing.T) {
 // func TestSendWithNewVoice(t *testing.T) {
 // 	msg := NewVoiceUpload(ChatID, "tests/voice.ogg")
 // 	msg.Duration = 10
-// 	resp, _, err := api.SendMessage(msg)
+// 	resp, err := api.SendMessage(msg)
 
 // 	require.NoError(t, err)
 // }
@@ -227,7 +233,7 @@ func TestPin(t *testing.T) {
 // func TestSendWithExistingVoice(t *testing.T) {
 // 	msg := NewVoiceShare(ChatID, ExistingVoiceFileID)
 // 	msg.Duration = 10
-// 	resp, _, err := api.SendMessage(msg)
+// 	resp, err := api.SendMessage(msg)
 
 // 	require.NoError(t, err)
 // }
@@ -235,14 +241,14 @@ func TestPin(t *testing.T) {
 // func TestSendWithContact(t *testing.T) {
 // 	contact := NewContact(ChatID, "5551234567", "Test")
 
-// 	if resp, _, err := api.SendMessage(contact); err != nil {
+// 	if resp, err := api.SendMessage(contact); err != nil {
 // 		t.Error(err)
 // 		t.Fail()
 // 	}
 // }
 
 // func TestSendWithLocation(t *testing.T) {
-// 	resp, _, err := api.SendMessage(NewLocation(ChatID, 40, 40))
+// 	resp, err := api.SendMessage(NewLocation(ChatID, 40, 40))
 
 // 	require.NoError(t, err)
 // }
@@ -250,7 +256,7 @@ func TestPin(t *testing.T) {
 // func TestSendWithVenue(t *testing.T) {
 // 	venue := NewVenue(ChatID, "A Test Location", "123 Test Street", 40, 40)
 
-// 	if resp, _, err := api.SendMessage(venue); err != nil {
+// 	if resp, err := api.SendMessage(venue); err != nil {
 // 		t.Error(err)
 // 		t.Fail()
 // 	}
@@ -261,7 +267,7 @@ func TestPin(t *testing.T) {
 // 	msg.Duration = 10
 // 	msg.Caption = "TEST"
 
-// 	resp, _, err := api.SendMessage(msg)
+// 	resp, err := api.SendMessage(msg)
 
 // 	require.NoError(t, err)
 // }
@@ -271,7 +277,7 @@ func TestPin(t *testing.T) {
 // 	msg.Duration = 10
 // 	msg.Caption = "TEST"
 
-// 	resp, _, err := api.SendMessage(msg)
+// 	resp, err := api.SendMessage(msg)
 
 // 	require.NoError(t, err)
 // }
@@ -280,7 +286,7 @@ func TestPin(t *testing.T) {
 // 	msg := NewVideoNoteUpload(ChatID, 240, "tests/videonote.mp4")
 // 	msg.Duration = 10
 
-// 	resp, _, err := api.SendMessage(msg)
+// 	resp, err := api.SendMessage(msg)
 
 // 	require.NoError(t, err)
 // }
@@ -289,7 +295,7 @@ func TestPin(t *testing.T) {
 // 	msg := NewVideoNoteShare(ChatID, 240, ExistingVideoNoteFileID)
 // 	msg.Duration = 10
 
-// 	resp, _, err := api.SendMessage(msg)
+// 	resp, err := api.SendMessage(msg)
 
 // 	require.NoError(t, err)
 // }
@@ -297,7 +303,7 @@ func TestPin(t *testing.T) {
 // func TestSendWithNewSticker(t *testing.T) {
 // 	msg := NewStickerUpload(ChatID, "tests/image.jpg")
 
-// 	resp, _, err := api.SendMessage(msg)
+// 	resp, err := api.SendMessage(msg)
 
 // 	require.NoError(t, err)
 // }
@@ -305,7 +311,7 @@ func TestPin(t *testing.T) {
 // func TestSendWithExistingSticker(t *testing.T) {
 // 	msg := NewStickerShare(ChatID, ExistingStickerFileID)
 
-// 	resp, _, err := api.SendMessage(msg)
+// 	resp, err := api.SendMessage(msg)
 
 // 	require.NoError(t, err)
 // }
@@ -316,7 +322,7 @@ func TestPin(t *testing.T) {
 // 		RemoveKeyboard: true,
 // 		Selective:      false,
 // 	}
-// 	resp, _, err := api.SendMessage(msg)
+// 	resp, err := api.SendMessage(msg)
 
 // 	require.NoError(t, err)
 // }
@@ -328,14 +334,14 @@ func TestPin(t *testing.T) {
 // 		Selective:      false,
 // 	}
 
-// 	resp, _, err := api.SendMessage(msg)
+// 	resp, err := api.SendMessage(msg)
 
 // 	require.NoError(t, err)
 // }
 
 // func TestSendWithDice(t *testing.T) {
 // 	msg := NewDice(ChatID)
-// 	resp, _, err := api.SendMessage(msg)
+// 	resp, err := api.SendMessage(msg)
 
 // 	require.NoError(t, err)
 
@@ -343,7 +349,7 @@ func TestPin(t *testing.T) {
 
 // func TestSendWithDiceWithEmoji(t *testing.T) {
 // 	msg := NewDiceWithEmoji(ChatID, "🏀")
-// 	resp, _, err := api.SendMessage(msg)
+// 	resp, err := api.SendMessage(msg)
 
 // 	require.NoError(t, err)
 
@@ -352,13 +358,13 @@ func TestPin(t *testing.T) {
 // func TestGetFile(t *testing.T) {
 // 	file := FileConfig{FileID: ExistingPhotoFileID}
 
-// 	_, err := api.GetFile(file)
+// 	err := api.GetFile(file)
 
 // 	require.NoError(t, err)
 // }
 
 // func TestSendChatConfig(t *testing.T) {
-// 	resp, _, err := api.SendMessage(NewChatAction(ChatID, ChatTyping))
+// 	resp, err := api.SendMessage(NewChatAction(ChatID, ChatTyping))
 
 // 	require.NoError(t, err)
 // }
@@ -375,40 +381,40 @@ func TestPin(t *testing.T) {
 // 		Text: "Updated text.",
 // 	}
 
-// 	_, err = api.SendMessage(edit)
+// 	err = api.SendMessage(edit)
 // 	require.NoError(t, err)
 // }
 
 // func TestGetUserProfilePhotos(t *testing.T) {
-// 	_, err := api.GetUserProfilePhotos(NewUserProfilePhotos(ChatID))
+// 	err := api.GetUserProfilePhotos(NewUserProfilePhotos(ChatID))
 // 	require.NoError(t, err)
 // }
 
 // func TestSetWebhookWithCert(t *testing.T) {
 // 	time.Sleep(time.Second * 2)
 
-// 	_, err := api.RemoveWebhook()
+// 	err := api.RemoveWebhook()
 // 	require.NoError(t, err)
 
 // 	wh := NewWebhookWithCert("https://example.com/tgbotapi-test/"+api.Token, "tests/cert.pem")
-// 	_, err = api.SetWebhook(wh)
+// 	err = api.SetWebhook(wh)
 // 	require.NoError(t, err)
-// 	_, err = api.GetWebhookInfo()
+// 	err = api.GetWebhookInfo()
 // 	if err != nil {
 // 		t.Error(err)
 // 	}
-// 	_, err = api.RemoveWebhook()
+// 	err = api.RemoveWebhook()
 // 	require.NoError(t, err)
 // }
 
 // func TestSetWebhookWithoutCert(t *testing.T) {
 // 	time.Sleep(time.Second * 2)
 
-// 	_, err := api.RemoveWebhook()
+// 	err := api.RemoveWebhook()
 // 	require.NoError(t, err)
 
 // 	wh := NewWebhook("https://example.com/tgbotapi-test/" + api.Token)
-// 	_, err = api.SetWebhook(wh)
+// 	err = api.SetWebhook(wh)
 // 	require.NoError(t, err)
 // 	info, err := api.GetWebhookInfo()
 // 	if err != nil {
@@ -420,14 +426,14 @@ func TestPin(t *testing.T) {
 // 	if info.LastErrorDate != 0 {
 // 		t.Errorf("[Telegram callback failed]%s", info.LastErrorMessage)
 // 	}
-// 	_, err = api.RemoveWebhook()
+// 	err = api.RemoveWebhook()
 // 	require.NoError(t, err)
 // }
 
 // func TestUpdatesChan(t *testing.T) {
 // 	var ucfg UpdateConfig = NewUpdate(0)
 // 	ucfg.Timeout = 60
-// 	_, err := api.GetUpdatesChan(ucfg)
+// 	err := api.GetUpdatesChan(ucfg)
 
 // 	require.NoError(t, err)
 // }
@@ -438,7 +444,7 @@ func TestPin(t *testing.T) {
 // 		NewInputMediaPhoto("https://i.imgur.com/J5qweNZ.jpg"),
 // 		NewInputMediaVideo("https://i.imgur.com/F6RmI24.mp4"),
 // 	})
-// 	resp, _, err := api.SendMessage(cfg)
+// 	resp, err := api.SendMessage(cfg)
 // 	if err != nil {
 // 		t.Error(err)
 // 	}
@@ -477,7 +483,7 @@ func TestPin(t *testing.T) {
 // 		msg := NewMessage(update.Message.Chat.ID, update.Message.Text)
 // 		msg.ReplyToMessageID = update.Message.MessageID
 
-// 		if resp, _, err := api.SendMessage(msg); err != nil {
+// 		if resp, err := api.SendMessage(msg); err != nil {
 // 			log.Fatal(err)
 // 		}
 // 	}
@@ -491,7 +497,7 @@ func TestPin(t *testing.T) {
 
 // 	log.Printf("Authorized on account %s", api.Self.UserName)
 
-// 	_, err = api.SetWebhook(NewWebhookWithCert("https://www.google.com:8443/"+api.Token, "cert.pem"))
+// 	err = api.SetWebhook(NewWebhookWithCert("https://www.google.com:8443/"+api.Token, "cert.pem"))
 // 	if err != nil {
 // 		log.Fatal(err)
 // 	}
@@ -518,7 +524,7 @@ func TestPin(t *testing.T) {
 
 // 	log.Printf("Authorized on account %s", api.Self.UserName)
 
-// 	_, err = api.SetWebhook(NewWebhookWithCert("https://www.google.com:8443/"+api.Token, "cert.pem"))
+// 	err = api.SetWebhook(NewWebhookWithCert("https://www.google.com:8443/"+api.Token, "cert.pem"))
 // 	if err != nil {
 // 		log.Fatal(err)
 // 	}
@@ -573,7 +579,7 @@ func TestPin(t *testing.T) {
 // 			Results:       []interface{}{article},
 // 		}
 
-// 		if _, err := api.AnswerInlineQuery(inlineConf); err != nil {
+// 		if err := api.AnswerInlineQuery(inlineConf); err != nil {
 // 			log.Println(err)
 // 		}
 // 	}

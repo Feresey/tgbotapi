@@ -1165,7 +1165,7 @@ func (api *API) SendAnimation(
 		if err != nil {
 			return nil, err
 		}
-		resp, err := api.UploadFile(ctx, values, "sendAnimation", &args.Animation)
+		resp, err := api.UploadFile(ctx, values, "sendAnimation", "animation", &args.Animation)
 		if err != nil {
 			return nil, err
 		}
@@ -1270,7 +1270,7 @@ func (api *API) SendAudio(
 		if err != nil {
 			return nil, err
 		}
-		resp, err := api.UploadFile(ctx, values, "sendAudio", &args.Audio)
+		resp, err := api.UploadFile(ctx, values, "sendAudio", "audio", &args.Audio)
 		if err != nil {
 			return nil, err
 		}
@@ -1473,7 +1473,7 @@ func (api *API) SendDocument(
 		if err != nil {
 			return nil, err
 		}
-		resp, err := api.UploadFile(ctx, values, "sendDocument", &args.Document)
+		resp, err := api.UploadFile(ctx, values, "sendDocument", "document", &args.Document)
 		if err != nil {
 			return nil, err
 		}
@@ -1804,7 +1804,7 @@ func (api *API) SendPhoto(
 		if err != nil {
 			return nil, err
 		}
-		resp, err := api.UploadFile(ctx, values, "sendPhoto", &args.Photo)
+		resp, err := api.UploadFile(ctx, values, "sendPhoto", "photo", &args.Photo)
 		if err != nil {
 			return nil, err
 		}
@@ -1944,7 +1944,7 @@ func (api *API) SendSticker(
 		if err != nil {
 			return nil, err
 		}
-		resp, err := api.UploadFile(ctx, values, "sendSticker", &args.Sticker)
+		resp, err := api.UploadFile(ctx, values, "sendSticker", "sticker", &args.Sticker)
 		if err != nil {
 			return nil, err
 		}
@@ -2105,7 +2105,7 @@ func (api *API) SendVideo(
 		if err != nil {
 			return nil, err
 		}
-		resp, err := api.UploadFile(ctx, values, "sendVideo", &args.Video)
+		resp, err := api.UploadFile(ctx, values, "sendVideo", "video", &args.Video)
 		if err != nil {
 			return nil, err
 		}
@@ -2194,7 +2194,7 @@ func (api *API) SendVideoNote(
 		if err != nil {
 			return nil, err
 		}
-		resp, err := api.UploadFile(ctx, values, "sendVideoNote", &args.VideoNote)
+		resp, err := api.UploadFile(ctx, values, "sendVideoNote", "videonote", &args.VideoNote)
 		if err != nil {
 			return nil, err
 		}
@@ -2283,7 +2283,7 @@ func (api *API) SendVoice(
 		if err != nil {
 			return nil, err
 		}
-		resp, err := api.UploadFile(ctx, values, "sendVoice", &args.Voice)
+		resp, err := api.UploadFile(ctx, values, "sendVoice", "voice", &args.Voice)
 		if err != nil {
 			return nil, err
 		}
@@ -2390,7 +2390,7 @@ func (api *API) SetChatPhoto(
 		values := url.Values{
 			"chat_id": []string{chatID.String()},
 		}
-		_, err := api.UploadFile(ctx, values, "setChatPhoto", &photo)
+		_, err := api.UploadFile(ctx, values, "setChatPhoto", "setchatphoto", &photo)
 		return err
 	}
 	args := map[string]interface{}{
@@ -2748,7 +2748,7 @@ func (api *API) UploadStickerFile(
 		values := url.Values{
 			"user_id": []string{strconv.FormatInt(userID, 10)},
 		}
-		resp, err := api.UploadFile(ctx, values, "uploadStickerFile", &pngSticker)
+		resp, err := api.UploadFile(ctx, values, "uploadStickerFile", "uploadstickerfile", &pngSticker)
 		if err != nil {
 			return nil, err
 		}
