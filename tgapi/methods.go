@@ -1160,7 +1160,27 @@ func (api *API) SendAnimation(
 	ctx context.Context,
 	args *SendAnimationConfig,
 ) (*Message, error) {
-	return nil, nil
+	if args.Animation.Reader != nil {
+		values, err := args.EncodeURL()
+		if err != nil {
+			return nil, err
+		}
+		resp, err := api.UploadFile(ctx, values, "sendAnimation", &args.Animation)
+		if err != nil {
+			return nil, err
+		}
+
+		var res Message
+		err = json.Unmarshal(resp.Result, &res)
+		return &res, err
+	}
+	resp, err := api.MakeRequest(ctx, "sendAnimation", args)
+	if err != nil {
+		return nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SendAudio
@@ -1245,7 +1265,27 @@ func (api *API) SendAudio(
 	ctx context.Context,
 	args *SendAudioConfig,
 ) (*Message, error) {
-	return nil, nil
+	if args.Audio.Reader != nil {
+		values, err := args.EncodeURL()
+		if err != nil {
+			return nil, err
+		}
+		resp, err := api.UploadFile(ctx, values, "sendAudio", &args.Audio)
+		if err != nil {
+			return nil, err
+		}
+
+		var res Message
+		err = json.Unmarshal(resp.Result, &res)
+		return &res, err
+	}
+	resp, err := api.MakeRequest(ctx, "sendAudio", args)
+	if err != nil {
+		return nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SendChatAction
@@ -1428,7 +1468,27 @@ func (api *API) SendDocument(
 	ctx context.Context,
 	args *SendDocumentConfig,
 ) (*Message, error) {
-	return nil, nil
+	if args.Document.Reader != nil {
+		values, err := args.EncodeURL()
+		if err != nil {
+			return nil, err
+		}
+		resp, err := api.UploadFile(ctx, values, "sendDocument", &args.Document)
+		if err != nil {
+			return nil, err
+		}
+
+		var res Message
+		err = json.Unmarshal(resp.Result, &res)
+		return &res, err
+	}
+	resp, err := api.MakeRequest(ctx, "sendDocument", args)
+	if err != nil {
+		return nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SendGame
@@ -1739,7 +1799,27 @@ func (api *API) SendPhoto(
 	ctx context.Context,
 	args *SendPhotoConfig,
 ) (*Message, error) {
-	return nil, nil
+	if args.Photo.Reader != nil {
+		values, err := args.EncodeURL()
+		if err != nil {
+			return nil, err
+		}
+		resp, err := api.UploadFile(ctx, values, "sendPhoto", &args.Photo)
+		if err != nil {
+			return nil, err
+		}
+
+		var res Message
+		err = json.Unmarshal(resp.Result, &res)
+		return &res, err
+	}
+	resp, err := api.MakeRequest(ctx, "sendPhoto", args)
+	if err != nil {
+		return nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SendPoll
@@ -1859,7 +1939,27 @@ func (api *API) SendSticker(
 	ctx context.Context,
 	args *SendStickerConfig,
 ) (*Message, error) {
-	return nil, nil
+	if args.Sticker.Reader != nil {
+		values, err := args.EncodeURL()
+		if err != nil {
+			return nil, err
+		}
+		resp, err := api.UploadFile(ctx, values, "sendSticker", &args.Sticker)
+		if err != nil {
+			return nil, err
+		}
+
+		var res Message
+		err = json.Unmarshal(resp.Result, &res)
+		return &res, err
+	}
+	resp, err := api.MakeRequest(ctx, "sendSticker", args)
+	if err != nil {
+		return nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SendVenue
@@ -2000,7 +2100,27 @@ func (api *API) SendVideo(
 	ctx context.Context,
 	args *SendVideoConfig,
 ) (*Message, error) {
-	return nil, nil
+	if args.Video.Reader != nil {
+		values, err := args.EncodeURL()
+		if err != nil {
+			return nil, err
+		}
+		resp, err := api.UploadFile(ctx, values, "sendVideo", &args.Video)
+		if err != nil {
+			return nil, err
+		}
+
+		var res Message
+		err = json.Unmarshal(resp.Result, &res)
+		return &res, err
+	}
+	resp, err := api.MakeRequest(ctx, "sendVideo", args)
+	if err != nil {
+		return nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SendVideoNote
@@ -2069,7 +2189,27 @@ func (api *API) SendVideoNote(
 	ctx context.Context,
 	args *SendVideoNoteConfig,
 ) (*Message, error) {
-	return nil, nil
+	if args.VideoNote.Reader != nil {
+		values, err := args.EncodeURL()
+		if err != nil {
+			return nil, err
+		}
+		resp, err := api.UploadFile(ctx, values, "sendVideoNote", &args.VideoNote)
+		if err != nil {
+			return nil, err
+		}
+
+		var res Message
+		err = json.Unmarshal(resp.Result, &res)
+		return &res, err
+	}
+	resp, err := api.MakeRequest(ctx, "sendVideoNote", args)
+	if err != nil {
+		return nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SendVoice
@@ -2138,7 +2278,27 @@ func (api *API) SendVoice(
 	ctx context.Context,
 	args *SendVoiceConfig,
 ) (*Message, error) {
-	return nil, nil
+	if args.Voice.Reader != nil {
+		values, err := args.EncodeURL()
+		if err != nil {
+			return nil, err
+		}
+		resp, err := api.UploadFile(ctx, values, "sendVoice", &args.Voice)
+		if err != nil {
+			return nil, err
+		}
+
+		var res Message
+		err = json.Unmarshal(resp.Result, &res)
+		return &res, err
+	}
+	resp, err := api.MakeRequest(ctx, "sendVoice", args)
+	if err != nil {
+		return nil, err
+	}
+	var data Message
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SetChatAdministratorCustomTitle
@@ -2226,7 +2386,19 @@ func (api *API) SetChatPhoto(
 	// New chat photo, uploaded using multipart/form-data
 	photo InputFile,
 ) error {
-	return nil
+	if photo.Reader != nil {
+		values := url.Values{
+			"chat_id": []string{chatID.String()},
+		}
+		_, err := api.UploadFile(ctx, values, "setChatPhoto", &photo)
+		return err
+	}
+	args := map[string]interface{}{
+		"chat_id": chatID,
+		"photo":   photo,
+	}
+	_, err := api.MakeRequest(ctx, "setChatPhoto", args)
+	return err
 }
 
 // SetChatStickerSet
@@ -2572,5 +2744,28 @@ func (api *API) UploadStickerFile(
 	// User identifier of sticker file owner
 	userID int64,
 ) (*File, error) {
-	return nil, nil
+	if pngSticker.Reader != nil {
+		values := url.Values{
+			"user_id": []string{strconv.FormatInt(userID, 10)},
+		}
+		resp, err := api.UploadFile(ctx, values, "uploadStickerFile", &pngSticker)
+		if err != nil {
+			return nil, err
+		}
+
+		var res File
+		err = json.Unmarshal(resp.Result, &res)
+		return &res, err
+	}
+	args := map[string]interface{}{
+		"png_sticker": pngSticker,
+		"user_id":     userID,
+	}
+	resp, err := api.MakeRequest(ctx, "uploadStickerFile", args)
+	if err != nil {
+		return nil, err
+	}
+	var data File
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
