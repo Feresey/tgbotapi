@@ -48,6 +48,10 @@ const (
 	// ExistingStickerFileID   = "BQADAgADcwADjMcoCbdl-6eB--YPAg"
 )
 
+var (
+	ExistingDocumentFileID = "BQACAgIAAxkDAAIC3F9mU70O5BkltxDxiksePupAyPDNAAJBBwACasQ5S9ha1qz0L1inGwQ"
+)
+
 var api = New(TestToken)
 
 func TestGetUpdates(t *testing.T) {
@@ -188,16 +192,19 @@ func TestSendWithNewDocument(t *testing.T) {
 			Reader: file,
 		},
 	})
-
 	require.NoError(t, err)
 }
 
-// func TestSendWithExistingDocument(t *testing.T) {
-// 	msg := NewDocumentShare(ChatID, ExistingDocumentFileID)
-// 	resp, err := api.SendMessage(msg)
-
-// 	require.NoError(t, err)
-// }
+func TestSendWithExistingDocument(t *testing.T) {
+	_, err := api.SendDocument(ctx, &SendDocumentConfig{
+		ChatID: NewInt(ChatID),
+		Document: InputFile{
+			Name:   "image.jpg",
+			FileID: ExistingDocumentFileID,
+		},
+	})
+	require.NoError(t, err)
+}
 
 // func TestSendWithNewAudio(t *testing.T) {
 // 	msg := NewAudioUpload(ChatID, "tests/audio.mp3")

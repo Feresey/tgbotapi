@@ -57,9 +57,6 @@ type InputFile struct {
 }
 
 func (i *InputFile) String() string {
-	if i.Name != "" {
-		return i.Name
-	}
 	if i.FileID != "" {
 		return i.FileID
 	}
