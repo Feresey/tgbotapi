@@ -3,6 +3,8 @@ package tgapi
 import (
 	"context"
 	"flag"
+	"fmt"
+	"net/http"
 	"os"
 	"testing"
 
@@ -53,6 +55,20 @@ var (
 )
 
 var api = New(TestToken)
+
+func TestIncorrect(t *testing.T) {
+	aapi := New("MyAwesomeBotToken")
+	_, err := aapi.GetChat(ctx, NewStr("@chat"))
+	require.Error(t, err)
+
+	fmt.Println(err)
+
+	aapi = NewWithEndpointAndClient("MyAwesomeBotToken", "https://localost:8080", "", http.DefaultClient)
+	_, err = aapi.GetChat(ctx, NewStr("@chat"))
+	require.Error(t, err)
+
+	fmt.Println(err)
+}
 
 func TestGetUpdates(t *testing.T) {
 	_, err := api.GetUpdates(ctx, nil)

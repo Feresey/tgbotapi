@@ -4,11 +4,13 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"mime/multipart"
 	"net/http"
 	"net/url"
+	"strings"
 )
 
 const APIEndpoint = "https://api.telegram.org"
@@ -36,6 +38,7 @@ func (e Error) Error() string {
 
 type API struct {
 	cli          *http.Client
+	token        string
 	endpoint     string
 	fileEndpoint string
 }
@@ -43,6 +46,7 @@ type API struct {
 func NewWithEndpointAndClient(token, endpoint, fileEndpoint string, cli *http.Client) *API {
 	return &API{
 		cli:          cli,
+		token:        token,
 		endpoint:     fmt.Sprintf("%s/bot%s", endpoint, token),
 		fileEndpoint: fmt.Sprintf("%s/bot%s", fileEndpoint, token),
 	}
@@ -52,9 +56,20 @@ func New(token string) *API {
 	return NewWithEndpointAndClient(token, APIEndpoint, FileEndpoint, http.DefaultClient)
 }
 
-func decodeAPIResponse(r io.Reader) (*Response, error) {
+func (api *API) decodeAPIResponse(req *http.Request) (*Response, error) {
+	resp, err := api.cli.Do(req)
+	if err != nil {
+		var urlErr *url.Error
+		if errors.As(err, &urlErr) {
+			urlErr.URL = strings.Replace(urlErr.URL, api.token, "TOKEN", 1)
+			return nil, urlErr
+		}
+		return nil, err
+	}
+	defer resp.Body.Close()
+
 	var apiResp Response
-	if err := json.NewDecoder(r).Decode(&apiResp); err != nil {
+	if err := json.NewDecoder(resp.Body).Decode(&apiResp); err != nil {
 		return &apiResp, err
 	}
 
@@ -83,12 +98,7 @@ func (api *API) MakeRequest(ctx context.Context, method string, data interface{}
 	}
 	req.Header.Set("Content-Type", "application/json")
 
-	resp, err := api.cli.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-	return decodeAPIResponse(resp.Body)
+	return api.decodeAPIResponse(req)
 }
 
 func (api *API) UploadFile(
@@ -130,118 +140,5 @@ func (api *API) UploadFile(
 	req.URL.RawQuery = values.Encode()
 	req.Header.Set("Content-Type", w.FormDataContentType())
 
-	resp, err := api.cli.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-	return decodeAPIResponse(resp.Body)
+	return api.decodeAPIResponse(req)
 }
-
-// func (tbg BaseRequester) Post(l *zap.SugaredLogger, token string, method string, params url.Values, data map[string]PostFile) (json.RawMessage, error) {
-// 	endpoint := tbg.ApiUrl
-// 	if endpoint == "" {
-// 		endpoint = ApiUrl
-// 	}
-
-// 	b := bytes.Buffer{}
-// 	w := multipart.NewWriter(&b)
-// 	defer w.Close()
-
-// 	for field, x := range data {
-// 		fileName := x.FileName
-// 		if fileName == "" {
-// 			fileName = "unnamed_file"
-// 		}
-
-// 		part, err := w.CreateFormFile(field, fileName)
-// 		if err != nil {
-// 			return nil, err
-// 		}
-
-// 		_, err = io.Copy(part, x.File)
-// 		if err != nil {
-// 			return nil, err
-// 		}
-// 	}
-
-// 	err := w.Close()
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	req, err := http.NewRequest("POST", endpoint+token+"/"+method, &b)
-// 	if err != nil {
-// 		l.Debugw("failed to execute POST request",
-// 			zapcore.Field{
-// 				Key:    "method",
-// 				Type:   zapcore.StringType,
-// 				String: method,
-// 			},
-// 			zap.Error(err))
-// 		return nil, errors.Wrapf(err, "client error executing POST request to %v", method)
-// 	}
-// 	req.URL.RawQuery = params.Encode()
-// 	req.Header.Set("Content-Type", w.FormDataContentType())
-
-// 	l.Debugf("POST request with body: %+v", b)
-// 	l.Debugf("executing POST: %+v", req)
-// 	resp, err := tbg.Client.Do(req)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	defer resp.Body.Close()
-// 	l.Debugf("successful POST request: %+v", resp)
-
-// 	var r response
-// 	if err = json.NewDecoder(resp.Body).Decode(&r); err != nil {
-// 		l.Debugw("failed to deserialize POST response body",
-// 			zapcore.Field{
-// 				Key:    "method",
-// 				Type:   zapcore.StringType,
-// 				String: method,
-// 			},
-// 			zap.Error(err))
-// 		return nil, errors.Wrapf(err, "decoding error while reading POST request to %v", method)
-// 	}
-// 	if !r.Ok {
-// 		l.Debugw("error from POST",
-// 			zapcore.Field{
-// 				Key:    "method",
-// 				Type:   zapcore.StringType,
-// 				String: method,
-// 			},
-// 			zapcore.Field{
-// 				Key:     "error_code",
-// 				Type:    zapcore.Int64Type,
-// 				Integer: int64(r.ErrorCode),
-// 			},
-// 			zapcore.Field{
-// 				Key:    "description",
-// 				Type:   zapcore.StringType,
-// 				String: r.Description,
-// 			},
-// 		)
-// 		return nil, &TelegramError{
-// 			Method:      method,
-// 			Values:      params,
-// 			Code:        r.ErrorCode,
-// 			Description: r.Description,
-// 		}
-// 	}
-
-// 	l.Debugw("obtained POST result",
-// 		zapcore.Field{
-// 			Key:    "method",
-// 			Type:   zapcore.StringType,
-// 			String: method,
-// 		},
-// 		zapcore.Field{
-// 			Key:    "result",
-// 			Type:   zapcore.StringType,
-// 			String: string(r.Result),
-// 		},
-// 	)
-
-// 	return r.Result, nil
-// }
