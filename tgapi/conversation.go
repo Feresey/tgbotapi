@@ -13,22 +13,17 @@ var (
 	ErrNoSuchChoice       = errors.New("no such choice")
 )
 
-type State int
-
-const (
-	StateUndefined State = -1
-	StateFinished  State = 0
-)
+type ConversationState int
 
 type Choice struct {
 	// nil === true
 	Accept func(*Message) bool
-	Apply  func(context.Context, *Message) (State, error)
+	Apply  func(context.Context, *Message) (ConversationState, error)
 }
 
 type Conversation struct {
 	// read only
-	states map[State][]Choice
+	states map[ConversationState][]Choice
 
 	api   *API
 	cache *ttlcache.Cache
@@ -38,7 +33,7 @@ func NewConversation(api *API, cache *ttlcache.Cache) *Conversation {
 	res := &Conversation{
 		api:    api,
 		cache:  cache,
-		states: make(map[State][]Choice),
+		states: make(map[ConversationState][]Choice),
 	}
 	return res
 }
@@ -49,7 +44,7 @@ func (c *Conversation) Stop() {
 
 // AddChoices to conversation list with given state.
 // unsafe to use after starting a conversation.
-func (c *Conversation) AddChoices(state State, choices ...Choice) {
+func (c *Conversation) AddChoices(state ConversationState, choices ...Choice) {
 	c.states[state] = append(c.states[state], choices...)
 }
 
@@ -57,7 +52,7 @@ func keyFromUserID(userID int64) string {
 	return strconv.FormatInt(userID, 10)
 }
 
-func (c *Conversation) AddUser(userID int64, state State) {
+func (c *Conversation) AddUser(userID int64, state ConversationState) {
 	c.cache.Set(keyFromUserID(userID), state)
 }
 
@@ -70,25 +65,21 @@ func (c *Conversation) RemoveUser(userID int64) {
 	c.cache.Remove(keyFromUserID(userID))
 }
 
-func (c *Conversation) Handle(ctx context.Context, msg *Message) (State, error) {
+func (c *Conversation) Handle(ctx context.Context, msg *Message) (ConversationState, error) {
 	userID := msg.GetFrom().GetID()
 	key := keyFromUserID(userID)
 	stateI, ok := c.cache.Get(key)
 	if !ok {
-		return StateUndefined, ErrNoSuchConversation
+		return 0, ErrNoSuchConversation
 	}
-	state := stateI.(State)
+	state := stateI.(ConversationState)
 
 	for _, choice := range c.states[state] {
 		ok := choice.Accept == nil || choice.Accept(msg)
 		if ok {
 			next, err := choice.Apply(ctx, msg)
 			if err == nil {
-				if next == StateFinished {
-					c.cache.Remove(key)
-				} else {
-					c.cache.Set(key, next)
-				}
+				c.cache.Set(key, next)
 				return next, nil
 			}
 			return state, err
