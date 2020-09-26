@@ -163,6 +163,9 @@ func NewCallTree(defaultHandler HandlerFunc) *CallTree {
 // The priority of the new child is lower than that of the previous child.
 // Does not thread safe.
 func (c *CallTree) NewChild(accept AcceptFunc, handler HandlerFunc) *CallTree {
+	if accept == nil {
+		accept = func(*Update) bool { return true }
+	}
 	child := &CallTree{
 		accept:  accept,
 		handler: handler,
