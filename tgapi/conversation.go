@@ -24,14 +24,11 @@ type Choice struct {
 type Conversation struct {
 	// read only
 	states map[ConversationState][]Choice
-
-	api   *API
-	cache *ttlcache.Cache
+	cache  *ttlcache.Cache
 }
 
-func NewConversation(api *API, cache *ttlcache.Cache) *Conversation {
+func NewConversation(cache *ttlcache.Cache) *Conversation {
 	res := &Conversation{
-		api:    api,
 		cache:  cache,
 		states: make(map[ConversationState][]Choice),
 	}
