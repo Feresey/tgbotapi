@@ -53,6 +53,14 @@ func (c *Conversation) AddUser(userID int64, state ConversationState) {
 	c.cache.Set(keyFromUserID(userID), state)
 }
 
+func (c *Conversation) GetUserState(userID int64) (ConversationState, bool) {
+	state, ok := c.cache.Get(keyFromUserID(userID))
+	if !ok {
+		return 0, false
+	}
+	return state.(ConversationState), true
+}
+
 func (c *Conversation) CheckUser(userID int64) bool {
 	_, ok := c.cache.Get(keyFromUserID(userID))
 	return ok
