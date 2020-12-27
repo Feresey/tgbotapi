@@ -17,7 +17,6 @@ type True struct{}
 func (True) MarshalText() ([]byte, error) { return []byte("true"), nil }
 func (*True) UnmarshalText([]byte) error  { return nil }
 
-// one of InputMediaPhoto or InputMediaVideo
 type InputMediaGraphics interface{}
 
 type IntStr struct {

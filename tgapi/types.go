@@ -2,7 +2,7 @@
 
 package tgapi
 
-const Version = "4.9"
+const Version = "5.0"
 
 // TODO: category description
 
@@ -132,6 +132,9 @@ type Audio struct {
 	// Unique identifier for this file, which is supposed to be the same over time and for
 	// different bots. Can't be used to download or reuse the file.
 	FileUniqueID string `json:"file_unique_id"`
+	// FileName
+	// Original filename as defined by sender
+	FileName *string `json:"file_name,omitempty"`
 	// FileSize
 	// File size
 	FileSize *int64 `json:"file_size,omitempty"`
@@ -163,6 +166,17 @@ func (t *Audio) GetFileID() string {
 		return res
 	}
 	return t.FileID
+}
+
+func (t *Audio) GetFileName() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.FileName; field != nil {
+		return *field
+	}
+	return res
 }
 
 func (t *Audio) GetFileSize() int64 {
@@ -459,6 +473,9 @@ type Chat struct {
 	// Type
 	// Type of chat, can be either "private", "group", "supergroup" or "channel"
 	Type ChatType `json:"type"`
+	// Bio
+	// Bio of the other party in a private chat. Returned only in getChat.
+	Bio *string `json:"bio,omitempty"`
 	// CanSetStickerSet
 	// True, if the bot can change the group sticker set. Returned only in getChat.
 	CanSetStickerSet *bool `json:"can_set_sticker_set,omitempty"`
@@ -476,6 +493,17 @@ type Chat struct {
 	// LastName
 	// Last name of the other party in a private chat
 	LastName *string `json:"last_name,omitempty"`
+	// LinkedChatID
+	// Unique identifier for the linked chat, i.e. the discussion group identifier for a channel
+	// and vice versa; for supergroups and channel chats. This identifier may be greater than 32
+	// bits and some programming languages may have difficulty/silent defects in interpreting it.
+	// But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type
+	// are safe for storing this identifier. Returned only in getChat.
+	LinkedChatID *int64 `json:"linked_chat_id,omitempty"`
+	// Location
+	// For supergroups, the location to which the supergroup is connected. Returned only in
+	// getChat.
+	Location *ChatLocation `json:"location,omitempty"`
 	// Permissions
 	// Default chat member permissions, for groups and supergroups. Returned only in getChat.
 	Permissions *ChatPermissions `json:"permissions,omitempty"`
@@ -483,7 +511,7 @@ type Chat struct {
 	// Chat photo. Returned only in getChat.
 	Photo *ChatPhoto `json:"photo,omitempty"`
 	// PinnedMessage
-	// Pinned message, for groups, supergroups and channels. Returned only in getChat.
+	// The most recent pinned message (by sending date). Returned only in getChat.
 	PinnedMessage *Message `json:"pinned_message,omitempty"`
 	// SlowModeDelay
 	// For supergroups, the minimum allowed delay between consecutive messages sent by each
@@ -498,6 +526,17 @@ type Chat struct {
 	// Username
 	// Username, for private chats, supergroups and channels if available
 	Username *string `json:"username,omitempty"`
+}
+
+func (t *Chat) GetBio() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Bio; field != nil {
+		return *field
+	}
+	return res
 }
 
 func (t *Chat) GetCanSetStickerSet() bool {
@@ -561,6 +600,24 @@ func (t *Chat) GetLastName() string {
 		return *field
 	}
 	return res
+}
+
+func (t *Chat) GetLinkedChatID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.LinkedChatID; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Chat) GetLocation() *ChatLocation {
+	if t == nil {
+		return nil
+	}
+	return t.Location
 }
 
 func (t *Chat) GetPermissions() *ChatPermissions {
@@ -635,6 +692,32 @@ func (t *Chat) GetUsername() string {
 	return res
 }
 
+// ChatLocation
+// Represents a location to which a chat is connected.
+type ChatLocation struct {
+	// Address
+	// Location address; 1-64 characters, as defined by the chat owner
+	Address string `json:"address"`
+	// Location
+	// The location to which the supergroup is connected. Can't be a live location.
+	Location Location `json:"location"`
+}
+
+func (t *ChatLocation) GetAddress() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	return t.Address
+}
+
+func (t *ChatLocation) GetLocation() *Location {
+	if t == nil {
+		return nil
+	}
+	return &t.Location
+}
+
 // ChatMember
 // This object contains information about one member of a chat.
 type ChatMember struct {
@@ -700,6 +783,9 @@ type ChatMember struct {
 	// CustomTitle
 	// Owner and administrators only. Custom title for this user
 	CustomTitle *string `json:"custom_title,omitempty"`
+	// IsAnonymous
+	// Owner and administrators only. True, if the user's presence in the chat is hidden
+	IsAnonymous *bool `json:"is_anonymous,omitempty"`
 	// IsMember
 	// Restricted only. True, if the user is a member of the chat at the moment of the request
 	IsMember *bool `json:"is_member,omitempty"`
@@ -868,6 +954,17 @@ func (t *ChatMember) GetCustomTitle() string {
 		return res
 	}
 	if field := t.CustomTitle; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatMember) GetIsAnonymous() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.IsAnonymous; field != nil {
 		return *field
 	}
 	return res
@@ -1224,7 +1321,8 @@ type Dice struct {
 	// Emoji on which the dice throw animation is based
 	Emoji string `json:"emoji"`
 	// Value
-	// Value of the dice, 1-6 for "" and "" base emoji, 1-5 for "" base emoji
+	// Value of the dice, 1-6 for "" and "" base emoji, 1-5 for "" and "" base emoji, 1-64 for ""
+	// base emoji
 	Value int64 `json:"value"`
 }
 
@@ -1689,6 +1787,10 @@ type Games struct {
 	// Short name of the game, serves as the unique identifier for the game. Set up your games via
 	// Botfather.
 	GameShortName string `json:"game_short_name"`
+	// AllowSendingWithoutReply
+	// Pass True, if the message should be sent even if the specified replied-to message is not
+	// found
+	AllowSendingWithoutReply *bool `json:"allow_sending_without_reply,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
 	DisableNotification *bool `json:"disable_notification,omitempty"`
@@ -1699,6 +1801,17 @@ type Games struct {
 	// ReplyToMessageID
 	// If the message is a reply, ID of the original message
 	ReplyToMessageID *int64 `json:"reply_to_message_id,omitempty"`
+}
+
+func (t *Games) GetAllowSendingWithoutReply() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.AllowSendingWithoutReply; field != nil {
+		return *field
+	}
+	return res
 }
 
 func (t *Games) GetChatID() int64 {
@@ -2238,6 +2351,10 @@ type InlineQueryResultAudio struct {
 	// Caption
 	// Caption, 0-1024 characters after entities parsing
 	Caption *string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// InputMessageContent
 	// Content of the message to be sent instead of the audio
 	InputMessageContent *InputMessageContent `json:"input_message_content,omitempty"`
@@ -2358,6 +2475,10 @@ type InlineQueryResultCachedAudio struct {
 	// Caption
 	// Caption, 0-1024 characters after entities parsing
 	Caption *string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// InputMessageContent
 	// Content of the message to be sent instead of the audio
 	InputMessageContent *InputMessageContent `json:"input_message_content,omitempty"`
@@ -2448,6 +2569,10 @@ type InlineQueryResultCachedDocument struct {
 	// Caption
 	// Caption of the document to be sent, 0-1024 characters after entities parsing
 	Caption *string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// Description
 	// Short description of the result
 	Description *string `json:"description,omitempty"`
@@ -2557,6 +2682,10 @@ type InlineQueryResultCachedGif struct {
 	// Caption
 	// Caption of the GIF file to be sent, 0-1024 characters after entities parsing
 	Caption *string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// InputMessageContent
 	// Content of the message to be sent instead of the GIF animation
 	InputMessageContent *InputMessageContent `json:"input_message_content,omitempty"`
@@ -2659,6 +2788,10 @@ type InlineQueryResultCachedMpeg4Gif struct {
 	// Caption
 	// Caption of the MPEG-4 file to be sent, 0-1024 characters after entities parsing
 	Caption *string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// InputMessageContent
 	// Content of the message to be sent instead of the video animation
 	InputMessageContent *InputMessageContent `json:"input_message_content,omitempty"`
@@ -2760,6 +2893,10 @@ type InlineQueryResultCachedPhoto struct {
 	// Caption
 	// Caption of the photo to be sent, 0-1024 characters after entities parsing
 	Caption *string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// Description
 	// Short description of the result
 	Description *string `json:"description,omitempty"`
@@ -2937,6 +3074,10 @@ type InlineQueryResultCachedVideo struct {
 	// Caption
 	// Caption of the video to be sent, 0-1024 characters after entities parsing
 	Caption *string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// Description
 	// Short description of the result
 	Description *string `json:"description,omitempty"`
@@ -3049,6 +3190,10 @@ type InlineQueryResultCachedVoice struct {
 	// Caption
 	// Caption, 0-1024 characters after entities parsing
 	Caption *string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// InputMessageContent
 	// Content of the message to be sent instead of the voice message
 	InputMessageContent *InputMessageContent `json:"input_message_content,omitempty"`
@@ -3291,6 +3436,10 @@ type InlineQueryResultDocument struct {
 	// Caption
 	// Caption of the document to be sent, 0-1024 characters after entities parsing
 	Caption *string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// Description
 	// Short description of the result
 	Description *string `json:"description,omitempty"`
@@ -3500,6 +3649,10 @@ type InlineQueryResultGif struct {
 	// Caption
 	// Caption of the GIF file to be sent, 0-1024 characters after entities parsing
 	Caption *string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// GifDuration
 	// Duration of the GIF
 	GifDuration *int64 `json:"gif_duration,omitempty"`
@@ -3669,12 +3822,23 @@ type InlineQueryResultLocation struct {
 	// Type
 	// Type of the result, must be location
 	Type InlineType `json:"type"`
+	// Heading
+	// For live locations, a direction in which the user is moving, in degrees. Must be between 1
+	// and 360 if specified.
+	Heading *int64 `json:"heading,omitempty"`
+	// HorizontalAccuracy
+	// The radius of uncertainty for the location, measured in meters; 0-1500
+	HorizontalAccuracy *float64 `json:"horizontal_accuracy,omitempty"`
 	// InputMessageContent
 	// Content of the message to be sent instead of the location
 	InputMessageContent *InputMessageContent `json:"input_message_content,omitempty"`
 	// LivePeriod
 	// Period in seconds for which the location can be updated, should be between 60 and 86400.
 	LivePeriod *int64 `json:"live_period,omitempty"`
+	// ProximityAlertRadius
+	// For live locations, a maximum distance for proximity alerts about approaching another chat
+	// member, in meters. Must be between 1 and 100000 if specified.
+	ProximityAlertRadius *int64 `json:"proximity_alert_radius,omitempty"`
 	// ReplyMarkup
 	// Inline keyboard attached to the message
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
@@ -3687,6 +3851,24 @@ type InlineQueryResultLocation struct {
 	// ThumbWidth
 	// Thumbnail width
 	ThumbWidth *int64 `json:"thumb_width,omitempty"`
+}
+
+func (t *InlineQueryResultLocation) GetHeading() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.Heading; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultLocation) GetHorizontalAccuracy() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.HorizontalAccuracy
 }
 
 func (t *InlineQueryResultLocation) GetID() string {
@@ -3727,6 +3909,17 @@ func (t *InlineQueryResultLocation) GetLongitude() *float64 {
 		return nil
 	}
 	return &t.Longitude
+}
+
+func (t *InlineQueryResultLocation) GetProximityAlertRadius() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.ProximityAlertRadius; field != nil {
+		return *field
+	}
+	return res
 }
 
 func (t *InlineQueryResultLocation) GetReplyMarkup() *InlineKeyboardMarkup {
@@ -3804,6 +3997,10 @@ type InlineQueryResultMpeg4Gif struct {
 	// Caption
 	// Caption of the MPEG-4 file to be sent, 0-1024 characters after entities parsing
 	Caption *string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// InputMessageContent
 	// Content of the message to be sent instead of the video animation
 	InputMessageContent *InputMessageContent `json:"input_message_content,omitempty"`
@@ -3973,6 +4170,10 @@ type InlineQueryResultPhoto struct {
 	// Caption
 	// Caption of the photo to be sent, 0-1024 characters after entities parsing
 	Caption *string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// Description
 	// Short description of the result
 	Description *string `json:"description,omitempty"`
@@ -4136,6 +4337,12 @@ type InlineQueryResultVenue struct {
 	// Foursquare type of the venue, if known. (For example, "arts_entertainment/default",
 	// "arts_entertainment/aquarium" or "food/icecream".)
 	FoursquareType *string `json:"foursquare_type,omitempty"`
+	// GooglePlaceID
+	// Google Places identifier of the venue
+	GooglePlaceID *string `json:"google_place_id,omitempty"`
+	// GooglePlaceType
+	// Google Places type of the venue. (See supported types.)
+	GooglePlaceType *string `json:"google_place_type,omitempty"`
 	// InputMessageContent
 	// Content of the message to be sent instead of the venue
 	InputMessageContent *InputMessageContent `json:"input_message_content,omitempty"`
@@ -4178,6 +4385,28 @@ func (t *InlineQueryResultVenue) GetFoursquareType() string {
 		return res
 	}
 	if field := t.FoursquareType; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultVenue) GetGooglePlaceID() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.GooglePlaceID; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultVenue) GetGooglePlaceType() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.GooglePlaceType; field != nil {
 		return *field
 	}
 	return res
@@ -4293,6 +4522,10 @@ type InlineQueryResultVideo struct {
 	// Caption
 	// Caption of the video to be sent, 0-1024 characters after entities parsing
 	Caption *string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// Description
 	// Short description of the result
 	Description *string `json:"description,omitempty"`
@@ -4464,6 +4697,10 @@ type InlineQueryResultVoice struct {
 	// Caption
 	// Caption, 0-1024 characters after entities parsing
 	Caption *string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// InputMessageContent
 	// Content of the message to be sent instead of the voice recording
 	InputMessageContent *InputMessageContent `json:"input_message_content,omitempty"`
@@ -4621,9 +4858,38 @@ type InputLocationMessageContent struct {
 	// Longitude
 	// Longitude of the location in degrees
 	Longitude float64 `json:"longitude"`
+	// Heading
+	// For live locations, a direction in which the user is moving, in degrees. Must be between 1
+	// and 360 if specified.
+	Heading *int64 `json:"heading,omitempty"`
+	// HorizontalAccuracy
+	// The radius of uncertainty for the location, measured in meters; 0-1500
+	HorizontalAccuracy *float64 `json:"horizontal_accuracy,omitempty"`
 	// LivePeriod
 	// Period in seconds for which the location can be updated, should be between 60 and 86400.
 	LivePeriod *int64 `json:"live_period,omitempty"`
+	// ProximityAlertRadius
+	// For live locations, a maximum distance for proximity alerts about approaching another chat
+	// member, in meters. Must be between 1 and 100000 if specified.
+	ProximityAlertRadius *int64 `json:"proximity_alert_radius,omitempty"`
+}
+
+func (t *InputLocationMessageContent) GetHeading() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.Heading; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputLocationMessageContent) GetHorizontalAccuracy() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.HorizontalAccuracy
 }
 
 func (t *InputLocationMessageContent) GetLatitude() *float64 {
@@ -4651,6 +4917,17 @@ func (t *InputLocationMessageContent) GetLongitude() *float64 {
 	return &t.Longitude
 }
 
+func (t *InputLocationMessageContent) GetProximityAlertRadius() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.ProximityAlertRadius; field != nil {
+		return *field
+	}
+	return res
+}
+
 // InputMedia
 // This object represents the content of a media message to be sent. It should be one of
 type InputMedia struct {
@@ -4666,6 +4943,10 @@ type InputMedia struct {
 	// Caption
 	// Caption of the photo to be sent, 0-1024 characters after entities parsing
 	Caption *string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// ParseMode
 	// Mode for parsing entities in the photo caption. See formatting options for more details.
 	ParseMode *string `json:"parse_mode,omitempty"`
@@ -4723,6 +5004,10 @@ type InputMediaAnimation struct {
 	// Caption
 	// Caption of the animation to be sent, 0-1024 characters after entities parsing
 	Caption *string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// Duration
 	// Animation duration
 	Duration *int64 `json:"duration,omitempty"`
@@ -4837,6 +5122,10 @@ type InputMediaAudio struct {
 	// Caption
 	// Caption of the audio to be sent, 0-1024 characters after entities parsing
 	Caption *string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// Duration
 	// Duration of the audio in seconds
 	Duration *int64 `json:"duration,omitempty"`
@@ -4951,6 +5240,14 @@ type InputMediaDocument struct {
 	// Caption
 	// Caption of the document to be sent, 0-1024 characters after entities parsing
 	Caption *string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
+	// DisableContentTypeDetection
+	// Disables automatic server-side content type detection for files uploaded using
+	// multipart/form-data. Always true, if the document is sent as part of an album.
+	DisableContentTypeDetection *bool `json:"disable_content_type_detection,omitempty"`
 	// ParseMode
 	// Mode for parsing entities in the document caption. See formatting options for more details.
 	ParseMode *string `json:"parse_mode,omitempty"`
@@ -4970,6 +5267,17 @@ func (t *InputMediaDocument) GetCaption() string {
 		return res
 	}
 	if field := t.Caption; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMediaDocument) GetDisableContentTypeDetection() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.DisableContentTypeDetection; field != nil {
 		return *field
 	}
 	return res
@@ -5023,6 +5331,10 @@ type InputMediaPhoto struct {
 	// Caption
 	// Caption of the photo to be sent, 0-1024 characters after entities parsing
 	Caption *string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// ParseMode
 	// Mode for parsing entities in the photo caption. See formatting options for more details.
 	ParseMode *string `json:"parse_mode,omitempty"`
@@ -5080,6 +5392,10 @@ type InputMediaVideo struct {
 	// Caption
 	// Caption of the video to be sent, 0-1024 characters after entities parsing
 	Caption *string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// Duration
 	// Video duration
 	Duration *int64 `json:"duration,omitempty"`
@@ -5203,6 +5519,10 @@ type InputMessageContent struct {
 	// DisableWebPagePreview
 	// Disables link previews for links in the sent message
 	DisableWebPagePreview *bool `json:"disable_web_page_preview,omitempty"`
+	// Entities
+	// List of special entities that appear in message text, which can be specified instead of
+	// parse_mode
+	Entities []MessageEntity `json:"entities,omitempty"`
 	// ParseMode
 	// Mode for parsing entities in the message text. See formatting options for more details.
 	ParseMode *string `json:"parse_mode,omitempty"`
@@ -5247,6 +5567,10 @@ type InputTextMessageContent struct {
 	// DisableWebPagePreview
 	// Disables link previews for links in the sent message
 	DisableWebPagePreview *bool `json:"disable_web_page_preview,omitempty"`
+	// Entities
+	// List of special entities that appear in message text, which can be specified instead of
+	// parse_mode
+	Entities []MessageEntity `json:"entities,omitempty"`
 	// ParseMode
 	// Mode for parsing entities in the message text. See formatting options for more details.
 	ParseMode *string `json:"parse_mode,omitempty"`
@@ -5304,6 +5628,12 @@ type InputVenueMessageContent struct {
 	// Foursquare type of the venue, if known. (For example, "arts_entertainment/default",
 	// "arts_entertainment/aquarium" or "food/icecream".)
 	FoursquareType *string `json:"foursquare_type,omitempty"`
+	// GooglePlaceID
+	// Google Places identifier of the venue
+	GooglePlaceID *string `json:"google_place_id,omitempty"`
+	// GooglePlaceType
+	// Google Places type of the venue. (See supported types.)
+	GooglePlaceType *string `json:"google_place_type,omitempty"`
 }
 
 func (t *InputVenueMessageContent) GetAddress() string {
@@ -5331,6 +5661,28 @@ func (t *InputVenueMessageContent) GetFoursquareType() string {
 		return res
 	}
 	if field := t.FoursquareType; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputVenueMessageContent) GetGooglePlaceID() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.GooglePlaceID; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputVenueMessageContent) GetGooglePlaceType() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.GooglePlaceType; field != nil {
 		return *field
 	}
 	return res
@@ -5538,6 +5890,38 @@ type Location struct {
 	// Longitude
 	// Longitude as defined by sender
 	Longitude float64 `json:"longitude"`
+	// Heading
+	// The direction in which user is moving, in degrees; 1-360. For active live locations only.
+	Heading *int64 `json:"heading,omitempty"`
+	// HorizontalAccuracy
+	// The radius of uncertainty for the location, measured in meters; 0-1500
+	HorizontalAccuracy *float64 `json:"horizontal_accuracy,omitempty"`
+	// LivePeriod
+	// Time relative to the message sending date, during which the location can be updated, in
+	// seconds. For active live locations only.
+	LivePeriod *int64 `json:"live_period,omitempty"`
+	// ProximityAlertRadius
+	// Maximum distance for proximity alerts about approaching another chat member, in meters. For
+	// sent live locations only.
+	ProximityAlertRadius *int64 `json:"proximity_alert_radius,omitempty"`
+}
+
+func (t *Location) GetHeading() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.Heading; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Location) GetHorizontalAccuracy() *float64 {
+	if t == nil {
+		return nil
+	}
+	return t.HorizontalAccuracy
 }
 
 func (t *Location) GetLatitude() *float64 {
@@ -5547,11 +5931,33 @@ func (t *Location) GetLatitude() *float64 {
 	return &t.Latitude
 }
 
+func (t *Location) GetLivePeriod() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.LivePeriod; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *Location) GetLongitude() *float64 {
 	if t == nil {
 		return nil
 	}
 	return &t.Longitude
+}
+
+func (t *Location) GetProximityAlertRadius() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.ProximityAlertRadius; field != nil {
+		return *field
+	}
+	return res
 }
 
 // LoginURL
@@ -5691,7 +6097,8 @@ type Message struct {
 	// Message is an audio file, information about the file
 	Audio *Audio `json:"audio,omitempty"`
 	// AuthorSignature
-	// Signature of the post author for messages in channels
+	// Signature of the post author for messages in channels, or the custom title of an anonymous
+	// group administrator
 	AuthorSignature *string `json:"author_signature,omitempty"`
 	// Caption
 	// Caption for the animation, audio, document, photo, video or voice, 0-1024 characters
@@ -5716,7 +6123,7 @@ type Message struct {
 	// Service message: the chat photo was deleted
 	DeleteChatPhoto *True `json:"delete_chat_photo,omitempty"`
 	// Dice
-	// Message is a dice with random value from 1 to 6
+	// Message is a dice with random value
 	Dice *Dice `json:"dice,omitempty"`
 	// Document
 	// Message is a general file, information about the file
@@ -5735,7 +6142,8 @@ type Message struct {
 	// For forwarded messages, sender of the original message
 	ForwardFrom *User `json:"forward_from,omitempty"`
 	// ForwardFromChat
-	// For messages forwarded from channels, information about the original channel
+	// For messages forwarded from channels or from anonymous administrators, information about the
+	// original sender chat
 	ForwardFromChat *Chat `json:"forward_from_chat,omitempty"`
 	// ForwardFromMessageID
 	// For messages forwarded from channels, identifier of the original message in the channel
@@ -5804,6 +6212,10 @@ type Message struct {
 	// Poll
 	// Message is a native poll, information about the poll
 	Poll *Poll `json:"poll,omitempty"`
+	// ProximityAlertTriggered
+	// Service message. A user in the chat triggered another user's proximity alert while sharing
+	// Live Location.
+	ProximityAlertTriggered *ProximityAlertTriggered `json:"proximity_alert_triggered,omitempty"`
 	// ReplyMarkup
 	// Inline keyboard attached to the message. login_url buttons are represented as ordinary url
 	// buttons.
@@ -5812,6 +6224,11 @@ type Message struct {
 	// For replies, the original message. Note that the Message object in this field will not
 	// contain further reply_to_message fields even if it itself is a reply.
 	ReplyToMessage *Message `json:"reply_to_message,omitempty"`
+	// SenderChat
+	// Sender of the message, sent on behalf of a chat. The channel itself for channel messages.
+	// The supergroup itself for messages from anonymous group administrators. The linked channel
+	// for messages automatically forwarded to the discussion group
+	SenderChat *Chat `json:"sender_chat,omitempty"`
 	// Sticker
 	// Message is a sticker, information about the sticker
 	Sticker *Sticker `json:"sticker,omitempty"`
@@ -6127,6 +6544,13 @@ func (t *Message) GetPoll() *Poll {
 	return t.Poll
 }
 
+func (t *Message) GetProximityAlertTriggered() *ProximityAlertTriggered {
+	if t == nil {
+		return nil
+	}
+	return t.ProximityAlertTriggered
+}
+
 func (t *Message) GetReplyMarkup() *InlineKeyboardMarkup {
 	if t == nil {
 		return nil
@@ -6139,6 +6563,13 @@ func (t *Message) GetReplyToMessage() *Message {
 		return nil
 	}
 	return t.ReplyToMessage
+}
+
+func (t *Message) GetSenderChat() *Chat {
+	if t == nil {
+		return nil
+	}
+	return t.SenderChat
 }
 
 func (t *Message) GetSticker() *Sticker {
@@ -6287,6 +6718,22 @@ func (t *MessageEntity) GetUser() *User {
 		return nil
 	}
 	return t.User
+}
+
+// MessageID
+// This object represents a unique message identifier.
+type MessageID struct {
+	// MessageID
+	// Unique message identifier
+	MessageID int64 `json:"message_id"`
+}
+
+func (t *MessageID) GetMessageID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.MessageID
 }
 
 // OrderInfo
@@ -6955,6 +7402,10 @@ type Payments struct {
 	// Title
 	// Product name, 1-32 characters
 	Title string `json:"title"`
+	// AllowSendingWithoutReply
+	// Pass True, if the message should be sent even if the specified replied-to message is not
+	// found
+	AllowSendingWithoutReply *bool `json:"allow_sending_without_reply,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
 	DisableNotification *bool `json:"disable_notification,omitempty"`
@@ -7003,6 +7454,17 @@ type Payments struct {
 	// SendPhoneNumberToProvider
 	// Pass True, if user's phone number should be sent to provider
 	SendPhoneNumberToProvider *bool `json:"send_phone_number_to_provider,omitempty"`
+}
+
+func (t *Payments) GetAllowSendingWithoutReply() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.AllowSendingWithoutReply; field != nil {
+		return *field
+	}
+	return res
 }
 
 func (t *Payments) GetChatID() int64 {
@@ -7573,6 +8035,43 @@ func (t *PreCheckoutQuery) GetTotalAmount() int64 {
 		return res
 	}
 	return t.TotalAmount
+}
+
+// ProximityAlertTriggered
+// This object represents the content of a service message, sent whenever a user in the chat
+// triggers a proximity alert set by another user.
+type ProximityAlertTriggered struct {
+	// Distance
+	// The distance between the users
+	Distance int64 `json:"distance"`
+	// Traveler
+	// User that triggered the alert
+	Traveler User `json:"traveler"`
+	// Watcher
+	// User that set the alert
+	Watcher User `json:"watcher"`
+}
+
+func (t *ProximityAlertTriggered) GetDistance() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.Distance
+}
+
+func (t *ProximityAlertTriggered) GetTraveler() *User {
+	if t == nil {
+		return nil
+	}
+	return &t.Traveler
+}
+
+func (t *ProximityAlertTriggered) GetWatcher() *User {
+	if t == nil {
+		return nil
+	}
+	return &t.Watcher
 }
 
 // ReplyKeyboardMarkup
@@ -8537,7 +9036,7 @@ type Venue struct {
 	// Address of the venue
 	Address string `json:"address"`
 	// Location
-	// Venue location
+	// Venue location. Can't be a live location
 	Location Location `json:"location"`
 	// Title
 	// Name of the venue
@@ -8549,6 +9048,12 @@ type Venue struct {
 	// Foursquare type of the venue. (For example, "arts_entertainment/default",
 	// "arts_entertainment/aquarium" or "food/icecream".)
 	FoursquareType *string `json:"foursquare_type,omitempty"`
+	// GooglePlaceID
+	// Google Places identifier of the venue
+	GooglePlaceID *string `json:"google_place_id,omitempty"`
+	// GooglePlaceType
+	// Google Places type of the venue. (See supported types.)
+	GooglePlaceType *string `json:"google_place_type,omitempty"`
 }
 
 func (t *Venue) GetAddress() string {
@@ -8576,6 +9081,28 @@ func (t *Venue) GetFoursquareType() string {
 		return res
 	}
 	if field := t.FoursquareType; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Venue) GetGooglePlaceID() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.GooglePlaceID; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Venue) GetGooglePlaceType() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.GooglePlaceType; field != nil {
 		return *field
 	}
 	return res
@@ -8615,6 +9142,9 @@ type Video struct {
 	// Width
 	// Video width as defined by sender
 	Width int64 `json:"width"`
+	// FileName
+	// Original filename as defined by sender
+	FileName *string `json:"file_name,omitempty"`
 	// FileSize
 	// File size
 	FileSize *int64 `json:"file_size,omitempty"`
@@ -8640,6 +9170,17 @@ func (t *Video) GetFileID() string {
 		return res
 	}
 	return t.FileID
+}
+
+func (t *Video) GetFileName() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.FileName; field != nil {
+		return *field
+	}
+	return res
 }
 
 func (t *Video) GetFileSize() int64 {
@@ -8851,6 +9392,9 @@ type WebhookInfo struct {
 	// AllowedUpdates
 	// A list of update types the bot is subscribed to. Defaults to all update types
 	AllowedUpdates []string `json:"allowed_updates,omitempty"`
+	// IPAddress
+	// Currently used webhook IP address
+	IPAddress *string `json:"ip_address,omitempty"`
 	// LastErrorDate
 	// Unix time for the most recent error that happened when trying to deliver an update via
 	// webhook
@@ -8870,6 +9414,17 @@ func (t *WebhookInfo) GetHasCustomCertificate() bool {
 		return res
 	}
 	return t.HasCustomCertificate
+}
+
+func (t *WebhookInfo) GetIPAddress() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.IPAddress; field != nil {
+		return *field
+	}
+	return res
 }
 
 func (t *WebhookInfo) GetLastErrorDate() int64 {

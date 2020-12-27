@@ -10,6 +10,7 @@ func (t TypeMapping) GoType() string {
 	if t.IsArray() {
 		return t.SplitArray()
 	}
+	//nolint:goconst // useless
 	switch t {
 	case "str", "String":
 		return "string"
@@ -18,9 +19,9 @@ func (t TypeMapping) GoType() string {
 		return "int64"
 	case "Float", "float":
 		return "float64"
-	case "InputMediaPhoto and InputMediaVideo":
+	case "InputMediaAudio, InputMediaDocument, InputMediaPhoto and InputMediaVideo":
 		return "InputMediaGraphics"
-		// retarded parsing
+	// retarded parsing
 	case "Messages":
 		return " Message"
 	}
@@ -29,8 +30,10 @@ func (t TypeMapping) GoType() string {
 
 func (t TypeMapping) IsSimpleType() bool {
 	switch t {
-	case "str", "String", "int", "bool":
+	case "str", "String", "int", "bool", "IntStr":
 		return true
+	case "CaptionEntities":
+		return false
 	default:
 		return isInterface(t)
 	}

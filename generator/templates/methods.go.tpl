@@ -1,5 +1,4 @@
 {{.Head}}
-
 {{range $method, $desc := .Methods}}
 {{- if gt (len $desc.Arguments) 2 }}
 // {{camel $method}}
@@ -26,12 +25,12 @@ func (t {{camel $method}}Config) EncodeURL() (url.Values, error) {
 {{- range $argname, $arg := $desc.Arguments}}
 	{{- $type := (get_type $argname $method $arg.Types)}}
 
-	{{- if not (and $arg.Required (eq $type.GoType "InputFile"))}}
-		{{- if and (not (is_interface $type)) (or $type.IsSimpleType $arg.Required $type.IsArray)}}
+	{{- if not (eq $type.GoType "InputFile")}}
+		{{- if and $type.IsSimpleType (not (is_interface $type)) }}
 	res.Add("{{$argname}}", {{format_url (print "t." (camel $argname)) false $type}})
 		{{- else}}
 	if t.{{camel $argname}} != nil {
-		{{- if is_interface $type}}
+			{{- if or (is_interface $type) (not $type.IsSimpleType) }}
 	raw, err := json.Marshal({{print "t." (camel $argname)}})
 	if err != nil {
 		return nil, err
@@ -50,7 +49,6 @@ func (t {{camel $method}}Config) EncodeURL() (url.Values, error) {
 
 // {{camel $method}}
 // {{format $desc.Description.PlainText 0}}
-
 {{- $input_file := ""}}
 {{- $second := ""}}
 {{- range $argname, $arg := $desc.Arguments}}
@@ -62,32 +60,30 @@ func (t {{camel $method}}Config) EncodeURL() (url.Values, error) {
 	{{- end}}
 {{- end}}
 func (api *API) {{camel $method}}(
-ctx context.Context,
+	ctx context.Context,
 
 {{- if gt (len $desc.Arguments) 2}}
-args *{{camel $method}}Config,
+	args *{{camel $method}}Config,
 {{else}}
 	{{range $argname, $arg := $desc.Arguments -}}
 		// {{if not $arg.Required}}not {{end}}required.
 		// {{format $arg.Description.PlainText 2}}
 		{{- $type := (get_type $argname $method $arg.Types)}}
 		{{lowercamel $argname}} {{if and (not $arg.Required) (not $type.IsArray)}}*{{end -}}
-			{{$type.GoType}},
+	{{$type.GoType}},
 	{{end}}
 {{- end -}}
 
 ) (
-
 {{- $returns := false}}
 {{- $return_stared := false}}
 {{- with $desc.Returns}}
 	{{- if (not (eq .GoType "True"))}}
 		{{- if and (not .IsSimpleType) (not .IsArray)}}*{{$return_stared = true}}{{end}}
-		{{- .GoType}},
+	{{- .GoType}},
 		{{- $returns = true}}
 	{{- end}}
 {{- end -}}
-
 error) {
 {{- if not (empty $input_file)}}
 {{- if gt (len $desc.Arguments) 2}}
@@ -142,5 +138,4 @@ error) {
 	return {{if $return_stared}}&{{end}}data, err
 	{{- end}}
 }
-
 {{end}}

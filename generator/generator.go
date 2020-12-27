@@ -51,6 +51,7 @@ var (
 	}
 )
 
+//nolint:goconst // useless
 func multitype(ss []TypeMapping) TypeMapping {
 	if reflect.DeepEqual(ss, markupType) {
 		return "ReplyMarkup"
@@ -73,7 +74,7 @@ func isInterface(t TypeMapping) bool {
 	return false
 }
 
-func getType(fieldName string, typeName string, types []TypeMapping) TypeMapping {
+func getType(fieldName, typeName string, types []TypeMapping) TypeMapping {
 	if len(types) > 1 {
 		return multitype(types)
 	}
@@ -90,6 +91,7 @@ func defaultReturn(t TypeMapping) string {
 	if !t.IsSimpleType() {
 		return "nil"
 	}
+	//nolint:goconst // useless
 	switch t.GoType() {
 	case "string":
 		return `""`
@@ -104,6 +106,7 @@ var goNameReplacer = strings.NewReplacer(
 	"Url", "URL",
 	"Html", "HTML",
 	"Id", "ID",
+	"Ip", "IP",
 )
 
 func rename(s string) string {
@@ -115,6 +118,7 @@ func formatURL(name string, stared bool, t TypeMapping) string {
 	if stared {
 		sname = "*" + name
 	}
+	//nolint:goconst // useless
 	switch t.GoType() {
 	case "IntStr", "FileID", "InputFile":
 		return fmt.Sprintf("%s.String()", name)
@@ -203,7 +207,7 @@ func NewGenerator(schemaFile, tempaltesDir string) (*Generator, error) {
 		Funcs(sprig.TxtFuncMap()).
 		Funcs(funcs)
 
-	tmpl, err = tmpl.ParseGlob(filepath.Join(tempaltesDir, "*.tmpl"))
+	tmpl, err = tmpl.ParseGlob(filepath.Join(tempaltesDir, "*.tpl"))
 	if err != nil {
 		return nil, err
 	}
@@ -233,12 +237,12 @@ func (g *Generator) Generate(outDir string) error {
 	}
 
 	for _, tmpl := range g.tmpl.Templates() {
-		name := strings.TrimSuffix(tmpl.Name(), ".tmpl")
+		name := strings.TrimSuffix(tmpl.Name(), ".tpl")
 		if name == "" {
 			// main template
 			continue
 		}
-		outName := filepath.Join(outDir, name+".go")
+		outName := filepath.Join(outDir, name)
 		log.Printf("Generating template %s", outName)
 
 		buf := new(bytes.Buffer)
@@ -325,7 +329,7 @@ func oneof(text string) []string {
 }
 
 func parseEntity(s string) []string {
-	re := regexp.MustCompile(`"([[:word:]]+)"`)
+	re := regexp.MustCompile(`"(\w+)"`)
 	matches := re.FindAllStringSubmatch(s, -1)
 	res := make([]string, 0, len(matches))
 	for _, match := range matches {

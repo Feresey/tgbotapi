@@ -21,7 +21,8 @@ func (api *API) GetFileDirectlyConfig(
 		return nil, err
 	}
 
-	resp, err := api.cli.Do(req) //nolint:golint это будет на совести пользователя.
+	//nolint:bodyclose // это будет на совести пользователя.
+	resp, err := api.cli.Do(req)
 	if err != nil {
 		return nil, err
 	}

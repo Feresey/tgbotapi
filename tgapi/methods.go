@@ -212,6 +212,78 @@ func (api *API) AnswerShippingQuery(
 	return err
 }
 
+// Close
+// Use this method to close the bot instance before moving it from one local server to another. You
+// need to delete the webhook before calling this method to ensure that the bot isn't launched
+// again after server restart. The method will return error 429 in the first 10 minutes after the
+// bot is launched. Returns True on success. Requires no parameters.
+func (api *API) Close(
+	ctx context.Context,
+) error {
+	_, err := api.MakeRequest(ctx, "close", nil)
+	return err
+}
+
+// CopyMessage
+// Use this method to copy messages of any kind. The method is analogous to the method
+// forwardMessages, but the copied message doesn't have a link to the original message. Returns the
+// MessageId of the sent message on success.
+type CopyMessageConfig struct {
+	// ChatID
+	// Unique identifier for the target chat or username of the target channel (in the format
+	// @channelusername)
+	ChatID IntStr `json:"chat_id"`
+	// FromChatID
+	// Unique identifier for the chat where the original message was sent (or channel username in
+	// the format @channelusername)
+	FromChatID IntStr `json:"from_chat_id"`
+	// MessageID
+	// Message identifier in the chat specified in from_chat_id
+	MessageID int64 `json:"message_id"`
+	// AllowSendingWithoutReply
+	// Pass True, if the message should be sent even if the specified replied-to message is not
+	// found
+	AllowSendingWithoutReply bool `json:"allow_sending_without_reply,omitempty"`
+	// Caption
+	// New caption for media, 0-1024 characters after entities parsing. If not specified, the
+	// original caption is kept
+	Caption string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the new caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
+	// DisableNotification
+	// Sends the message silently. Users will receive a notification with no sound.
+	DisableNotification bool `json:"disable_notification,omitempty"`
+	// ParseMode
+	// Mode for parsing entities in the new caption. See formatting options for more details.
+	ParseMode string `json:"parse_mode,omitempty"`
+	// ReplyMarkup
+	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
+	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
+	ReplyMarkup ReplyMarkup `json:"reply_markup,omitempty"`
+	// ReplyToMessageID
+	// If the message is a reply, ID of the original message
+	ReplyToMessageID int64 `json:"reply_to_message_id,omitempty"`
+}
+
+// CopyMessage
+// Use this method to copy messages of any kind. The method is analogous to the method
+// forwardMessages, but the copied message doesn't have a link to the original message. Returns the
+// MessageId of the sent message on success.
+func (api *API) CopyMessage(
+	ctx context.Context,
+	args *CopyMessageConfig,
+) (*MessageID, error) {
+	resp, err := api.MakeRequest(ctx, "copyMessage", args)
+	if err != nil {
+		return nil, err
+	}
+	var data MessageID
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
+}
+
 // CreateNewStickerSet
 // Use this method to create a new sticker set owned by a user. The bot will be able to edit the
 // sticker set thus created. You must use exactly one of the fields png_sticker or tgs_sticker.
@@ -344,25 +416,35 @@ func (api *API) DeleteStickerFromSet(
 
 // DeleteWebhook
 // Use this method to remove webhook integration if you decide to switch back to getUpdates.
-// Returns True on success. Requires no parameters.
+// Returns True on success.
 func (api *API) DeleteWebhook(
 	ctx context.Context,
+	// not required.
+	// Pass True to drop all pending updates
+	dropPendingUpdates *bool,
 ) error {
-	_, err := api.MakeRequest(ctx, "deleteWebhook", nil)
+	args := map[string]interface{}{
+		"drop_pending_updates": dropPendingUpdates,
+	}
+	_, err := api.MakeRequest(ctx, "deleteWebhook", args)
 	return err
 }
 
 // EditMessageCaption
-// Use this method to edit captions of messages. On success, if edited message is sent by the bot,
-// the edited Message is returned, otherwise True is returned.
+// Use this method to edit captions of messages. On success, if the edited message is not an inline
+// message, the edited Message is returned, otherwise True is returned.
 type EditMessageCaptionConfig struct {
 	// Caption
 	// New caption of the message, 0-1024 characters after entities parsing
 	Caption string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// ChatID
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
-	ChatID *IntStr `json:"chat_id,omitempty"`
+	ChatID IntStr `json:"chat_id,omitempty"`
 	// InlineMessageID
 	// Required if chat_id and message_id are not specified. Identifier of the inline message
 	InlineMessageID string `json:"inline_message_id,omitempty"`
@@ -378,8 +460,8 @@ type EditMessageCaptionConfig struct {
 }
 
 // EditMessageCaption
-// Use this method to edit captions of messages. On success, if edited message is sent by the bot,
-// the edited Message is returned, otherwise True is returned.
+// Use this method to edit captions of messages. On success, if the edited message is not an inline
+// message, the edited Message is returned, otherwise True is returned.
 func (api *API) EditMessageCaption(
 	ctx context.Context,
 	args *EditMessageCaptionConfig,
@@ -396,7 +478,7 @@ func (api *API) EditMessageCaption(
 // EditMessageLiveLocation
 // Use this method to edit live location messages. A location can be edited until its live_period
 // expires or editing is explicitly disabled by a call to stopMessageLiveLocation. On success, if
-// the edited message was sent by the bot, the edited Message is returned, otherwise True is
+// the edited message is not an inline message, the edited Message is returned, otherwise True is
 // returned.
 type EditMessageLiveLocationConfig struct {
 	// Latitude
@@ -408,13 +490,23 @@ type EditMessageLiveLocationConfig struct {
 	// ChatID
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
-	ChatID *IntStr `json:"chat_id,omitempty"`
+	ChatID IntStr `json:"chat_id,omitempty"`
+	// Heading
+	// Direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.
+	Heading int64 `json:"heading,omitempty"`
+	// HorizontalAccuracy
+	// The radius of uncertainty for the location, measured in meters; 0-1500
+	HorizontalAccuracy *float64 `json:"horizontal_accuracy,omitempty"`
 	// InlineMessageID
 	// Required if chat_id and message_id are not specified. Identifier of the inline message
 	InlineMessageID string `json:"inline_message_id,omitempty"`
 	// MessageID
 	// Required if inline_message_id is not specified. Identifier of the message to edit
 	MessageID int64 `json:"message_id,omitempty"`
+	// ProximityAlertRadius
+	// Maximum distance for proximity alerts about approaching another chat member, in meters. Must
+	// be between 1 and 100000 if specified.
+	ProximityAlertRadius int64 `json:"proximity_alert_radius,omitempty"`
 	// ReplyMarkup
 	// A JSON-serialized object for a new inline keyboard.
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
@@ -423,7 +515,7 @@ type EditMessageLiveLocationConfig struct {
 // EditMessageLiveLocation
 // Use this method to edit live location messages. A location can be edited until its live_period
 // expires or editing is explicitly disabled by a call to stopMessageLiveLocation. On success, if
-// the edited message was sent by the bot, the edited Message is returned, otherwise True is
+// the edited message is not an inline message, the edited Message is returned, otherwise True is
 // returned.
 func (api *API) EditMessageLiveLocation(
 	ctx context.Context,
@@ -439,11 +531,12 @@ func (api *API) EditMessageLiveLocation(
 }
 
 // EditMessageMedia
-// Use this method to edit animation, audio, document, photo, or video messages. If a message is a
-// part of a message album, then it can be edited only to a photo or a video. Otherwise, message
-// type can be changed arbitrarily. When inline message is edited, new file can't be uploaded. Use
-// previously uploaded file via its file_id or specify a URL. On success, if the edited message was
-// sent by the bot, the edited Message is returned, otherwise True is returned.
+// Use this method to edit animation, audio, document, photo, or video messages. If a message is
+// part of a message album, then it can be edited only to an audio for audio albums, only to a
+// document for document albums and to a photo or a video otherwise. When an inline message is
+// edited, a new file can't be uploaded. Use a previously uploaded file via its file_id or specify
+// a URL. On success, if the edited message was sent by the bot, the edited Message is returned,
+// otherwise True is returned.
 type EditMessageMediaConfig struct {
 	// Media
 	// A JSON-serialized object for a new media content of the message
@@ -451,7 +544,7 @@ type EditMessageMediaConfig struct {
 	// ChatID
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
-	ChatID *IntStr `json:"chat_id,omitempty"`
+	ChatID IntStr `json:"chat_id,omitempty"`
 	// InlineMessageID
 	// Required if chat_id and message_id are not specified. Identifier of the inline message
 	InlineMessageID string `json:"inline_message_id,omitempty"`
@@ -464,11 +557,12 @@ type EditMessageMediaConfig struct {
 }
 
 // EditMessageMedia
-// Use this method to edit animation, audio, document, photo, or video messages. If a message is a
-// part of a message album, then it can be edited only to a photo or a video. Otherwise, message
-// type can be changed arbitrarily. When inline message is edited, new file can't be uploaded. Use
-// previously uploaded file via its file_id or specify a URL. On success, if the edited message was
-// sent by the bot, the edited Message is returned, otherwise True is returned.
+// Use this method to edit animation, audio, document, photo, or video messages. If a message is
+// part of a message album, then it can be edited only to an audio for audio albums, only to a
+// document for document albums and to a photo or a video otherwise. When an inline message is
+// edited, a new file can't be uploaded. Use a previously uploaded file via its file_id or specify
+// a URL. On success, if the edited message was sent by the bot, the edited Message is returned,
+// otherwise True is returned.
 func (api *API) EditMessageMedia(
 	ctx context.Context,
 	args *EditMessageMediaConfig,
@@ -483,13 +577,13 @@ func (api *API) EditMessageMedia(
 }
 
 // EditMessageReplyMarkup
-// Use this method to edit only the reply markup of messages. On success, if edited message is sent
-// by the bot, the edited Message is returned, otherwise True is returned.
+// Use this method to edit only the reply markup of messages. On success, if the edited message is
+// not an inline message, the edited Message is returned, otherwise True is returned.
 type EditMessageReplyMarkupConfig struct {
 	// ChatID
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
-	ChatID *IntStr `json:"chat_id,omitempty"`
+	ChatID IntStr `json:"chat_id,omitempty"`
 	// InlineMessageID
 	// Required if chat_id and message_id are not specified. Identifier of the inline message
 	InlineMessageID string `json:"inline_message_id,omitempty"`
@@ -502,8 +596,8 @@ type EditMessageReplyMarkupConfig struct {
 }
 
 // EditMessageReplyMarkup
-// Use this method to edit only the reply markup of messages. On success, if edited message is sent
-// by the bot, the edited Message is returned, otherwise True is returned.
+// Use this method to edit only the reply markup of messages. On success, if the edited message is
+// not an inline message, the edited Message is returned, otherwise True is returned.
 func (api *API) EditMessageReplyMarkup(
 	ctx context.Context,
 	args *EditMessageReplyMarkupConfig,
@@ -518,8 +612,8 @@ func (api *API) EditMessageReplyMarkup(
 }
 
 // EditMessageText
-// Use this method to edit text and game messages. On success, if edited message is sent by the
-// bot, the edited Message is returned, otherwise True is returned.
+// Use this method to edit text and game messages. On success, if the edited message is not an
+// inline message, the edited Message is returned, otherwise True is returned.
 type EditMessageTextConfig struct {
 	// Text
 	// New text of the message, 1-4096 characters after entities parsing
@@ -527,10 +621,14 @@ type EditMessageTextConfig struct {
 	// ChatID
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
-	ChatID *IntStr `json:"chat_id,omitempty"`
+	ChatID IntStr `json:"chat_id,omitempty"`
 	// DisableWebPagePreview
 	// Disables link previews for links in this message
 	DisableWebPagePreview bool `json:"disable_web_page_preview,omitempty"`
+	// Entities
+	// List of special entities that appear in message text, which can be specified instead of
+	// parse_mode
+	Entities []MessageEntity `json:"entities,omitempty"`
 	// InlineMessageID
 	// Required if chat_id and message_id are not specified. Identifier of the inline message
 	InlineMessageID string `json:"inline_message_id,omitempty"`
@@ -546,8 +644,8 @@ type EditMessageTextConfig struct {
 }
 
 // EditMessageText
-// Use this method to edit text and game messages. On success, if edited message is sent by the
-// bot, the edited Message is returned, otherwise True is returned.
+// Use this method to edit text and game messages. On success, if the edited message is not an
+// inline message, the edited Message is returned, otherwise True is returned.
 func (api *API) EditMessageText(
 	ctx context.Context,
 	args *EditMessageTextConfig,
@@ -962,10 +1060,24 @@ func (api *API) LeaveChat(
 	return err
 }
 
+// LogOut
+// Use this method to log out from the cloud Bot API server before launching the bot locally. You
+// must log out the bot before running it locally, otherwise there is no guarantee that the bot
+// will receive updates. After a successful call, you can immediately log in on a local server, but
+// will not be able to log in back to the cloud Bot API server for 10 minutes. Returns True on
+// success. Requires no parameters.
+func (api *API) LogOut(
+	ctx context.Context,
+) error {
+	_, err := api.MakeRequest(ctx, "logOut", nil)
+	return err
+}
+
 // PinChatMessage
-// Use this method to pin a message in a group, a supergroup, or a channel. The bot must be an
-// administrator in the chat for this to work and must have the 'can_pin_messages' admin right in
-// the supergroup or 'can_edit_messages' admin right in the channel. Returns True on success.
+// Use this method to add a message to the list of pinned messages in a chat. If the chat is not a
+// private chat, the bot must be an administrator in the chat for this to work and must have the
+// 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel.
+// Returns True on success.
 type PinChatMessageConfig struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
@@ -976,14 +1088,15 @@ type PinChatMessageConfig struct {
 	MessageID int64 `json:"message_id"`
 	// DisableNotification
 	// Pass True, if it is not necessary to send a notification to all chat members about the new
-	// pinned message. Notifications are always disabled in channels.
+	// pinned message. Notifications are always disabled in channels and private chats.
 	DisableNotification bool `json:"disable_notification,omitempty"`
 }
 
 // PinChatMessage
-// Use this method to pin a message in a group, a supergroup, or a channel. The bot must be an
-// administrator in the chat for this to work and must have the 'can_pin_messages' admin right in
-// the supergroup or 'can_edit_messages' admin right in the channel. Returns True on success.
+// Use this method to add a message to the list of pinned messages in a chat. If the chat is not a
+// private chat, the bot must be an administrator in the chat for this to work and must have the
+// 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel.
+// Returns True on success.
 func (api *API) PinChatMessage(
 	ctx context.Context,
 	args *PinChatMessageConfig,
@@ -1031,6 +1144,9 @@ type PromoteChatMemberConfig struct {
 	// CanRestrictMembers
 	// Pass True, if the administrator can restrict, ban or unban chat members
 	CanRestrictMembers bool `json:"can_restrict_members,omitempty"`
+	// IsAnonymous
+	// Pass True, if the administrator's presence in the chat is hidden
+	IsAnonymous bool `json:"is_anonymous,omitempty"`
 }
 
 // PromoteChatMember
@@ -1093,10 +1209,18 @@ type SendAnimationConfig struct {
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
 	ChatID IntStr `json:"chat_id"`
+	// AllowSendingWithoutReply
+	// Pass True, if the message should be sent even if the specified replied-to message is not
+	// found
+	AllowSendingWithoutReply bool `json:"allow_sending_without_reply,omitempty"`
 	// Caption
 	// Animation caption (may also be used when resending animation by file_id), 0-1024 characters
 	// after entities parsing
 	Caption string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
 	DisableNotification bool `json:"disable_notification,omitempty"`
@@ -1131,7 +1255,15 @@ type SendAnimationConfig struct {
 
 func (t SendAnimationConfig) EncodeURL() (url.Values, error) {
 	res := make(url.Values)
+	res.Add("allow_sending_without_reply", strconv.FormatBool(t.AllowSendingWithoutReply))
 	res.Add("caption", t.Caption)
+	if t.CaptionEntities != nil {
+		raw, err := json.Marshal(t.CaptionEntities)
+		if err != nil {
+			return nil, err
+		}
+		res.Add("caption_entities", string(raw))
+	}
 	res.Add("chat_id", t.ChatID.String())
 	res.Add("disable_notification", strconv.FormatBool(t.DisableNotification))
 	res.Add("duration", strconv.FormatInt(t.Duration, 10))
@@ -1145,9 +1277,6 @@ func (t SendAnimationConfig) EncodeURL() (url.Values, error) {
 		res.Add("reply_markup", string(raw))
 	}
 	res.Add("reply_to_message_id", strconv.FormatInt(t.ReplyToMessageID, 10))
-	if t.Thumb != nil {
-		res.Add("thumb", t.Thumb.String())
-	}
 	res.Add("width", strconv.FormatInt(t.Width, 10))
 	return res, nil
 }
@@ -1198,9 +1327,17 @@ type SendAudioConfig struct {
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
 	ChatID IntStr `json:"chat_id"`
+	// AllowSendingWithoutReply
+	// Pass True, if the message should be sent even if the specified replied-to message is not
+	// found
+	AllowSendingWithoutReply bool `json:"allow_sending_without_reply,omitempty"`
 	// Caption
 	// Audio caption, 0-1024 characters after entities parsing
 	Caption string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
 	DisableNotification bool `json:"disable_notification,omitempty"`
@@ -1235,7 +1372,15 @@ type SendAudioConfig struct {
 
 func (t SendAudioConfig) EncodeURL() (url.Values, error) {
 	res := make(url.Values)
+	res.Add("allow_sending_without_reply", strconv.FormatBool(t.AllowSendingWithoutReply))
 	res.Add("caption", t.Caption)
+	if t.CaptionEntities != nil {
+		raw, err := json.Marshal(t.CaptionEntities)
+		if err != nil {
+			return nil, err
+		}
+		res.Add("caption_entities", string(raw))
+	}
 	res.Add("chat_id", t.ChatID.String())
 	res.Add("disable_notification", strconv.FormatBool(t.DisableNotification))
 	res.Add("duration", strconv.FormatInt(t.Duration, 10))
@@ -1249,9 +1394,6 @@ func (t SendAudioConfig) EncodeURL() (url.Values, error) {
 		res.Add("reply_markup", string(raw))
 	}
 	res.Add("reply_to_message_id", strconv.FormatInt(t.ReplyToMessageID, 10))
-	if t.Thumb != nil {
-		res.Add("thumb", t.Thumb.String())
-	}
 	res.Add("title", t.Title)
 	return res, nil
 }
@@ -1297,7 +1439,7 @@ func (api *API) SendChatAction(
 	// required.
 	// Type of action to broadcast. Choose one, depending on what the user is about to receive:
 	// typing for text messages, upload_photo for photos, record_video or upload_video for
-	// videos, record_audio or upload_audio for audio files, upload_document for general files,
+	// videos, record_voice or upload_voice for voice notes, upload_document for general files,
 	// find_location for location data, record_video_note or upload_video_note for video notes.
 	action string,
 	// required.
@@ -1326,6 +1468,10 @@ type SendContactConfig struct {
 	// PhoneNumber
 	// Contact's phone number
 	PhoneNumber string `json:"phone_number"`
+	// AllowSendingWithoutReply
+	// Pass True, if the message should be sent even if the specified replied-to message is not
+	// found
+	AllowSendingWithoutReply bool `json:"allow_sending_without_reply,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
 	DisableNotification bool `json:"disable_notification,omitempty"`
@@ -1367,12 +1513,17 @@ type SendDiceConfig struct {
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
 	ChatID IntStr `json:"chat_id"`
+	// AllowSendingWithoutReply
+	// Pass True, if the message should be sent even if the specified replied-to message is not
+	// found
+	AllowSendingWithoutReply bool `json:"allow_sending_without_reply,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
 	DisableNotification bool `json:"disable_notification,omitempty"`
 	// Emoji
-	// Emoji on which the dice throw animation is based. Currently, must be one of "", "", or "".
-	// Dice can have values 1-6 for "" and "", and values 1-5 for "". Defaults to ""
+	// Emoji on which the dice throw animation is based. Currently, must be one of "", "", "", "",
+	// or "". Dice can have values 1-6 for "" and "", values 1-5 for "" and "", and values 1-64 for
+	// "". Defaults to ""
 	Emoji string `json:"emoji,omitempty"`
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
@@ -1413,10 +1564,22 @@ type SendDocumentConfig struct {
 	// (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or
 	// upload a new one using multipart/form-data.
 	Document InputFile `json:"document"`
+	// AllowSendingWithoutReply
+	// Pass True, if the message should be sent even if the specified replied-to message is not
+	// found
+	AllowSendingWithoutReply bool `json:"allow_sending_without_reply,omitempty"`
 	// Caption
 	// Document caption (may also be used when resending documents by file_id), 0-1024 characters
 	// after entities parsing
 	Caption string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
+	// DisableContentTypeDetection
+	// Disables automatic server-side content type detection for files uploaded using
+	// multipart/form-data
+	DisableContentTypeDetection bool `json:"disable_content_type_detection,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
 	DisableNotification bool `json:"disable_notification,omitempty"`
@@ -1442,8 +1605,17 @@ type SendDocumentConfig struct {
 
 func (t SendDocumentConfig) EncodeURL() (url.Values, error) {
 	res := make(url.Values)
+	res.Add("allow_sending_without_reply", strconv.FormatBool(t.AllowSendingWithoutReply))
 	res.Add("caption", t.Caption)
+	if t.CaptionEntities != nil {
+		raw, err := json.Marshal(t.CaptionEntities)
+		if err != nil {
+			return nil, err
+		}
+		res.Add("caption_entities", string(raw))
+	}
 	res.Add("chat_id", t.ChatID.String())
+	res.Add("disable_content_type_detection", strconv.FormatBool(t.DisableContentTypeDetection))
 	res.Add("disable_notification", strconv.FormatBool(t.DisableNotification))
 	res.Add("parse_mode", t.ParseMode)
 	if t.ReplyMarkup != nil {
@@ -1454,9 +1626,6 @@ func (t SendDocumentConfig) EncodeURL() (url.Values, error) {
 		res.Add("reply_markup", string(raw))
 	}
 	res.Add("reply_to_message_id", strconv.FormatInt(t.ReplyToMessageID, 10))
-	if t.Thumb != nil {
-		res.Add("thumb", t.Thumb.String())
-	}
 	return res, nil
 }
 
@@ -1501,6 +1670,10 @@ type SendGameConfig struct {
 	// Short name of the game, serves as the unique identifier for the game. Set up your games via
 	// Botfather.
 	GameShortName string `json:"game_short_name"`
+	// AllowSendingWithoutReply
+	// Pass True, if the message should be sent even if the specified replied-to message is not
+	// found
+	AllowSendingWithoutReply bool `json:"allow_sending_without_reply,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
 	DisableNotification bool `json:"disable_notification,omitempty"`
@@ -1558,6 +1731,10 @@ type SendInvoiceConfig struct {
 	// Title
 	// Product name, 1-32 characters
 	Title string `json:"title"`
+	// AllowSendingWithoutReply
+	// Pass True, if the message should be sent even if the specified replied-to message is not
+	// found
+	AllowSendingWithoutReply bool `json:"allow_sending_without_reply,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
 	DisableNotification bool `json:"disable_notification,omitempty"`
@@ -1636,13 +1813,28 @@ type SendLocationConfig struct {
 	// Longitude
 	// Longitude of the location
 	Longitude float64 `json:"longitude"`
+	// AllowSendingWithoutReply
+	// Pass True, if the message should be sent even if the specified replied-to message is not
+	// found
+	AllowSendingWithoutReply bool `json:"allow_sending_without_reply,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
 	DisableNotification bool `json:"disable_notification,omitempty"`
+	// Heading
+	// For live locations, a direction in which the user is moving, in degrees. Must be between 1
+	// and 360 if specified.
+	Heading int64 `json:"heading,omitempty"`
+	// HorizontalAccuracy
+	// The radius of uncertainty for the location, measured in meters; 0-1500
+	HorizontalAccuracy *float64 `json:"horizontal_accuracy,omitempty"`
 	// LivePeriod
 	// Period in seconds for which the location will be updated (see Live Locations, should be
 	// between 60 and 86400.
 	LivePeriod int64 `json:"live_period,omitempty"`
+	// ProximityAlertRadius
+	// For live locations, a maximum distance for proximity alerts about approaching another chat
+	// member, in meters. Must be between 1 and 100000 if specified.
+	ProximityAlertRadius int64 `json:"proximity_alert_radius,omitempty"`
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
@@ -1668,18 +1860,23 @@ func (api *API) SendLocation(
 }
 
 // SendMediaGroup
-// Use this method to send a group of photos or videos as an album. On success, an array of the
-// sent Messages is returned.
+// Use this method to send a group of photos, videos, documents or audios as an album. Documents
+// and audio files can be only grouped in an album with messages of the same type. On success, an
+// array of Messages that were sent is returned.
 type SendMediaGroupConfig struct {
 	// ChatID
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
 	ChatID IntStr `json:"chat_id"`
 	// Media
-	// A JSON-serialized array describing photos and videos to be sent, must include 2-10 items
+	// A JSON-serialized array describing messages to be sent, must include 2-10 items
 	Media []InputMediaGraphics `json:"media"`
+	// AllowSendingWithoutReply
+	// Pass True, if the message should be sent even if the specified replied-to message is not
+	// found
+	AllowSendingWithoutReply bool `json:"allow_sending_without_reply,omitempty"`
 	// DisableNotification
-	// Sends the messages silently. Users will receive a notification with no sound.
+	// Sends messages silently. Users will receive a notification with no sound.
 	DisableNotification bool `json:"disable_notification,omitempty"`
 	// ReplyToMessageID
 	// If the messages are a reply, ID of the original message
@@ -1687,8 +1884,9 @@ type SendMediaGroupConfig struct {
 }
 
 // SendMediaGroup
-// Use this method to send a group of photos or videos as an album. On success, an array of the
-// sent Messages is returned.
+// Use this method to send a group of photos, videos, documents or audios as an album. Documents
+// and audio files can be only grouped in an album with messages of the same type. On success, an
+// array of Messages that were sent is returned.
 func (api *API) SendMediaGroup(
 	ctx context.Context,
 	args *SendMediaGroupConfig,
@@ -1712,12 +1910,20 @@ type SendMessageConfig struct {
 	// Text
 	// Text of the message to be sent, 1-4096 characters after entities parsing
 	Text string `json:"text"`
+	// AllowSendingWithoutReply
+	// Pass True, if the message should be sent even if the specified replied-to message is not
+	// found
+	AllowSendingWithoutReply bool `json:"allow_sending_without_reply,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
 	DisableNotification bool `json:"disable_notification,omitempty"`
 	// DisableWebPagePreview
 	// Disables link previews for links in this message
 	DisableWebPagePreview bool `json:"disable_web_page_preview,omitempty"`
+	// Entities
+	// List of special entities that appear in message text, which can be specified instead of
+	// parse_mode
+	Entities []MessageEntity `json:"entities,omitempty"`
 	// ParseMode
 	// Mode for parsing entities in the message text. See formatting options for more details.
 	ParseMode string `json:"parse_mode,omitempty"`
@@ -1755,12 +1961,22 @@ type SendPhotoConfig struct {
 	// Photo
 	// Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers
 	// (recommended), pass an HTTP URL as a String for Telegram to get a photo from the Internet,
-	// or upload a new photo using multipart/form-data.
+	// or upload a new photo using multipart/form-data. The photo must be at most 10 MB in size.
+	// The photo's width and height must not exceed 10000 in total. Width and height ratio must be
+	// at most 20.
 	Photo InputFile `json:"photo"`
+	// AllowSendingWithoutReply
+	// Pass True, if the message should be sent even if the specified replied-to message is not
+	// found
+	AllowSendingWithoutReply bool `json:"allow_sending_without_reply,omitempty"`
 	// Caption
 	// Photo caption (may also be used when resending photos by file_id), 0-1024 characters after
 	// entities parsing
 	Caption string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
 	DisableNotification bool `json:"disable_notification,omitempty"`
@@ -1778,7 +1994,15 @@ type SendPhotoConfig struct {
 
 func (t SendPhotoConfig) EncodeURL() (url.Values, error) {
 	res := make(url.Values)
+	res.Add("allow_sending_without_reply", strconv.FormatBool(t.AllowSendingWithoutReply))
 	res.Add("caption", t.Caption)
+	if t.CaptionEntities != nil {
+		raw, err := json.Marshal(t.CaptionEntities)
+		if err != nil {
+			return nil, err
+		}
+		res.Add("caption_entities", string(raw))
+	}
 	res.Add("chat_id", t.ChatID.String())
 	res.Add("disable_notification", strconv.FormatBool(t.DisableNotification))
 	res.Add("parse_mode", t.ParseMode)
@@ -1833,8 +2057,12 @@ type SendPollConfig struct {
 	// A JSON-serialized list of answer options, 2-10 strings 1-100 characters each
 	Options []string `json:"options"`
 	// Question
-	// Poll question, 1-255 characters
+	// Poll question, 1-300 characters
 	Question string `json:"question"`
+	// AllowSendingWithoutReply
+	// Pass True, if the message should be sent even if the specified replied-to message is not
+	// found
+	AllowSendingWithoutReply bool `json:"allow_sending_without_reply,omitempty"`
 	// AllowsMultipleAnswers
 	// True, if the poll allows multiple answers, ignored for polls in quiz mode, defaults to False
 	AllowsMultipleAnswers bool `json:"allows_multiple_answers,omitempty"`
@@ -1852,6 +2080,10 @@ type SendPollConfig struct {
 	// Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a
 	// quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing
 	Explanation string `json:"explanation,omitempty"`
+	// ExplanationEntities
+	// List of special entities that appear in the poll explanation, which can be specified instead
+	// of parse_mode
+	ExplanationEntities []MessageEntity `json:"explanation_entities,omitempty"`
 	// ExplanationParseMode
 	// Mode for parsing entities in the explanation. See formatting options for more details.
 	ExplanationParseMode string `json:"explanation_parse_mode,omitempty"`
@@ -1905,6 +2137,10 @@ type SendStickerConfig struct {
 	// (recommended), pass an HTTP URL as a String for Telegram to get a .WEBP file from the
 	// Internet, or upload a new one using multipart/form-data.
 	Sticker InputFile `json:"sticker"`
+	// AllowSendingWithoutReply
+	// Pass True, if the message should be sent even if the specified replied-to message is not
+	// found
+	AllowSendingWithoutReply bool `json:"allow_sending_without_reply,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
 	DisableNotification bool `json:"disable_notification,omitempty"`
@@ -1919,6 +2155,7 @@ type SendStickerConfig struct {
 
 func (t SendStickerConfig) EncodeURL() (url.Values, error) {
 	res := make(url.Values)
+	res.Add("allow_sending_without_reply", strconv.FormatBool(t.AllowSendingWithoutReply))
 	res.Add("chat_id", t.ChatID.String())
 	res.Add("disable_notification", strconv.FormatBool(t.DisableNotification))
 	if t.ReplyMarkup != nil {
@@ -1981,6 +2218,10 @@ type SendVenueConfig struct {
 	// Title
 	// Name of the venue
 	Title string `json:"title"`
+	// AllowSendingWithoutReply
+	// Pass True, if the message should be sent even if the specified replied-to message is not
+	// found
+	AllowSendingWithoutReply bool `json:"allow_sending_without_reply,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
 	DisableNotification bool `json:"disable_notification,omitempty"`
@@ -1991,6 +2232,12 @@ type SendVenueConfig struct {
 	// Foursquare type of the venue, if known. (For example, "arts_entertainment/default",
 	// "arts_entertainment/aquarium" or "food/icecream".)
 	FoursquareType string `json:"foursquare_type,omitempty"`
+	// GooglePlaceID
+	// Google Places identifier of the venue
+	GooglePlaceID string `json:"google_place_id,omitempty"`
+	// GooglePlaceType
+	// Google Places type of the venue. (See supported types.)
+	GooglePlaceType string `json:"google_place_type,omitempty"`
 	// ReplyMarkup
 	// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply
 	// keyboard, instructions to remove reply keyboard or to force a reply from the user.
@@ -2029,10 +2276,18 @@ type SendVideoConfig struct {
 	// (recommended), pass an HTTP URL as a String for Telegram to get a video from the Internet,
 	// or upload a new video using multipart/form-data.
 	Video InputFile `json:"video"`
+	// AllowSendingWithoutReply
+	// Pass True, if the message should be sent even if the specified replied-to message is not
+	// found
+	AllowSendingWithoutReply bool `json:"allow_sending_without_reply,omitempty"`
 	// Caption
 	// Video caption (may also be used when resending videos by file_id), 0-1024 characters after
 	// entities parsing
 	Caption string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
 	DisableNotification bool `json:"disable_notification,omitempty"`
@@ -2070,7 +2325,15 @@ type SendVideoConfig struct {
 
 func (t SendVideoConfig) EncodeURL() (url.Values, error) {
 	res := make(url.Values)
+	res.Add("allow_sending_without_reply", strconv.FormatBool(t.AllowSendingWithoutReply))
 	res.Add("caption", t.Caption)
+	if t.CaptionEntities != nil {
+		raw, err := json.Marshal(t.CaptionEntities)
+		if err != nil {
+			return nil, err
+		}
+		res.Add("caption_entities", string(raw))
+	}
 	res.Add("chat_id", t.ChatID.String())
 	res.Add("disable_notification", strconv.FormatBool(t.DisableNotification))
 	res.Add("duration", strconv.FormatInt(t.Duration, 10))
@@ -2085,9 +2348,6 @@ func (t SendVideoConfig) EncodeURL() (url.Values, error) {
 	}
 	res.Add("reply_to_message_id", strconv.FormatInt(t.ReplyToMessageID, 10))
 	res.Add("supports_streaming", strconv.FormatBool(t.SupportsStreaming))
-	if t.Thumb != nil {
-		res.Add("thumb", t.Thumb.String())
-	}
 	res.Add("width", strconv.FormatInt(t.Width, 10))
 	return res, nil
 }
@@ -2136,6 +2396,10 @@ type SendVideoNoteConfig struct {
 	// Telegram servers (recommended) or upload a new video using multipart/form-data. . Sending
 	// video notes by a URL is currently unsupported
 	VideoNote InputFile `json:"video_note"`
+	// AllowSendingWithoutReply
+	// Pass True, if the message should be sent even if the specified replied-to message is not
+	// found
+	AllowSendingWithoutReply bool `json:"allow_sending_without_reply,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
 	DisableNotification bool `json:"disable_notification,omitempty"`
@@ -2164,6 +2428,7 @@ type SendVideoNoteConfig struct {
 
 func (t SendVideoNoteConfig) EncodeURL() (url.Values, error) {
 	res := make(url.Values)
+	res.Add("allow_sending_without_reply", strconv.FormatBool(t.AllowSendingWithoutReply))
 	res.Add("chat_id", t.ChatID.String())
 	res.Add("disable_notification", strconv.FormatBool(t.DisableNotification))
 	res.Add("duration", strconv.FormatInt(t.Duration, 10))
@@ -2176,9 +2441,6 @@ func (t SendVideoNoteConfig) EncodeURL() (url.Values, error) {
 		res.Add("reply_markup", string(raw))
 	}
 	res.Add("reply_to_message_id", strconv.FormatInt(t.ReplyToMessageID, 10))
-	if t.Thumb != nil {
-		res.Add("thumb", t.Thumb.String())
-	}
 	return res, nil
 }
 
@@ -2228,9 +2490,17 @@ type SendVoiceConfig struct {
 	// servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the
 	// Internet, or upload a new one using multipart/form-data.
 	Voice InputFile `json:"voice"`
+	// AllowSendingWithoutReply
+	// Pass True, if the message should be sent even if the specified replied-to message is not
+	// found
+	AllowSendingWithoutReply bool `json:"allow_sending_without_reply,omitempty"`
 	// Caption
 	// Voice message caption, 0-1024 characters after entities parsing
 	Caption string `json:"caption,omitempty"`
+	// CaptionEntities
+	// List of special entities that appear in the caption, which can be specified instead of
+	// parse_mode
+	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
 	DisableNotification bool `json:"disable_notification,omitempty"`
@@ -2252,7 +2522,15 @@ type SendVoiceConfig struct {
 
 func (t SendVoiceConfig) EncodeURL() (url.Values, error) {
 	res := make(url.Values)
+	res.Add("allow_sending_without_reply", strconv.FormatBool(t.AllowSendingWithoutReply))
 	res.Add("caption", t.Caption)
+	if t.CaptionEntities != nil {
+		raw, err := json.Marshal(t.CaptionEntities)
+		if err != nil {
+			return nil, err
+		}
+		res.Add("caption_entities", string(raw))
+	}
 	res.Add("chat_id", t.ChatID.String())
 	res.Add("disable_notification", strconv.FormatBool(t.DisableNotification))
 	res.Add("duration", strconv.FormatInt(t.Duration, 10))
@@ -2603,6 +2881,13 @@ type SetWebhookConfig struct {
 	// Upload your public key certificate so that the root certificate in use can be checked. See
 	// our self-signed guide for details.
 	Certificate *InputFile `json:"certificate,omitempty"`
+	// DropPendingUpdates
+	// Pass True to drop all pending updates
+	DropPendingUpdates bool `json:"drop_pending_updates,omitempty"`
+	// IPAddress
+	// The fixed IP address which will be used to send webhook requests instead of the IP address
+	// resolved through DNS
+	IPAddress string `json:"ip_address,omitempty"`
 	// MaxConnections
 	// Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery,
 	// 1-100. Defaults to 40. Use lower values to limit the load on your bot's server, and higher
@@ -2630,7 +2915,7 @@ type StopMessageLiveLocationConfig struct {
 	// ChatID
 	// Required if inline_message_id is not specified. Unique identifier for the target chat or
 	// username of the target channel (in the format @channelusername)
-	ChatID *IntStr `json:"chat_id,omitempty"`
+	ChatID IntStr `json:"chat_id,omitempty"`
 	// InlineMessageID
 	// Required if chat_id and message_id are not specified. Identifier of the inline message
 	InlineMessageID string `json:"inline_message_id,omitempty"`
@@ -2694,30 +2979,44 @@ func (api *API) StopPoll(
 // UnbanChatMember
 // Use this method to unban a previously kicked user in a supergroup or channel. The user will not
 // return to the group or channel automatically, but will be able to join via link, etc. The bot
-// must be an administrator for this to work. Returns True on success.
+// must be an administrator for this to work. By default, this method guarantees that after the
+// call the user is not a member of the chat, but will be able to join it. So if the user is a
+// member of the chat they will also be removed from the chat. If you don't want this, use the
+// parameter only_if_banned. Returns True on success.
+type UnbanChatMemberConfig struct {
+	// ChatID
+	// Unique identifier for the target group or username of the target supergroup or channel (in
+	// the format @username)
+	ChatID IntStr `json:"chat_id"`
+	// UserID
+	// Unique identifier of the target user
+	UserID int64 `json:"user_id"`
+	// OnlyIfBanned
+	// Do nothing if the user is not banned
+	OnlyIfBanned bool `json:"only_if_banned,omitempty"`
+}
+
+// UnbanChatMember
+// Use this method to unban a previously kicked user in a supergroup or channel. The user will not
+// return to the group or channel automatically, but will be able to join via link, etc. The bot
+// must be an administrator for this to work. By default, this method guarantees that after the
+// call the user is not a member of the chat, but will be able to join it. So if the user is a
+// member of the chat they will also be removed from the chat. If you don't want this, use the
+// parameter only_if_banned. Returns True on success.
 func (api *API) UnbanChatMember(
 	ctx context.Context,
-	// required.
-	// Unique identifier for the target group or username of the target supergroup or channel
-	// (in the format @username)
-	chatID IntStr,
-	// required.
-	// Unique identifier of the target user
-	userID int64,
+	args *UnbanChatMemberConfig,
 ) error {
-	args := map[string]interface{}{
-		"chat_id": chatID,
-		"user_id": userID,
-	}
 	_, err := api.MakeRequest(ctx, "unbanChatMember", args)
 	return err
 }
 
-// UnpinChatMessage
-// Use this method to unpin a message in a group, a supergroup, or a channel. The bot must be an
-// administrator in the chat for this to work and must have the 'can_pin_messages' admin right in
-// the supergroup or 'can_edit_messages' admin right in the channel. Returns True on success.
-func (api *API) UnpinChatMessage(
+// UnpinAllChatMessages
+// Use this method to clear the list of pinned messages in a chat. If the chat is not a private
+// chat, the bot must be an administrator in the chat for this to work and must have the
+// 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel.
+// Returns True on success.
+func (api *API) UnpinAllChatMessages(
 	ctx context.Context,
 	// required.
 	// Unique identifier for the target chat or username of the target channel (in the format
@@ -2726,6 +3025,30 @@ func (api *API) UnpinChatMessage(
 ) error {
 	args := map[string]interface{}{
 		"chat_id": chatID,
+	}
+	_, err := api.MakeRequest(ctx, "unpinAllChatMessages", args)
+	return err
+}
+
+// UnpinChatMessage
+// Use this method to remove a message from the list of pinned messages in a chat. If the chat is
+// not a private chat, the bot must be an administrator in the chat for this to work and must have
+// the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a
+// channel. Returns True on success.
+func (api *API) UnpinChatMessage(
+	ctx context.Context,
+	// required.
+	// Unique identifier for the target chat or username of the target channel (in the format
+	// @channelusername)
+	chatID IntStr,
+	// not required.
+	// Identifier of a message to unpin. If not specified, the most recent pinned message (by
+	// sending date) will be unpinned.
+	messageID *int64,
+) error {
+	args := map[string]interface{}{
+		"chat_id":    chatID,
+		"message_id": messageID,
 	}
 	_, err := api.MakeRequest(ctx, "unpinChatMessage", args)
 	return err
