@@ -14,8 +14,8 @@ const (
 
 type True struct{}
 
-func (True) MarshalText() ([]byte, error) { return []byte("true"), nil }
-func (*True) UnmarshalText([]byte) error  { return nil }
+func (True) MarshalJSON() ([]byte, error) { return []byte("true"), nil }
+func (*True) UnmarshalJSON([]byte) error  { return nil }
 
 type InputMediaGraphics interface{}
 
