@@ -35,9 +35,14 @@ type AddStickerToSetConfig struct {
 func (api *API) AddStickerToSet(
 	ctx context.Context,
 	args *AddStickerToSetConfig,
-) error {
-	_, err := api.MakeRequest(ctx, "addStickerToSet", args)
-	return err
+) (*bool, error) {
+	resp, err := api.MakeRequest(ctx, "addStickerToSet", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // AnswerCallbackQuery
@@ -75,9 +80,14 @@ type AnswerCallbackQueryConfig struct {
 func (api *API) AnswerCallbackQuery(
 	ctx context.Context,
 	args *AnswerCallbackQueryConfig,
-) error {
-	_, err := api.MakeRequest(ctx, "answerCallbackQuery", args)
-	return err
+) (*bool, error) {
+	resp, err := api.MakeRequest(ctx, "answerCallbackQuery", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // AnswerInlineQuery
@@ -114,9 +124,14 @@ type AnswerInlineQueryConfig struct {
 func (api *API) AnswerInlineQuery(
 	ctx context.Context,
 	args *AnswerInlineQueryConfig,
-) error {
-	_, err := api.MakeRequest(ctx, "answerInlineQuery", args)
-	return err
+) (*bool, error) {
+	resp, err := api.MakeRequest(ctx, "answerInlineQuery", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // AnswerPreCheckoutQuery
@@ -148,9 +163,14 @@ type AnswerPreCheckoutQueryConfig struct {
 func (api *API) AnswerPreCheckoutQuery(
 	ctx context.Context,
 	args *AnswerPreCheckoutQueryConfig,
-) error {
-	_, err := api.MakeRequest(ctx, "answerPreCheckoutQuery", args)
-	return err
+) (*bool, error) {
+	resp, err := api.MakeRequest(ctx, "answerPreCheckoutQuery", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // AnswerShippingQuery
@@ -182,9 +202,14 @@ type AnswerShippingQueryConfig struct {
 func (api *API) AnswerShippingQuery(
 	ctx context.Context,
 	args *AnswerShippingQueryConfig,
-) error {
-	_, err := api.MakeRequest(ctx, "answerShippingQuery", args)
-	return err
+) (*bool, error) {
+	resp, err := api.MakeRequest(ctx, "answerShippingQuery", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // AnswerWebAppQuery
@@ -225,13 +250,18 @@ func (api *API) ApproveChatJoinRequest(
 	// required.
 	// Unique identifier of the target user
 	userID int64,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"chat_id": chatID,
 		"user_id": userID,
 	}
-	_, err := api.MakeRequest(ctx, "approveChatJoinRequest", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "approveChatJoinRequest", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // BanChatMember
@@ -267,9 +297,14 @@ type BanChatMemberConfig struct {
 func (api *API) BanChatMember(
 	ctx context.Context,
 	args *BanChatMemberConfig,
-) error {
-	_, err := api.MakeRequest(ctx, "banChatMember", args)
-	return err
+) (*bool, error) {
+	resp, err := api.MakeRequest(ctx, "banChatMember", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // BanChatSenderChat
@@ -286,13 +321,18 @@ func (api *API) BanChatSenderChat(
 	// required.
 	// Unique identifier of the target sender chat
 	senderChatID int64,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"chat_id":        chatID,
 		"sender_chat_id": senderChatID,
 	}
-	_, err := api.MakeRequest(ctx, "banChatSenderChat", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "banChatSenderChat", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // Close
@@ -302,9 +342,14 @@ func (api *API) BanChatSenderChat(
 // bot is launched. Returns True on success. Requires no parameters.
 func (api *API) Close(
 	ctx context.Context,
-) error {
-	_, err := api.MakeRequest(ctx, "close", nil)
-	return err
+) (*bool, error) {
+	resp, err := api.MakeRequest(ctx, "close", nil)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // CloseForumTopic
@@ -320,13 +365,18 @@ func (api *API) CloseForumTopic(
 	// required.
 	// Unique identifier for the target message thread of the forum topic
 	messageThreadID int64,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"chat_id":           chatID,
 		"message_thread_id": messageThreadID,
 	}
-	_, err := api.MakeRequest(ctx, "closeForumTopic", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "closeForumTopic", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // CloseGeneralForumTopic
@@ -339,12 +389,17 @@ func (api *API) CloseGeneralForumTopic(
 	// Unique identifier for the target chat or username of the target supergroup (in the
 	// format @supergroupusername)
 	chatID IntStr,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"chat_id": chatID,
 	}
-	_, err := api.MakeRequest(ctx, "closeGeneralForumTopic", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "closeGeneralForumTopic", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // CopyMessage
@@ -631,9 +686,14 @@ type CreateNewStickerSetConfig struct {
 func (api *API) CreateNewStickerSet(
 	ctx context.Context,
 	args *CreateNewStickerSetConfig,
-) error {
-	_, err := api.MakeRequest(ctx, "createNewStickerSet", args)
-	return err
+) (*bool, error) {
+	resp, err := api.MakeRequest(ctx, "createNewStickerSet", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // DeclineChatJoinRequest
@@ -648,13 +708,18 @@ func (api *API) DeclineChatJoinRequest(
 	// required.
 	// Unique identifier of the target user
 	userID int64,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"chat_id": chatID,
 		"user_id": userID,
 	}
-	_, err := api.MakeRequest(ctx, "declineChatJoinRequest", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "declineChatJoinRequest", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // DeleteChatPhoto
@@ -667,12 +732,17 @@ func (api *API) DeleteChatPhoto(
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
 	chatID IntStr,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"chat_id": chatID,
 	}
-	_, err := api.MakeRequest(ctx, "deleteChatPhoto", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "deleteChatPhoto", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // DeleteChatStickerSet
@@ -686,12 +756,17 @@ func (api *API) DeleteChatStickerSet(
 	// Unique identifier for the target chat or username of the target supergroup (in the
 	// format @supergroupusername)
 	chatID IntStr,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"chat_id": chatID,
 	}
-	_, err := api.MakeRequest(ctx, "deleteChatStickerSet", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "deleteChatStickerSet", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // DeleteForumTopic
@@ -707,13 +782,18 @@ func (api *API) DeleteForumTopic(
 	// required.
 	// Unique identifier for the target message thread of the forum topic
 	messageThreadID int64,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"chat_id":           chatID,
 		"message_thread_id": messageThreadID,
 	}
-	_, err := api.MakeRequest(ctx, "deleteForumTopic", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "deleteForumTopic", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // DeleteMessage
@@ -735,13 +815,18 @@ func (api *API) DeleteMessage(
 	// required.
 	// Identifier of the message to delete
 	messageID int64,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"chat_id":    chatID,
 		"message_id": messageID,
 	}
-	_, err := api.MakeRequest(ctx, "deleteMessage", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "deleteMessage", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // DeleteMyCommands
@@ -757,13 +842,18 @@ func (api *API) DeleteMyCommands(
 	// A JSON-serialized object, describing scope of users for which the commands are relevant.
 	// Defaults to BotCommandScopeDefault.
 	scope *BotCommandScope,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"language_code": languageCode,
 		"scope":         scope,
 	}
-	_, err := api.MakeRequest(ctx, "deleteMyCommands", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "deleteMyCommands", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // DeleteStickerFromSet
@@ -773,12 +863,17 @@ func (api *API) DeleteStickerFromSet(
 	// required.
 	// File identifier of the sticker
 	sticker string,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"sticker": sticker,
 	}
-	_, err := api.MakeRequest(ctx, "deleteStickerFromSet", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "deleteStickerFromSet", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // DeleteStickerSet
@@ -788,12 +883,17 @@ func (api *API) DeleteStickerSet(
 	// required.
 	// Sticker set name
 	name string,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"name": name,
 	}
-	_, err := api.MakeRequest(ctx, "deleteStickerSet", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "deleteStickerSet", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // DeleteWebhook
@@ -804,12 +904,17 @@ func (api *API) DeleteWebhook(
 	// not required.
 	// Pass True to drop all pending updates
 	dropPendingUpdates *bool,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"drop_pending_updates": dropPendingUpdates,
 	}
-	_, err := api.MakeRequest(ctx, "deleteWebhook", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "deleteWebhook", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // EditChatInviteLink
@@ -887,9 +992,14 @@ type EditForumTopicConfig struct {
 func (api *API) EditForumTopic(
 	ctx context.Context,
 	args *EditForumTopicConfig,
-) error {
-	_, err := api.MakeRequest(ctx, "editForumTopic", args)
-	return err
+) (*bool, error) {
+	resp, err := api.MakeRequest(ctx, "editForumTopic", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // EditGeneralForumTopic
@@ -905,13 +1015,18 @@ func (api *API) EditGeneralForumTopic(
 	// required.
 	// New topic name, 1-128 characters
 	name string,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"chat_id": chatID,
 		"name":    name,
 	}
-	_, err := api.MakeRequest(ctx, "editGeneralForumTopic", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "editGeneralForumTopic", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // EditMessageCaption
@@ -1441,7 +1556,8 @@ func (api *API) GetMe(
 func (api *API) GetMyCommands(
 	ctx context.Context,
 ) ([]BotCommand, error) {
-	resp, err := api.MakeRequest(ctx, "getMyCommands", nil)
+	args := map[string]interface{}{}
+	resp, err := api.MakeRequest(ctx, "getMyCommands", args)
 	if err != nil {
 		return nil, err
 	}
@@ -1659,12 +1775,17 @@ func (api *API) HideGeneralForumTopic(
 	// Unique identifier for the target chat or username of the target supergroup (in the
 	// format @supergroupusername)
 	chatID IntStr,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"chat_id": chatID,
 	}
-	_, err := api.MakeRequest(ctx, "hideGeneralForumTopic", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "hideGeneralForumTopic", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // LeaveChat
@@ -1675,12 +1796,17 @@ func (api *API) LeaveChat(
 	// Unique identifier for the target chat or username of the target supergroup or channel
 	// (in the format @channelusername)
 	chatID IntStr,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"chat_id": chatID,
 	}
-	_, err := api.MakeRequest(ctx, "leaveChat", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "leaveChat", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // LogOut
@@ -1691,9 +1817,14 @@ func (api *API) LeaveChat(
 // success. Requires no parameters.
 func (api *API) LogOut(
 	ctx context.Context,
-) error {
-	_, err := api.MakeRequest(ctx, "logOut", nil)
-	return err
+) (*bool, error) {
+	resp, err := api.MakeRequest(ctx, "logOut", nil)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // PinChatMessage
@@ -1723,9 +1854,14 @@ type PinChatMessageConfig struct {
 func (api *API) PinChatMessage(
 	ctx context.Context,
 	args *PinChatMessageConfig,
-) error {
-	_, err := api.MakeRequest(ctx, "pinChatMessage", args)
-	return err
+) (*bool, error) {
+	resp, err := api.MakeRequest(ctx, "pinChatMessage", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // PromoteChatMember
@@ -1791,9 +1927,14 @@ type PromoteChatMemberConfig struct {
 func (api *API) PromoteChatMember(
 	ctx context.Context,
 	args *PromoteChatMemberConfig,
-) error {
-	_, err := api.MakeRequest(ctx, "promoteChatMember", args)
-	return err
+) (*bool, error) {
+	resp, err := api.MakeRequest(ctx, "promoteChatMember", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // ReopenForumTopic
@@ -1809,13 +1950,18 @@ func (api *API) ReopenForumTopic(
 	// required.
 	// Unique identifier for the target message thread of the forum topic
 	messageThreadID int64,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"chat_id":           chatID,
 		"message_thread_id": messageThreadID,
 	}
-	_, err := api.MakeRequest(ctx, "reopenForumTopic", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "reopenForumTopic", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // ReopenGeneralForumTopic
@@ -1828,12 +1974,17 @@ func (api *API) ReopenGeneralForumTopic(
 	// Unique identifier for the target chat or username of the target supergroup (in the
 	// format @supergroupusername)
 	chatID IntStr,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"chat_id": chatID,
 	}
-	_, err := api.MakeRequest(ctx, "reopenGeneralForumTopic", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "reopenGeneralForumTopic", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // RestrictChatMember
@@ -1872,9 +2023,14 @@ type RestrictChatMemberConfig struct {
 func (api *API) RestrictChatMember(
 	ctx context.Context,
 	args *RestrictChatMemberConfig,
-) error {
-	_, err := api.MakeRequest(ctx, "restrictChatMember", args)
-	return err
+) (*bool, error) {
+	resp, err := api.MakeRequest(ctx, "restrictChatMember", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // RevokeChatInviteLink
@@ -2192,9 +2348,14 @@ type SendChatActionConfig struct {
 func (api *API) SendChatAction(
 	ctx context.Context,
 	args *SendChatActionConfig,
-) error {
-	_, err := api.MakeRequest(ctx, "sendChatAction", args)
-	return err
+) (*bool, error) {
+	resp, err := api.MakeRequest(ctx, "sendChatAction", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SendContact
@@ -3490,9 +3651,14 @@ type SetChatAdministratorCustomTitleConfig struct {
 func (api *API) SetChatAdministratorCustomTitle(
 	ctx context.Context,
 	args *SetChatAdministratorCustomTitleConfig,
-) error {
-	_, err := api.MakeRequest(ctx, "setChatAdministratorCustomTitle", args)
-	return err
+) (*bool, error) {
+	resp, err := api.MakeRequest(ctx, "setChatAdministratorCustomTitle", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SetChatDescription
@@ -3508,13 +3674,18 @@ func (api *API) SetChatDescription(
 	// not required.
 	// New chat description, 0-255 characters
 	description *string,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"chat_id":     chatID,
 		"description": description,
 	}
-	_, err := api.MakeRequest(ctx, "setChatDescription", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "setChatDescription", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SetChatMenuButton
@@ -3529,13 +3700,18 @@ func (api *API) SetChatMenuButton(
 	// not required.
 	// A JSON-serialized object for the bot's new menu button. Defaults to MenuButtonDefault
 	menuButton *MenuButton,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"chat_id":     chatID,
 		"menu_button": menuButton,
 	}
-	_, err := api.MakeRequest(ctx, "setChatMenuButton", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "setChatMenuButton", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SetChatPermissions
@@ -3566,9 +3742,14 @@ type SetChatPermissionsConfig struct {
 func (api *API) SetChatPermissions(
 	ctx context.Context,
 	args *SetChatPermissionsConfig,
-) error {
-	_, err := api.MakeRequest(ctx, "setChatPermissions", args)
-	return err
+) (*bool, error) {
+	resp, err := api.MakeRequest(ctx, "setChatPermissions", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SetChatPhoto
@@ -3584,20 +3765,31 @@ func (api *API) SetChatPhoto(
 	// required.
 	// New chat photo, uploaded using multipart/form-data
 	photo InputFile,
-) error {
+) (*bool, error) {
 	if photo.Reader != nil {
 		values := url.Values{
 			"chat_id": []string{chatID.String()},
 		}
-		_, err := api.UploadFile(ctx, values, "setChatPhoto", "setchatphoto", &photo)
-		return err
+		resp, err := api.UploadFile(ctx, values, "setChatPhoto", "setchatphoto", &photo)
+		if err != nil {
+			return nil, err
+		}
+
+		var res bool
+		err = json.Unmarshal(resp.Result, &res)
+		return &res, err
 	}
 	args := map[string]interface{}{
 		"chat_id": chatID,
 		"photo":   photo,
 	}
-	_, err := api.MakeRequest(ctx, "setChatPhoto", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "setChatPhoto", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SetChatStickerSet
@@ -3614,13 +3806,18 @@ func (api *API) SetChatStickerSet(
 	// required.
 	// Name of the sticker set to be set as the group sticker set
 	stickerSetName string,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"chat_id":          chatID,
 		"sticker_set_name": stickerSetName,
 	}
-	_, err := api.MakeRequest(ctx, "setChatStickerSet", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "setChatStickerSet", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SetChatTitle
@@ -3636,13 +3833,18 @@ func (api *API) SetChatTitle(
 	// required.
 	// New chat title, 1-128 characters
 	title string,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"chat_id": chatID,
 		"title":   title,
 	}
-	_, err := api.MakeRequest(ctx, "setChatTitle", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "setChatTitle", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SetCustomEmojiStickerSetThumbnail
@@ -3656,13 +3858,18 @@ func (api *API) SetCustomEmojiStickerSetThumbnail(
 	// required.
 	// Sticker set name
 	name string,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"custom_emoji_id": customEmojiID,
 		"name":            name,
 	}
-	_, err := api.MakeRequest(ctx, "setCustomEmojiStickerSetThumbnail", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "setCustomEmojiStickerSetThumbnail", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SetGameScore
@@ -3738,9 +3945,14 @@ type SetMyCommandsConfig struct {
 func (api *API) SetMyCommands(
 	ctx context.Context,
 	args *SetMyCommandsConfig,
-) error {
-	_, err := api.MakeRequest(ctx, "setMyCommands", args)
-	return err
+) (*bool, error) {
+	resp, err := api.MakeRequest(ctx, "setMyCommands", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SetMyDefaultAdministratorRights
@@ -3757,13 +3969,18 @@ func (api *API) SetMyDefaultAdministratorRights(
 	// A JSON-serialized object describing new default administrator rights. If not specified,
 	// the default administrator rights will be cleared.
 	rights *ChatAdministratorRights,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"for_channels": forChannels,
 		"rights":       rights,
 	}
-	_, err := api.MakeRequest(ctx, "setMyDefaultAdministratorRights", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "setMyDefaultAdministratorRights", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SetMyDescription
@@ -3779,13 +3996,18 @@ func (api *API) SetMyDescription(
 	// A two-letter ISO 639-1 language code. If empty, the description will be applied to all
 	// users for whose language there is no dedicated description.
 	languageCode *string,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"description":   description,
 		"language_code": languageCode,
 	}
-	_, err := api.MakeRequest(ctx, "setMyDescription", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "setMyDescription", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SetMyName
@@ -3800,13 +4022,18 @@ func (api *API) SetMyName(
 	// New bot name; 0-64 characters. Pass an empty string to remove the dedicated name for the
 	// given language.
 	name *string,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"language_code": languageCode,
 		"name":          name,
 	}
-	_, err := api.MakeRequest(ctx, "setMyName", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "setMyName", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SetMyShortDescription
@@ -3822,13 +4049,18 @@ func (api *API) SetMyShortDescription(
 	// New short description for the bot; 0-120 characters. Pass an empty string to remove the
 	// dedicated short description for the given language.
 	shortDescription *string,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"language_code":     languageCode,
 		"short_description": shortDescription,
 	}
-	_, err := api.MakeRequest(ctx, "setMyShortDescription", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "setMyShortDescription", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SetPassportDataErrors
@@ -3843,13 +4075,18 @@ func (api *API) SetPassportDataErrors(
 	// required.
 	// User identifier
 	userID int64,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"errors":  errors,
 		"user_id": userID,
 	}
-	_, err := api.MakeRequest(ctx, "setPassportDataErrors", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "setPassportDataErrors", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SetStickerEmojiList
@@ -3863,13 +4100,18 @@ func (api *API) SetStickerEmojiList(
 	// required.
 	// File identifier of the sticker
 	sticker string,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"emoji_list": emojiList,
 		"sticker":    sticker,
 	}
-	_, err := api.MakeRequest(ctx, "setStickerEmojiList", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "setStickerEmojiList", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SetStickerKeywords
@@ -3884,13 +4126,18 @@ func (api *API) SetStickerKeywords(
 	// required.
 	// File identifier of the sticker
 	sticker string,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"keywords": keywords,
 		"sticker":  sticker,
 	}
-	_, err := api.MakeRequest(ctx, "setStickerKeywords", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "setStickerKeywords", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SetStickerMaskPosition
@@ -3905,13 +4152,18 @@ func (api *API) SetStickerMaskPosition(
 	// required.
 	// File identifier of the sticker
 	sticker string,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"mask_position": maskPosition,
 		"sticker":       sticker,
 	}
-	_, err := api.MakeRequest(ctx, "setStickerMaskPosition", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "setStickerMaskPosition", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SetStickerPositionInSet
@@ -3925,13 +4177,18 @@ func (api *API) SetStickerPositionInSet(
 	// required.
 	// File identifier of the sticker
 	sticker string,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"position": position,
 		"sticker":  sticker,
 	}
-	_, err := api.MakeRequest(ctx, "setStickerPositionInSet", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "setStickerPositionInSet", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SetStickerSetThumbnail
@@ -3964,9 +4221,14 @@ type SetStickerSetThumbnailConfig struct {
 func (api *API) SetStickerSetThumbnail(
 	ctx context.Context,
 	args *SetStickerSetThumbnailConfig,
-) error {
-	_, err := api.MakeRequest(ctx, "setStickerSetThumbnail", args)
-	return err
+) (*bool, error) {
+	resp, err := api.MakeRequest(ctx, "setStickerSetThumbnail", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SetStickerSetTitle
@@ -3979,13 +4241,18 @@ func (api *API) SetStickerSetTitle(
 	// required.
 	// Sticker set title, 1-64 characters
 	title string,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"name":  name,
 		"title": title,
 	}
-	_, err := api.MakeRequest(ctx, "setStickerSetTitle", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "setStickerSetTitle", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // SetWebhook
@@ -4036,9 +4303,14 @@ type SetWebhookConfig struct {
 func (api *API) SetWebhook(
 	ctx context.Context,
 	args *SetWebhookConfig,
-) error {
-	_, err := api.MakeRequest(ctx, "setWebhook", args)
-	return err
+) (*bool, error) {
+	resp, err := api.MakeRequest(ctx, "setWebhook", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // StopMessageLiveLocation
@@ -4141,9 +4413,14 @@ type UnbanChatMemberConfig struct {
 func (api *API) UnbanChatMember(
 	ctx context.Context,
 	args *UnbanChatMemberConfig,
-) error {
-	_, err := api.MakeRequest(ctx, "unbanChatMember", args)
-	return err
+) (*bool, error) {
+	resp, err := api.MakeRequest(ctx, "unbanChatMember", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // UnbanChatSenderChat
@@ -4159,13 +4436,18 @@ func (api *API) UnbanChatSenderChat(
 	// required.
 	// Unique identifier of the target sender chat
 	senderChatID int64,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"chat_id":        chatID,
 		"sender_chat_id": senderChatID,
 	}
-	_, err := api.MakeRequest(ctx, "unbanChatSenderChat", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "unbanChatSenderChat", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // UnhideGeneralForumTopic
@@ -4178,12 +4460,17 @@ func (api *API) UnhideGeneralForumTopic(
 	// Unique identifier for the target chat or username of the target supergroup (in the
 	// format @supergroupusername)
 	chatID IntStr,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"chat_id": chatID,
 	}
-	_, err := api.MakeRequest(ctx, "unhideGeneralForumTopic", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "unhideGeneralForumTopic", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // UnpinAllChatMessages
@@ -4197,12 +4484,17 @@ func (api *API) UnpinAllChatMessages(
 	// Unique identifier for the target chat or username of the target channel (in the format
 	// @channelusername)
 	chatID IntStr,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"chat_id": chatID,
 	}
-	_, err := api.MakeRequest(ctx, "unpinAllChatMessages", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "unpinAllChatMessages", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // UnpinAllForumTopicMessages
@@ -4218,13 +4510,18 @@ func (api *API) UnpinAllForumTopicMessages(
 	// required.
 	// Unique identifier for the target message thread of the forum topic
 	messageThreadID int64,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"chat_id":           chatID,
 		"message_thread_id": messageThreadID,
 	}
-	_, err := api.MakeRequest(ctx, "unpinAllForumTopicMessages", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "unpinAllForumTopicMessages", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // UnpinChatMessage
@@ -4242,13 +4539,18 @@ func (api *API) UnpinChatMessage(
 	// Identifier of a message to unpin. If not specified, the most recent pinned message (by
 	// sending date) will be unpinned.
 	messageID *int64,
-) error {
+) (*bool, error) {
 	args := map[string]interface{}{
 		"chat_id":    chatID,
 		"message_id": messageID,
 	}
-	_, err := api.MakeRequest(ctx, "unpinChatMessage", args)
-	return err
+	resp, err := api.MakeRequest(ctx, "unpinChatMessage", args)
+	if err != nil {
+		return nil, err
+	}
+	var data bool
+	err = json.Unmarshal(resp.Result, &data)
+	return &data, err
 }
 
 // UploadStickerFile

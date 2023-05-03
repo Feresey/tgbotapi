@@ -12,11 +12,6 @@ const (
 	ParseModeHTML     = "html"
 )
 
-type True struct{}
-
-func (True) MarshalText() ([]byte, error) { return []byte("true"), nil }
-func (*True) UnmarshalText([]byte) error  { return nil }
-
 type InputMediaGraphics interface{}
 
 type IntStr struct {

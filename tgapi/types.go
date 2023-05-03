@@ -704,7 +704,7 @@ type Chat struct {
 	Bio *string `json:"bio,omitempty"`
 	// CanSetStickerSet
 	// True, if the bot can change the group sticker set. Returned only in getChat.
-	CanSetStickerSet *True `json:"can_set_sticker_set,omitempty"`
+	CanSetStickerSet *bool `json:"can_set_sticker_set,omitempty"`
 	// Description
 	// Description, for groups, supergroups and channel chats. Returned only in getChat.
 	Description *string `json:"description,omitempty"`
@@ -718,36 +718,36 @@ type Chat struct {
 	// HasAggressiveAntiSpamEnabled
 	// True, if aggressive anti-spam checks are enabled in the supergroup. The field is only
 	// available to chat administrators. Returned only in getChat.
-	HasAggressiveAntiSpamEnabled *True `json:"has_aggressive_anti_spam_enabled,omitempty"`
+	HasAggressiveAntiSpamEnabled *bool `json:"has_aggressive_anti_spam_enabled,omitempty"`
 	// HasHiddenMembers
 	// True, if non-administrators can only get the list of bots and administrators in the chat.
 	// Returned only in getChat.
-	HasHiddenMembers *True `json:"has_hidden_members,omitempty"`
+	HasHiddenMembers *bool `json:"has_hidden_members,omitempty"`
 	// HasPrivateForwards
 	// True, if privacy settings of the other party in the private chat allows to use
 	// tg://user?id=<user_id> links only in chats with the user. Returned only in getChat.
-	HasPrivateForwards *True `json:"has_private_forwards,omitempty"`
+	HasPrivateForwards *bool `json:"has_private_forwards,omitempty"`
 	// HasProtectedContent
 	// True, if messages from the chat can't be forwarded to other chats. Returned only in getChat.
-	HasProtectedContent *True `json:"has_protected_content,omitempty"`
+	HasProtectedContent *bool `json:"has_protected_content,omitempty"`
 	// HasRestrictedVoiceAndVideoMessages
 	// True, if the privacy settings of the other party restrict sending voice and video note
 	// messages in the private chat. Returned only in getChat.
-	HasRestrictedVoiceAndVideoMessages *True `json:"has_restricted_voice_and_video_messages,omitempty"`
+	HasRestrictedVoiceAndVideoMessages *bool `json:"has_restricted_voice_and_video_messages,omitempty"`
 	// InviteLink
 	// Primary invite link, for groups, supergroups and channel chats. Returned only in getChat.
 	InviteLink *string `json:"invite_link,omitempty"`
 	// IsForum
 	// True, if the supergroup chat is a forum (has topics enabled)
-	IsForum *True `json:"is_forum,omitempty"`
+	IsForum *bool `json:"is_forum,omitempty"`
 	// JoinByRequest
 	// True, if all users directly joining the supergroup need to be approved by supergroup
 	// administrators. Returned only in getChat.
-	JoinByRequest *True `json:"join_by_request,omitempty"`
+	JoinByRequest *bool `json:"join_by_request,omitempty"`
 	// JoinToSendMessages
 	// True, if users need to join the supergroup before they can send messages. Returned only in
 	// getChat.
-	JoinToSendMessages *True `json:"join_to_send_messages,omitempty"`
+	JoinToSendMessages *bool `json:"join_to_send_messages,omitempty"`
 	// LastName
 	// Last name of the other party in a private chat
 	LastName *string `json:"last_name,omitempty"`
@@ -801,7 +801,7 @@ func (t *Chat) GetBio() string {
 	return res
 }
 
-func (t *Chat) GetCanSetStickerSet() *True {
+func (t *Chat) GetCanSetStickerSet() *bool {
 	if t == nil {
 		return nil
 	}
@@ -841,35 +841,35 @@ func (t *Chat) GetFirstName() string {
 	return res
 }
 
-func (t *Chat) GetHasAggressiveAntiSpamEnabled() *True {
+func (t *Chat) GetHasAggressiveAntiSpamEnabled() *bool {
 	if t == nil {
 		return nil
 	}
 	return t.HasAggressiveAntiSpamEnabled
 }
 
-func (t *Chat) GetHasHiddenMembers() *True {
+func (t *Chat) GetHasHiddenMembers() *bool {
 	if t == nil {
 		return nil
 	}
 	return t.HasHiddenMembers
 }
 
-func (t *Chat) GetHasPrivateForwards() *True {
+func (t *Chat) GetHasPrivateForwards() *bool {
 	if t == nil {
 		return nil
 	}
 	return t.HasPrivateForwards
 }
 
-func (t *Chat) GetHasProtectedContent() *True {
+func (t *Chat) GetHasProtectedContent() *bool {
 	if t == nil {
 		return nil
 	}
 	return t.HasProtectedContent
 }
 
-func (t *Chat) GetHasRestrictedVoiceAndVideoMessages() *True {
+func (t *Chat) GetHasRestrictedVoiceAndVideoMessages() *bool {
 	if t == nil {
 		return nil
 	}
@@ -895,21 +895,21 @@ func (t *Chat) GetInviteLink() string {
 	return res
 }
 
-func (t *Chat) GetIsForum() *True {
+func (t *Chat) GetIsForum() *bool {
 	if t == nil {
 		return nil
 	}
 	return t.IsForum
 }
 
-func (t *Chat) GetJoinByRequest() *True {
+func (t *Chat) GetJoinByRequest() *bool {
 	if t == nil {
 		return nil
 	}
 	return t.JoinByRequest
 }
 
-func (t *Chat) GetJoinToSendMessages() *True {
+func (t *Chat) GetJoinToSendMessages() *bool {
 	if t == nil {
 		return nil
 	}
@@ -2845,7 +2845,7 @@ type ForceReply struct {
 	// ForceReply
 	// Shows reply interface to the user, as if they manually selected the bot's message and tapped
 	// 'Reply'
-	ForceReply True `json:"force_reply"`
+	ForceReply bool `json:"force_reply"`
 	// InputFieldPlaceholder
 	// The placeholder to be shown in the input field when the reply is active; 1-64 characters
 	InputFieldPlaceholder *string `json:"input_field_placeholder,omitempty"`
@@ -2856,7 +2856,7 @@ type ForceReply struct {
 	Selective *bool `json:"selective,omitempty"`
 }
 
-func (t *ForceReply) GetForceReply() *True {
+func (t *ForceReply) GetForceReply() *bool {
 	if t == nil {
 		return nil
 	}
@@ -8333,7 +8333,7 @@ type Message struct {
 	// coming through updates, because bot can't be a member of a channel when it is created. It
 	// can only be found in reply_to_message if someone replies to a very first message in a
 	// channel.
-	ChannelChatCreated *True `json:"channel_chat_created,omitempty"`
+	ChannelChatCreated *bool `json:"channel_chat_created,omitempty"`
 	// ChatShared
 	// Service message: a chat was shared with the bot
 	ChatShared *ChatShared `json:"chat_shared,omitempty"`
@@ -8345,7 +8345,7 @@ type Message struct {
 	Contact *Contact `json:"contact,omitempty"`
 	// DeleteChatPhoto
 	// Service message: the chat photo was deleted
-	DeleteChatPhoto *True `json:"delete_chat_photo,omitempty"`
+	DeleteChatPhoto *bool `json:"delete_chat_photo,omitempty"`
 	// Dice
 	// Message is a dice with random value
 	Dice *Dice `json:"dice,omitempty"`
@@ -8408,23 +8408,23 @@ type Message struct {
 	GeneralForumTopicUnhidden *GeneralForumTopicUnhidden `json:"general_forum_topic_unhidden,omitempty"`
 	// GroupChatCreated
 	// Service message: the group has been created
-	GroupChatCreated *True `json:"group_chat_created,omitempty"`
+	GroupChatCreated *bool `json:"group_chat_created,omitempty"`
 	// HasMediaSpoiler
 	// True, if the message media is covered by a spoiler animation
-	HasMediaSpoiler *True `json:"has_media_spoiler,omitempty"`
+	HasMediaSpoiler *bool `json:"has_media_spoiler,omitempty"`
 	// HasProtectedContent
 	// True, if the message can't be forwarded
-	HasProtectedContent *True `json:"has_protected_content,omitempty"`
+	HasProtectedContent *bool `json:"has_protected_content,omitempty"`
 	// Invoice
 	// Message is an invoice for a payment, information about the invoice. More about payments »
 	Invoice *Invoice `json:"invoice,omitempty"`
 	// IsAutomaticForward
 	// True, if the message is a channel post that was automatically forwarded to the connected
 	// discussion group
-	IsAutomaticForward *True `json:"is_automatic_forward,omitempty"`
+	IsAutomaticForward *bool `json:"is_automatic_forward,omitempty"`
 	// IsTopicMessage
 	// True, if the message is sent to a forum topic
-	IsTopicMessage *True `json:"is_topic_message,omitempty"`
+	IsTopicMessage *bool `json:"is_topic_message,omitempty"`
 	// LeftChatMember
 	// A member was removed from the group, information about them (this member may be the bot
 	// itself)
@@ -8507,7 +8507,7 @@ type Message struct {
 	// coming through updates, because bot can't be a member of a supergroup when it is created. It
 	// can only be found in reply_to_message if someone replies to a very first message in a
 	// directly created supergroup.
-	SupergroupChatCreated *True `json:"supergroup_chat_created,omitempty"`
+	SupergroupChatCreated *bool `json:"supergroup_chat_created,omitempty"`
 	// Text
 	// For text messages, the actual UTF-8 text of the message
 	Text *string `json:"text,omitempty"`
@@ -8586,7 +8586,7 @@ func (t *Message) GetCaption() string {
 	return res
 }
 
-func (t *Message) GetChannelChatCreated() *True {
+func (t *Message) GetChannelChatCreated() *bool {
 	if t == nil {
 		return nil
 	}
@@ -8633,7 +8633,7 @@ func (t *Message) GetDate() int64 {
 	return t.Date
 }
 
-func (t *Message) GetDeleteChatPhoto() *True {
+func (t *Message) GetDeleteChatPhoto() *bool {
 	if t == nil {
 		return nil
 	}
@@ -8779,21 +8779,21 @@ func (t *Message) GetGeneralForumTopicUnhidden() *GeneralForumTopicUnhidden {
 	return t.GeneralForumTopicUnhidden
 }
 
-func (t *Message) GetGroupChatCreated() *True {
+func (t *Message) GetGroupChatCreated() *bool {
 	if t == nil {
 		return nil
 	}
 	return t.GroupChatCreated
 }
 
-func (t *Message) GetHasMediaSpoiler() *True {
+func (t *Message) GetHasMediaSpoiler() *bool {
 	if t == nil {
 		return nil
 	}
 	return t.HasMediaSpoiler
 }
 
-func (t *Message) GetHasProtectedContent() *True {
+func (t *Message) GetHasProtectedContent() *bool {
 	if t == nil {
 		return nil
 	}
@@ -8807,14 +8807,14 @@ func (t *Message) GetInvoice() *Invoice {
 	return t.Invoice
 }
 
-func (t *Message) GetIsAutomaticForward() *True {
+func (t *Message) GetIsAutomaticForward() *bool {
 	if t == nil {
 		return nil
 	}
 	return t.IsAutomaticForward
 }
 
-func (t *Message) GetIsTopicMessage() *True {
+func (t *Message) GetIsTopicMessage() *bool {
 	if t == nil {
 		return nil
 	}
@@ -8968,7 +8968,7 @@ func (t *Message) GetSuccessfulPayment() *SuccessfulPayment {
 	return t.SuccessfulPayment
 }
 
-func (t *Message) GetSupergroupChatCreated() *True {
+func (t *Message) GetSupergroupChatCreated() *bool {
 	if t == nil {
 		return nil
 	}
@@ -10694,7 +10694,7 @@ type ReplyKeyboardRemove struct {
 	// Requests clients to remove the custom keyboard (user will not be able to summon this
 	// keyboard; if you want to hide the keyboard from sight but keep it accessible, use
 	// one_time_keyboard in ReplyKeyboardMarkup)
-	RemoveKeyboard True `json:"remove_keyboard"`
+	RemoveKeyboard bool `json:"remove_keyboard"`
 	// Selective
 	// Use this parameter if you want to remove the keyboard for specific users only. Targets: 1)
 	// users that are @mentioned in the text of the Message object; 2) if the bot's message is a
@@ -10705,7 +10705,7 @@ type ReplyKeyboardRemove struct {
 	Selective *bool `json:"selective,omitempty"`
 }
 
-func (t *ReplyKeyboardRemove) GetRemoveKeyboard() *True {
+func (t *ReplyKeyboardRemove) GetRemoveKeyboard() *bool {
 	if t == nil {
 		return nil
 	}
@@ -10971,7 +10971,7 @@ type Sticker struct {
 	// True, if the sticker must be repainted to a text color in messages, the color of the
 	// Telegram Premium badge in emoji status, white color on chat photos, or another appropriate
 	// color in other places
-	NeedsRepainting *True `json:"needs_repainting,omitempty"`
+	NeedsRepainting *bool `json:"needs_repainting,omitempty"`
 	// PremiumAnimation
 	// For premium regular stickers, premium animation for the sticker
 	PremiumAnimation *File `json:"premium_animation,omitempty"`
@@ -11063,7 +11063,7 @@ func (t *Sticker) GetMaskPosition() *MaskPosition {
 	return t.MaskPosition
 }
 
-func (t *Sticker) GetNeedsRepainting() *True {
+func (t *Sticker) GetNeedsRepainting() *bool {
 	if t == nil {
 		return nil
 	}
@@ -11226,7 +11226,7 @@ type Stickers struct {
 	// True, if the sticker must be repainted to a text color in messages, the color of the
 	// Telegram Premium badge in emoji status, white color on chat photos, or another appropriate
 	// color in other places
-	NeedsRepainting *True `json:"needs_repainting,omitempty"`
+	NeedsRepainting *bool `json:"needs_repainting,omitempty"`
 	// PremiumAnimation
 	// For premium regular stickers, premium animation for the sticker
 	PremiumAnimation *File `json:"premium_animation,omitempty"`
@@ -11318,7 +11318,7 @@ func (t *Stickers) GetMaskPosition() *MaskPosition {
 	return t.MaskPosition
 }
 
-func (t *Stickers) GetNeedsRepainting() *True {
+func (t *Stickers) GetNeedsRepainting() *bool {
 	if t == nil {
 		return nil
 	}
@@ -11715,7 +11715,7 @@ type User struct {
 	IsBot bool `json:"is_bot"`
 	// AddedToAttachmentMenu
 	// True, if this user added the bot to the attachment menu
-	AddedToAttachmentMenu *True `json:"added_to_attachment_menu,omitempty"`
+	AddedToAttachmentMenu *bool `json:"added_to_attachment_menu,omitempty"`
 	// CanJoinGroups
 	// True, if the bot can be invited to groups. Returned only in getMe.
 	CanJoinGroups *bool `json:"can_join_groups,omitempty"`
@@ -11724,7 +11724,7 @@ type User struct {
 	CanReadAllGroupMessages *bool `json:"can_read_all_group_messages,omitempty"`
 	// IsPremium
 	// True, if this user is a Telegram Premium user
-	IsPremium *True `json:"is_premium,omitempty"`
+	IsPremium *bool `json:"is_premium,omitempty"`
 	// LanguageCode
 	// IETF language tag of the user's language
 	LanguageCode *string `json:"language_code,omitempty"`
@@ -11739,7 +11739,7 @@ type User struct {
 	Username *string `json:"username,omitempty"`
 }
 
-func (t *User) GetAddedToAttachmentMenu() *True {
+func (t *User) GetAddedToAttachmentMenu() *bool {
 	if t == nil {
 		return nil
 	}
@@ -11792,7 +11792,7 @@ func (t *User) GetIsBot() bool {
 	return t.IsBot
 }
 
-func (t *User) GetIsPremium() *True {
+func (t *User) GetIsPremium() *bool {
 	if t == nil {
 		return nil
 	}

@@ -17,6 +17,8 @@ func (t TypeMapping) GoType() string {
 	case "int", "Int":
 		// Ну на самом деле chat_id должен быть int64, а message_id и int хватит.
 		return "int64"
+	case "True":
+		return "bool"
 	case "Float", "float":
 		return "float64"
 	case "InputMediaAudio, InputMediaDocument, InputMediaPhoto and InputMediaVideo":

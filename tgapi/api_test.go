@@ -119,7 +119,7 @@ func TestDeleteMessage(t *testing.T) {
 	message, err := api.SendMessage(ctx, msg)
 	require.NoError(t, err)
 
-	err = api.DeleteMessage(ctx, msg.ChatID, message.MessageID)
+	_, err = api.DeleteMessage(ctx, msg.ChatID, message.MessageID)
 	require.NoError(t, err)
 }
 
