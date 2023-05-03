@@ -2,7 +2,7 @@
 
 package tgapi
 
-const Version = "5.0"
+const Version = "6.7"
 
 // TODO: category description
 
@@ -29,14 +29,16 @@ type Animation struct {
 	// Original animation filename as defined by sender
 	FileName *string `json:"file_name,omitempty"`
 	// FileSize
-	// File size
+	// File size in bytes. It can be bigger than 2^31 and some programming languages may have
+	// difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a
+	// signed 64-bit integer or double-precision float type are safe for storing this value.
 	FileSize *int64 `json:"file_size,omitempty"`
 	// MimeType
 	// MIME type of the file as defined by sender
 	MimeType *string `json:"mime_type,omitempty"`
-	// Thumb
+	// Thumbnail
 	// Animation thumbnail as defined by sender
-	Thumb *PhotoSize `json:"thumb,omitempty"`
+	Thumbnail *PhotoSize `json:"thumbnail,omitempty"`
 }
 
 func (t *Animation) GetDuration() int64 {
@@ -104,11 +106,11 @@ func (t *Animation) GetMimeType() string {
 	return res
 }
 
-func (t *Animation) GetThumb() *PhotoSize {
+func (t *Animation) GetThumbnail() *PhotoSize {
 	if t == nil {
 		return nil
 	}
-	return t.Thumb
+	return t.Thumbnail
 }
 
 func (t *Animation) GetWidth() int64 {
@@ -136,7 +138,9 @@ type Audio struct {
 	// Original filename as defined by sender
 	FileName *string `json:"file_name,omitempty"`
 	// FileSize
-	// File size
+	// File size in bytes. It can be bigger than 2^31 and some programming languages may have
+	// difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a
+	// signed 64-bit integer or double-precision float type are safe for storing this value.
 	FileSize *int64 `json:"file_size,omitempty"`
 	// MimeType
 	// MIME type of the file as defined by sender
@@ -144,9 +148,9 @@ type Audio struct {
 	// Performer
 	// Performer of the audio as defined by sender or by audio tags
 	Performer *string `json:"performer,omitempty"`
-	// Thumb
+	// Thumbnail
 	// Thumbnail of the album cover to which the music file belongs
-	Thumb *PhotoSize `json:"thumb,omitempty"`
+	Thumbnail *PhotoSize `json:"thumbnail,omitempty"`
 	// Title
 	// Title of the audio as defined by sender or by audio tags
 	Title *string `json:"title,omitempty"`
@@ -220,11 +224,11 @@ func (t *Audio) GetPerformer() string {
 	return res
 }
 
-func (t *Audio) GetThumb() *PhotoSize {
+func (t *Audio) GetThumbnail() *PhotoSize {
 	if t == nil {
 		return nil
 	}
-	return t.Thumb
+	return t.Thumbnail
 }
 
 func (t *Audio) GetTitle() string {
@@ -242,11 +246,11 @@ func (t *Audio) GetTitle() string {
 // This object represents a bot command.
 type BotCommand struct {
 	// Command
-	// Text of the command, 1-32 characters. Can contain only lowercase English letters, digits and
+	// Text of the command; 1-32 characters. Can contain only lowercase English letters, digits and
 	// underscores.
 	Command string `json:"command"`
 	// Description
-	// Description of the command, 3-256 characters.
+	// Description of the command; 1-256 characters.
 	Description string `json:"description"`
 }
 
@@ -266,6 +270,224 @@ func (t *BotCommand) GetDescription() string {
 	return t.Description
 }
 
+// BotCommandScope
+// This object represents the scope to which bot commands are applied. Currently, the following 7
+// scopes are supported:
+type BotCommandScope struct {
+	// Type
+	// Scope type, must be default
+	Type BotType `json:"type"`
+}
+
+func (t *BotCommandScope) GetType() *BotType {
+	if t == nil {
+		return nil
+	}
+	return &t.Type
+}
+
+// BotCommandScopeAllChatAdministrators
+// Represents the scope of bot commands, covering all group and supergroup chat administrators.
+type BotCommandScopeAllChatAdministrators struct {
+	// Type
+	// Scope type, must be all_chat_administrators
+	Type BotType `json:"type"`
+}
+
+func (t *BotCommandScopeAllChatAdministrators) GetType() *BotType {
+	if t == nil {
+		return nil
+	}
+	return &t.Type
+}
+
+// BotCommandScopeAllGroupChats
+// Represents the scope of bot commands, covering all group and supergroup chats.
+type BotCommandScopeAllGroupChats struct {
+	// Type
+	// Scope type, must be all_group_chats
+	Type BotType `json:"type"`
+}
+
+func (t *BotCommandScopeAllGroupChats) GetType() *BotType {
+	if t == nil {
+		return nil
+	}
+	return &t.Type
+}
+
+// BotCommandScopeAllPrivateChats
+// Represents the scope of bot commands, covering all private chats.
+type BotCommandScopeAllPrivateChats struct {
+	// Type
+	// Scope type, must be all_private_chats
+	Type BotType `json:"type"`
+}
+
+func (t *BotCommandScopeAllPrivateChats) GetType() *BotType {
+	if t == nil {
+		return nil
+	}
+	return &t.Type
+}
+
+// BotCommandScopeChat
+// Represents the scope of bot commands, covering a specific chat.
+type BotCommandScopeChat struct {
+	// ChatID
+	// Unique identifier for the target chat or username of the target supergroup (in the format
+	// @supergroupusername)
+	ChatID IntStr `json:"chat_id"`
+	// Type
+	// Scope type, must be chat
+	Type BotType `json:"type"`
+}
+
+func (t *BotCommandScopeChat) GetChatID() IntStr {
+	var res IntStr
+	if t == nil {
+		return res
+	}
+	return t.ChatID
+}
+
+func (t *BotCommandScopeChat) GetType() *BotType {
+	if t == nil {
+		return nil
+	}
+	return &t.Type
+}
+
+// BotCommandScopeChatAdministrators
+// Represents the scope of bot commands, covering all administrators of a specific group or
+// supergroup chat.
+type BotCommandScopeChatAdministrators struct {
+	// ChatID
+	// Unique identifier for the target chat or username of the target supergroup (in the format
+	// @supergroupusername)
+	ChatID IntStr `json:"chat_id"`
+	// Type
+	// Scope type, must be chat_administrators
+	Type BotType `json:"type"`
+}
+
+func (t *BotCommandScopeChatAdministrators) GetChatID() IntStr {
+	var res IntStr
+	if t == nil {
+		return res
+	}
+	return t.ChatID
+}
+
+func (t *BotCommandScopeChatAdministrators) GetType() *BotType {
+	if t == nil {
+		return nil
+	}
+	return &t.Type
+}
+
+// BotCommandScopeChatMember
+// Represents the scope of bot commands, covering a specific member of a group or supergroup chat.
+type BotCommandScopeChatMember struct {
+	// ChatID
+	// Unique identifier for the target chat or username of the target supergroup (in the format
+	// @supergroupusername)
+	ChatID IntStr `json:"chat_id"`
+	// Type
+	// Scope type, must be chat_member
+	Type BotType `json:"type"`
+	// UserID
+	// Unique identifier of the target user
+	UserID int64 `json:"user_id"`
+}
+
+func (t *BotCommandScopeChatMember) GetChatID() IntStr {
+	var res IntStr
+	if t == nil {
+		return res
+	}
+	return t.ChatID
+}
+
+func (t *BotCommandScopeChatMember) GetType() *BotType {
+	if t == nil {
+		return nil
+	}
+	return &t.Type
+}
+
+func (t *BotCommandScopeChatMember) GetUserID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.UserID
+}
+
+// BotCommandScopeDefault
+// Represents the default scope of bot commands. Default commands are used if no commands with a
+// narrower scope are specified for the user.
+type BotCommandScopeDefault struct {
+	// Type
+	// Scope type, must be default
+	Type BotType `json:"type"`
+}
+
+func (t *BotCommandScopeDefault) GetType() *BotType {
+	if t == nil {
+		return nil
+	}
+	return &t.Type
+}
+
+// BotDescription
+// This object represents the bot's description.
+type BotDescription struct {
+	// Description
+	// The bot's description
+	Description string `json:"description"`
+}
+
+func (t *BotDescription) GetDescription() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	return t.Description
+}
+
+// BotName
+// This object represents the bot's name.
+type BotName struct {
+	// Name
+	// The bot's name
+	Name string `json:"name"`
+}
+
+func (t *BotName) GetName() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	return t.Name
+}
+
+// BotShortDescription
+// This object represents the bot's short description.
+type BotShortDescription struct {
+	// ShortDescription
+	// The bot's short description
+	ShortDescription string `json:"short_description"`
+}
+
+func (t *BotShortDescription) GetShortDescription() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	return t.ShortDescription
+}
+
 // CallbackGame
 // A placeholder, currently holds no information. Use BotFather to set up your game.
 type CallbackGame struct {
@@ -279,11 +501,11 @@ type CallbackGame struct {
 	// Required if inline_message_id is not specified. Unique identifier for the target chat
 	ChatID *int64 `json:"chat_id,omitempty"`
 	// DisableEditMessage
-	// Pass True, if the game message should not be automatically edited to include the current
+	// Pass True if the game message should not be automatically edited to include the current
 	// scoreboard
 	DisableEditMessage *bool `json:"disable_edit_message,omitempty"`
 	// Force
-	// Pass True, if the high score is allowed to decrease. This can be useful when fixing mistakes
+	// Pass True if the high score is allowed to decrease. This can be useful when fixing mistakes
 	// or banning cheaters
 	Force *bool `json:"force,omitempty"`
 	// InlineMessageID
@@ -383,8 +605,8 @@ type CallbackQuery struct {
 	// Unique identifier for this query
 	ID string `json:"id"`
 	// Data
-	// Data associated with the callback button. Be aware that a bad client can send arbitrary data
-	// in this field.
+	// Data associated with the callback button. Be aware that the message originated the query can
+	// contain no callback buttons with this data.
 	Data *string `json:"data,omitempty"`
 	// GameShortName
 	// Short name of a Game to be returned, serves as the unique identifier for the game
@@ -465,31 +687,67 @@ func (t *CallbackQuery) GetMessage() *Message {
 // This object represents a chat.
 type Chat struct {
 	// ID
-	// Unique identifier for this chat. This number may be greater than 32 bits and some
-	// programming languages may have difficulty/silent defects in interpreting it. But it is
-	// smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for
-	// storing this identifier.
+	// Unique identifier for this chat. This number may have more than 32 significant bits and some
+	// programming languages may have difficulty/silent defects in interpreting it. But it has at
+	// most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe
+	// for storing this identifier.
 	ID int64 `json:"id"`
 	// Type
 	// Type of chat, can be either "private", "group", "supergroup" or "channel"
 	Type ChatType `json:"type"`
+	// ActiveUsernames
+	// If non-empty, the list of all active chat usernames; for private chats, supergroups and
+	// channels. Returned only in getChat.
+	ActiveUsernames []string `json:"active_usernames,omitempty"`
 	// Bio
 	// Bio of the other party in a private chat. Returned only in getChat.
 	Bio *string `json:"bio,omitempty"`
 	// CanSetStickerSet
 	// True, if the bot can change the group sticker set. Returned only in getChat.
-	CanSetStickerSet *bool `json:"can_set_sticker_set,omitempty"`
+	CanSetStickerSet *True `json:"can_set_sticker_set,omitempty"`
 	// Description
 	// Description, for groups, supergroups and channel chats. Returned only in getChat.
 	Description *string `json:"description,omitempty"`
+	// EmojiStatusCustomEmojiID
+	// Custom emoji identifier of emoji status of the other party in a private chat. Returned only
+	// in getChat.
+	EmojiStatusCustomEmojiID *string `json:"emoji_status_custom_emoji_id,omitempty"`
 	// FirstName
 	// First name of the other party in a private chat
 	FirstName *string `json:"first_name,omitempty"`
+	// HasAggressiveAntiSpamEnabled
+	// True, if aggressive anti-spam checks are enabled in the supergroup. The field is only
+	// available to chat administrators. Returned only in getChat.
+	HasAggressiveAntiSpamEnabled *True `json:"has_aggressive_anti_spam_enabled,omitempty"`
+	// HasHiddenMembers
+	// True, if non-administrators can only get the list of bots and administrators in the chat.
+	// Returned only in getChat.
+	HasHiddenMembers *True `json:"has_hidden_members,omitempty"`
+	// HasPrivateForwards
+	// True, if privacy settings of the other party in the private chat allows to use
+	// tg://user?id=<user_id> links only in chats with the user. Returned only in getChat.
+	HasPrivateForwards *True `json:"has_private_forwards,omitempty"`
+	// HasProtectedContent
+	// True, if messages from the chat can't be forwarded to other chats. Returned only in getChat.
+	HasProtectedContent *True `json:"has_protected_content,omitempty"`
+	// HasRestrictedVoiceAndVideoMessages
+	// True, if the privacy settings of the other party restrict sending voice and video note
+	// messages in the private chat. Returned only in getChat.
+	HasRestrictedVoiceAndVideoMessages *True `json:"has_restricted_voice_and_video_messages,omitempty"`
 	// InviteLink
-	// Chat invite link, for groups, supergroups and channel chats. Each administrator in a chat
-	// generates their own invite links, so the bot must first generate the link using
-	// exportChatInviteLink. Returned only in getChat.
+	// Primary invite link, for groups, supergroups and channel chats. Returned only in getChat.
 	InviteLink *string `json:"invite_link,omitempty"`
+	// IsForum
+	// True, if the supergroup chat is a forum (has topics enabled)
+	IsForum *True `json:"is_forum,omitempty"`
+	// JoinByRequest
+	// True, if all users directly joining the supergroup need to be approved by supergroup
+	// administrators. Returned only in getChat.
+	JoinByRequest *True `json:"join_by_request,omitempty"`
+	// JoinToSendMessages
+	// True, if users need to join the supergroup before they can send messages. Returned only in
+	// getChat.
+	JoinToSendMessages *True `json:"join_to_send_messages,omitempty"`
 	// LastName
 	// Last name of the other party in a private chat
 	LastName *string `json:"last_name,omitempty"`
@@ -504,6 +762,10 @@ type Chat struct {
 	// For supergroups, the location to which the supergroup is connected. Returned only in
 	// getChat.
 	Location *ChatLocation `json:"location,omitempty"`
+	// MessageAutoDeleteTime
+	// The time after which all messages sent to the chat will be automatically deleted; in
+	// seconds. Returned only in getChat.
+	MessageAutoDeleteTime *int64 `json:"message_auto_delete_time,omitempty"`
 	// Permissions
 	// Default chat member permissions, for groups and supergroups. Returned only in getChat.
 	Permissions *ChatPermissions `json:"permissions,omitempty"`
@@ -515,7 +777,7 @@ type Chat struct {
 	PinnedMessage *Message `json:"pinned_message,omitempty"`
 	// SlowModeDelay
 	// For supergroups, the minimum allowed delay between consecutive messages sent by each
-	// unpriviledged user. Returned only in getChat.
+	// unpriviledged user; in seconds. Returned only in getChat.
 	SlowModeDelay *int64 `json:"slow_mode_delay,omitempty"`
 	// StickerSetName
 	// For supergroups, name of group sticker set. Returned only in getChat.
@@ -539,15 +801,11 @@ func (t *Chat) GetBio() string {
 	return res
 }
 
-func (t *Chat) GetCanSetStickerSet() bool {
-	var res bool
+func (t *Chat) GetCanSetStickerSet() *True {
 	if t == nil {
-		return res
+		return nil
 	}
-	if field := t.CanSetStickerSet; field != nil {
-		return *field
-	}
-	return res
+	return t.CanSetStickerSet
 }
 
 func (t *Chat) GetDescription() string {
@@ -556,6 +814,17 @@ func (t *Chat) GetDescription() string {
 		return res
 	}
 	if field := t.Description; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Chat) GetEmojiStatusCustomEmojiID() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.EmojiStatusCustomEmojiID; field != nil {
 		return *field
 	}
 	return res
@@ -570,6 +839,41 @@ func (t *Chat) GetFirstName() string {
 		return *field
 	}
 	return res
+}
+
+func (t *Chat) GetHasAggressiveAntiSpamEnabled() *True {
+	if t == nil {
+		return nil
+	}
+	return t.HasAggressiveAntiSpamEnabled
+}
+
+func (t *Chat) GetHasHiddenMembers() *True {
+	if t == nil {
+		return nil
+	}
+	return t.HasHiddenMembers
+}
+
+func (t *Chat) GetHasPrivateForwards() *True {
+	if t == nil {
+		return nil
+	}
+	return t.HasPrivateForwards
+}
+
+func (t *Chat) GetHasProtectedContent() *True {
+	if t == nil {
+		return nil
+	}
+	return t.HasProtectedContent
+}
+
+func (t *Chat) GetHasRestrictedVoiceAndVideoMessages() *True {
+	if t == nil {
+		return nil
+	}
+	return t.HasRestrictedVoiceAndVideoMessages
 }
 
 func (t *Chat) GetID() int64 {
@@ -589,6 +893,27 @@ func (t *Chat) GetInviteLink() string {
 		return *field
 	}
 	return res
+}
+
+func (t *Chat) GetIsForum() *True {
+	if t == nil {
+		return nil
+	}
+	return t.IsForum
+}
+
+func (t *Chat) GetJoinByRequest() *True {
+	if t == nil {
+		return nil
+	}
+	return t.JoinByRequest
+}
+
+func (t *Chat) GetJoinToSendMessages() *True {
+	if t == nil {
+		return nil
+	}
+	return t.JoinToSendMessages
 }
 
 func (t *Chat) GetLastName() string {
@@ -618,6 +943,17 @@ func (t *Chat) GetLocation() *ChatLocation {
 		return nil
 	}
 	return t.Location
+}
+
+func (t *Chat) GetMessageAutoDeleteTime() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.MessageAutoDeleteTime; field != nil {
+		return *field
+	}
+	return res
 }
 
 func (t *Chat) GetPermissions() *ChatPermissions {
@@ -692,6 +1028,354 @@ func (t *Chat) GetUsername() string {
 	return res
 }
 
+// ChatAdministratorRights
+// Represents the rights of an administrator in a chat.
+type ChatAdministratorRights struct {
+	// CanChangeInfo
+	// True, if the user is allowed to change the chat title, photo and other settings
+	CanChangeInfo bool `json:"can_change_info"`
+	// CanDeleteMessages
+	// True, if the administrator can delete messages of other users
+	CanDeleteMessages bool `json:"can_delete_messages"`
+	// CanInviteUsers
+	// True, if the user is allowed to invite new users to the chat
+	CanInviteUsers bool `json:"can_invite_users"`
+	// CanManageChat
+	// True, if the administrator can access the chat event log, chat statistics, message
+	// statistics in channels, see channel members, see anonymous administrators in supergroups and
+	// ignore slow mode. Implied by any other administrator privilege
+	CanManageChat bool `json:"can_manage_chat"`
+	// CanManageVideoChats
+	// True, if the administrator can manage video chats
+	CanManageVideoChats bool `json:"can_manage_video_chats"`
+	// CanPromoteMembers
+	// True, if the administrator can add new administrators with a subset of their own privileges
+	// or demote administrators that they have promoted, directly or indirectly (promoted by
+	// administrators that were appointed by the user)
+	CanPromoteMembers bool `json:"can_promote_members"`
+	// CanRestrictMembers
+	// True, if the administrator can restrict, ban or unban chat members
+	CanRestrictMembers bool `json:"can_restrict_members"`
+	// IsAnonymous
+	// True, if the user's presence in the chat is hidden
+	IsAnonymous bool `json:"is_anonymous"`
+	// CanEditMessages
+	// True, if the administrator can edit messages of other users and can pin messages; channels
+	// only
+	CanEditMessages *bool `json:"can_edit_messages,omitempty"`
+	// CanManageTopics
+	// True, if the user is allowed to create, rename, close, and reopen forum topics; supergroups
+	// only
+	CanManageTopics *bool `json:"can_manage_topics,omitempty"`
+	// CanPinMessages
+	// True, if the user is allowed to pin messages; groups and supergroups only
+	CanPinMessages *bool `json:"can_pin_messages,omitempty"`
+	// CanPostMessages
+	// True, if the administrator can post in the channel; channels only
+	CanPostMessages *bool `json:"can_post_messages,omitempty"`
+}
+
+func (t *ChatAdministratorRights) GetCanChangeInfo() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanChangeInfo
+}
+
+func (t *ChatAdministratorRights) GetCanDeleteMessages() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanDeleteMessages
+}
+
+func (t *ChatAdministratorRights) GetCanEditMessages() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanEditMessages; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatAdministratorRights) GetCanInviteUsers() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanInviteUsers
+}
+
+func (t *ChatAdministratorRights) GetCanManageChat() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanManageChat
+}
+
+func (t *ChatAdministratorRights) GetCanManageTopics() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanManageTopics; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatAdministratorRights) GetCanManageVideoChats() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanManageVideoChats
+}
+
+func (t *ChatAdministratorRights) GetCanPinMessages() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanPinMessages; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatAdministratorRights) GetCanPostMessages() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanPostMessages; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatAdministratorRights) GetCanPromoteMembers() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanPromoteMembers
+}
+
+func (t *ChatAdministratorRights) GetCanRestrictMembers() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanRestrictMembers
+}
+
+func (t *ChatAdministratorRights) GetIsAnonymous() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.IsAnonymous
+}
+
+// ChatInviteLink
+// Represents an invite link for a chat.
+type ChatInviteLink struct {
+	// CreatesJoinRequest
+	// True, if users joining the chat via the link need to be approved by chat administrators
+	CreatesJoinRequest bool `json:"creates_join_request"`
+	// Creator
+	// Creator of the link
+	Creator User `json:"creator"`
+	// InviteLink
+	// The invite link. If the link was created by another chat administrator, then the second part
+	// of the link will be replaced with "…".
+	InviteLink string `json:"invite_link"`
+	// IsPrimary
+	// True, if the link is primary
+	IsPrimary bool `json:"is_primary"`
+	// IsRevoked
+	// True, if the link is revoked
+	IsRevoked bool `json:"is_revoked"`
+	// ExpireDate
+	// Point in time (Unix timestamp) when the link will expire or has been expired
+	ExpireDate *int64 `json:"expire_date,omitempty"`
+	// MemberLimit
+	// The maximum number of users that can be members of the chat simultaneously after joining the
+	// chat via this invite link; 1-99999
+	MemberLimit *int64 `json:"member_limit,omitempty"`
+	// Name
+	// Invite link name
+	Name *string `json:"name,omitempty"`
+	// PendingJoinRequestCount
+	// Number of pending join requests created using this link
+	PendingJoinRequestCount *int64 `json:"pending_join_request_count,omitempty"`
+}
+
+func (t *ChatInviteLink) GetCreatesJoinRequest() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CreatesJoinRequest
+}
+
+func (t *ChatInviteLink) GetCreator() *User {
+	if t == nil {
+		return nil
+	}
+	return &t.Creator
+}
+
+func (t *ChatInviteLink) GetExpireDate() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.ExpireDate; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatInviteLink) GetInviteLink() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	return t.InviteLink
+}
+
+func (t *ChatInviteLink) GetIsPrimary() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.IsPrimary
+}
+
+func (t *ChatInviteLink) GetIsRevoked() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.IsRevoked
+}
+
+func (t *ChatInviteLink) GetMemberLimit() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.MemberLimit; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatInviteLink) GetName() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Name; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatInviteLink) GetPendingJoinRequestCount() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.PendingJoinRequestCount; field != nil {
+		return *field
+	}
+	return res
+}
+
+// ChatJoinRequest
+// Represents a join request sent to a chat.
+type ChatJoinRequest struct {
+	// Chat
+	// Chat to which the request was sent
+	Chat Chat `json:"chat"`
+	// Date
+	// Date the request was sent in Unix time
+	Date int64 `json:"date"`
+	// From
+	// User that sent the join request
+	From User `json:"from"`
+	// UserChatID
+	// Identifier of a private chat with the user who sent the join request. This number may have
+	// more than 32 significant bits and some programming languages may have difficulty/silent
+	// defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or
+	// double-precision float type are safe for storing this identifier. The bot can use this
+	// identifier for 24 hours to send messages until the join request is processed, assuming no
+	// other administrator contacted the user.
+	UserChatID int64 `json:"user_chat_id"`
+	// Bio
+	// Bio of the user.
+	Bio *string `json:"bio,omitempty"`
+	// InviteLink
+	// Chat invite link that was used by the user to send the join request
+	InviteLink *ChatInviteLink `json:"invite_link,omitempty"`
+}
+
+func (t *ChatJoinRequest) GetBio() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Bio; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatJoinRequest) GetChat() *Chat {
+	if t == nil {
+		return nil
+	}
+	return &t.Chat
+}
+
+func (t *ChatJoinRequest) GetDate() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.Date
+}
+
+func (t *ChatJoinRequest) GetFrom() *User {
+	if t == nil {
+		return nil
+	}
+	return &t.From
+}
+
+func (t *ChatJoinRequest) GetInviteLink() *ChatInviteLink {
+	if t == nil {
+		return nil
+	}
+	return t.InviteLink
+}
+
+func (t *ChatJoinRequest) GetUserChatID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.UserChatID
+}
+
 // ChatLocation
 // Represents a location to which a chat is connected.
 type ChatLocation struct {
@@ -719,233 +1403,21 @@ func (t *ChatLocation) GetLocation() *Location {
 }
 
 // ChatMember
-// This object contains information about one member of a chat.
+// This object contains information about one member of a chat. Currently, the following 6 types of
+// chat members are supported:
 type ChatMember struct {
+	// IsAnonymous
+	// True, if the user's presence in the chat is hidden
+	IsAnonymous bool `json:"is_anonymous"`
 	// Status
-	// The member's status in the chat. Can be "creator", "administrator", "member", "restricted",
-	// "left" or "kicked"
+	// The member's status in the chat, always "creator"
 	Status string `json:"status"`
 	// User
 	// Information about the user
 	User User `json:"user"`
-	// CanAddWebPagePreviews
-	// Restricted only. True, if the user is allowed to add web page previews to their messages
-	CanAddWebPagePreviews *bool `json:"can_add_web_page_previews,omitempty"`
-	// CanBeEdited
-	// Administrators only. True, if the bot is allowed to edit administrator privileges of that
-	// user
-	CanBeEdited *bool `json:"can_be_edited,omitempty"`
-	// CanChangeInfo
-	// Administrators and restricted only. True, if the user is allowed to change the chat title,
-	// photo and other settings
-	CanChangeInfo *bool `json:"can_change_info,omitempty"`
-	// CanDeleteMessages
-	// Administrators only. True, if the administrator can delete messages of other users
-	CanDeleteMessages *bool `json:"can_delete_messages,omitempty"`
-	// CanEditMessages
-	// Administrators only. True, if the administrator can edit messages of other users and can pin
-	// messages; channels only
-	CanEditMessages *bool `json:"can_edit_messages,omitempty"`
-	// CanInviteUsers
-	// Administrators and restricted only. True, if the user is allowed to invite new users to the
-	// chat
-	CanInviteUsers *bool `json:"can_invite_users,omitempty"`
-	// CanPinMessages
-	// Administrators and restricted only. True, if the user is allowed to pin messages; groups and
-	// supergroups only
-	CanPinMessages *bool `json:"can_pin_messages,omitempty"`
-	// CanPostMessages
-	// Administrators only. True, if the administrator can post in the channel; channels only
-	CanPostMessages *bool `json:"can_post_messages,omitempty"`
-	// CanPromoteMembers
-	// Administrators only. True, if the administrator can add new administrators with a subset of
-	// their own privileges or demote administrators that he has promoted, directly or indirectly
-	// (promoted by administrators that were appointed by the user)
-	CanPromoteMembers *bool `json:"can_promote_members,omitempty"`
-	// CanRestrictMembers
-	// Administrators only. True, if the administrator can restrict, ban or unban chat members
-	CanRestrictMembers *bool `json:"can_restrict_members,omitempty"`
-	// CanSendMediaMessages
-	// Restricted only. True, if the user is allowed to send audios, documents, photos, videos,
-	// video notes and voice notes
-	CanSendMediaMessages *bool `json:"can_send_media_messages,omitempty"`
-	// CanSendMessages
-	// Restricted only. True, if the user is allowed to send text messages, contacts, locations and
-	// venues
-	CanSendMessages *bool `json:"can_send_messages,omitempty"`
-	// CanSendOtherMessages
-	// Restricted only. True, if the user is allowed to send animations, games, stickers and use
-	// inline bots
-	CanSendOtherMessages *bool `json:"can_send_other_messages,omitempty"`
-	// CanSendPolls
-	// Restricted only. True, if the user is allowed to send polls
-	CanSendPolls *bool `json:"can_send_polls,omitempty"`
 	// CustomTitle
-	// Owner and administrators only. Custom title for this user
+	// Custom title for this user
 	CustomTitle *string `json:"custom_title,omitempty"`
-	// IsAnonymous
-	// Owner and administrators only. True, if the user's presence in the chat is hidden
-	IsAnonymous *bool `json:"is_anonymous,omitempty"`
-	// IsMember
-	// Restricted only. True, if the user is a member of the chat at the moment of the request
-	IsMember *bool `json:"is_member,omitempty"`
-	// UntilDate
-	// Restricted and kicked only. Date when restrictions will be lifted for this user; unix time
-	UntilDate *int64 `json:"until_date,omitempty"`
-}
-
-func (t *ChatMember) GetCanAddWebPagePreviews() bool {
-	var res bool
-	if t == nil {
-		return res
-	}
-	if field := t.CanAddWebPagePreviews; field != nil {
-		return *field
-	}
-	return res
-}
-
-func (t *ChatMember) GetCanBeEdited() bool {
-	var res bool
-	if t == nil {
-		return res
-	}
-	if field := t.CanBeEdited; field != nil {
-		return *field
-	}
-	return res
-}
-
-func (t *ChatMember) GetCanChangeInfo() bool {
-	var res bool
-	if t == nil {
-		return res
-	}
-	if field := t.CanChangeInfo; field != nil {
-		return *field
-	}
-	return res
-}
-
-func (t *ChatMember) GetCanDeleteMessages() bool {
-	var res bool
-	if t == nil {
-		return res
-	}
-	if field := t.CanDeleteMessages; field != nil {
-		return *field
-	}
-	return res
-}
-
-func (t *ChatMember) GetCanEditMessages() bool {
-	var res bool
-	if t == nil {
-		return res
-	}
-	if field := t.CanEditMessages; field != nil {
-		return *field
-	}
-	return res
-}
-
-func (t *ChatMember) GetCanInviteUsers() bool {
-	var res bool
-	if t == nil {
-		return res
-	}
-	if field := t.CanInviteUsers; field != nil {
-		return *field
-	}
-	return res
-}
-
-func (t *ChatMember) GetCanPinMessages() bool {
-	var res bool
-	if t == nil {
-		return res
-	}
-	if field := t.CanPinMessages; field != nil {
-		return *field
-	}
-	return res
-}
-
-func (t *ChatMember) GetCanPostMessages() bool {
-	var res bool
-	if t == nil {
-		return res
-	}
-	if field := t.CanPostMessages; field != nil {
-		return *field
-	}
-	return res
-}
-
-func (t *ChatMember) GetCanPromoteMembers() bool {
-	var res bool
-	if t == nil {
-		return res
-	}
-	if field := t.CanPromoteMembers; field != nil {
-		return *field
-	}
-	return res
-}
-
-func (t *ChatMember) GetCanRestrictMembers() bool {
-	var res bool
-	if t == nil {
-		return res
-	}
-	if field := t.CanRestrictMembers; field != nil {
-		return *field
-	}
-	return res
-}
-
-func (t *ChatMember) GetCanSendMediaMessages() bool {
-	var res bool
-	if t == nil {
-		return res
-	}
-	if field := t.CanSendMediaMessages; field != nil {
-		return *field
-	}
-	return res
-}
-
-func (t *ChatMember) GetCanSendMessages() bool {
-	var res bool
-	if t == nil {
-		return res
-	}
-	if field := t.CanSendMessages; field != nil {
-		return *field
-	}
-	return res
-}
-
-func (t *ChatMember) GetCanSendOtherMessages() bool {
-	var res bool
-	if t == nil {
-		return res
-	}
-	if field := t.CanSendOtherMessages; field != nil {
-		return *field
-	}
-	return res
-}
-
-func (t *ChatMember) GetCanSendPolls() bool {
-	var res bool
-	if t == nil {
-		return res
-	}
-	if field := t.CanSendPolls; field != nil {
-		return *field
-	}
-	return res
 }
 
 func (t *ChatMember) GetCustomTitle() string {
@@ -964,21 +1436,7 @@ func (t *ChatMember) GetIsAnonymous() bool {
 	if t == nil {
 		return res
 	}
-	if field := t.IsAnonymous; field != nil {
-		return *field
-	}
-	return res
-}
-
-func (t *ChatMember) GetIsMember() bool {
-	var res bool
-	if t == nil {
-		return res
-	}
-	if field := t.IsMember; field != nil {
-		return *field
-	}
-	return res
+	return t.IsAnonymous
 }
 
 func (t *ChatMember) GetStatus() string {
@@ -989,17 +1447,6 @@ func (t *ChatMember) GetStatus() string {
 	return t.Status
 }
 
-func (t *ChatMember) GetUntilDate() int64 {
-	var res int64
-	if t == nil {
-		return res
-	}
-	if field := t.UntilDate; field != nil {
-		return *field
-	}
-	return res
-}
-
 func (t *ChatMember) GetUser() *User {
 	if t == nil {
 		return nil
@@ -1007,12 +1454,638 @@ func (t *ChatMember) GetUser() *User {
 	return &t.User
 }
 
+// ChatMemberAdministrator
+// Represents a chat member that has some additional privileges.
+type ChatMemberAdministrator struct {
+	// CanBeEdited
+	// True, if the bot is allowed to edit administrator privileges of that user
+	CanBeEdited bool `json:"can_be_edited"`
+	// CanChangeInfo
+	// True, if the user is allowed to change the chat title, photo and other settings
+	CanChangeInfo bool `json:"can_change_info"`
+	// CanDeleteMessages
+	// True, if the administrator can delete messages of other users
+	CanDeleteMessages bool `json:"can_delete_messages"`
+	// CanInviteUsers
+	// True, if the user is allowed to invite new users to the chat
+	CanInviteUsers bool `json:"can_invite_users"`
+	// CanManageChat
+	// True, if the administrator can access the chat event log, chat statistics, message
+	// statistics in channels, see channel members, see anonymous administrators in supergroups and
+	// ignore slow mode. Implied by any other administrator privilege
+	CanManageChat bool `json:"can_manage_chat"`
+	// CanManageVideoChats
+	// True, if the administrator can manage video chats
+	CanManageVideoChats bool `json:"can_manage_video_chats"`
+	// CanPromoteMembers
+	// True, if the administrator can add new administrators with a subset of their own privileges
+	// or demote administrators that they have promoted, directly or indirectly (promoted by
+	// administrators that were appointed by the user)
+	CanPromoteMembers bool `json:"can_promote_members"`
+	// CanRestrictMembers
+	// True, if the administrator can restrict, ban or unban chat members
+	CanRestrictMembers bool `json:"can_restrict_members"`
+	// IsAnonymous
+	// True, if the user's presence in the chat is hidden
+	IsAnonymous bool `json:"is_anonymous"`
+	// Status
+	// The member's status in the chat, always "administrator"
+	Status string `json:"status"`
+	// User
+	// Information about the user
+	User User `json:"user"`
+	// CanEditMessages
+	// True, if the administrator can edit messages of other users and can pin messages; channels
+	// only
+	CanEditMessages *bool `json:"can_edit_messages,omitempty"`
+	// CanManageTopics
+	// True, if the user is allowed to create, rename, close, and reopen forum topics; supergroups
+	// only
+	CanManageTopics *bool `json:"can_manage_topics,omitempty"`
+	// CanPinMessages
+	// True, if the user is allowed to pin messages; groups and supergroups only
+	CanPinMessages *bool `json:"can_pin_messages,omitempty"`
+	// CanPostMessages
+	// True, if the administrator can post in the channel; channels only
+	CanPostMessages *bool `json:"can_post_messages,omitempty"`
+	// CustomTitle
+	// Custom title for this user
+	CustomTitle *string `json:"custom_title,omitempty"`
+}
+
+func (t *ChatMemberAdministrator) GetCanBeEdited() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanBeEdited
+}
+
+func (t *ChatMemberAdministrator) GetCanChangeInfo() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanChangeInfo
+}
+
+func (t *ChatMemberAdministrator) GetCanDeleteMessages() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanDeleteMessages
+}
+
+func (t *ChatMemberAdministrator) GetCanEditMessages() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanEditMessages; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatMemberAdministrator) GetCanInviteUsers() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanInviteUsers
+}
+
+func (t *ChatMemberAdministrator) GetCanManageChat() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanManageChat
+}
+
+func (t *ChatMemberAdministrator) GetCanManageTopics() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanManageTopics; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatMemberAdministrator) GetCanManageVideoChats() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanManageVideoChats
+}
+
+func (t *ChatMemberAdministrator) GetCanPinMessages() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanPinMessages; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatMemberAdministrator) GetCanPostMessages() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanPostMessages; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatMemberAdministrator) GetCanPromoteMembers() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanPromoteMembers
+}
+
+func (t *ChatMemberAdministrator) GetCanRestrictMembers() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanRestrictMembers
+}
+
+func (t *ChatMemberAdministrator) GetCustomTitle() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.CustomTitle; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatMemberAdministrator) GetIsAnonymous() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.IsAnonymous
+}
+
+func (t *ChatMemberAdministrator) GetStatus() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	return t.Status
+}
+
+func (t *ChatMemberAdministrator) GetUser() *User {
+	if t == nil {
+		return nil
+	}
+	return &t.User
+}
+
+// ChatMemberBanned
+// Represents a chat member that was banned in the chat and can't return to the chat or view chat
+// messages.
+type ChatMemberBanned struct {
+	// Status
+	// The member's status in the chat, always "kicked"
+	Status string `json:"status"`
+	// UntilDate
+	// Date when restrictions will be lifted for this user; unix time. If 0, then the user is
+	// banned forever
+	UntilDate int64 `json:"until_date"`
+	// User
+	// Information about the user
+	User User `json:"user"`
+}
+
+func (t *ChatMemberBanned) GetStatus() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	return t.Status
+}
+
+func (t *ChatMemberBanned) GetUntilDate() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.UntilDate
+}
+
+func (t *ChatMemberBanned) GetUser() *User {
+	if t == nil {
+		return nil
+	}
+	return &t.User
+}
+
+// ChatMemberLeft
+// Represents a chat member that isn't currently a member of the chat, but may join it themselves.
+type ChatMemberLeft struct {
+	// Status
+	// The member's status in the chat, always "left"
+	Status string `json:"status"`
+	// User
+	// Information about the user
+	User User `json:"user"`
+}
+
+func (t *ChatMemberLeft) GetStatus() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	return t.Status
+}
+
+func (t *ChatMemberLeft) GetUser() *User {
+	if t == nil {
+		return nil
+	}
+	return &t.User
+}
+
+// ChatMemberMember
+// Represents a chat member that has no additional privileges or restrictions.
+type ChatMemberMember struct {
+	// Status
+	// The member's status in the chat, always "member"
+	Status string `json:"status"`
+	// User
+	// Information about the user
+	User User `json:"user"`
+}
+
+func (t *ChatMemberMember) GetStatus() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	return t.Status
+}
+
+func (t *ChatMemberMember) GetUser() *User {
+	if t == nil {
+		return nil
+	}
+	return &t.User
+}
+
+// ChatMemberOwner
+// Represents a chat member that owns the chat and has all administrator privileges.
+type ChatMemberOwner struct {
+	// IsAnonymous
+	// True, if the user's presence in the chat is hidden
+	IsAnonymous bool `json:"is_anonymous"`
+	// Status
+	// The member's status in the chat, always "creator"
+	Status string `json:"status"`
+	// User
+	// Information about the user
+	User User `json:"user"`
+	// CustomTitle
+	// Custom title for this user
+	CustomTitle *string `json:"custom_title,omitempty"`
+}
+
+func (t *ChatMemberOwner) GetCustomTitle() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.CustomTitle; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatMemberOwner) GetIsAnonymous() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.IsAnonymous
+}
+
+func (t *ChatMemberOwner) GetStatus() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	return t.Status
+}
+
+func (t *ChatMemberOwner) GetUser() *User {
+	if t == nil {
+		return nil
+	}
+	return &t.User
+}
+
+// ChatMemberRestricted
+// Represents a chat member that is under certain restrictions in the chat. Supergroups only.
+type ChatMemberRestricted struct {
+	// CanAddWebPagePreviews
+	// True, if the user is allowed to add web page previews to their messages
+	CanAddWebPagePreviews bool `json:"can_add_web_page_previews"`
+	// CanChangeInfo
+	// True, if the user is allowed to change the chat title, photo and other settings
+	CanChangeInfo bool `json:"can_change_info"`
+	// CanInviteUsers
+	// True, if the user is allowed to invite new users to the chat
+	CanInviteUsers bool `json:"can_invite_users"`
+	// CanManageTopics
+	// True, if the user is allowed to create forum topics
+	CanManageTopics bool `json:"can_manage_topics"`
+	// CanPinMessages
+	// True, if the user is allowed to pin messages
+	CanPinMessages bool `json:"can_pin_messages"`
+	// CanSendAudios
+	// True, if the user is allowed to send audios
+	CanSendAudios bool `json:"can_send_audios"`
+	// CanSendDocuments
+	// True, if the user is allowed to send documents
+	CanSendDocuments bool `json:"can_send_documents"`
+	// CanSendMessages
+	// True, if the user is allowed to send text messages, contacts, invoices, locations and venues
+	CanSendMessages bool `json:"can_send_messages"`
+	// CanSendOtherMessages
+	// True, if the user is allowed to send animations, games, stickers and use inline bots
+	CanSendOtherMessages bool `json:"can_send_other_messages"`
+	// CanSendPhotos
+	// True, if the user is allowed to send photos
+	CanSendPhotos bool `json:"can_send_photos"`
+	// CanSendPolls
+	// True, if the user is allowed to send polls
+	CanSendPolls bool `json:"can_send_polls"`
+	// CanSendVideoNotes
+	// True, if the user is allowed to send video notes
+	CanSendVideoNotes bool `json:"can_send_video_notes"`
+	// CanSendVideos
+	// True, if the user is allowed to send videos
+	CanSendVideos bool `json:"can_send_videos"`
+	// CanSendVoiceNotes
+	// True, if the user is allowed to send voice notes
+	CanSendVoiceNotes bool `json:"can_send_voice_notes"`
+	// IsMember
+	// True, if the user is a member of the chat at the moment of the request
+	IsMember bool `json:"is_member"`
+	// Status
+	// The member's status in the chat, always "restricted"
+	Status string `json:"status"`
+	// UntilDate
+	// Date when restrictions will be lifted for this user; unix time. If 0, then the user is
+	// restricted forever
+	UntilDate int64 `json:"until_date"`
+	// User
+	// Information about the user
+	User User `json:"user"`
+}
+
+func (t *ChatMemberRestricted) GetCanAddWebPagePreviews() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanAddWebPagePreviews
+}
+
+func (t *ChatMemberRestricted) GetCanChangeInfo() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanChangeInfo
+}
+
+func (t *ChatMemberRestricted) GetCanInviteUsers() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanInviteUsers
+}
+
+func (t *ChatMemberRestricted) GetCanManageTopics() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanManageTopics
+}
+
+func (t *ChatMemberRestricted) GetCanPinMessages() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanPinMessages
+}
+
+func (t *ChatMemberRestricted) GetCanSendAudios() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanSendAudios
+}
+
+func (t *ChatMemberRestricted) GetCanSendDocuments() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanSendDocuments
+}
+
+func (t *ChatMemberRestricted) GetCanSendMessages() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanSendMessages
+}
+
+func (t *ChatMemberRestricted) GetCanSendOtherMessages() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanSendOtherMessages
+}
+
+func (t *ChatMemberRestricted) GetCanSendPhotos() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanSendPhotos
+}
+
+func (t *ChatMemberRestricted) GetCanSendPolls() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanSendPolls
+}
+
+func (t *ChatMemberRestricted) GetCanSendVideoNotes() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanSendVideoNotes
+}
+
+func (t *ChatMemberRestricted) GetCanSendVideos() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanSendVideos
+}
+
+func (t *ChatMemberRestricted) GetCanSendVoiceNotes() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.CanSendVoiceNotes
+}
+
+func (t *ChatMemberRestricted) GetIsMember() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.IsMember
+}
+
+func (t *ChatMemberRestricted) GetStatus() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	return t.Status
+}
+
+func (t *ChatMemberRestricted) GetUntilDate() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.UntilDate
+}
+
+func (t *ChatMemberRestricted) GetUser() *User {
+	if t == nil {
+		return nil
+	}
+	return &t.User
+}
+
+// ChatMemberUpdated
+// This object represents changes in the status of a chat member.
+type ChatMemberUpdated struct {
+	// Chat
+	// Chat the user belongs to
+	Chat Chat `json:"chat"`
+	// Date
+	// Date the change was done in Unix time
+	Date int64 `json:"date"`
+	// From
+	// Performer of the action, which resulted in the change
+	From User `json:"from"`
+	// NewChatMember
+	// New information about the chat member
+	NewChatMember ChatMember `json:"new_chat_member"`
+	// OldChatMember
+	// Previous information about the chat member
+	OldChatMember ChatMember `json:"old_chat_member"`
+	// InviteLink
+	// Chat invite link, which was used by the user to join the chat; for joining by invite link
+	// events only.
+	InviteLink *ChatInviteLink `json:"invite_link,omitempty"`
+	// ViaChatFolderInviteLink
+	// True, if the user joined the chat via a chat folder invite link
+	ViaChatFolderInviteLink *bool `json:"via_chat_folder_invite_link,omitempty"`
+}
+
+func (t *ChatMemberUpdated) GetChat() *Chat {
+	if t == nil {
+		return nil
+	}
+	return &t.Chat
+}
+
+func (t *ChatMemberUpdated) GetDate() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.Date
+}
+
+func (t *ChatMemberUpdated) GetFrom() *User {
+	if t == nil {
+		return nil
+	}
+	return &t.From
+}
+
+func (t *ChatMemberUpdated) GetInviteLink() *ChatInviteLink {
+	if t == nil {
+		return nil
+	}
+	return t.InviteLink
+}
+
+func (t *ChatMemberUpdated) GetNewChatMember() *ChatMember {
+	if t == nil {
+		return nil
+	}
+	return &t.NewChatMember
+}
+
+func (t *ChatMemberUpdated) GetOldChatMember() *ChatMember {
+	if t == nil {
+		return nil
+	}
+	return &t.OldChatMember
+}
+
+func (t *ChatMemberUpdated) GetViaChatFolderInviteLink() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.ViaChatFolderInviteLink; field != nil {
+		return *field
+	}
+	return res
+}
+
 // ChatPermissions
 // Describes actions that a non-administrator user is allowed to take in a chat.
 type ChatPermissions struct {
 	// CanAddWebPagePreviews
-	// True, if the user is allowed to add web page previews to their messages, implies
-	// can_send_media_messages
+	// True, if the user is allowed to add web page previews to their messages
 	CanAddWebPagePreviews *bool `json:"can_add_web_page_previews,omitempty"`
 	// CanChangeInfo
 	// True, if the user is allowed to change the chat title, photo and other settings. Ignored in
@@ -1021,23 +2094,40 @@ type ChatPermissions struct {
 	// CanInviteUsers
 	// True, if the user is allowed to invite new users to the chat
 	CanInviteUsers *bool `json:"can_invite_users,omitempty"`
+	// CanManageTopics
+	// True, if the user is allowed to create forum topics. If omitted defaults to the value of
+	// can_pin_messages
+	CanManageTopics *bool `json:"can_manage_topics,omitempty"`
 	// CanPinMessages
 	// True, if the user is allowed to pin messages. Ignored in public supergroups
 	CanPinMessages *bool `json:"can_pin_messages,omitempty"`
-	// CanSendMediaMessages
-	// True, if the user is allowed to send audios, documents, photos, videos, video notes and
-	// voice notes, implies can_send_messages
-	CanSendMediaMessages *bool `json:"can_send_media_messages,omitempty"`
+	// CanSendAudios
+	// True, if the user is allowed to send audios
+	CanSendAudios *bool `json:"can_send_audios,omitempty"`
+	// CanSendDocuments
+	// True, if the user is allowed to send documents
+	CanSendDocuments *bool `json:"can_send_documents,omitempty"`
 	// CanSendMessages
-	// True, if the user is allowed to send text messages, contacts, locations and venues
+	// True, if the user is allowed to send text messages, contacts, invoices, locations and venues
 	CanSendMessages *bool `json:"can_send_messages,omitempty"`
 	// CanSendOtherMessages
-	// True, if the user is allowed to send animations, games, stickers and use inline bots,
-	// implies can_send_media_messages
+	// True, if the user is allowed to send animations, games, stickers and use inline bots
 	CanSendOtherMessages *bool `json:"can_send_other_messages,omitempty"`
+	// CanSendPhotos
+	// True, if the user is allowed to send photos
+	CanSendPhotos *bool `json:"can_send_photos,omitempty"`
 	// CanSendPolls
-	// True, if the user is allowed to send polls, implies can_send_messages
+	// True, if the user is allowed to send polls
 	CanSendPolls *bool `json:"can_send_polls,omitempty"`
+	// CanSendVideoNotes
+	// True, if the user is allowed to send video notes
+	CanSendVideoNotes *bool `json:"can_send_video_notes,omitempty"`
+	// CanSendVideos
+	// True, if the user is allowed to send videos
+	CanSendVideos *bool `json:"can_send_videos,omitempty"`
+	// CanSendVoiceNotes
+	// True, if the user is allowed to send voice notes
+	CanSendVoiceNotes *bool `json:"can_send_voice_notes,omitempty"`
 }
 
 func (t *ChatPermissions) GetCanAddWebPagePreviews() bool {
@@ -1073,6 +2163,17 @@ func (t *ChatPermissions) GetCanInviteUsers() bool {
 	return res
 }
 
+func (t *ChatPermissions) GetCanManageTopics() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanManageTopics; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *ChatPermissions) GetCanPinMessages() bool {
 	var res bool
 	if t == nil {
@@ -1084,12 +2185,23 @@ func (t *ChatPermissions) GetCanPinMessages() bool {
 	return res
 }
 
-func (t *ChatPermissions) GetCanSendMediaMessages() bool {
+func (t *ChatPermissions) GetCanSendAudios() bool {
 	var res bool
 	if t == nil {
 		return res
 	}
-	if field := t.CanSendMediaMessages; field != nil {
+	if field := t.CanSendAudios; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatPermissions) GetCanSendDocuments() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanSendDocuments; field != nil {
 		return *field
 	}
 	return res
@@ -1117,12 +2229,56 @@ func (t *ChatPermissions) GetCanSendOtherMessages() bool {
 	return res
 }
 
+func (t *ChatPermissions) GetCanSendPhotos() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanSendPhotos; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *ChatPermissions) GetCanSendPolls() bool {
 	var res bool
 	if t == nil {
 		return res
 	}
 	if field := t.CanSendPolls; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatPermissions) GetCanSendVideoNotes() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanSendVideoNotes; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatPermissions) GetCanSendVideos() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanSendVideos; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ChatPermissions) GetCanSendVoiceNotes() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.CanSendVoiceNotes; field != nil {
 		return *field
 	}
 	return res
@@ -1179,6 +2335,38 @@ func (t *ChatPhoto) GetSmallFileUniqueID() string {
 		return res
 	}
 	return t.SmallFileUniqueID
+}
+
+// ChatShared
+// This object contains information about the chat whose identifier was shared with the bot using a
+// KeyboardButtonRequestChat button.
+type ChatShared struct {
+	// ChatID
+	// Identifier of the shared chat. This number may have more than 32 significant bits and some
+	// programming languages may have difficulty/silent defects in interpreting it. But it has at
+	// most 52 significant bits, so a 64-bit integer or double-precision float type are safe for
+	// storing this identifier. The bot may not have access to the chat and could be unable to use
+	// this identifier, unless the chat is already known to the bot by some other means.
+	ChatID int64 `json:"chat_id"`
+	// RequestID
+	// Identifier of the request
+	RequestID int64 `json:"request_id"`
+}
+
+func (t *ChatShared) GetChatID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.ChatID
+}
+
+func (t *ChatShared) GetRequestID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.RequestID
 }
 
 // ChosenInlineResult
@@ -1258,7 +2446,10 @@ type Contact struct {
 	// Contact's last name
 	LastName *string `json:"last_name,omitempty"`
 	// UserID
-	// Contact's user identifier in Telegram
+	// Contact's user identifier in Telegram. This number may have more than 32 significant bits
+	// and some programming languages may have difficulty/silent defects in interpreting it. But it
+	// has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe
+	// for storing this identifier.
 	UserID *int64 `json:"user_id,omitempty"`
 	// Vcard
 	// Additional data about the contact in the form of a vCard
@@ -1321,8 +2512,8 @@ type Dice struct {
 	// Emoji on which the dice throw animation is based
 	Emoji string `json:"emoji"`
 	// Value
-	// Value of the dice, 1-6 for "" and "" base emoji, 1-5 for "" and "" base emoji, 1-64 for ""
-	// base emoji
+	// Value of the dice, 1-6 for "", "" and "" base emoji, 1-5 for "" and "" base emoji, 1-64 for
+	// "" base emoji
 	Value int64 `json:"value"`
 }
 
@@ -1356,14 +2547,16 @@ type Document struct {
 	// Original filename as defined by sender
 	FileName *string `json:"file_name,omitempty"`
 	// FileSize
-	// File size
+	// File size in bytes. It can be bigger than 2^31 and some programming languages may have
+	// difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a
+	// signed 64-bit integer or double-precision float type are safe for storing this value.
 	FileSize *int64 `json:"file_size,omitempty"`
 	// MimeType
 	// MIME type of the file as defined by sender
 	MimeType *string `json:"mime_type,omitempty"`
-	// Thumb
+	// Thumbnail
 	// Document thumbnail as defined by sender
-	Thumb *PhotoSize `json:"thumb,omitempty"`
+	Thumbnail *PhotoSize `json:"thumbnail,omitempty"`
 }
 
 func (t *Document) GetFileID() string {
@@ -1415,15 +2608,15 @@ func (t *Document) GetMimeType() string {
 	return res
 }
 
-func (t *Document) GetThumb() *PhotoSize {
+func (t *Document) GetThumbnail() *PhotoSize {
 	if t == nil {
 		return nil
 	}
-	return t.Thumb
+	return t.Thumbnail
 }
 
 // EncryptedCredentials
-// Contains data required for decrypting and authenticating EncryptedPassportElement. See the
+// Describes data required for decrypting and authenticating EncryptedPassportElement. See the
 // Telegram Passport Documentation for a complete description of the data decryption and
 // authentication processes.
 type EncryptedCredentials struct {
@@ -1464,8 +2657,7 @@ func (t *EncryptedCredentials) GetSecret() string {
 }
 
 // EncryptedPassportElement
-// Contains information about documents or other Telegram Passport elements shared with the bot by
-// the user.
+// Describes documents or other Telegram Passport elements shared with the bot by the user.
 type EncryptedPassportElement struct {
 	// Hash
 	// Base64-encoded element hash for using in PassportElementErrorUnspecified
@@ -1600,7 +2792,9 @@ type File struct {
 	// File path. Use https://api.telegram.org/file/bot<token>/<file_path> to get the file.
 	FilePath *string `json:"file_path,omitempty"`
 	// FileSize
-	// File size, if known
+	// File size in bytes. It can be bigger than 2^31 and some programming languages may have
+	// difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a
+	// signed 64-bit integer or double-precision float type are safe for storing this value.
 	FileSize *int64 `json:"file_size,omitempty"`
 }
 
@@ -1652,6 +2846,9 @@ type ForceReply struct {
 	// Shows reply interface to the user, as if they manually selected the bot's message and tapped
 	// 'Reply'
 	ForceReply True `json:"force_reply"`
+	// InputFieldPlaceholder
+	// The placeholder to be shown in the input field when the reply is active; 1-64 characters
+	InputFieldPlaceholder *string `json:"input_field_placeholder,omitempty"`
 	// Selective
 	// Use this parameter if you want to force reply from specific users only. Targets: 1) users
 	// that are @mentioned in the text of the Message object; 2) if the bot's message is a reply
@@ -1666,6 +2863,17 @@ func (t *ForceReply) GetForceReply() *True {
 	return &t.ForceReply
 }
 
+func (t *ForceReply) GetInputFieldPlaceholder() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.InputFieldPlaceholder; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *ForceReply) GetSelective() bool {
 	var res bool
 	if t == nil {
@@ -1675,6 +2883,200 @@ func (t *ForceReply) GetSelective() bool {
 		return *field
 	}
 	return res
+}
+
+// ForumTopic
+// This object represents a forum topic.
+type ForumTopic struct {
+	// IconColor
+	// Color of the topic icon in RGB format
+	IconColor int64 `json:"icon_color"`
+	// MessageThreadID
+	// Unique identifier of the forum topic
+	MessageThreadID int64 `json:"message_thread_id"`
+	// Name
+	// Name of the topic
+	Name string `json:"name"`
+	// IconCustomEmojiID
+	// Unique identifier of the custom emoji shown as the topic icon
+	IconCustomEmojiID *string `json:"icon_custom_emoji_id,omitempty"`
+}
+
+func (t *ForumTopic) GetIconColor() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.IconColor
+}
+
+func (t *ForumTopic) GetIconCustomEmojiID() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.IconCustomEmojiID; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ForumTopic) GetMessageThreadID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.MessageThreadID
+}
+
+func (t *ForumTopic) GetName() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	return t.Name
+}
+
+// ForumTopicClosed
+// This object represents a service message about a forum topic closed in the chat. Currently holds
+// no information.
+type ForumTopicClosed struct {
+	// IconCustomEmojiID
+	// New identifier of the custom emoji shown as the topic icon, if it was edited; an empty
+	// string if the icon was removed
+	IconCustomEmojiID *string `json:"icon_custom_emoji_id,omitempty"`
+	// Name
+	// New name of the topic, if it was edited
+	Name *string `json:"name,omitempty"`
+}
+
+func (t *ForumTopicClosed) GetIconCustomEmojiID() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.IconCustomEmojiID; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ForumTopicClosed) GetName() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Name; field != nil {
+		return *field
+	}
+	return res
+}
+
+// ForumTopicCreated
+// This object represents a service message about a new forum topic created in the chat.
+type ForumTopicCreated struct {
+	// IconColor
+	// Color of the topic icon in RGB format
+	IconColor int64 `json:"icon_color"`
+	// Name
+	// Name of the topic
+	Name string `json:"name"`
+	// IconCustomEmojiID
+	// Unique identifier of the custom emoji shown as the topic icon
+	IconCustomEmojiID *string `json:"icon_custom_emoji_id,omitempty"`
+}
+
+func (t *ForumTopicCreated) GetIconColor() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.IconColor
+}
+
+func (t *ForumTopicCreated) GetIconCustomEmojiID() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.IconCustomEmojiID; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ForumTopicCreated) GetName() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	return t.Name
+}
+
+// ForumTopicEdited
+// This object represents a service message about an edited forum topic.
+type ForumTopicEdited struct {
+	// IconCustomEmojiID
+	// New identifier of the custom emoji shown as the topic icon, if it was edited; an empty
+	// string if the icon was removed
+	IconCustomEmojiID *string `json:"icon_custom_emoji_id,omitempty"`
+	// Name
+	// New name of the topic, if it was edited
+	Name *string `json:"name,omitempty"`
+}
+
+func (t *ForumTopicEdited) GetIconCustomEmojiID() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.IconCustomEmojiID; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ForumTopicEdited) GetName() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Name; field != nil {
+		return *field
+	}
+	return res
+}
+
+// ForumTopicReopened
+// This object represents a service message about a forum topic reopened in the chat. Currently
+// holds no information.
+type ForumTopicReopened struct {
+	// RequestID
+	// Identifier of the request
+	RequestID int64 `json:"request_id"`
+	// UserID
+	// Identifier of the shared user. This number may have more than 32 significant bits and some
+	// programming languages may have difficulty/silent defects in interpreting it. But it has at
+	// most 52 significant bits, so a 64-bit integer or double-precision float type are safe for
+	// storing this identifier. The bot may not have access to the user and could be unable to use
+	// this identifier, unless the user is already known to the bot by some other means.
+	UserID int64 `json:"user_id"`
+}
+
+func (t *ForumTopicReopened) GetRequestID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.RequestID
+}
+
+func (t *ForumTopicReopened) GetUserID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.UserID
 }
 
 // Game
@@ -1785,15 +3187,22 @@ type Games struct {
 	ChatID int64 `json:"chat_id"`
 	// GameShortName
 	// Short name of the game, serves as the unique identifier for the game. Set up your games via
-	// Botfather.
+	// @BotFather.
 	GameShortName string `json:"game_short_name"`
 	// AllowSendingWithoutReply
-	// Pass True, if the message should be sent even if the specified replied-to message is not
+	// Pass True if the message should be sent even if the specified replied-to message is not
 	// found
 	AllowSendingWithoutReply *bool `json:"allow_sending_without_reply,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
 	DisableNotification *bool `json:"disable_notification,omitempty"`
+	// MessageThreadID
+	// Unique identifier for the target message thread (topic) of the forum; for forum supergroups
+	// only
+	MessageThreadID *int64 `json:"message_thread_id,omitempty"`
+	// ProtectContent
+	// Protects the contents of the sent message from forwarding and saving
+	ProtectContent *bool `json:"protect_content,omitempty"`
 	// ReplyMarkup
 	// A JSON-serialized object for an inline keyboard. If empty, one 'Play game_title' button will
 	// be shown. If not empty, the first button must launch the game.
@@ -1841,6 +3250,28 @@ func (t *Games) GetGameShortName() string {
 	return t.GameShortName
 }
 
+func (t *Games) GetMessageThreadID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.MessageThreadID; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Games) GetProtectContent() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.ProtectContent; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *Games) GetReplyMarkup() *InlineKeyboardMarkup {
 	if t == nil {
 		return nil
@@ -1859,6 +3290,70 @@ func (t *Games) GetReplyToMessageID() int64 {
 	return res
 }
 
+// GeneralForumTopicHidden
+// This object represents a service message about General forum topic hidden in the chat. Currently
+// holds no information.
+type GeneralForumTopicHidden struct {
+	// RequestID
+	// Identifier of the request
+	RequestID int64 `json:"request_id"`
+	// UserID
+	// Identifier of the shared user. This number may have more than 32 significant bits and some
+	// programming languages may have difficulty/silent defects in interpreting it. But it has at
+	// most 52 significant bits, so a 64-bit integer or double-precision float type are safe for
+	// storing this identifier. The bot may not have access to the user and could be unable to use
+	// this identifier, unless the user is already known to the bot by some other means.
+	UserID int64 `json:"user_id"`
+}
+
+func (t *GeneralForumTopicHidden) GetRequestID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.RequestID
+}
+
+func (t *GeneralForumTopicHidden) GetUserID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.UserID
+}
+
+// GeneralForumTopicUnhidden
+// This object represents a service message about General forum topic unhidden in the chat.
+// Currently holds no information.
+type GeneralForumTopicUnhidden struct {
+	// RequestID
+	// Identifier of the request
+	RequestID int64 `json:"request_id"`
+	// UserID
+	// Identifier of the shared user. This number may have more than 32 significant bits and some
+	// programming languages may have difficulty/silent defects in interpreting it. But it has at
+	// most 52 significant bits, so a 64-bit integer or double-precision float type are safe for
+	// storing this identifier. The bot may not have access to the user and could be unable to use
+	// this identifier, unless the user is already known to the bot by some other means.
+	UserID int64 `json:"user_id"`
+}
+
+func (t *GeneralForumTopicUnhidden) GetRequestID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.RequestID
+}
+
+func (t *GeneralForumTopicUnhidden) GetUserID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.UserID
+}
+
 // InlineKeyboardButton
 // This object represents one button of an inline keyboard. You must use exactly one of the
 // optional fields.
@@ -1874,31 +3369,43 @@ type InlineKeyboardButton struct {
 	// type of button must always be the first button in the first row.
 	CallbackGame *CallbackGame `json:"callback_game,omitempty"`
 	// LoginURL
-	// An HTTP URL used to automatically authorize the user. Can be used as a replacement for the
+	// An HTTPS URL used to automatically authorize the user. Can be used as a replacement for the
 	// Telegram Login Widget.
 	LoginURL *LoginURL `json:"login_url,omitempty"`
 	// Pay
 	// Specify True, to send a Pay button.NOTE: This type of button must always be the first button
-	// in the first row.
+	// in the first row and can only be used in invoice messages.
 	Pay *bool `json:"pay,omitempty"`
 	// SwitchInlineQuery
 	// If set, pressing the button will prompt the user to select one of their chats, open that
-	// chat and insert the bot's username and the specified inline query in the input field. Can be
+	// chat and insert the bot's username and the specified inline query in the input field. May be
 	// empty, in which case just the bot's username will be inserted.Note: This offers an easy way
 	// for users to start using your bot in inline mode when they are currently in a private chat
 	// with it. Especially useful when combined with switch_pm… actions - in this case the user
 	// will be automatically returned to the chat they switched from, skipping the chat selection
 	// screen.
 	SwitchInlineQuery *string `json:"switch_inline_query,omitempty"`
+	// SwitchInlineQueryChosenChat
+	// If set, pressing the button will prompt the user to select one of their chats of the
+	// specified type, open that chat and insert the bot's username and the specified inline query
+	// in the input field
+	SwitchInlineQueryChosenChat *SwitchInlineQueryChosenChat `json:"switch_inline_query_chosen_chat,omitempty"`
 	// SwitchInlineQueryCurrentChat
 	// If set, pressing the button will insert the bot's username and the specified inline query in
-	// the current chat's input field. Can be empty, in which case only the bot's username will be
+	// the current chat's input field. May be empty, in which case only the bot's username will be
 	// inserted.This offers a quick way for the user to open your bot in inline mode in the same
 	// chat - good for selecting something from multiple options.
 	SwitchInlineQueryCurrentChat *string `json:"switch_inline_query_current_chat,omitempty"`
 	// URL
-	// HTTP or tg:// url to be opened when button is pressed
+	// HTTP or tg:// URL to be opened when the button is pressed. Links tg://user?id=<user_id> can
+	// be used to mention a user by their ID without using a username, if this is allowed by their
+	// privacy settings.
 	URL *string `json:"url,omitempty"`
+	// WebApp
+	// Description of the Web App that will be launched when the user presses the button. The Web
+	// App will be able to send an arbitrary message on behalf of the user using the method
+	// answerWebAppQuery. Available only in private chats between a user and the bot.
+	WebApp *WebAppInfo `json:"web_app,omitempty"`
 }
 
 func (t *InlineKeyboardButton) GetCallbackData() string {
@@ -1948,6 +3455,13 @@ func (t *InlineKeyboardButton) GetSwitchInlineQuery() string {
 	return res
 }
 
+func (t *InlineKeyboardButton) GetSwitchInlineQueryChosenChat() *SwitchInlineQueryChosenChat {
+	if t == nil {
+		return nil
+	}
+	return t.SwitchInlineQueryChosenChat
+}
+
 func (t *InlineKeyboardButton) GetSwitchInlineQueryCurrentChat() string {
 	var res string
 	if t == nil {
@@ -1978,6 +3492,13 @@ func (t *InlineKeyboardButton) GetURL() string {
 	return res
 }
 
+func (t *InlineKeyboardButton) GetWebApp() *WebAppInfo {
+	if t == nil {
+		return nil
+	}
+	return t.WebApp
+}
+
 // InlineKeyboardMarkup
 // This object represents an inline keyboard that appears right next to the message it belongs to.
 type InlineKeyboardMarkup struct {
@@ -2002,9 +3523,26 @@ type InlineQuery struct {
 	// Query
 	// Text of the query (up to 256 characters)
 	Query string `json:"query"`
+	// ChatType
+	// Type of the chat from which the inline query was sent. Can be either "sender" for a private
+	// chat with the inline query sender, "private", "group", "supergroup", or "channel". The chat
+	// type should be always known for requests sent from official clients and most third-party
+	// clients, unless the request was sent from a secret chat
+	ChatType *string `json:"chat_type,omitempty"`
 	// Location
 	// Sender location, only for bots that request user location
 	Location *Location `json:"location,omitempty"`
+}
+
+func (t *InlineQuery) GetChatType() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ChatType; field != nil {
+		return *field
+	}
+	return res
 }
 
 func (t *InlineQuery) GetFrom() *User {
@@ -2065,20 +3603,20 @@ type InlineQueryResult struct {
 	// Short description of the result
 	Description *string `json:"description,omitempty"`
 	// HideURL
-	// Pass True, if you don't want the URL to be shown in the message
+	// Pass True if you don't want the URL to be shown in the message
 	HideURL *bool `json:"hide_url,omitempty"`
 	// ReplyMarkup
 	// Inline keyboard attached to the message
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
-	// ThumbHeight
+	// ThumbnailHeight
 	// Thumbnail height
-	ThumbHeight *int64 `json:"thumb_height,omitempty"`
-	// ThumbURL
+	ThumbnailHeight *int64 `json:"thumbnail_height,omitempty"`
+	// ThumbnailURL
 	// Url of the thumbnail for the result
-	ThumbURL *string `json:"thumb_url,omitempty"`
-	// ThumbWidth
+	ThumbnailURL *string `json:"thumbnail_url,omitempty"`
+	// ThumbnailWidth
 	// Thumbnail width
-	ThumbWidth *int64 `json:"thumb_width,omitempty"`
+	ThumbnailWidth *int64 `json:"thumbnail_width,omitempty"`
 	// URL
 	// URL of the result
 	URL *string `json:"url,omitempty"`
@@ -2128,34 +3666,34 @@ func (t *InlineQueryResult) GetReplyMarkup() *InlineKeyboardMarkup {
 	return t.ReplyMarkup
 }
 
-func (t *InlineQueryResult) GetThumbHeight() int64 {
+func (t *InlineQueryResult) GetThumbnailHeight() int64 {
 	var res int64
 	if t == nil {
 		return res
 	}
-	if field := t.ThumbHeight; field != nil {
+	if field := t.ThumbnailHeight; field != nil {
 		return *field
 	}
 	return res
 }
 
-func (t *InlineQueryResult) GetThumbURL() string {
+func (t *InlineQueryResult) GetThumbnailURL() string {
 	var res string
 	if t == nil {
 		return res
 	}
-	if field := t.ThumbURL; field != nil {
+	if field := t.ThumbnailURL; field != nil {
 		return *field
 	}
 	return res
 }
 
-func (t *InlineQueryResult) GetThumbWidth() int64 {
+func (t *InlineQueryResult) GetThumbnailWidth() int64 {
 	var res int64
 	if t == nil {
 		return res
 	}
-	if field := t.ThumbWidth; field != nil {
+	if field := t.ThumbnailWidth; field != nil {
 		return *field
 	}
 	return res
@@ -2206,20 +3744,20 @@ type InlineQueryResultArticle struct {
 	// Short description of the result
 	Description *string `json:"description,omitempty"`
 	// HideURL
-	// Pass True, if you don't want the URL to be shown in the message
+	// Pass True if you don't want the URL to be shown in the message
 	HideURL *bool `json:"hide_url,omitempty"`
 	// ReplyMarkup
 	// Inline keyboard attached to the message
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
-	// ThumbHeight
+	// ThumbnailHeight
 	// Thumbnail height
-	ThumbHeight *int64 `json:"thumb_height,omitempty"`
-	// ThumbURL
+	ThumbnailHeight *int64 `json:"thumbnail_height,omitempty"`
+	// ThumbnailURL
 	// Url of the thumbnail for the result
-	ThumbURL *string `json:"thumb_url,omitempty"`
-	// ThumbWidth
+	ThumbnailURL *string `json:"thumbnail_url,omitempty"`
+	// ThumbnailWidth
 	// Thumbnail width
-	ThumbWidth *int64 `json:"thumb_width,omitempty"`
+	ThumbnailWidth *int64 `json:"thumbnail_width,omitempty"`
 	// URL
 	// URL of the result
 	URL *string `json:"url,omitempty"`
@@ -2269,34 +3807,34 @@ func (t *InlineQueryResultArticle) GetReplyMarkup() *InlineKeyboardMarkup {
 	return t.ReplyMarkup
 }
 
-func (t *InlineQueryResultArticle) GetThumbHeight() int64 {
+func (t *InlineQueryResultArticle) GetThumbnailHeight() int64 {
 	var res int64
 	if t == nil {
 		return res
 	}
-	if field := t.ThumbHeight; field != nil {
+	if field := t.ThumbnailHeight; field != nil {
 		return *field
 	}
 	return res
 }
 
-func (t *InlineQueryResultArticle) GetThumbURL() string {
+func (t *InlineQueryResultArticle) GetThumbnailURL() string {
 	var res string
 	if t == nil {
 		return res
 	}
-	if field := t.ThumbURL; field != nil {
+	if field := t.ThumbnailURL; field != nil {
 		return *field
 	}
 	return res
 }
 
-func (t *InlineQueryResultArticle) GetThumbWidth() int64 {
+func (t *InlineQueryResultArticle) GetThumbnailWidth() int64 {
 	var res int64
 	if t == nil {
 		return res
 	}
-	if field := t.ThumbWidth; field != nil {
+	if field := t.ThumbnailWidth; field != nil {
 		return *field
 	}
 	return res
@@ -2780,7 +4318,7 @@ type InlineQueryResultCachedMpeg4Gif struct {
 	// Unique identifier for this result, 1-64 bytes
 	ID string `json:"id"`
 	// Mpeg4FileID
-	// A valid file identifier for the MP4 file
+	// A valid file identifier for the MPEG4 file
 	Mpeg4FileID string `json:"mpeg4_file_id"`
 	// Type
 	// Type of the result, must be mpeg4_gif
@@ -3299,15 +4837,15 @@ type InlineQueryResultContact struct {
 	// ReplyMarkup
 	// Inline keyboard attached to the message
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
-	// ThumbHeight
+	// ThumbnailHeight
 	// Thumbnail height
-	ThumbHeight *int64 `json:"thumb_height,omitempty"`
-	// ThumbURL
+	ThumbnailHeight *int64 `json:"thumbnail_height,omitempty"`
+	// ThumbnailURL
 	// Url of the thumbnail for the result
-	ThumbURL *string `json:"thumb_url,omitempty"`
-	// ThumbWidth
+	ThumbnailURL *string `json:"thumbnail_url,omitempty"`
+	// ThumbnailWidth
 	// Thumbnail width
-	ThumbWidth *int64 `json:"thumb_width,omitempty"`
+	ThumbnailWidth *int64 `json:"thumbnail_width,omitempty"`
 	// Vcard
 	// Additional data about the contact in the form of a vCard, 0-2048 bytes
 	Vcard *string `json:"vcard,omitempty"`
@@ -3362,34 +4900,34 @@ func (t *InlineQueryResultContact) GetReplyMarkup() *InlineKeyboardMarkup {
 	return t.ReplyMarkup
 }
 
-func (t *InlineQueryResultContact) GetThumbHeight() int64 {
+func (t *InlineQueryResultContact) GetThumbnailHeight() int64 {
 	var res int64
 	if t == nil {
 		return res
 	}
-	if field := t.ThumbHeight; field != nil {
+	if field := t.ThumbnailHeight; field != nil {
 		return *field
 	}
 	return res
 }
 
-func (t *InlineQueryResultContact) GetThumbURL() string {
+func (t *InlineQueryResultContact) GetThumbnailURL() string {
 	var res string
 	if t == nil {
 		return res
 	}
-	if field := t.ThumbURL; field != nil {
+	if field := t.ThumbnailURL; field != nil {
 		return *field
 	}
 	return res
 }
 
-func (t *InlineQueryResultContact) GetThumbWidth() int64 {
+func (t *InlineQueryResultContact) GetThumbnailWidth() int64 {
 	var res int64
 	if t == nil {
 		return res
 	}
-	if field := t.ThumbWidth; field != nil {
+	if field := t.ThumbnailWidth; field != nil {
 		return *field
 	}
 	return res
@@ -3425,7 +4963,7 @@ type InlineQueryResultDocument struct {
 	// Unique identifier for this result, 1-64 bytes
 	ID string `json:"id"`
 	// MimeType
-	// Mime type of the content of the file, either "application/pdf" or "application/zip"
+	// MIME type of the content of the file, either "application/pdf" or "application/zip"
 	MimeType string `json:"mime_type"`
 	// Title
 	// Title for the result
@@ -3452,15 +4990,15 @@ type InlineQueryResultDocument struct {
 	// ReplyMarkup
 	// Inline keyboard attached to the message
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
-	// ThumbHeight
+	// ThumbnailHeight
 	// Thumbnail height
-	ThumbHeight *int64 `json:"thumb_height,omitempty"`
-	// ThumbURL
-	// URL of the thumbnail (jpeg only) for the file
-	ThumbURL *string `json:"thumb_url,omitempty"`
-	// ThumbWidth
+	ThumbnailHeight *int64 `json:"thumbnail_height,omitempty"`
+	// ThumbnailURL
+	// URL of the thumbnail (JPEG only) for the file
+	ThumbnailURL *string `json:"thumbnail_url,omitempty"`
+	// ThumbnailWidth
 	// Thumbnail width
-	ThumbWidth *int64 `json:"thumb_width,omitempty"`
+	ThumbnailWidth *int64 `json:"thumbnail_width,omitempty"`
 }
 
 func (t *InlineQueryResultDocument) GetCaption() string {
@@ -3534,34 +5072,34 @@ func (t *InlineQueryResultDocument) GetReplyMarkup() *InlineKeyboardMarkup {
 	return t.ReplyMarkup
 }
 
-func (t *InlineQueryResultDocument) GetThumbHeight() int64 {
+func (t *InlineQueryResultDocument) GetThumbnailHeight() int64 {
 	var res int64
 	if t == nil {
 		return res
 	}
-	if field := t.ThumbHeight; field != nil {
+	if field := t.ThumbnailHeight; field != nil {
 		return *field
 	}
 	return res
 }
 
-func (t *InlineQueryResultDocument) GetThumbURL() string {
+func (t *InlineQueryResultDocument) GetThumbnailURL() string {
 	var res string
 	if t == nil {
 		return res
 	}
-	if field := t.ThumbURL; field != nil {
+	if field := t.ThumbnailURL; field != nil {
 		return *field
 	}
 	return res
 }
 
-func (t *InlineQueryResultDocument) GetThumbWidth() int64 {
+func (t *InlineQueryResultDocument) GetThumbnailWidth() int64 {
 	var res int64
 	if t == nil {
 		return res
 	}
-	if field := t.ThumbWidth; field != nil {
+	if field := t.ThumbnailWidth; field != nil {
 		return *field
 	}
 	return res
@@ -3640,9 +5178,9 @@ type InlineQueryResultGif struct {
 	// ID
 	// Unique identifier for this result, 1-64 bytes
 	ID string `json:"id"`
-	// ThumbURL
+	// ThumbnailURL
 	// URL of the static (JPEG or GIF) or animated (MPEG4) thumbnail for the result
-	ThumbURL string `json:"thumb_url"`
+	ThumbnailURL string `json:"thumbnail_url"`
 	// Type
 	// Type of the result, must be gif
 	Type InlineType `json:"type"`
@@ -3654,7 +5192,7 @@ type InlineQueryResultGif struct {
 	// parse_mode
 	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// GifDuration
-	// Duration of the GIF
+	// Duration of the GIF in seconds
 	GifDuration *int64 `json:"gif_duration,omitempty"`
 	// GifHeight
 	// Height of the GIF
@@ -3671,10 +5209,10 @@ type InlineQueryResultGif struct {
 	// ReplyMarkup
 	// Inline keyboard attached to the message
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
-	// ThumbMimeType
+	// ThumbnailMimeType
 	// MIME type of the thumbnail, must be one of "image/jpeg", "image/gif", or "video/mp4".
 	// Defaults to "image/jpeg"
-	ThumbMimeType *string `json:"thumb_mime_type,omitempty"`
+	ThumbnailMimeType *string `json:"thumbnail_mime_type,omitempty"`
 	// Title
 	// Title for the result
 	Title *string `json:"title,omitempty"`
@@ -3765,23 +5303,23 @@ func (t *InlineQueryResultGif) GetReplyMarkup() *InlineKeyboardMarkup {
 	return t.ReplyMarkup
 }
 
-func (t *InlineQueryResultGif) GetThumbMimeType() string {
+func (t *InlineQueryResultGif) GetThumbnailMimeType() string {
 	var res string
 	if t == nil {
 		return res
 	}
-	if field := t.ThumbMimeType; field != nil {
+	if field := t.ThumbnailMimeType; field != nil {
 		return *field
 	}
 	return res
 }
 
-func (t *InlineQueryResultGif) GetThumbURL() string {
+func (t *InlineQueryResultGif) GetThumbnailURL() string {
 	var res string
 	if t == nil {
 		return res
 	}
-	return t.ThumbURL
+	return t.ThumbnailURL
 }
 
 func (t *InlineQueryResultGif) GetTitle() string {
@@ -3842,15 +5380,15 @@ type InlineQueryResultLocation struct {
 	// ReplyMarkup
 	// Inline keyboard attached to the message
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
-	// ThumbHeight
+	// ThumbnailHeight
 	// Thumbnail height
-	ThumbHeight *int64 `json:"thumb_height,omitempty"`
-	// ThumbURL
+	ThumbnailHeight *int64 `json:"thumbnail_height,omitempty"`
+	// ThumbnailURL
 	// Url of the thumbnail for the result
-	ThumbURL *string `json:"thumb_url,omitempty"`
-	// ThumbWidth
+	ThumbnailURL *string `json:"thumbnail_url,omitempty"`
+	// ThumbnailWidth
 	// Thumbnail width
-	ThumbWidth *int64 `json:"thumb_width,omitempty"`
+	ThumbnailWidth *int64 `json:"thumbnail_width,omitempty"`
 }
 
 func (t *InlineQueryResultLocation) GetHeading() int64 {
@@ -3929,34 +5467,34 @@ func (t *InlineQueryResultLocation) GetReplyMarkup() *InlineKeyboardMarkup {
 	return t.ReplyMarkup
 }
 
-func (t *InlineQueryResultLocation) GetThumbHeight() int64 {
+func (t *InlineQueryResultLocation) GetThumbnailHeight() int64 {
 	var res int64
 	if t == nil {
 		return res
 	}
-	if field := t.ThumbHeight; field != nil {
+	if field := t.ThumbnailHeight; field != nil {
 		return *field
 	}
 	return res
 }
 
-func (t *InlineQueryResultLocation) GetThumbURL() string {
+func (t *InlineQueryResultLocation) GetThumbnailURL() string {
 	var res string
 	if t == nil {
 		return res
 	}
-	if field := t.ThumbURL; field != nil {
+	if field := t.ThumbnailURL; field != nil {
 		return *field
 	}
 	return res
 }
 
-func (t *InlineQueryResultLocation) GetThumbWidth() int64 {
+func (t *InlineQueryResultLocation) GetThumbnailWidth() int64 {
 	var res int64
 	if t == nil {
 		return res
 	}
-	if field := t.ThumbWidth; field != nil {
+	if field := t.ThumbnailWidth; field != nil {
 		return *field
 	}
 	return res
@@ -3986,11 +5524,11 @@ type InlineQueryResultMpeg4Gif struct {
 	// Unique identifier for this result, 1-64 bytes
 	ID string `json:"id"`
 	// Mpeg4URL
-	// A valid URL for the MP4 file. File size must not exceed 1MB
+	// A valid URL for the MPEG4 file. File size must not exceed 1MB
 	Mpeg4URL string `json:"mpeg4_url"`
-	// ThumbURL
+	// ThumbnailURL
 	// URL of the static (JPEG or GIF) or animated (MPEG4) thumbnail for the result
-	ThumbURL string `json:"thumb_url"`
+	ThumbnailURL string `json:"thumbnail_url"`
 	// Type
 	// Type of the result, must be mpeg4_gif
 	Type InlineType `json:"type"`
@@ -4005,7 +5543,7 @@ type InlineQueryResultMpeg4Gif struct {
 	// Content of the message to be sent instead of the video animation
 	InputMessageContent *InputMessageContent `json:"input_message_content,omitempty"`
 	// Mpeg4Duration
-	// Video duration
+	// Video duration in seconds
 	Mpeg4Duration *int64 `json:"mpeg4_duration,omitempty"`
 	// Mpeg4Height
 	// Video height
@@ -4019,10 +5557,10 @@ type InlineQueryResultMpeg4Gif struct {
 	// ReplyMarkup
 	// Inline keyboard attached to the message
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
-	// ThumbMimeType
+	// ThumbnailMimeType
 	// MIME type of the thumbnail, must be one of "image/jpeg", "image/gif", or "video/mp4".
 	// Defaults to "image/jpeg"
-	ThumbMimeType *string `json:"thumb_mime_type,omitempty"`
+	ThumbnailMimeType *string `json:"thumbnail_mime_type,omitempty"`
 	// Title
 	// Title for the result
 	Title *string `json:"title,omitempty"`
@@ -4113,23 +5651,23 @@ func (t *InlineQueryResultMpeg4Gif) GetReplyMarkup() *InlineKeyboardMarkup {
 	return t.ReplyMarkup
 }
 
-func (t *InlineQueryResultMpeg4Gif) GetThumbMimeType() string {
+func (t *InlineQueryResultMpeg4Gif) GetThumbnailMimeType() string {
 	var res string
 	if t == nil {
 		return res
 	}
-	if field := t.ThumbMimeType; field != nil {
+	if field := t.ThumbnailMimeType; field != nil {
 		return *field
 	}
 	return res
 }
 
-func (t *InlineQueryResultMpeg4Gif) GetThumbURL() string {
+func (t *InlineQueryResultMpeg4Gif) GetThumbnailURL() string {
 	var res string
 	if t == nil {
 		return res
 	}
-	return t.ThumbURL
+	return t.ThumbnailURL
 }
 
 func (t *InlineQueryResultMpeg4Gif) GetTitle() string {
@@ -4159,11 +5697,11 @@ type InlineQueryResultPhoto struct {
 	// Unique identifier for this result, 1-64 bytes
 	ID string `json:"id"`
 	// PhotoURL
-	// A valid URL of the photo. Photo must be in jpeg format. Photo size must not exceed 5MB
+	// A valid URL of the photo. Photo must be in JPEG format. Photo size must not exceed 5MB
 	PhotoURL string `json:"photo_url"`
-	// ThumbURL
+	// ThumbnailURL
 	// URL of the thumbnail for the photo
-	ThumbURL string `json:"thumb_url"`
+	ThumbnailURL string `json:"thumbnail_url"`
 	// Type
 	// Type of the result, must be photo
 	Type InlineType `json:"type"`
@@ -4282,12 +5820,12 @@ func (t *InlineQueryResultPhoto) GetReplyMarkup() *InlineKeyboardMarkup {
 	return t.ReplyMarkup
 }
 
-func (t *InlineQueryResultPhoto) GetThumbURL() string {
+func (t *InlineQueryResultPhoto) GetThumbnailURL() string {
 	var res string
 	if t == nil {
 		return res
 	}
-	return t.ThumbURL
+	return t.ThumbnailURL
 }
 
 func (t *InlineQueryResultPhoto) GetTitle() string {
@@ -4349,15 +5887,15 @@ type InlineQueryResultVenue struct {
 	// ReplyMarkup
 	// Inline keyboard attached to the message
 	ReplyMarkup *InlineKeyboardMarkup `json:"reply_markup,omitempty"`
-	// ThumbHeight
+	// ThumbnailHeight
 	// Thumbnail height
-	ThumbHeight *int64 `json:"thumb_height,omitempty"`
-	// ThumbURL
+	ThumbnailHeight *int64 `json:"thumbnail_height,omitempty"`
+	// ThumbnailURL
 	// Url of the thumbnail for the result
-	ThumbURL *string `json:"thumb_url,omitempty"`
-	// ThumbWidth
+	ThumbnailURL *string `json:"thumbnail_url,omitempty"`
+	// ThumbnailWidth
 	// Thumbnail width
-	ThumbWidth *int64 `json:"thumb_width,omitempty"`
+	ThumbnailWidth *int64 `json:"thumbnail_width,omitempty"`
 }
 
 func (t *InlineQueryResultVenue) GetAddress() string {
@@ -4448,34 +5986,34 @@ func (t *InlineQueryResultVenue) GetReplyMarkup() *InlineKeyboardMarkup {
 	return t.ReplyMarkup
 }
 
-func (t *InlineQueryResultVenue) GetThumbHeight() int64 {
+func (t *InlineQueryResultVenue) GetThumbnailHeight() int64 {
 	var res int64
 	if t == nil {
 		return res
 	}
-	if field := t.ThumbHeight; field != nil {
+	if field := t.ThumbnailHeight; field != nil {
 		return *field
 	}
 	return res
 }
 
-func (t *InlineQueryResultVenue) GetThumbURL() string {
+func (t *InlineQueryResultVenue) GetThumbnailURL() string {
 	var res string
 	if t == nil {
 		return res
 	}
-	if field := t.ThumbURL; field != nil {
+	if field := t.ThumbnailURL; field != nil {
 		return *field
 	}
 	return res
 }
 
-func (t *InlineQueryResultVenue) GetThumbWidth() int64 {
+func (t *InlineQueryResultVenue) GetThumbnailWidth() int64 {
 	var res int64
 	if t == nil {
 		return res
 	}
-	if field := t.ThumbWidth; field != nil {
+	if field := t.ThumbnailWidth; field != nil {
 		return *field
 	}
 	return res
@@ -4505,11 +6043,11 @@ type InlineQueryResultVideo struct {
 	// Unique identifier for this result, 1-64 bytes
 	ID string `json:"id"`
 	// MimeType
-	// Mime type of the content of video url, "text/html" or "video/mp4"
+	// MIME type of the content of the video URL, "text/html" or "video/mp4"
 	MimeType string `json:"mime_type"`
-	// ThumbURL
-	// URL of the thumbnail (jpeg only) for the video
-	ThumbURL string `json:"thumb_url"`
+	// ThumbnailURL
+	// URL of the thumbnail (JPEG only) for the video
+	ThumbnailURL string `json:"thumbnail_url"`
 	// Title
 	// Title for the result
 	Title string `json:"title"`
@@ -4613,12 +6151,12 @@ func (t *InlineQueryResultVideo) GetReplyMarkup() *InlineKeyboardMarkup {
 	return t.ReplyMarkup
 }
 
-func (t *InlineQueryResultVideo) GetThumbURL() string {
+func (t *InlineQueryResultVideo) GetThumbnailURL() string {
 	var res string
 	if t == nil {
 		return res
 	}
-	return t.ThumbURL
+	return t.ThumbnailURL
 }
 
 func (t *InlineQueryResultVideo) GetTitle() string {
@@ -4794,6 +6332,56 @@ func (t *InlineQueryResultVoice) GetVoiceURL() string {
 	return t.VoiceURL
 }
 
+// InlineQueryResultsButton
+// This object represents a button to be shown above inline query results. You must use exactly one
+// of the optional fields.
+type InlineQueryResultsButton struct {
+	// Text
+	// Label text on the button
+	Text string `json:"text"`
+	// StartParameter
+	// Deep-linking parameter for the /start message sent to the bot when a user presses the
+	// button. 1-64 characters, only A-Z, a-z, 0-9, _ and - are allowed. Example: An inline bot
+	// that sends YouTube videos can ask the user to connect the bot to their YouTube account to
+	// adapt search results accordingly. To do this, it displays a 'Connect your YouTube account'
+	// button above the results, or even before showing any. The user presses the button, switches
+	// to a private chat with the bot and, in doing so, passes a start parameter that instructs the
+	// bot to return an OAuth link. Once done, the bot can offer a switch_inline button so that the
+	// user can easily return to the chat where they wanted to use the bot's inline capabilities.
+	StartParameter *string `json:"start_parameter,omitempty"`
+	// WebApp
+	// Description of the Web App that will be launched when the user presses the button. The Web
+	// App will be able to switch back to the inline mode using the method switchInlineQuery inside
+	// the Web App.
+	WebApp *WebAppInfo `json:"web_app,omitempty"`
+}
+
+func (t *InlineQueryResultsButton) GetStartParameter() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.StartParameter; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InlineQueryResultsButton) GetText() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	return t.Text
+}
+
+func (t *InlineQueryResultsButton) GetWebApp() *WebAppInfo {
+	if t == nil {
+		return nil
+	}
+	return t.WebApp
+}
+
 // InputContactMessageContent
 // Represents the content of a contact message to be sent as the result of an inline query.
 type InputContactMessageContent struct {
@@ -4847,6 +6435,265 @@ func (t *InputContactMessageContent) GetVcard() string {
 		return *field
 	}
 	return res
+}
+
+// InputInvoiceMessageContent
+// Represents the content of an invoice message to be sent as the result of an inline query.
+type InputInvoiceMessageContent struct {
+	// Currency
+	// Three-letter ISO 4217 currency code, see more on currencies
+	Currency string `json:"currency"`
+	// Description
+	// Product description, 1-255 characters
+	Description string `json:"description"`
+	// Payload
+	// Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use for
+	// your internal processes.
+	Payload string `json:"payload"`
+	// Prices
+	// Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount,
+	// delivery cost, delivery tax, bonus, etc.)
+	Prices []LabeledPrice `json:"prices"`
+	// ProviderToken
+	// Payment provider token, obtained via @BotFather
+	ProviderToken string `json:"provider_token"`
+	// Title
+	// Product name, 1-32 characters
+	Title string `json:"title"`
+	// IsFlexible
+	// Pass True if the final price depends on the shipping method
+	IsFlexible *bool `json:"is_flexible,omitempty"`
+	// MaxTipAmount
+	// The maximum accepted amount for tips in the smallest units of the currency (integer, not
+	// float/double). For example, for a maximum tip of US$ 1.45 pass max_tip_amount = 145. See the
+	// exp parameter in currencies.json, it shows the number of digits past the decimal point for
+	// each currency (2 for the majority of currencies). Defaults to 0
+	MaxTipAmount *int64 `json:"max_tip_amount,omitempty"`
+	// NeedEmail
+	// Pass True if you require the user's email address to complete the order
+	NeedEmail *bool `json:"need_email,omitempty"`
+	// NeedName
+	// Pass True if you require the user's full name to complete the order
+	NeedName *bool `json:"need_name,omitempty"`
+	// NeedPhoneNumber
+	// Pass True if you require the user's phone number to complete the order
+	NeedPhoneNumber *bool `json:"need_phone_number,omitempty"`
+	// NeedShippingAddress
+	// Pass True if you require the user's shipping address to complete the order
+	NeedShippingAddress *bool `json:"need_shipping_address,omitempty"`
+	// PhotoHeight
+	// Photo height
+	PhotoHeight *int64 `json:"photo_height,omitempty"`
+	// PhotoSize
+	// Photo size in bytes
+	PhotoSize *int64 `json:"photo_size,omitempty"`
+	// PhotoURL
+	// URL of the product photo for the invoice. Can be a photo of the goods or a marketing image
+	// for a service.
+	PhotoURL *string `json:"photo_url,omitempty"`
+	// PhotoWidth
+	// Photo width
+	PhotoWidth *int64 `json:"photo_width,omitempty"`
+	// ProviderData
+	// A JSON-serialized object for data about the invoice, which will be shared with the payment
+	// provider. A detailed description of the required fields should be provided by the payment
+	// provider.
+	ProviderData *string `json:"provider_data,omitempty"`
+	// SendEmailToProvider
+	// Pass True if the user's email address should be sent to provider
+	SendEmailToProvider *bool `json:"send_email_to_provider,omitempty"`
+	// SendPhoneNumberToProvider
+	// Pass True if the user's phone number should be sent to provider
+	SendPhoneNumberToProvider *bool `json:"send_phone_number_to_provider,omitempty"`
+	// SuggestedTipAmounts
+	// A JSON-serialized array of suggested amounts of tip in the smallest units of the currency
+	// (integer, not float/double). At most 4 suggested tip amounts can be specified. The suggested
+	// tip amounts must be positive, passed in a strictly increased order and must not exceed
+	// max_tip_amount.
+	SuggestedTipAmounts []int64 `json:"suggested_tip_amounts,omitempty"`
+}
+
+func (t *InputInvoiceMessageContent) GetCurrency() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	return t.Currency
+}
+
+func (t *InputInvoiceMessageContent) GetDescription() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	return t.Description
+}
+
+func (t *InputInvoiceMessageContent) GetIsFlexible() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.IsFlexible; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputInvoiceMessageContent) GetMaxTipAmount() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.MaxTipAmount; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputInvoiceMessageContent) GetNeedEmail() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.NeedEmail; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputInvoiceMessageContent) GetNeedName() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.NeedName; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputInvoiceMessageContent) GetNeedPhoneNumber() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.NeedPhoneNumber; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputInvoiceMessageContent) GetNeedShippingAddress() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.NeedShippingAddress; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputInvoiceMessageContent) GetPayload() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	return t.Payload
+}
+
+func (t *InputInvoiceMessageContent) GetPhotoHeight() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.PhotoHeight; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputInvoiceMessageContent) GetPhotoSize() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.PhotoSize; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputInvoiceMessageContent) GetPhotoURL() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.PhotoURL; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputInvoiceMessageContent) GetPhotoWidth() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.PhotoWidth; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputInvoiceMessageContent) GetProviderData() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.ProviderData; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputInvoiceMessageContent) GetProviderToken() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	return t.ProviderToken
+}
+
+func (t *InputInvoiceMessageContent) GetSendEmailToProvider() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.SendEmailToProvider; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputInvoiceMessageContent) GetSendPhoneNumberToProvider() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.SendPhoneNumberToProvider; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputInvoiceMessageContent) GetTitle() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	return t.Title
 }
 
 // InputLocationMessageContent
@@ -4935,7 +6782,7 @@ type InputMedia struct {
 	// File to send. Pass a file_id to send a file that exists on the Telegram servers
 	// (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass
 	// "attach://<file_attach_name>" to upload a new one using multipart/form-data under
-	// <file_attach_name> name.
+	// <file_attach_name> name. More information on Sending Files »
 	Media string `json:"media"`
 	// Type
 	// Type of the result, must be photo
@@ -4947,6 +6794,9 @@ type InputMedia struct {
 	// List of special entities that appear in the caption, which can be specified instead of
 	// parse_mode
 	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
+	// HasSpoiler
+	// Pass True if the photo needs to be covered with a spoiler animation
+	HasSpoiler *bool `json:"has_spoiler,omitempty"`
 	// ParseMode
 	// Mode for parsing entities in the photo caption. See formatting options for more details.
 	ParseMode *string `json:"parse_mode,omitempty"`
@@ -4958,6 +6808,17 @@ func (t *InputMedia) GetCaption() string {
 		return res
 	}
 	if field := t.Caption; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMedia) GetHasSpoiler() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.HasSpoiler; field != nil {
 		return *field
 	}
 	return res
@@ -4996,7 +6857,7 @@ type InputMediaAnimation struct {
 	// File to send. Pass a file_id to send a file that exists on the Telegram servers
 	// (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass
 	// "attach://<file_attach_name>" to upload a new one using multipart/form-data under
-	// <file_attach_name> name.
+	// <file_attach_name> name. More information on Sending Files »
 	Media string `json:"media"`
 	// Type
 	// Type of the result, must be animation
@@ -5009,22 +6870,25 @@ type InputMediaAnimation struct {
 	// parse_mode
 	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// Duration
-	// Animation duration
+	// Animation duration in seconds
 	Duration *int64 `json:"duration,omitempty"`
+	// HasSpoiler
+	// Pass True if the animation needs to be covered with a spoiler animation
+	HasSpoiler *bool `json:"has_spoiler,omitempty"`
 	// Height
 	// Animation height
 	Height *int64 `json:"height,omitempty"`
 	// ParseMode
 	// Mode for parsing entities in the animation caption. See formatting options for more details.
 	ParseMode *string `json:"parse_mode,omitempty"`
-	// Thumb
+	// Thumbnail
 	// Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported
 	// server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A
 	// thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded
 	// using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new
 	// file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using
-	// multipart/form-data under <file_attach_name>.
-	Thumb *FileID `json:"thumb,omitempty"`
+	// multipart/form-data under <file_attach_name>. More information on Sending Files »
+	Thumbnail *FileID `json:"thumbnail,omitempty"`
 	// Width
 	// Animation width
 	Width *int64 `json:"width,omitempty"`
@@ -5047,6 +6911,17 @@ func (t *InputMediaAnimation) GetDuration() int64 {
 		return res
 	}
 	if field := t.Duration; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMediaAnimation) GetHasSpoiler() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.HasSpoiler; field != nil {
 		return *field
 	}
 	return res
@@ -5082,11 +6957,11 @@ func (t *InputMediaAnimation) GetParseMode() string {
 	return res
 }
 
-func (t *InputMediaAnimation) GetThumb() *FileID {
+func (t *InputMediaAnimation) GetThumbnail() *FileID {
 	if t == nil {
 		return nil
 	}
-	return t.Thumb
+	return t.Thumbnail
 }
 
 func (t *InputMediaAnimation) GetType() *InputType {
@@ -5114,7 +6989,7 @@ type InputMediaAudio struct {
 	// File to send. Pass a file_id to send a file that exists on the Telegram servers
 	// (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass
 	// "attach://<file_attach_name>" to upload a new one using multipart/form-data under
-	// <file_attach_name> name.
+	// <file_attach_name> name. More information on Sending Files »
 	Media string `json:"media"`
 	// Type
 	// Type of the result, must be audio
@@ -5135,14 +7010,14 @@ type InputMediaAudio struct {
 	// Performer
 	// Performer of the audio
 	Performer *string `json:"performer,omitempty"`
-	// Thumb
+	// Thumbnail
 	// Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported
 	// server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A
 	// thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded
 	// using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new
 	// file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using
-	// multipart/form-data under <file_attach_name>.
-	Thumb *FileID `json:"thumb,omitempty"`
+	// multipart/form-data under <file_attach_name>. More information on Sending Files »
+	Thumbnail *FileID `json:"thumbnail,omitempty"`
 	// Title
 	// Title of the audio
 	Title *string `json:"title,omitempty"`
@@ -5200,11 +7075,11 @@ func (t *InputMediaAudio) GetPerformer() string {
 	return res
 }
 
-func (t *InputMediaAudio) GetThumb() *FileID {
+func (t *InputMediaAudio) GetThumbnail() *FileID {
 	if t == nil {
 		return nil
 	}
-	return t.Thumb
+	return t.Thumbnail
 }
 
 func (t *InputMediaAudio) GetTitle() string {
@@ -5232,7 +7107,7 @@ type InputMediaDocument struct {
 	// File to send. Pass a file_id to send a file that exists on the Telegram servers
 	// (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass
 	// "attach://<file_attach_name>" to upload a new one using multipart/form-data under
-	// <file_attach_name> name.
+	// <file_attach_name> name. More information on Sending Files »
 	Media string `json:"media"`
 	// Type
 	// Type of the result, must be document
@@ -5246,19 +7121,19 @@ type InputMediaDocument struct {
 	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// DisableContentTypeDetection
 	// Disables automatic server-side content type detection for files uploaded using
-	// multipart/form-data. Always true, if the document is sent as part of an album.
+	// multipart/form-data. Always True, if the document is sent as part of an album.
 	DisableContentTypeDetection *bool `json:"disable_content_type_detection,omitempty"`
 	// ParseMode
 	// Mode for parsing entities in the document caption. See formatting options for more details.
 	ParseMode *string `json:"parse_mode,omitempty"`
-	// Thumb
+	// Thumbnail
 	// Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported
 	// server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A
 	// thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded
 	// using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new
 	// file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using
-	// multipart/form-data under <file_attach_name>.
-	Thumb *FileID `json:"thumb,omitempty"`
+	// multipart/form-data under <file_attach_name>. More information on Sending Files »
+	Thumbnail *FileID `json:"thumbnail,omitempty"`
 }
 
 func (t *InputMediaDocument) GetCaption() string {
@@ -5302,11 +7177,11 @@ func (t *InputMediaDocument) GetParseMode() string {
 	return res
 }
 
-func (t *InputMediaDocument) GetThumb() *FileID {
+func (t *InputMediaDocument) GetThumbnail() *FileID {
 	if t == nil {
 		return nil
 	}
-	return t.Thumb
+	return t.Thumbnail
 }
 
 func (t *InputMediaDocument) GetType() *InputType {
@@ -5323,7 +7198,7 @@ type InputMediaPhoto struct {
 	// File to send. Pass a file_id to send a file that exists on the Telegram servers
 	// (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass
 	// "attach://<file_attach_name>" to upload a new one using multipart/form-data under
-	// <file_attach_name> name.
+	// <file_attach_name> name. More information on Sending Files »
 	Media string `json:"media"`
 	// Type
 	// Type of the result, must be photo
@@ -5335,6 +7210,9 @@ type InputMediaPhoto struct {
 	// List of special entities that appear in the caption, which can be specified instead of
 	// parse_mode
 	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
+	// HasSpoiler
+	// Pass True if the photo needs to be covered with a spoiler animation
+	HasSpoiler *bool `json:"has_spoiler,omitempty"`
 	// ParseMode
 	// Mode for parsing entities in the photo caption. See formatting options for more details.
 	ParseMode *string `json:"parse_mode,omitempty"`
@@ -5346,6 +7224,17 @@ func (t *InputMediaPhoto) GetCaption() string {
 		return res
 	}
 	if field := t.Caption; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMediaPhoto) GetHasSpoiler() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.HasSpoiler; field != nil {
 		return *field
 	}
 	return res
@@ -5384,7 +7273,7 @@ type InputMediaVideo struct {
 	// File to send. Pass a file_id to send a file that exists on the Telegram servers
 	// (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass
 	// "attach://<file_attach_name>" to upload a new one using multipart/form-data under
-	// <file_attach_name> name.
+	// <file_attach_name> name. More information on Sending Files »
 	Media string `json:"media"`
 	// Type
 	// Type of the result, must be video
@@ -5397,8 +7286,11 @@ type InputMediaVideo struct {
 	// parse_mode
 	CaptionEntities []MessageEntity `json:"caption_entities,omitempty"`
 	// Duration
-	// Video duration
+	// Video duration in seconds
 	Duration *int64 `json:"duration,omitempty"`
+	// HasSpoiler
+	// Pass True if the video needs to be covered with a spoiler animation
+	HasSpoiler *bool `json:"has_spoiler,omitempty"`
 	// Height
 	// Video height
 	Height *int64 `json:"height,omitempty"`
@@ -5406,16 +7298,16 @@ type InputMediaVideo struct {
 	// Mode for parsing entities in the video caption. See formatting options for more details.
 	ParseMode *string `json:"parse_mode,omitempty"`
 	// SupportsStreaming
-	// Pass True, if the uploaded video is suitable for streaming
+	// Pass True if the uploaded video is suitable for streaming
 	SupportsStreaming *bool `json:"supports_streaming,omitempty"`
-	// Thumb
+	// Thumbnail
 	// Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported
 	// server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A
 	// thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded
 	// using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new
 	// file, so you can pass "attach://<file_attach_name>" if the thumbnail was uploaded using
-	// multipart/form-data under <file_attach_name>.
-	Thumb *FileID `json:"thumb,omitempty"`
+	// multipart/form-data under <file_attach_name>. More information on Sending Files »
+	Thumbnail *FileID `json:"thumbnail,omitempty"`
 	// Width
 	// Video width
 	Width *int64 `json:"width,omitempty"`
@@ -5438,6 +7330,17 @@ func (t *InputMediaVideo) GetDuration() int64 {
 		return res
 	}
 	if field := t.Duration; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *InputMediaVideo) GetHasSpoiler() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.HasSpoiler; field != nil {
 		return *field
 	}
 	return res
@@ -5484,11 +7387,11 @@ func (t *InputMediaVideo) GetSupportsStreaming() bool {
 	return res
 }
 
-func (t *InputMediaVideo) GetThumb() *FileID {
+func (t *InputMediaVideo) GetThumbnail() *FileID {
 	if t == nil {
 		return nil
 	}
-	return t.Thumb
+	return t.Thumbnail
 }
 
 func (t *InputMediaVideo) GetType() *InputType {
@@ -5511,7 +7414,7 @@ func (t *InputMediaVideo) GetWidth() int64 {
 
 // InputMessageContent
 // This object represents the content of a message to be sent as a result of an inline query.
-// Telegram clients currently support the following 4 types:
+// Telegram clients currently support the following 5 types:
 type InputMessageContent struct {
 	// MessageText
 	// Text of the message to be sent, 1-4096 characters
@@ -5556,6 +7459,42 @@ func (t *InputMessageContent) GetParseMode() string {
 		return *field
 	}
 	return res
+}
+
+// InputSticker
+// This object describes a sticker to be added to a sticker set.
+type InputSticker struct {
+	// EmojiList
+	// List of 1-20 emoji associated with the sticker
+	EmojiList []string `json:"emoji_list"`
+	// Sticker
+	// The added sticker. Pass a file_id as a String to send a file that already exists on the
+	// Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet,
+	// upload a new one using multipart/form-data, or pass "attach://<file_attach_name>" to upload
+	// a new one using multipart/form-data under <file_attach_name> name. Animated and video
+	// stickers can't be uploaded via HTTP URL. More information on Sending Files »
+	Sticker FileID `json:"sticker"`
+	// Keywords
+	// List of 0-20 search keywords for the sticker with total length of up to 64 characters. For
+	// "regular" and "custom_emoji" stickers only.
+	Keywords []string `json:"keywords,omitempty"`
+	// MaskPosition
+	// Position where the mask should be placed on faces. For "mask" stickers only.
+	MaskPosition *MaskPosition `json:"mask_position,omitempty"`
+}
+
+func (t *InputSticker) GetMaskPosition() *MaskPosition {
+	if t == nil {
+		return nil
+	}
+	return t.MaskPosition
+}
+
+func (t *InputSticker) GetSticker() *FileID {
+	if t == nil {
+		return nil
+	}
+	return &t.Sticker
 }
 
 // InputTextMessageContent
@@ -5774,26 +7713,48 @@ func (t *Invoice) GetTotalAmount() int64 {
 }
 
 // KeyboardButton
-// This object represents one button of the reply keyboard. For simple text buttons String can be
-// used instead of this object to specify text of the button. Optional fields request_contact,
-// request_location, and request_poll are mutually exclusive.
+// This object represents one button of the reply keyboard. For simple text buttons, String can be
+// used instead of this object to specify the button text. The optional fields web_app,
+// request_user, request_chat, request_contact, request_location, and request_poll are mutually
+// exclusive.
 type KeyboardButton struct {
 	// Text
 	// Text of the button. If none of the optional fields are used, it will be sent as a message
 	// when the button is pressed
 	Text string `json:"text"`
+	// RequestChat
+	// If specified, pressing the button will open a list of suitable chats. Tapping on a chat will
+	// send its identifier to the bot in a "chat_shared" service message. Available in private
+	// chats only.
+	RequestChat *KeyboardButtonRequestChat `json:"request_chat,omitempty"`
 	// RequestContact
 	// If True, the user's phone number will be sent as a contact when the button is pressed.
-	// Available in private chats only
+	// Available in private chats only.
 	RequestContact *bool `json:"request_contact,omitempty"`
 	// RequestLocation
 	// If True, the user's current location will be sent when the button is pressed. Available in
-	// private chats only
+	// private chats only.
 	RequestLocation *bool `json:"request_location,omitempty"`
 	// RequestPoll
 	// If specified, the user will be asked to create a poll and send it to the bot when the button
-	// is pressed. Available in private chats only
+	// is pressed. Available in private chats only.
 	RequestPoll *KeyboardButtonPollType `json:"request_poll,omitempty"`
+	// RequestUser
+	// If specified, pressing the button will open a list of suitable users. Tapping on any user
+	// will send their identifier to the bot in a "user_shared" service message. Available in
+	// private chats only.
+	RequestUser *KeyboardButtonRequestUser `json:"request_user,omitempty"`
+	// WebApp
+	// If specified, the described Web App will be launched when the button is pressed. The Web App
+	// will be able to send a "web_app_data" service message. Available in private chats only.
+	WebApp *WebAppInfo `json:"web_app,omitempty"`
+}
+
+func (t *KeyboardButton) GetRequestChat() *KeyboardButtonRequestChat {
+	if t == nil {
+		return nil
+	}
+	return t.RequestChat
 }
 
 func (t *KeyboardButton) GetRequestContact() bool {
@@ -5825,12 +7786,26 @@ func (t *KeyboardButton) GetRequestPoll() *KeyboardButtonPollType {
 	return t.RequestPoll
 }
 
+func (t *KeyboardButton) GetRequestUser() *KeyboardButtonRequestUser {
+	if t == nil {
+		return nil
+	}
+	return t.RequestUser
+}
+
 func (t *KeyboardButton) GetText() string {
 	var res string
 	if t == nil {
 		return res
 	}
 	return t.Text
+}
+
+func (t *KeyboardButton) GetWebApp() *WebAppInfo {
+	if t == nil {
+		return nil
+	}
+	return t.WebApp
 }
 
 // KeyboardButtonPollType
@@ -5849,6 +7824,169 @@ func (t *KeyboardButtonPollType) GetType() *KeyboardButtonType {
 		return nil
 	}
 	return t.Type
+}
+
+// KeyboardButtonRequestChat
+// This object defines the criteria used to request a suitable chat. The identifier of the selected
+// chat will be shared with the bot when the corresponding button is pressed. More about requesting
+// chats »
+type KeyboardButtonRequestChat struct {
+	// ChatIsChannel
+	// Pass True to request a channel chat, pass False to request a group or a supergroup chat.
+	ChatIsChannel bool `json:"chat_is_channel"`
+	// RequestID
+	// Signed 32-bit identifier of the request, which will be received back in the ChatShared
+	// object. Must be unique within the message
+	RequestID int64 `json:"request_id"`
+	// BotAdministratorRights
+	// A JSON-serialized object listing the required administrator rights of the bot in the chat.
+	// The rights must be a subset of user_administrator_rights. If not specified, no additional
+	// restrictions are applied.
+	BotAdministratorRights *ChatAdministratorRights `json:"bot_administrator_rights,omitempty"`
+	// BotIsMember
+	// Pass True to request a chat with the bot as a member. Otherwise, no additional restrictions
+	// are applied.
+	BotIsMember *bool `json:"bot_is_member,omitempty"`
+	// ChatHasUsername
+	// Pass True to request a supergroup or a channel with a username, pass False to request a chat
+	// without a username. If not specified, no additional restrictions are applied.
+	ChatHasUsername *bool `json:"chat_has_username,omitempty"`
+	// ChatIsCreated
+	// Pass True to request a chat owned by the user. Otherwise, no additional restrictions are
+	// applied.
+	ChatIsCreated *bool `json:"chat_is_created,omitempty"`
+	// ChatIsForum
+	// Pass True to request a forum supergroup, pass False to request a non-forum chat. If not
+	// specified, no additional restrictions are applied.
+	ChatIsForum *bool `json:"chat_is_forum,omitempty"`
+	// UserAdministratorRights
+	// A JSON-serialized object listing the required administrator rights of the user in the chat.
+	// The rights must be a superset of bot_administrator_rights. If not specified, no additional
+	// restrictions are applied.
+	UserAdministratorRights *ChatAdministratorRights `json:"user_administrator_rights,omitempty"`
+}
+
+func (t *KeyboardButtonRequestChat) GetBotAdministratorRights() *ChatAdministratorRights {
+	if t == nil {
+		return nil
+	}
+	return t.BotAdministratorRights
+}
+
+func (t *KeyboardButtonRequestChat) GetBotIsMember() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.BotIsMember; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *KeyboardButtonRequestChat) GetChatHasUsername() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.ChatHasUsername; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *KeyboardButtonRequestChat) GetChatIsChannel() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.ChatIsChannel
+}
+
+func (t *KeyboardButtonRequestChat) GetChatIsCreated() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.ChatIsCreated; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *KeyboardButtonRequestChat) GetChatIsForum() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.ChatIsForum; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *KeyboardButtonRequestChat) GetRequestID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.RequestID
+}
+
+func (t *KeyboardButtonRequestChat) GetUserAdministratorRights() *ChatAdministratorRights {
+	if t == nil {
+		return nil
+	}
+	return t.UserAdministratorRights
+}
+
+// KeyboardButtonRequestUser
+// This object defines the criteria used to request a suitable user. The identifier of the selected
+// user will be shared with the bot when the corresponding button is pressed. More about requesting
+// users »
+type KeyboardButtonRequestUser struct {
+	// RequestID
+	// Signed 32-bit identifier of the request, which will be received back in the UserShared
+	// object. Must be unique within the message
+	RequestID int64 `json:"request_id"`
+	// UserIsBot
+	// Pass True to request a bot, pass False to request a regular user. If not specified, no
+	// additional restrictions are applied.
+	UserIsBot *bool `json:"user_is_bot,omitempty"`
+	// UserIsPremium
+	// Pass True to request a premium user, pass False to request a non-premium user. If not
+	// specified, no additional restrictions are applied.
+	UserIsPremium *bool `json:"user_is_premium,omitempty"`
+}
+
+func (t *KeyboardButtonRequestUser) GetRequestID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.RequestID
+}
+
+func (t *KeyboardButtonRequestUser) GetUserIsBot() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.UserIsBot; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *KeyboardButtonRequestUser) GetUserIsPremium() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.UserIsPremium; field != nil {
+		return *field
+	}
+	return res
 }
 
 // LabeledPrice
@@ -5897,12 +8035,12 @@ type Location struct {
 	// The radius of uncertainty for the location, measured in meters; 0-1500
 	HorizontalAccuracy *float64 `json:"horizontal_accuracy,omitempty"`
 	// LivePeriod
-	// Time relative to the message sending date, during which the location can be updated, in
+	// Time relative to the message sending date, during which the location can be updated; in
 	// seconds. For active live locations only.
 	LivePeriod *int64 `json:"live_period,omitempty"`
 	// ProximityAlertRadius
-	// Maximum distance for proximity alerts about approaching another chat member, in meters. For
-	// sent live locations only.
+	// The maximum distance for proximity alerts about approaching another chat member, in meters.
+	// For sent live locations only.
 	ProximityAlertRadius *int64 `json:"proximity_alert_radius,omitempty"`
 }
 
@@ -5966,7 +8104,7 @@ func (t *Location) GetProximityAlertRadius() int64 {
 // Telegram. All the user needs to do is tap/click a button and confirm that they want to log in:
 type LoginURL struct {
 	// URL
-	// An HTTP URL to be opened with user authorization data added to the query string when the
+	// An HTTPS URL to be opened with user authorization data added to the query string when the
 	// button is pressed. If the user refuses to provide authorization data, the original URL
 	// without information about the user will be opened. The data added is the same as described
 	// in Receiving authorization data.NOTE: You must always check the hash of the received data to
@@ -6077,6 +8215,89 @@ func (t *MaskPosition) GetYShift() *float64 {
 	return &t.YShift
 }
 
+// MenuButton
+// This object describes the bot's menu button in a private chat. It should be one of
+type MenuButton struct {
+	// Type
+	// Type of the button, must be commands
+	Type MenuType `json:"type"`
+}
+
+func (t *MenuButton) GetType() *MenuType {
+	if t == nil {
+		return nil
+	}
+	return &t.Type
+}
+
+// MenuButtonCommands
+// Represents a menu button, which opens the bot's list of commands.
+type MenuButtonCommands struct {
+	// Type
+	// Type of the button, must be commands
+	Type MenuType `json:"type"`
+}
+
+func (t *MenuButtonCommands) GetType() *MenuType {
+	if t == nil {
+		return nil
+	}
+	return &t.Type
+}
+
+// MenuButtonDefault
+// Describes that no specific value for the menu button was set.
+type MenuButtonDefault struct {
+	// Type
+	// Type of the button, must be default
+	Type MenuType `json:"type"`
+}
+
+func (t *MenuButtonDefault) GetType() *MenuType {
+	if t == nil {
+		return nil
+	}
+	return &t.Type
+}
+
+// MenuButtonWebApp
+// Represents a menu button, which launches a Web App.
+type MenuButtonWebApp struct {
+	// Text
+	// Text on the button
+	Text string `json:"text"`
+	// Type
+	// Type of the button, must be web_app
+	Type MenuType `json:"type"`
+	// WebApp
+	// Description of the Web App that will be launched when the user presses the button. The Web
+	// App will be able to send an arbitrary message on behalf of the user using the method
+	// answerWebAppQuery.
+	WebApp WebAppInfo `json:"web_app"`
+}
+
+func (t *MenuButtonWebApp) GetText() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	return t.Text
+}
+
+func (t *MenuButtonWebApp) GetType() *MenuType {
+	if t == nil {
+		return nil
+	}
+	return &t.Type
+}
+
+func (t *MenuButtonWebApp) GetWebApp() *WebAppInfo {
+	if t == nil {
+		return nil
+	}
+	return &t.WebApp
+}
+
 // Message
 // This object represents a message.
 type Message struct {
@@ -6101,7 +8322,7 @@ type Message struct {
 	// group administrator
 	AuthorSignature *string `json:"author_signature,omitempty"`
 	// Caption
-	// Caption for the animation, audio, document, photo, video or voice, 0-1024 characters
+	// Caption for the animation, audio, document, photo, video or voice
 	Caption *string `json:"caption,omitempty"`
 	// CaptionEntities
 	// For messages with a caption, special entities like usernames, URLs, bot commands, etc. that
@@ -6113,6 +8334,9 @@ type Message struct {
 	// can only be found in reply_to_message if someone replies to a very first message in a
 	// channel.
 	ChannelChatCreated *True `json:"channel_chat_created,omitempty"`
+	// ChatShared
+	// Service message: a chat was shared with the bot
+	ChatShared *ChatShared `json:"chat_shared,omitempty"`
 	// ConnectedWebsite
 	// The domain name of the website on which the user has logged in. More about Telegram Login »
 	ConnectedWebsite *string `json:"connected_website,omitempty"`
@@ -6135,6 +8359,18 @@ type Message struct {
 	// For text messages, special entities like usernames, URLs, bot commands, etc. that appear in
 	// the text
 	Entities []MessageEntity `json:"entities,omitempty"`
+	// ForumTopicClosed
+	// Service message: forum topic closed
+	ForumTopicClosed *ForumTopicClosed `json:"forum_topic_closed,omitempty"`
+	// ForumTopicCreated
+	// Service message: forum topic created
+	ForumTopicCreated *ForumTopicCreated `json:"forum_topic_created,omitempty"`
+	// ForumTopicEdited
+	// Service message: forum topic edited
+	ForumTopicEdited *ForumTopicEdited `json:"forum_topic_edited,omitempty"`
+	// ForumTopicReopened
+	// Service message: forum topic reopened
+	ForumTopicReopened *ForumTopicReopened `json:"forum_topic_reopened,omitempty"`
 	// ForwardDate
 	// For forwarded messages, date the original message was sent in Unix time
 	ForwardDate *int64 `json:"forward_date,omitempty"`
@@ -6153,20 +8389,42 @@ type Message struct {
 	// in forwarded messages
 	ForwardSenderName *string `json:"forward_sender_name,omitempty"`
 	// ForwardSignature
-	// For messages forwarded from channels, signature of the post author if present
+	// For forwarded messages that were originally sent in channels or by an anonymous chat
+	// administrator, signature of the message sender if present
 	ForwardSignature *string `json:"forward_signature,omitempty"`
 	// From
-	// Sender, empty for messages sent to channels
+	// Sender of the message; empty for messages sent to channels. For backward compatibility, the
+	// field contains a fake sender user in non-channel chats, if the message was sent on behalf of
+	// a chat.
 	From *User `json:"from,omitempty"`
 	// Game
 	// Message is a game, information about the game. More about games »
 	Game *Game `json:"game,omitempty"`
+	// GeneralForumTopicHidden
+	// Service message: the 'General' forum topic hidden
+	GeneralForumTopicHidden *GeneralForumTopicHidden `json:"general_forum_topic_hidden,omitempty"`
+	// GeneralForumTopicUnhidden
+	// Service message: the 'General' forum topic unhidden
+	GeneralForumTopicUnhidden *GeneralForumTopicUnhidden `json:"general_forum_topic_unhidden,omitempty"`
 	// GroupChatCreated
 	// Service message: the group has been created
 	GroupChatCreated *True `json:"group_chat_created,omitempty"`
+	// HasMediaSpoiler
+	// True, if the message media is covered by a spoiler animation
+	HasMediaSpoiler *True `json:"has_media_spoiler,omitempty"`
+	// HasProtectedContent
+	// True, if the message can't be forwarded
+	HasProtectedContent *True `json:"has_protected_content,omitempty"`
 	// Invoice
 	// Message is an invoice for a payment, information about the invoice. More about payments »
 	Invoice *Invoice `json:"invoice,omitempty"`
+	// IsAutomaticForward
+	// True, if the message is a channel post that was automatically forwarded to the connected
+	// discussion group
+	IsAutomaticForward *True `json:"is_automatic_forward,omitempty"`
+	// IsTopicMessage
+	// True, if the message is sent to a forum topic
+	IsTopicMessage *True `json:"is_topic_message,omitempty"`
 	// LeftChatMember
 	// A member was removed from the group, information about them (this member may be the bot
 	// itself)
@@ -6177,17 +8435,23 @@ type Message struct {
 	// MediaGroupID
 	// The unique identifier of a media message group this message belongs to
 	MediaGroupID *string `json:"media_group_id,omitempty"`
+	// MessageAutoDeleteTimerChanged
+	// Service message: auto-delete timer settings changed in the chat
+	MessageAutoDeleteTimerChanged *MessageAutoDeleteTimerChanged `json:"message_auto_delete_timer_changed,omitempty"`
+	// MessageThreadID
+	// Unique identifier of a message thread to which the message belongs; for supergroups only
+	MessageThreadID *int64 `json:"message_thread_id,omitempty"`
 	// MigrateFromChatID
 	// The supergroup has been migrated from a group with the specified identifier. This number may
-	// be greater than 32 bits and some programming languages may have difficulty/silent defects in
-	// interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or
-	// double-precision float type are safe for storing this identifier.
+	// have more than 32 significant bits and some programming languages may have difficulty/silent
+	// defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit
+	// integer or double-precision float type are safe for storing this identifier.
 	MigrateFromChatID *int64 `json:"migrate_from_chat_id,omitempty"`
 	// MigrateToChatID
 	// The group has been migrated to a supergroup with the specified identifier. This number may
-	// be greater than 32 bits and some programming languages may have difficulty/silent defects in
-	// interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or
-	// double-precision float type are safe for storing this identifier.
+	// have more than 32 significant bits and some programming languages may have difficulty/silent
+	// defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit
+	// integer or double-precision float type are safe for storing this identifier.
 	MigrateToChatID *int64 `json:"migrate_to_chat_id,omitempty"`
 	// NewChatMembers
 	// New members that were added to the group or supergroup and information about them (the bot
@@ -6225,9 +8489,11 @@ type Message struct {
 	// contain further reply_to_message fields even if it itself is a reply.
 	ReplyToMessage *Message `json:"reply_to_message,omitempty"`
 	// SenderChat
-	// Sender of the message, sent on behalf of a chat. The channel itself for channel messages.
-	// The supergroup itself for messages from anonymous group administrators. The linked channel
-	// for messages automatically forwarded to the discussion group
+	// Sender of the message, sent on behalf of a chat. For example, the channel itself for channel
+	// posts, the supergroup itself for messages from anonymous group administrators, the linked
+	// channel for messages automatically forwarded to the discussion group. For backward
+	// compatibility, the field from contains a fake sender user in non-channel chats, if the
+	// message was sent on behalf of a chat.
 	SenderChat *Chat `json:"sender_chat,omitempty"`
 	// Sticker
 	// Message is a sticker, information about the sticker
@@ -6243,8 +8509,11 @@ type Message struct {
 	// directly created supergroup.
 	SupergroupChatCreated *True `json:"supergroup_chat_created,omitempty"`
 	// Text
-	// For text messages, the actual UTF-8 text of the message, 0-4096 characters
+	// For text messages, the actual UTF-8 text of the message
 	Text *string `json:"text,omitempty"`
+	// UserShared
+	// Service message: a user was shared with the bot
+	UserShared *UserShared `json:"user_shared,omitempty"`
 	// Venue
 	// Message is a venue, information about the venue. For backward compatibility, when this field
 	// is set, the location field will also be set
@@ -6255,12 +8524,30 @@ type Message struct {
 	// Video
 	// Message is a video, information about the video
 	Video *Video `json:"video,omitempty"`
+	// VideoChatEnded
+	// Service message: video chat ended
+	VideoChatEnded *VideoChatEnded `json:"video_chat_ended,omitempty"`
+	// VideoChatParticipantsInvited
+	// Service message: new participants invited to a video chat
+	VideoChatParticipantsInvited *VideoChatParticipantsInvited `json:"video_chat_participants_invited,omitempty"`
+	// VideoChatScheduled
+	// Service message: video chat scheduled
+	VideoChatScheduled *VideoChatScheduled `json:"video_chat_scheduled,omitempty"`
+	// VideoChatStarted
+	// Service message: video chat started
+	VideoChatStarted *VideoChatStarted `json:"video_chat_started,omitempty"`
 	// VideoNote
 	// Message is a video note, information about the video message
 	VideoNote *VideoNote `json:"video_note,omitempty"`
 	// Voice
 	// Message is a voice message, information about the file
 	Voice *Voice `json:"voice,omitempty"`
+	// WebAppData
+	// Service message: data sent by a Web App
+	WebAppData *WebAppData `json:"web_app_data,omitempty"`
+	// WriteAccessAllowed
+	// Service message: the user allowed the bot added to the attachment menu to write messages
+	WriteAccessAllowed *WriteAccessAllowed `json:"write_access_allowed,omitempty"`
 }
 
 func (t *Message) GetAnimation() *Animation {
@@ -6311,6 +8598,13 @@ func (t *Message) GetChat() *Chat {
 		return nil
 	}
 	return &t.Chat
+}
+
+func (t *Message) GetChatShared() *ChatShared {
+	if t == nil {
+		return nil
+	}
+	return t.ChatShared
 }
 
 func (t *Message) GetConnectedWebsite() string {
@@ -6369,6 +8663,34 @@ func (t *Message) GetEditDate() int64 {
 		return *field
 	}
 	return res
+}
+
+func (t *Message) GetForumTopicClosed() *ForumTopicClosed {
+	if t == nil {
+		return nil
+	}
+	return t.ForumTopicClosed
+}
+
+func (t *Message) GetForumTopicCreated() *ForumTopicCreated {
+	if t == nil {
+		return nil
+	}
+	return t.ForumTopicCreated
+}
+
+func (t *Message) GetForumTopicEdited() *ForumTopicEdited {
+	if t == nil {
+		return nil
+	}
+	return t.ForumTopicEdited
+}
+
+func (t *Message) GetForumTopicReopened() *ForumTopicReopened {
+	if t == nil {
+		return nil
+	}
+	return t.ForumTopicReopened
 }
 
 func (t *Message) GetForwardDate() int64 {
@@ -6443,6 +8765,20 @@ func (t *Message) GetGame() *Game {
 	return t.Game
 }
 
+func (t *Message) GetGeneralForumTopicHidden() *GeneralForumTopicHidden {
+	if t == nil {
+		return nil
+	}
+	return t.GeneralForumTopicHidden
+}
+
+func (t *Message) GetGeneralForumTopicUnhidden() *GeneralForumTopicUnhidden {
+	if t == nil {
+		return nil
+	}
+	return t.GeneralForumTopicUnhidden
+}
+
 func (t *Message) GetGroupChatCreated() *True {
 	if t == nil {
 		return nil
@@ -6450,11 +8786,39 @@ func (t *Message) GetGroupChatCreated() *True {
 	return t.GroupChatCreated
 }
 
+func (t *Message) GetHasMediaSpoiler() *True {
+	if t == nil {
+		return nil
+	}
+	return t.HasMediaSpoiler
+}
+
+func (t *Message) GetHasProtectedContent() *True {
+	if t == nil {
+		return nil
+	}
+	return t.HasProtectedContent
+}
+
 func (t *Message) GetInvoice() *Invoice {
 	if t == nil {
 		return nil
 	}
 	return t.Invoice
+}
+
+func (t *Message) GetIsAutomaticForward() *True {
+	if t == nil {
+		return nil
+	}
+	return t.IsAutomaticForward
+}
+
+func (t *Message) GetIsTopicMessage() *True {
+	if t == nil {
+		return nil
+	}
+	return t.IsTopicMessage
 }
 
 func (t *Message) GetLeftChatMember() *User {
@@ -6482,12 +8846,30 @@ func (t *Message) GetMediaGroupID() string {
 	return res
 }
 
+func (t *Message) GetMessageAutoDeleteTimerChanged() *MessageAutoDeleteTimerChanged {
+	if t == nil {
+		return nil
+	}
+	return t.MessageAutoDeleteTimerChanged
+}
+
 func (t *Message) GetMessageID() int64 {
 	var res int64
 	if t == nil {
 		return res
 	}
 	return t.MessageID
+}
+
+func (t *Message) GetMessageThreadID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.MessageThreadID; field != nil {
+		return *field
+	}
+	return res
 }
 
 func (t *Message) GetMigrateFromChatID() int64 {
@@ -6604,6 +8986,13 @@ func (t *Message) GetText() string {
 	return res
 }
 
+func (t *Message) GetUserShared() *UserShared {
+	if t == nil {
+		return nil
+	}
+	return t.UserShared
+}
+
 func (t *Message) GetVenue() *Venue {
 	if t == nil {
 		return nil
@@ -6625,6 +9014,34 @@ func (t *Message) GetVideo() *Video {
 	return t.Video
 }
 
+func (t *Message) GetVideoChatEnded() *VideoChatEnded {
+	if t == nil {
+		return nil
+	}
+	return t.VideoChatEnded
+}
+
+func (t *Message) GetVideoChatParticipantsInvited() *VideoChatParticipantsInvited {
+	if t == nil {
+		return nil
+	}
+	return t.VideoChatParticipantsInvited
+}
+
+func (t *Message) GetVideoChatScheduled() *VideoChatScheduled {
+	if t == nil {
+		return nil
+	}
+	return t.VideoChatScheduled
+}
+
+func (t *Message) GetVideoChatStarted() *VideoChatStarted {
+	if t == nil {
+		return nil
+	}
+	return t.VideoChatStarted
+}
+
 func (t *Message) GetVideoNote() *VideoNote {
 	if t == nil {
 		return nil
@@ -6639,6 +9056,36 @@ func (t *Message) GetVoice() *Voice {
 	return t.Voice
 }
 
+func (t *Message) GetWebAppData() *WebAppData {
+	if t == nil {
+		return nil
+	}
+	return t.WebAppData
+}
+
+func (t *Message) GetWriteAccessAllowed() *WriteAccessAllowed {
+	if t == nil {
+		return nil
+	}
+	return t.WriteAccessAllowed
+}
+
+// MessageAutoDeleteTimerChanged
+// This object represents a service message about a change in auto-delete timer settings.
+type MessageAutoDeleteTimerChanged struct {
+	// MessageAutoDeleteTime
+	// New auto-delete time for messages in the chat; in seconds
+	MessageAutoDeleteTime int64 `json:"message_auto_delete_time"`
+}
+
+func (t *MessageAutoDeleteTimerChanged) GetMessageAutoDeleteTime() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.MessageAutoDeleteTime
+}
+
 // MessageEntity
 // This object represents one special entity in a text message. For example, hashtags, usernames,
 // URLs, etc.
@@ -6650,22 +9097,38 @@ type MessageEntity struct {
 	// Offset in UTF-16 code units to the start of the entity
 	Offset int64 `json:"offset"`
 	// Type
-	// Type of the entity. Can be "mention" (@username), "hashtag" (#hashtag), "cashtag" ($USD),
-	// "bot_command" (/start@jobs_bot), "url" (https://telegram.org), "email"
+	// Type of the entity. Currently, can be "mention" (@username), "hashtag" (#hashtag), "cashtag"
+	// ($USD), "bot_command" (/start@jobs_bot), "url" (https://telegram.org), "email"
 	// (do-not-reply@telegram.org), "phone_number" (+1-212-555-0123), "bold" (bold text), "italic"
-	// (italic text), "underline" (underlined text), "strikethrough" (strikethrough text), "code"
-	// (monowidth string), "pre" (monowidth block), "text_link" (for clickable text URLs),
-	// "text_mention" (for users without usernames)
+	// (italic text), "underline" (underlined text), "strikethrough" (strikethrough text),
+	// "spoiler" (spoiler message), "code" (monowidth string), "pre" (monowidth block), "text_link"
+	// (for clickable text URLs), "text_mention" (for users without usernames), "custom_emoji" (for
+	// inline custom emoji stickers)
 	Type EntityType `json:"type"`
+	// CustomEmojiID
+	// For "custom_emoji" only, unique identifier of the custom emoji. Use getCustomEmojiStickers
+	// to get full information about the sticker
+	CustomEmojiID *string `json:"custom_emoji_id,omitempty"`
 	// Language
 	// For "pre" only, the programming language of the entity text
 	Language *string `json:"language,omitempty"`
 	// URL
-	// For "text_link" only, url that will be opened after user taps on the text
+	// For "text_link" only, URL that will be opened after user taps on the text
 	URL *string `json:"url,omitempty"`
 	// User
 	// For "text_mention" only, the mentioned user
 	User *User `json:"user,omitempty"`
+}
+
+func (t *MessageEntity) GetCustomEmojiID() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.CustomEmojiID; field != nil {
+		return *field
+	}
+	return res
 }
 
 func (t *MessageEntity) GetLanguage() string {
@@ -6794,7 +9257,7 @@ func (t *OrderInfo) GetShippingAddress() *ShippingAddress {
 }
 
 // PassportData
-// Contains information about Telegram Passport data shared with the bot by the user.
+// Describes Telegram Passport data shared with the bot by the user.
 type PassportData struct {
 	// Credentials
 	// Encrypted credentials required to decrypt the data
@@ -7330,7 +9793,7 @@ type PassportFile struct {
 	// Identifier for this file, which can be used to download or reuse the file
 	FileID string `json:"file_id"`
 	// FileSize
-	// File size
+	// File size in bytes
 	FileSize int64 `json:"file_size"`
 	// FileUniqueID
 	// Unique identifier for this file, which is supposed to be the same over time and for
@@ -7376,8 +9839,9 @@ func (t *PassportFile) GetFileUniqueID() string {
 // need Telegram v.4.0 or higher to use payments (released on May 18, 2017).
 type Payments struct {
 	// ChatID
-	// Unique identifier for the target private chat
-	ChatID int64 `json:"chat_id"`
+	// Unique identifier for the target chat or username of the target channel (in the format
+	// @channelusername)
+	ChatID IntStr `json:"chat_id"`
 	// Currency
 	// Three-letter ISO 4217 currency code, see more on currencies
 	Currency string `json:"currency"`
@@ -7393,42 +9857,48 @@ type Payments struct {
 	// delivery cost, delivery tax, bonus, etc.)
 	Prices []LabeledPrice `json:"prices"`
 	// ProviderToken
-	// Payments provider token, obtained via Botfather
+	// Payment provider token, obtained via @BotFather
 	ProviderToken string `json:"provider_token"`
-	// StartParameter
-	// Unique deep-linking parameter that can be used to generate this invoice when used as a start
-	// parameter
-	StartParameter string `json:"start_parameter"`
 	// Title
 	// Product name, 1-32 characters
 	Title string `json:"title"`
 	// AllowSendingWithoutReply
-	// Pass True, if the message should be sent even if the specified replied-to message is not
+	// Pass True if the message should be sent even if the specified replied-to message is not
 	// found
 	AllowSendingWithoutReply *bool `json:"allow_sending_without_reply,omitempty"`
 	// DisableNotification
 	// Sends the message silently. Users will receive a notification with no sound.
 	DisableNotification *bool `json:"disable_notification,omitempty"`
 	// IsFlexible
-	// Pass True, if the final price depends on the shipping method
+	// Pass True if the final price depends on the shipping method
 	IsFlexible *bool `json:"is_flexible,omitempty"`
+	// MaxTipAmount
+	// The maximum accepted amount for tips in the smallest units of the currency (integer, not
+	// float/double). For example, for a maximum tip of US$ 1.45 pass max_tip_amount = 145. See the
+	// exp parameter in currencies.json, it shows the number of digits past the decimal point for
+	// each currency (2 for the majority of currencies). Defaults to 0
+	MaxTipAmount *int64 `json:"max_tip_amount,omitempty"`
+	// MessageThreadID
+	// Unique identifier for the target message thread (topic) of the forum; for forum supergroups
+	// only
+	MessageThreadID *int64 `json:"message_thread_id,omitempty"`
 	// NeedEmail
-	// Pass True, if you require the user's email address to complete the order
+	// Pass True if you require the user's email address to complete the order
 	NeedEmail *bool `json:"need_email,omitempty"`
 	// NeedName
-	// Pass True, if you require the user's full name to complete the order
+	// Pass True if you require the user's full name to complete the order
 	NeedName *bool `json:"need_name,omitempty"`
 	// NeedPhoneNumber
-	// Pass True, if you require the user's phone number to complete the order
+	// Pass True if you require the user's phone number to complete the order
 	NeedPhoneNumber *bool `json:"need_phone_number,omitempty"`
 	// NeedShippingAddress
-	// Pass True, if you require the user's shipping address to complete the order
+	// Pass True if you require the user's shipping address to complete the order
 	NeedShippingAddress *bool `json:"need_shipping_address,omitempty"`
 	// PhotoHeight
 	// Photo height
 	PhotoHeight *int64 `json:"photo_height,omitempty"`
 	// PhotoSize
-	// Photo size
+	// Photo size in bytes
 	PhotoSize *int64 `json:"photo_size,omitempty"`
 	// PhotoURL
 	// URL of the product photo for the invoice. Can be a photo of the goods or a marketing image
@@ -7437,8 +9907,11 @@ type Payments struct {
 	// PhotoWidth
 	// Photo width
 	PhotoWidth *int64 `json:"photo_width,omitempty"`
+	// ProtectContent
+	// Protects the contents of the sent message from forwarding and saving
+	ProtectContent *bool `json:"protect_content,omitempty"`
 	// ProviderData
-	// A JSON-serialized data about the invoice, which will be shared with the payment provider. A
+	// JSON-serialized data about the invoice, which will be shared with the payment provider. A
 	// detailed description of required fields should be provided by the payment provider.
 	ProviderData *string `json:"provider_data,omitempty"`
 	// ReplyMarkup
@@ -7449,11 +9922,23 @@ type Payments struct {
 	// If the message is a reply, ID of the original message
 	ReplyToMessageID *int64 `json:"reply_to_message_id,omitempty"`
 	// SendEmailToProvider
-	// Pass True, if user's email address should be sent to provider
+	// Pass True if the user's email address should be sent to provider
 	SendEmailToProvider *bool `json:"send_email_to_provider,omitempty"`
 	// SendPhoneNumberToProvider
-	// Pass True, if user's phone number should be sent to provider
+	// Pass True if the user's phone number should be sent to provider
 	SendPhoneNumberToProvider *bool `json:"send_phone_number_to_provider,omitempty"`
+	// StartParameter
+	// Unique deep-linking parameter. If left empty, forwarded copies of the sent message will have
+	// a Pay button, allowing multiple users to pay directly from the forwarded message, using the
+	// same invoice. If non-empty, forwarded copies of the sent message will have a URL button with
+	// a deep link to the bot (instead of a Pay button), with the value used as the start parameter
+	StartParameter *string `json:"start_parameter,omitempty"`
+	// SuggestedTipAmounts
+	// A JSON-serialized array of suggested amounts of tips in the smallest units of the currency
+	// (integer, not float/double). At most 4 suggested tip amounts can be specified. The suggested
+	// tip amounts must be positive, passed in a strictly increased order and must not exceed
+	// max_tip_amount.
+	SuggestedTipAmounts []int64 `json:"suggested_tip_amounts,omitempty"`
 }
 
 func (t *Payments) GetAllowSendingWithoutReply() bool {
@@ -7467,8 +9952,8 @@ func (t *Payments) GetAllowSendingWithoutReply() bool {
 	return res
 }
 
-func (t *Payments) GetChatID() int64 {
-	var res int64
+func (t *Payments) GetChatID() IntStr {
+	var res IntStr
 	if t == nil {
 		return res
 	}
@@ -7508,6 +9993,28 @@ func (t *Payments) GetIsFlexible() bool {
 		return res
 	}
 	if field := t.IsFlexible; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Payments) GetMaxTipAmount() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.MaxTipAmount; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *Payments) GetMessageThreadID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.MessageThreadID; field != nil {
 		return *field
 	}
 	return res
@@ -7609,6 +10116,17 @@ func (t *Payments) GetPhotoWidth() int64 {
 	return res
 }
 
+func (t *Payments) GetProtectContent() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.ProtectContent; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *Payments) GetProviderData() string {
 	var res string
 	if t == nil {
@@ -7673,7 +10191,10 @@ func (t *Payments) GetStartParameter() string {
 	if t == nil {
 		return res
 	}
-	return t.StartParameter
+	if field := t.StartParameter; field != nil {
+		return *field
+	}
+	return res
 }
 
 func (t *Payments) GetTitle() string {
@@ -7701,7 +10222,7 @@ type PhotoSize struct {
 	// Photo width
 	Width int64 `json:"width"`
 	// FileSize
-	// File size
+	// File size in bytes
 	FileSize *int64 `json:"file_size,omitempty"`
 }
 
@@ -7767,7 +10288,7 @@ type Poll struct {
 	// List of poll options
 	Options []PollOption `json:"options"`
 	// Question
-	// Poll question, 1-255 characters
+	// Poll question, 1-300 characters
 	Question string `json:"question"`
 	// TotalVoterCount
 	// Total number of users that voted in the poll
@@ -7973,7 +10494,7 @@ type PreCheckoutQuery struct {
 	// currencies).
 	TotalAmount int64 `json:"total_amount"`
 	// OrderInfo
-	// Order info provided by the user
+	// Order information provided by the user
 	OrderInfo *OrderInfo `json:"order_info,omitempty"`
 	// ShippingOptionID
 	// Identifier of the shipping option chosen by the user
@@ -8081,6 +10602,13 @@ type ReplyKeyboardMarkup struct {
 	// Keyboard
 	// Array of button rows, each represented by an Array of KeyboardButton objects
 	Keyboard [][]KeyboardButton `json:"keyboard"`
+	// InputFieldPlaceholder
+	// The placeholder to be shown in the input field when the keyboard is active; 1-64 characters
+	InputFieldPlaceholder *string `json:"input_field_placeholder,omitempty"`
+	// IsPersistent
+	// Requests clients to always show the keyboard when the regular keyboard is hidden. Defaults
+	// to false, in which case the custom keyboard can be hidden and opened with a keyboard icon.
+	IsPersistent *bool `json:"is_persistent,omitempty"`
 	// OneTimeKeyboard
 	// Requests clients to hide the keyboard as soon as it's been used. The keyboard will still be
 	// available, but clients will automatically display the usual letter-keyboard in the chat -
@@ -8099,6 +10627,28 @@ type ReplyKeyboardMarkup struct {
 	// change the bot's language, bot replies to the request with a keyboard to select the new
 	// language. Other users in the group don't see the keyboard.
 	Selective *bool `json:"selective,omitempty"`
+}
+
+func (t *ReplyKeyboardMarkup) GetInputFieldPlaceholder() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.InputFieldPlaceholder; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *ReplyKeyboardMarkup) GetIsPersistent() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.IsPersistent; field != nil {
+		return *field
+	}
+	return res
 }
 
 func (t *ReplyKeyboardMarkup) GetOneTimeKeyboard() bool {
@@ -8174,13 +10724,13 @@ func (t *ReplyKeyboardRemove) GetSelective() bool {
 }
 
 // ResponseParameters
-// Contains information about why a request was unsuccessful.
+// Describes why a request was unsuccessful.
 type ResponseParameters struct {
 	// MigrateToChatID
 	// The group has been migrated to a supergroup with the specified identifier. This number may
-	// be greater than 32 bits and some programming languages may have difficulty/silent defects in
-	// interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or
-	// double-precision float type are safe for storing this identifier.
+	// have more than 32 significant bits and some programming languages may have difficulty/silent
+	// defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit
+	// integer or double-precision float type are safe for storing this identifier.
 	MigrateToChatID *int64 `json:"migrate_to_chat_id,omitempty"`
 	// RetryAfter
 	// In case of exceeding flood control, the number of seconds left to wait before the request
@@ -8210,6 +10760,26 @@ func (t *ResponseParameters) GetRetryAfter() int64 {
 	return res
 }
 
+// SentWebAppMessage
+// Describes an inline message sent by a Web App on behalf of a user.
+type SentWebAppMessage struct {
+	// InlineMessageID
+	// Identifier of the sent inline message. Available only if there is an inline keyboard
+	// attached to the message.
+	InlineMessageID *string `json:"inline_message_id,omitempty"`
+}
+
+func (t *SentWebAppMessage) GetInlineMessageID() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.InlineMessageID; field != nil {
+		return *field
+	}
+	return res
+}
+
 // ShippingAddress
 // This object represents a shipping address.
 type ShippingAddress struct {
@@ -8217,7 +10787,7 @@ type ShippingAddress struct {
 	// City
 	City string `json:"city"`
 	// CountryCode
-	// ISO 3166-1 alpha-2 country code
+	// Two-letter ISO 3166-1 alpha-2 country code
 	CountryCode string `json:"country_code"`
 	// PostCode
 	// Address post code
@@ -8374,24 +10944,54 @@ type Sticker struct {
 	// IsAnimated
 	// True, if the sticker is animated
 	IsAnimated bool `json:"is_animated"`
+	// IsVideo
+	// True, if the sticker is a video sticker
+	IsVideo bool `json:"is_video"`
+	// Type
+	// Type of the sticker, currently one of "regular", "mask", "custom_emoji". The type of the
+	// sticker is independent from its format, which is determined by the fields is_animated and
+	// is_video.
+	Type StickerType `json:"type"`
 	// Width
 	// Sticker width
 	Width int64 `json:"width"`
+	// CustomEmojiID
+	// For custom emoji stickers, unique identifier of the custom emoji
+	CustomEmojiID *string `json:"custom_emoji_id,omitempty"`
 	// Emoji
 	// Emoji associated with the sticker
 	Emoji *string `json:"emoji,omitempty"`
 	// FileSize
-	// File size
+	// File size in bytes
 	FileSize *int64 `json:"file_size,omitempty"`
 	// MaskPosition
 	// For mask stickers, the position where the mask should be placed
 	MaskPosition *MaskPosition `json:"mask_position,omitempty"`
+	// NeedsRepainting
+	// True, if the sticker must be repainted to a text color in messages, the color of the
+	// Telegram Premium badge in emoji status, white color on chat photos, or another appropriate
+	// color in other places
+	NeedsRepainting *True `json:"needs_repainting,omitempty"`
+	// PremiumAnimation
+	// For premium regular stickers, premium animation for the sticker
+	PremiumAnimation *File `json:"premium_animation,omitempty"`
 	// SetName
 	// Name of the sticker set to which the sticker belongs
 	SetName *string `json:"set_name,omitempty"`
-	// Thumb
+	// Thumbnail
 	// Sticker thumbnail in the .WEBP or .JPG format
-	Thumb *PhotoSize `json:"thumb,omitempty"`
+	Thumbnail *PhotoSize `json:"thumbnail,omitempty"`
+}
+
+func (t *Sticker) GetCustomEmojiID() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.CustomEmojiID; field != nil {
+		return *field
+	}
+	return res
 }
 
 func (t *Sticker) GetEmoji() string {
@@ -8448,11 +11048,33 @@ func (t *Sticker) GetIsAnimated() bool {
 	return t.IsAnimated
 }
 
+func (t *Sticker) GetIsVideo() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.IsVideo
+}
+
 func (t *Sticker) GetMaskPosition() *MaskPosition {
 	if t == nil {
 		return nil
 	}
 	return t.MaskPosition
+}
+
+func (t *Sticker) GetNeedsRepainting() *True {
+	if t == nil {
+		return nil
+	}
+	return t.NeedsRepainting
+}
+
+func (t *Sticker) GetPremiumAnimation() *File {
+	if t == nil {
+		return nil
+	}
+	return t.PremiumAnimation
 }
 
 func (t *Sticker) GetSetName() string {
@@ -8466,11 +11088,18 @@ func (t *Sticker) GetSetName() string {
 	return res
 }
 
-func (t *Sticker) GetThumb() *PhotoSize {
+func (t *Sticker) GetThumbnail() *PhotoSize {
 	if t == nil {
 		return nil
 	}
-	return t.Thumb
+	return t.Thumbnail
+}
+
+func (t *Sticker) GetType() *StickerType {
+	if t == nil {
+		return nil
+	}
+	return &t.Type
 }
 
 func (t *Sticker) GetWidth() int64 {
@@ -8484,32 +11113,27 @@ func (t *Sticker) GetWidth() int64 {
 // StickerSet
 // This object represents a sticker set.
 type StickerSet struct {
-	// ContainsMasks
-	// True, if the sticker set contains masks
-	ContainsMasks bool `json:"contains_masks"`
 	// IsAnimated
 	// True, if the sticker set contains animated stickers
 	IsAnimated bool `json:"is_animated"`
+	// IsVideo
+	// True, if the sticker set contains video stickers
+	IsVideo bool `json:"is_video"`
 	// Name
 	// Sticker set name
 	Name string `json:"name"`
+	// StickerType
+	// Type of stickers in the set, currently one of "regular", "mask", "custom_emoji"
+	StickerType string `json:"sticker_type"`
 	// Stickers
 	// List of all set stickers
 	Stickers []Sticker `json:"stickers"`
 	// Title
 	// Sticker set title
 	Title string `json:"title"`
-	// Thumb
-	// Sticker set thumbnail in the .WEBP or .TGS format
-	Thumb *PhotoSize `json:"thumb,omitempty"`
-}
-
-func (t *StickerSet) GetContainsMasks() bool {
-	var res bool
-	if t == nil {
-		return res
-	}
-	return t.ContainsMasks
+	// Thumbnail
+	// Sticker set thumbnail in the .WEBP, .TGS, or .WEBM format
+	Thumbnail *PhotoSize `json:"thumbnail,omitempty"`
 }
 
 func (t *StickerSet) GetIsAnimated() bool {
@@ -8520,6 +11144,14 @@ func (t *StickerSet) GetIsAnimated() bool {
 	return t.IsAnimated
 }
 
+func (t *StickerSet) GetIsVideo() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.IsVideo
+}
+
 func (t *StickerSet) GetName() string {
 	var res string
 	if t == nil {
@@ -8528,11 +11160,19 @@ func (t *StickerSet) GetName() string {
 	return t.Name
 }
 
-func (t *StickerSet) GetThumb() *PhotoSize {
+func (t *StickerSet) GetStickerType() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	return t.StickerType
+}
+
+func (t *StickerSet) GetThumbnail() *PhotoSize {
 	if t == nil {
 		return nil
 	}
-	return t.Thumb
+	return t.Thumbnail
 }
 
 func (t *StickerSet) GetTitle() string {
@@ -8559,24 +11199,54 @@ type Stickers struct {
 	// IsAnimated
 	// True, if the sticker is animated
 	IsAnimated bool `json:"is_animated"`
+	// IsVideo
+	// True, if the sticker is a video sticker
+	IsVideo bool `json:"is_video"`
+	// Type
+	// Type of the sticker, currently one of "regular", "mask", "custom_emoji". The type of the
+	// sticker is independent from its format, which is determined by the fields is_animated and
+	// is_video.
+	Type StickersType `json:"type"`
 	// Width
 	// Sticker width
 	Width int64 `json:"width"`
+	// CustomEmojiID
+	// For custom emoji stickers, unique identifier of the custom emoji
+	CustomEmojiID *string `json:"custom_emoji_id,omitempty"`
 	// Emoji
 	// Emoji associated with the sticker
 	Emoji *string `json:"emoji,omitempty"`
 	// FileSize
-	// File size
+	// File size in bytes
 	FileSize *int64 `json:"file_size,omitempty"`
 	// MaskPosition
 	// For mask stickers, the position where the mask should be placed
 	MaskPosition *MaskPosition `json:"mask_position,omitempty"`
+	// NeedsRepainting
+	// True, if the sticker must be repainted to a text color in messages, the color of the
+	// Telegram Premium badge in emoji status, white color on chat photos, or another appropriate
+	// color in other places
+	NeedsRepainting *True `json:"needs_repainting,omitempty"`
+	// PremiumAnimation
+	// For premium regular stickers, premium animation for the sticker
+	PremiumAnimation *File `json:"premium_animation,omitempty"`
 	// SetName
 	// Name of the sticker set to which the sticker belongs
 	SetName *string `json:"set_name,omitempty"`
-	// Thumb
+	// Thumbnail
 	// Sticker thumbnail in the .WEBP or .JPG format
-	Thumb *PhotoSize `json:"thumb,omitempty"`
+	Thumbnail *PhotoSize `json:"thumbnail,omitempty"`
+}
+
+func (t *Stickers) GetCustomEmojiID() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.CustomEmojiID; field != nil {
+		return *field
+	}
+	return res
 }
 
 func (t *Stickers) GetEmoji() string {
@@ -8633,11 +11303,33 @@ func (t *Stickers) GetIsAnimated() bool {
 	return t.IsAnimated
 }
 
+func (t *Stickers) GetIsVideo() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	return t.IsVideo
+}
+
 func (t *Stickers) GetMaskPosition() *MaskPosition {
 	if t == nil {
 		return nil
 	}
 	return t.MaskPosition
+}
+
+func (t *Stickers) GetNeedsRepainting() *True {
+	if t == nil {
+		return nil
+	}
+	return t.NeedsRepainting
+}
+
+func (t *Stickers) GetPremiumAnimation() *File {
+	if t == nil {
+		return nil
+	}
+	return t.PremiumAnimation
 }
 
 func (t *Stickers) GetSetName() string {
@@ -8651,11 +11343,18 @@ func (t *Stickers) GetSetName() string {
 	return res
 }
 
-func (t *Stickers) GetThumb() *PhotoSize {
+func (t *Stickers) GetThumbnail() *PhotoSize {
 	if t == nil {
 		return nil
 	}
-	return t.Thumb
+	return t.Thumbnail
+}
+
+func (t *Stickers) GetType() *StickersType {
+	if t == nil {
+		return nil
+	}
+	return &t.Type
 }
 
 func (t *Stickers) GetWidth() int64 {
@@ -8688,7 +11387,7 @@ type SuccessfulPayment struct {
 	// currencies).
 	TotalAmount int64 `json:"total_amount"`
 	// OrderInfo
-	// Order info provided by the user
+	// Order information provided by the user
 	OrderInfo *OrderInfo `json:"order_info,omitempty"`
 	// ShippingOptionID
 	// Identifier of the shipping option chosen by the user
@@ -8753,13 +11452,90 @@ func (t *SuccessfulPayment) GetTotalAmount() int64 {
 	return t.TotalAmount
 }
 
+// SwitchInlineQueryChosenChat
+// This object represents an inline button that switches the current user to inline mode in a
+// chosen chat, with an optional default inline query.
+type SwitchInlineQueryChosenChat struct {
+	// AllowBotChats
+	// True, if private chats with bots can be chosen
+	AllowBotChats *bool `json:"allow_bot_chats,omitempty"`
+	// AllowChannelChats
+	// True, if channel chats can be chosen
+	AllowChannelChats *bool `json:"allow_channel_chats,omitempty"`
+	// AllowGroupChats
+	// True, if group and supergroup chats can be chosen
+	AllowGroupChats *bool `json:"allow_group_chats,omitempty"`
+	// AllowUserChats
+	// True, if private chats with users can be chosen
+	AllowUserChats *bool `json:"allow_user_chats,omitempty"`
+	// Query
+	// The default inline query to be inserted in the input field. If left empty, only the bot's
+	// username will be inserted
+	Query *string `json:"query,omitempty"`
+}
+
+func (t *SwitchInlineQueryChosenChat) GetAllowBotChats() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.AllowBotChats; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *SwitchInlineQueryChosenChat) GetAllowChannelChats() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.AllowChannelChats; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *SwitchInlineQueryChosenChat) GetAllowGroupChats() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.AllowGroupChats; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *SwitchInlineQueryChosenChat) GetAllowUserChats() bool {
+	var res bool
+	if t == nil {
+		return res
+	}
+	if field := t.AllowUserChats; field != nil {
+		return *field
+	}
+	return res
+}
+
+func (t *SwitchInlineQueryChosenChat) GetQuery() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.Query; field != nil {
+		return *field
+	}
+	return res
+}
+
 // Update
 // This object represents an incoming update.At most one of the optional parameters can be present
 // in any given update.
 type Update struct {
 	// UpdateID
 	// The update's unique identifier. Update identifiers start from a certain positive number and
-	// increase sequentially. This ID becomes especially handy if you're using Webhooks, since it
+	// increase sequentially. This ID becomes especially handy if you're using webhooks, since it
 	// allows you to ignore repeated updates or to restore the correct update sequence, should they
 	// get out of order. If there are no new updates for at least a week, then identifier of the
 	// next update will be chosen randomly instead of sequentially.
@@ -8770,6 +11546,15 @@ type Update struct {
 	// ChannelPost
 	// New incoming channel post of any kind - text, photo, sticker, etc.
 	ChannelPost *Message `json:"channel_post,omitempty"`
+	// ChatJoinRequest
+	// A request to join the chat has been sent. The bot must have the can_invite_users
+	// administrator right in the chat to receive these updates.
+	ChatJoinRequest *ChatJoinRequest `json:"chat_join_request,omitempty"`
+	// ChatMember
+	// A chat member's status was updated in a chat. The bot must be an administrator in the chat
+	// and must explicitly specify "chat_member" in the list of allowed_updates to receive these
+	// updates.
+	ChatMember *ChatMemberUpdated `json:"chat_member,omitempty"`
 	// ChosenInlineResult
 	// The result of an inline query that was chosen by a user and sent to their chat partner.
 	// Please see our documentation on the feedback collecting for details on how to enable these
@@ -8787,6 +11572,10 @@ type Update struct {
 	// Message
 	// New incoming message of any kind - text, photo, sticker, etc.
 	Message *Message `json:"message,omitempty"`
+	// MyChatMember
+	// The bot's chat member status was updated in a chat. For private chats, this update is
+	// received only when the bot is blocked or unblocked by the user.
+	MyChatMember *ChatMemberUpdated `json:"my_chat_member,omitempty"`
 	// Poll
 	// New poll state. Bots receive only updates about stopped polls and polls, which are sent by
 	// the bot
@@ -8815,6 +11604,20 @@ func (t *Update) GetChannelPost() *Message {
 		return nil
 	}
 	return t.ChannelPost
+}
+
+func (t *Update) GetChatJoinRequest() *ChatJoinRequest {
+	if t == nil {
+		return nil
+	}
+	return t.ChatJoinRequest
+}
+
+func (t *Update) GetChatMember() *ChatMemberUpdated {
+	if t == nil {
+		return nil
+	}
+	return t.ChatMember
 }
 
 func (t *Update) GetChosenInlineResult() *ChosenInlineResult {
@@ -8850,6 +11653,13 @@ func (t *Update) GetMessage() *Message {
 		return nil
 	}
 	return t.Message
+}
+
+func (t *Update) GetMyChatMember() *ChatMemberUpdated {
+	if t == nil {
+		return nil
+	}
+	return t.MyChatMember
 }
 
 func (t *Update) GetPoll() *Poll {
@@ -8895,17 +11705,26 @@ type User struct {
 	// User's or bot's first name
 	FirstName string `json:"first_name"`
 	// ID
-	// Unique identifier for this user or bot
+	// Unique identifier for this user or bot. This number may have more than 32 significant bits
+	// and some programming languages may have difficulty/silent defects in interpreting it. But it
+	// has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe
+	// for storing this identifier.
 	ID int64 `json:"id"`
 	// IsBot
 	// True, if this user is a bot
 	IsBot bool `json:"is_bot"`
+	// AddedToAttachmentMenu
+	// True, if this user added the bot to the attachment menu
+	AddedToAttachmentMenu *True `json:"added_to_attachment_menu,omitempty"`
 	// CanJoinGroups
 	// True, if the bot can be invited to groups. Returned only in getMe.
 	CanJoinGroups *bool `json:"can_join_groups,omitempty"`
 	// CanReadAllGroupMessages
 	// True, if privacy mode is disabled for the bot. Returned only in getMe.
 	CanReadAllGroupMessages *bool `json:"can_read_all_group_messages,omitempty"`
+	// IsPremium
+	// True, if this user is a Telegram Premium user
+	IsPremium *True `json:"is_premium,omitempty"`
 	// LanguageCode
 	// IETF language tag of the user's language
 	LanguageCode *string `json:"language_code,omitempty"`
@@ -8918,6 +11737,13 @@ type User struct {
 	// Username
 	// User's or bot's username
 	Username *string `json:"username,omitempty"`
+}
+
+func (t *User) GetAddedToAttachmentMenu() *True {
+	if t == nil {
+		return nil
+	}
+	return t.AddedToAttachmentMenu
 }
 
 func (t *User) GetCanJoinGroups() bool {
@@ -8964,6 +11790,13 @@ func (t *User) GetIsBot() bool {
 		return res
 	}
 	return t.IsBot
+}
+
+func (t *User) GetIsPremium() *True {
+	if t == nil {
+		return nil
+	}
+	return t.IsPremium
 }
 
 func (t *User) GetLanguageCode() string {
@@ -9027,6 +11860,38 @@ func (t *UserProfilePhotos) GetTotalCount() int64 {
 		return res
 	}
 	return t.TotalCount
+}
+
+// UserShared
+// This object contains information about the user whose identifier was shared with the bot using a
+// KeyboardButtonRequestUser button.
+type UserShared struct {
+	// RequestID
+	// Identifier of the request
+	RequestID int64 `json:"request_id"`
+	// UserID
+	// Identifier of the shared user. This number may have more than 32 significant bits and some
+	// programming languages may have difficulty/silent defects in interpreting it. But it has at
+	// most 52 significant bits, so a 64-bit integer or double-precision float type are safe for
+	// storing this identifier. The bot may not have access to the user and could be unable to use
+	// this identifier, unless the user is already known to the bot by some other means.
+	UserID int64 `json:"user_id"`
+}
+
+func (t *UserShared) GetRequestID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.RequestID
+}
+
+func (t *UserShared) GetUserID() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.UserID
 }
 
 // Venue
@@ -9146,14 +12011,16 @@ type Video struct {
 	// Original filename as defined by sender
 	FileName *string `json:"file_name,omitempty"`
 	// FileSize
-	// File size
+	// File size in bytes. It can be bigger than 2^31 and some programming languages may have
+	// difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a
+	// signed 64-bit integer or double-precision float type are safe for storing this value.
 	FileSize *int64 `json:"file_size,omitempty"`
 	// MimeType
-	// Mime type of a file as defined by sender
+	// MIME type of the file as defined by sender
 	MimeType *string `json:"mime_type,omitempty"`
-	// Thumb
+	// Thumbnail
 	// Video thumbnail
-	Thumb *PhotoSize `json:"thumb,omitempty"`
+	Thumbnail *PhotoSize `json:"thumbnail,omitempty"`
 }
 
 func (t *Video) GetDuration() int64 {
@@ -9221,11 +12088,11 @@ func (t *Video) GetMimeType() string {
 	return res
 }
 
-func (t *Video) GetThumb() *PhotoSize {
+func (t *Video) GetThumbnail() *PhotoSize {
 	if t == nil {
 		return nil
 	}
-	return t.Thumb
+	return t.Thumbnail
 }
 
 func (t *Video) GetWidth() int64 {
@@ -9234,6 +12101,64 @@ func (t *Video) GetWidth() int64 {
 		return res
 	}
 	return t.Width
+}
+
+// VideoChatEnded
+// This object represents a service message about a video chat ended in the chat.
+type VideoChatEnded struct {
+	// Duration
+	// Video chat duration in seconds
+	Duration int64 `json:"duration"`
+}
+
+func (t *VideoChatEnded) GetDuration() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.Duration
+}
+
+// VideoChatParticipantsInvited
+// This object represents a service message about new members invited to a video chat.
+type VideoChatParticipantsInvited struct {
+	// Users
+	// New members that were invited to the video chat
+	Users []User `json:"users"`
+}
+
+// VideoChatScheduled
+// This object represents a service message about a video chat scheduled in the chat.
+type VideoChatScheduled struct {
+	// StartDate
+	// Point in time (Unix timestamp) when the video chat is supposed to be started by a chat
+	// administrator
+	StartDate int64 `json:"start_date"`
+}
+
+func (t *VideoChatScheduled) GetStartDate() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.StartDate
+}
+
+// VideoChatStarted
+// This object represents a service message about a video chat started in the chat. Currently holds
+// no information.
+type VideoChatStarted struct {
+	// Duration
+	// Video chat duration in seconds
+	Duration int64 `json:"duration"`
+}
+
+func (t *VideoChatStarted) GetDuration() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	return t.Duration
 }
 
 // VideoNote
@@ -9253,11 +12178,11 @@ type VideoNote struct {
 	// Video width and height (diameter of the video message) as defined by sender
 	Length int64 `json:"length"`
 	// FileSize
-	// File size
+	// File size in bytes
 	FileSize *int64 `json:"file_size,omitempty"`
-	// Thumb
+	// Thumbnail
 	// Video thumbnail
-	Thumb *PhotoSize `json:"thumb,omitempty"`
+	Thumbnail *PhotoSize `json:"thumbnail,omitempty"`
 }
 
 func (t *VideoNote) GetDuration() int64 {
@@ -9303,11 +12228,11 @@ func (t *VideoNote) GetLength() int64 {
 	return t.Length
 }
 
-func (t *VideoNote) GetThumb() *PhotoSize {
+func (t *VideoNote) GetThumbnail() *PhotoSize {
 	if t == nil {
 		return nil
 	}
-	return t.Thumb
+	return t.Thumbnail
 }
 
 // Voice
@@ -9324,7 +12249,9 @@ type Voice struct {
 	// different bots. Can't be used to download or reuse the file.
 	FileUniqueID string `json:"file_unique_id"`
 	// FileSize
-	// File size
+	// File size in bytes. It can be bigger than 2^31 and some programming languages may have
+	// difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a
+	// signed 64-bit integer or double-precision float type are safe for storing this value.
 	FileSize *int64 `json:"file_size,omitempty"`
 	// MimeType
 	// MIME type of the file as defined by sender
@@ -9377,8 +12304,53 @@ func (t *Voice) GetMimeType() string {
 	return res
 }
 
+// WebAppData
+// Describes data sent from a Web App to the bot.
+type WebAppData struct {
+	// ButtonText
+	// Text of the web_app keyboard button from which the Web App was opened. Be aware that a bad
+	// client can send arbitrary data in this field.
+	ButtonText string `json:"button_text"`
+	// Data
+	// The data. Be aware that a bad client can send arbitrary data in this field.
+	Data string `json:"data"`
+}
+
+func (t *WebAppData) GetButtonText() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	return t.ButtonText
+}
+
+func (t *WebAppData) GetData() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	return t.Data
+}
+
+// WebAppInfo
+// Describes a Web App.
+type WebAppInfo struct {
+	// URL
+	// An HTTPS URL of a Web App to be opened with additional data as specified in Initializing Web
+	// Apps
+	URL string `json:"url"`
+}
+
+func (t *WebAppInfo) GetURL() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	return t.URL
+}
+
 // WebhookInfo
-// Contains information about the current status of a webhook.
+// Describes the current status of a webhook.
 type WebhookInfo struct {
 	// HasCustomCertificate
 	// True, if a custom certificate was provided for webhook certificate checks
@@ -9390,7 +12362,8 @@ type WebhookInfo struct {
 	// Webhook URL, may be empty if webhook is not set up
 	URL string `json:"url"`
 	// AllowedUpdates
-	// A list of update types the bot is subscribed to. Defaults to all update types
+	// A list of update types the bot is subscribed to. Defaults to all update types except
+	// chat_member
 	AllowedUpdates []string `json:"allowed_updates,omitempty"`
 	// IPAddress
 	// Currently used webhook IP address
@@ -9403,8 +12376,13 @@ type WebhookInfo struct {
 	// Error message in human-readable format for the most recent error that happened when trying
 	// to deliver an update via webhook
 	LastErrorMessage *string `json:"last_error_message,omitempty"`
+	// LastSynchronizationErrorDate
+	// Unix time of the most recent error that happened when trying to synchronize available
+	// updates with Telegram datacenters
+	LastSynchronizationErrorDate *int64 `json:"last_synchronization_error_date,omitempty"`
 	// MaxConnections
-	// Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery
+	// The maximum allowed number of simultaneous HTTPS connections to the webhook for update
+	// delivery
 	MaxConnections *int64 `json:"max_connections,omitempty"`
 }
 
@@ -9449,6 +12427,17 @@ func (t *WebhookInfo) GetLastErrorMessage() string {
 	return res
 }
 
+func (t *WebhookInfo) GetLastSynchronizationErrorDate() int64 {
+	var res int64
+	if t == nil {
+		return res
+	}
+	if field := t.LastSynchronizationErrorDate; field != nil {
+		return *field
+	}
+	return res
+}
+
 func (t *WebhookInfo) GetMaxConnections() int64 {
 	var res int64
 	if t == nil {
@@ -9474,4 +12463,24 @@ func (t *WebhookInfo) GetURL() string {
 		return res
 	}
 	return t.URL
+}
+
+// WriteAccessAllowed
+// This object represents a service message about a user allowing a bot to write messages after
+// adding the bot to the attachment menu or launching a Web App from a link.
+type WriteAccessAllowed struct {
+	// WebAppName
+	// Name of the Web App which was launched from a link
+	WebAppName *string `json:"web_app_name,omitempty"`
+}
+
+func (t *WriteAccessAllowed) GetWebAppName() string {
+	var res string
+	if t == nil {
+		return res
+	}
+	if field := t.WebAppName; field != nil {
+		return *field
+	}
+	return res
 }

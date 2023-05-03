@@ -12,6 +12,33 @@ func (e ErrIncorrectEnum) Error() string {
 	return fmt.Sprintf("incorrect enum value: %s", e.Value)
 }
 
+type BotType int
+
+const (
+	_ BotType = iota
+)
+
+var valueBotType = map[BotType]string{}
+
+var indexBotType = map[string]BotType{}
+
+func (enum BotType) String() string {
+	return valueBotType[enum]
+}
+
+func (enum BotType) MarshalText() ([]byte, error) {
+	return []byte(enum.String()), nil
+}
+
+func (enum *BotType) UnmarshalText(src []byte) error {
+	value, ok := indexBotType[string(src)]
+	if !ok {
+		return ErrIncorrectEnum{string(src)}
+	}
+	*enum = value
+	return nil
+}
+
 type ChatType int
 
 const (
@@ -129,12 +156,14 @@ const (
 	EntityTypeBotCommand
 	EntityTypeCashtag
 	EntityTypeCode
+	EntityTypeCustomEmoji
 	EntityTypeEmail
 	EntityTypeHashtag
 	EntityTypeItalic
 	EntityTypeMention
 	EntityTypePhoneNumber
 	EntityTypePre
+	EntityTypeSpoiler
 	EntityTypeStrikethrough
 	EntityTypeTextLink
 	EntityTypeTextMention
@@ -147,12 +176,14 @@ var valueEntityType = map[EntityType]string{
 	EntityTypeBotCommand:    "bot_command",
 	EntityTypeCashtag:       "cashtag",
 	EntityTypeCode:          "code",
+	EntityTypeCustomEmoji:   "custom_emoji",
 	EntityTypeEmail:         "email",
 	EntityTypeHashtag:       "hashtag",
 	EntityTypeItalic:        "italic",
 	EntityTypeMention:       "mention",
 	EntityTypePhoneNumber:   "phone_number",
 	EntityTypePre:           "pre",
+	EntityTypeSpoiler:       "spoiler",
 	EntityTypeStrikethrough: "strikethrough",
 	EntityTypeTextLink:      "text_link",
 	EntityTypeTextMention:   "text_mention",
@@ -165,12 +196,14 @@ var indexEntityType = map[string]EntityType{
 	"bot_command":   EntityTypeBotCommand,
 	"cashtag":       EntityTypeCashtag,
 	"code":          EntityTypeCode,
+	"custom_emoji":  EntityTypeCustomEmoji,
 	"email":         EntityTypeEmail,
 	"hashtag":       EntityTypeHashtag,
 	"italic":        EntityTypeItalic,
 	"mention":       EntityTypeMention,
 	"phone_number":  EntityTypePhoneNumber,
 	"pre":           EntityTypePre,
+	"spoiler":       EntityTypeSpoiler,
 	"strikethrough": EntityTypeStrikethrough,
 	"text_link":     EntityTypeTextLink,
 	"text_mention":  EntityTypeTextMention,
@@ -342,6 +375,33 @@ func (enum *KeyboardButtonType) UnmarshalText(src []byte) error {
 	return nil
 }
 
+type MenuType int
+
+const (
+	_ MenuType = iota
+)
+
+var valueMenuType = map[MenuType]string{}
+
+var indexMenuType = map[string]MenuType{}
+
+func (enum MenuType) String() string {
+	return valueMenuType[enum]
+}
+
+func (enum MenuType) MarshalText() ([]byte, error) {
+	return []byte(enum.String()), nil
+}
+
+func (enum *MenuType) UnmarshalText(src []byte) error {
+	value, ok := indexMenuType[string(src)]
+	if !ok {
+		return ErrIncorrectEnum{string(src)}
+	}
+	*enum = value
+	return nil
+}
+
 type PassportType int
 
 const (
@@ -467,6 +527,82 @@ func (enum SendType) MarshalText() ([]byte, error) {
 
 func (enum *SendType) UnmarshalText(src []byte) error {
 	value, ok := indexSendType[string(src)]
+	if !ok {
+		return ErrIncorrectEnum{string(src)}
+	}
+	*enum = value
+	return nil
+}
+
+type StickerType int
+
+const (
+	_ StickerType = iota
+	StickerTypeCustomEmoji
+	StickerTypeMask
+	StickerTypeRegular
+)
+
+var valueStickerType = map[StickerType]string{
+	StickerTypeCustomEmoji: "custom_emoji",
+	StickerTypeMask:        "mask",
+	StickerTypeRegular:     "regular",
+}
+
+var indexStickerType = map[string]StickerType{
+	"custom_emoji": StickerTypeCustomEmoji,
+	"mask":         StickerTypeMask,
+	"regular":      StickerTypeRegular,
+}
+
+func (enum StickerType) String() string {
+	return valueStickerType[enum]
+}
+
+func (enum StickerType) MarshalText() ([]byte, error) {
+	return []byte(enum.String()), nil
+}
+
+func (enum *StickerType) UnmarshalText(src []byte) error {
+	value, ok := indexStickerType[string(src)]
+	if !ok {
+		return ErrIncorrectEnum{string(src)}
+	}
+	*enum = value
+	return nil
+}
+
+type StickersType int
+
+const (
+	_ StickersType = iota
+	StickersTypeCustomEmoji
+	StickersTypeMask
+	StickersTypeRegular
+)
+
+var valueStickersType = map[StickersType]string{
+	StickersTypeCustomEmoji: "custom_emoji",
+	StickersTypeMask:        "mask",
+	StickersTypeRegular:     "regular",
+}
+
+var indexStickersType = map[string]StickersType{
+	"custom_emoji": StickersTypeCustomEmoji,
+	"mask":         StickersTypeMask,
+	"regular":      StickersTypeRegular,
+}
+
+func (enum StickersType) String() string {
+	return valueStickersType[enum]
+}
+
+func (enum StickersType) MarshalText() ([]byte, error) {
+	return []byte(enum.String()), nil
+}
+
+func (enum *StickersType) UnmarshalText(src []byte) error {
+	value, ok := indexStickersType[string(src)]
 	if !ok {
 		return ErrIncorrectEnum{string(src)}
 	}
