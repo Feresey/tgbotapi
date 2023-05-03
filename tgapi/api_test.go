@@ -50,9 +50,7 @@ const (
 	// ExistingStickerFileID   = "BQADAgADcwADjMcoCbdl-6eB--YPAg"
 )
 
-var (
-	ExistingDocumentFileID = "BQACAgIAAxkDAAIC3F9mU70O5BkltxDxiksePupAyPDNAAJBBwACasQ5S9ha1qz0L1inGwQ"
-)
+var ExistingDocumentFileID = "BQACAgIAAxkDAAIC3F9mU70O5BkltxDxiksePupAyPDNAAJBBwACasQ5S9ha1qz0L1inGwQ"
 
 var api = New(TestToken)
 

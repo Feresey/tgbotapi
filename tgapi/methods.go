@@ -1440,18 +1440,8 @@ func (api *API) GetMe(
 // returned.
 func (api *API) GetMyCommands(
 	ctx context.Context,
-	// not required.
-	// A two-letter ISO 639-1 language code or an empty string
-	languageCode *string,
-	// not required.
-	// A JSON-serialized object, describing scope of users. Defaults to BotCommandScopeDefault.
-	scope *BotCommandScope,
 ) ([]BotCommand, error) {
-	args := map[string]interface{}{
-		"language_code": languageCode,
-		"scope":         scope,
-	}
-	resp, err := api.MakeRequest(ctx, "getMyCommands", args)
+	resp, err := api.MakeRequest(ctx, "getMyCommands", nil)
 	if err != nil {
 		return nil, err
 	}
@@ -4277,35 +4267,4 @@ type UploadStickerFileConfig struct {
 	// UserID
 	// User identifier of sticker file owner
 	UserID int64 `json:"user_id"`
-}
-
-// UploadStickerFile
-// Use this method to upload a file with a sticker for later use in the createNewStickerSet and
-// addStickerToSet methods (the file can be used multiple times). Returns the uploaded File on
-// success.}}
-func (api *API) UploadStickerFile(
-	ctx context.Context,
-	args *UploadStickerFileConfig,
-) (*File, error) {
-	if args.Sticker.Reader != nil {
-		values, err := args.EncodeURL()
-		if err != nil {
-			return nil, err
-		}
-		resp, err := api.UploadFile(ctx, values, "uploadStickerFile", "uploadstickerfile", &args.Sticker)
-		if err != nil {
-			return nil, err
-		}
-
-		var res File
-		err = json.Unmarshal(resp.Result, &res)
-		return &res, err
-	}
-	resp, err := api.MakeRequest(ctx, "uploadStickerFile", args)
-	if err != nil {
-		return nil, err
-	}
-	var data File
-	err = json.Unmarshal(resp.Result, &data)
-	return &data, err
 }
